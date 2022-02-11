@@ -7,6 +7,7 @@ const Container = styled.div`
   width: 350px;
   height: 600px;
   position: relative;
+  box-sizing: border-box;
 `;
 
 const WriteReviewBtn = styled.button`
@@ -19,8 +20,48 @@ const WriteReviewBtn = styled.button`
   background-color: ${(props) => props.theme.mainColor};
 `;
 
+const Reviews = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: orange;
+  overflow:auto;
+]
+`;
+
+const ReviewBox = styled.div`
+  width: 300px;
+  height: 140px;
+  padding: 10px;
+  margin: 10px;
+  background-color: teal;
+  display: flex;
+  flex-direction: column;
+  &:last-child {
+    /*margin-bottom: 200px;*/
+  }
+`;
+
+const ReviewContent = styled.div`
+  &:first-child {
+    font-size: 20px;
+  }
+  &:nth-child(2) {
+    font-size: 13px;
+  }
+  &:last-child {
+    padding-top: 10px;
+    font-size: 15px;
+    width: 100%;
+    height: 80px;
+  }
+`;
+
 const Review = () => {
-  const [content, setContent] = useState("");
+  const [reviews, setReviews] = useState([]);
   useEffect(() => {
     var axios = require("axios");
 
@@ -34,8 +75,8 @@ const Review = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        setContent(JSON.stringify(response.data));
+        console.log(response.data.data);
+        setReviews(response.data.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -45,7 +86,15 @@ const Review = () => {
   return (
     <Container>
       <Header title={"리뷰목록"} />
-      <div>{content}ddd</div>
+      <Reviews>
+        {reviews.map((review, index) => (
+          <ReviewBox key={index}>
+            <ReviewContent>{review.name}</ReviewContent>
+            <ReviewContent>{review.star}</ReviewContent>
+            <ReviewContent>{review.content}</ReviewContent>
+          </ReviewBox>
+        ))}
+      </Reviews>
       <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
     </Container>
   );
