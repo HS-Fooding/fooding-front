@@ -15,7 +15,7 @@
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4"
   },
-  "proxy":"http://13.124.207.219:8080/sample_project/members",
+  "proxy": "http://13.124.207.219:8080/sample_project/members",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -39,6 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-   
   }
 }

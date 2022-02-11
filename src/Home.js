@@ -1,25 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-const body = createGlobalStyle`
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-const Container = styled.div`
-  width: 350px;
-  height: 600px;
-  border: 1px solid black;
-`;
+import GlobalStyle from "./GlobalStyle";
+
+const Container = styled.div``;
+
 const Home = () => {
   return (
-    <Container>
-      <Link to={"/review"}>
-        <button>리뷰버튼</button>
-      </Link>
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Link to={"/review"}>
+          <button>리뷰버튼</button>
+        </Link>
+      </Container>
+    </>
   );
 };
 
