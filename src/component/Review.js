@@ -11,7 +11,6 @@ const Review = () => {
       headers: {
         "Content-Type": "application/json",
       },
-   
     };
 
     axios(config)
