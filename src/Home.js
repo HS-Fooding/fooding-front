@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
-import styled,{createGlobalStyle} from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 const body = createGlobalStyle`
   body {
     display: flex;
@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <Container>
       <Link to={"/review"}>
-        <button>리뷰</button>
+        <button>리뷰버튼</button>
       </Link>
     </Container>
   );
