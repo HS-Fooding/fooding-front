@@ -15,6 +15,7 @@ const WriteReview = () => {
       "image": "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk"
     });
     
+    
     var config = {
       method: 'post',
       url: 'http://13.124.207.219:8080/sample_project/members',
