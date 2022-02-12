@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -17,6 +18,7 @@ const WriteReviewBtn = styled.button`
   height: 80px;
   border: none;
   cursor: pointer;
+  color: white;
   background-color: ${(props) => props.theme.mainColor};
 `;
 
@@ -26,7 +28,7 @@ const Reviews = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: orange;
+  background-color: white;
   overflow: auto;
 `;
 
@@ -35,9 +37,10 @@ const ReviewBox = styled.div`
   height: 140px;
   padding: 10px;
   margin: 10px;
-  background-color: teal;
+  background-color: white;
   display: flex;
   flex-direction: column;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
   &:last-child {
     /*margin-bottom: 200px;*/
   }
@@ -88,7 +91,7 @@ const Review = () => {
   return (
     <Container>
       <Reviews>
-        <Header title={"리뷰목록"} />
+        <Header title={"리뷰 목록"} />
 
         <InnerReviews>
           {reviews.map((review, index) => (
@@ -100,7 +103,9 @@ const Review = () => {
           ))}
         </InnerReviews>
       </Reviews>
-      <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+      <Link to={"/WriteReview"}>
+        <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+      </Link>
     </Container>
   );
 };
