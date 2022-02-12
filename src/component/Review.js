@@ -22,14 +22,12 @@ const WriteReviewBtn = styled.button`
 
 const Reviews = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: orange;
-  overflow:auto;
-]
+  overflow: auto;
 `;
 
 const ReviewBox = styled.div`
@@ -60,6 +58,10 @@ const ReviewContent = styled.div`
   }
 `;
 
+const InnerReviews = styled.div`
+  height: 570px;
+`;
+
 const Review = () => {
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
@@ -85,15 +87,18 @@ const Review = () => {
 
   return (
     <Container>
-      <Header title={"리뷰목록"} />
       <Reviews>
-        {reviews.map((review, index) => (
-          <ReviewBox key={index}>
-            <ReviewContent>{review.name}</ReviewContent>
-            <ReviewContent>{review.star}</ReviewContent>
-            <ReviewContent>{review.content}</ReviewContent>
-          </ReviewBox>
-        ))}
+        <Header title={"리뷰목록"} />
+
+        <InnerReviews>
+          {reviews.map((review, index) => (
+            <ReviewBox key={index}>
+              <ReviewContent>{review.name}</ReviewContent>
+              <ReviewContent>{review.star}</ReviewContent>
+              <ReviewContent>{review.content}</ReviewContent>
+            </ReviewBox>
+          ))}
+        </InnerReviews>
       </Reviews>
       <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
     </Container>

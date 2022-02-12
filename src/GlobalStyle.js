@@ -10,7 +10,7 @@ body {
     height: 600px;
     
   }
-  *{
+*{
     box-sizing: border-box;
   }
 `;
