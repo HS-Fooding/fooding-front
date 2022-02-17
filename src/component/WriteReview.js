@@ -62,6 +62,10 @@ const WriteReview = () => {
   const [reviewStar, setReviewStar] = useState("");
   const [reviewPw, setReviewPw] = useState("");
   const [reviewContent, setReviewContent] = useState("");
+  const [img, setImg] = useState();
+  const [file, setFile] = useState();
+  const [files, setFiles] = useState([]);
+
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
   const onChangeReviewStar = (e) => {
@@ -76,17 +80,62 @@ const WriteReview = () => {
   //   submit(e);
   //   navigate("/review");
   // }
+
+  const onChangeImage = (e) => {
+    e.preventDefault();
+    const img = e.target.files[0];
+    console.log("img: ", img);
+    setImg(img);
+    const prevFile = URL.createObjectURL(e.target.files[0]);
+    setFile(prevFile);
+    console.log("prevFile:", prevFile);
+  };
+
   const submit = (e) => {
     e.preventDefault();
-
+    console.log(img);
     var axios = require("axios");
-    var data = JSON.stringify({
+    /*   var data = JSON.stringify({
       name: reviewName,
       star: reviewStar,
       password: reviewPw,
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
-    });
+    }); */
+
+    const data = new FormData();
+
+    let content = {
+      content: "hi",
+      star: 3,
+      password: "11",
+      name: "dy",
+    };
+    data.append(
+      "request",
+      new Blob([JSON.stringify(content)], { type: "application/json" })
+      //{ contentType: "application/json" }
+    );
+
+    //data.append("image", img);
+    //data.append("image", "image/cap.PNG");
+    data.append("image", img);
+
+    axios
+      .post("http://13.124.207.219:8080/sample_project/members", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    /* 
     var config = {
       method: "post",
       url: "http://13.124.207.219:8080/sample_project/members",
@@ -95,8 +144,9 @@ const WriteReview = () => {
       },
       data: data,
     };
+     */
 
-    axios(config)
+    /*   axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         var axios = require("axios");
@@ -120,7 +170,7 @@ const WriteReview = () => {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      }); */
   };
 
   return (
@@ -151,9 +201,24 @@ const WriteReview = () => {
             onChange={onChangeReviewContent}
           />
           <br />
+          <form>
+            <input
+              id="image_input"
+              type="file"
+              accept="image/jpg,image/png,image/jpeg,image/gif"
+              name="photo"
+              onChange={onChangeImage}
+            />
+          </form>
         </form>
+        <div>
+          <img src={file} alt="image" />
+        </div>
       </FormContainer>
-      <SubmitButton onClick={submit}>전송</SubmitButton>
+
+      <SubmitButton formEncType="multipart/form-data" onClick={submit}>
+        전송
+      </SubmitButton>
     </WriteReviewContainer>
   );
 };
