@@ -54,161 +54,129 @@ const FormContainer = styled.div`
   padding-top: 40px;
   width: 100%;
   height: 90%;
-  flex-direction:column;
+  flex-direction: column;
   display: flex;
-  align-items:center;
- 
+  align-items: center;
 `;
 const ImageForm = styled.form`
-input[type="file"] {
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: none;
-}
-
+  input[type="file"] {
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+  }
 `;
 const ImageContainer = styled.div`
-  width:100%;
-  height:110px;
+  width: 100%;
+  height: 110px;
   background-color: ${(props) => props.theme.mainColor};
-  display:flex;
-  align-items:start;
+  display: flex;
+  align-items: start;
   img {
-    width:70px;
-    height:70px;
-    margin-left:10px;
-    
+    width: 70px;
+    height: 70px;
+    margin-left: 10px;
   }
- 
 `;
 const Stars = styled.div`
-  width:100%;
-  height:50px;
-   display:flex;
- 
-  justify-content:space-evenly;
-  margin-bottom:10px;
-  border-bottom:solid 1px gray;
-  `;
-const Star = styled.span`
-  font-size:30px;
-  cursor:pointer;
+  width: 100%;
+  height: 50px;
+  display: flex;
+
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  border-bottom: solid 1px gray;
 `;
-const FileIconContainer = styled.div` 
-margin-left:10px;
-  width:70px;
-  height:70px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background-color:white; 
-  cursor:pointer;
+const Star = styled.span`
+  font-size: 30px;
+  cursor: pointer;
+`;
+const FileIconContainer = styled.div`
+  margin-left: 10px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  cursor: pointer;
 `;
 const File = styled.div`
-  margin-left:10px;
-  
-  padding-top:20px;
-  width:70px;
-  height:70px;
- img{
-  width:70px;
-  height:70px;
- }
+  margin-left: 10px;
+
+  padding-top: 20px;
+  width: 70px;
+  height: 70px;
+  img {
+    width: 70px;
+    height: 70px;
+  }
 `;
 const FileIcon = styled.label`
-  font-size:20px;
-  cursor:pointer;
+  font-size: 20px;
+  cursor: pointer;
 `;
 const WriteReview = () => {
   const [reviewName, setReviewName] = useState("");
   const [reviewStar, setReviewStar] = useState("");
   const [reviewPw, setReviewPw] = useState("");
   const [reviewContent, setReviewContent] = useState("");
-  const [img, setImg] = useState();
+  const [img, setImg] = useState([]);
   const [file, setFile] = useState(undefined);
-  const [files, setFiles] = useState([]);
-  
-  const [star,setStar] = useState(0);
+  const [star, setStar] = useState(0);
 
-  // const [first,setFirst]= useState("☆");
-  // const [second,setSecond]= useState("☆");
-  // const [third,setThird]= useState("☆");
-  // const [fourth,setFourth]= useState("☆");
-  // const [fifth,setFifth]= useState("☆");
- 
-  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
+  const [stars, setStars] = useState(["☆", "☆", "☆", "☆", "☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
-  
+
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
-  // const popup=(e)=>{
-  //   let setPassword = prompt("비밀번호 입력","");
-  //   setReviewPw(setPassword);
-  //   submit(e);
-  //   navigate("/review");
-    // }
-//     const star1Toggle = (e) =>{
-//       e.preventDefault();
-//       setFirst("★");
-//       countStar();
-      
-//     }
-//     const star2Toggle = (e) =>{
-//       e.preventDefault();
-//       setSecond("★");
-//       countStar();
-//     }
-//     const star3Toggle = (e) =>{
-//       e.preventDefault();
-//       setThird("★");
-//       countStar();
-//     }
-//     const star4Toggle = (e) =>{
-//       e.preventDefault();
-//       setFourth("★");
-//       countStar();
-//     }
-//     const star5Toggle = (e) =>{
-//       e.preventDefault();
-//       setFifth("★");
-//       countStar();
-// }
-const starsToggle = (num)=>{
 
-  setReviewStar(num);
-  switch(num){
-    case 1:
-      setStars(["★","☆","☆","☆","☆"]);
-    break;
-    case 2:
-      setStars(["★","★","☆","☆","☆"]);
-      break;
-    case 3:
-      setStars(["★","★","★","☆","☆"]);
-    
-      break;
-    case 4:
-      setStars(["★","★","★","★","☆"]);
-    
-    break;
-    case 5:
-      setStars(["★","★","★","★","★"]);
-      break;
-  }
-}
+  const starsToggle = (num) => {
+    setReviewStar(num);
+    switch (num) {
+      case 1:
+        setStars(["★", "☆", "☆", "☆", "☆"]);
+        break;
+      case 2:
+        setStars(["★", "★", "☆", "☆", "☆"]);
+        break;
+      case 3:
+        setStars(["★", "★", "★", "☆", "☆"]);
 
-    const countStar = ()=>{
-      let temp = star+1;
-      setStar(star+1);
+        break;
+      case 4:
+        setStars(["★", "★", "★", "★", "☆"]);
+
+        break;
+      case 5:
+        setStars(["★", "★", "★", "★", "★"]);
+        break;
     }
+  };
+
+  const countStar = () => {
+    let temp = star + 1;
+    setStar(star + 1);
+  };
   const onChangeImage = (e) => {
     e.preventDefault();
-    const img = e.target.files[0];
-    console.log("img: ", img);
-    setImg(img);
+    const imgData = e.target.files[0];
+
+    const imgArr = [...img, imgData];
+    setImg([...img, imgData]);
+
+    console.log("imgArr:", imgArr);
+
+    const URLArr = imgArr.map((img) => {
+      console.log(img);
+      URL.createObjectURL(img);
+    });
+
+    console.log(URLArr);
+
+    //setImg(img);
     const prevFile = URL.createObjectURL(e.target.files[0]);
     setFile(prevFile);
     console.log("prevFile:", prevFile);
@@ -253,8 +221,6 @@ const starsToggle = (num)=>{
       .catch((err) => {
         console.log(err);
       });
-
-    
   };
 
   return (
@@ -263,30 +229,57 @@ const starsToggle = (num)=>{
         <Header title={"리뷰 쓰기"} />
       </Link>
       <FormContainer>
-      
-          {/* <TypeInput
+        {/* <TypeInput
             type="text"
             placeholder="별점"
             onChange={onChangeReviewStar}
           /> */}
-          <Stars>
+        <Stars>
           {/* <Star onClick={star1Toggle}>{first}</Star> 
           <Star onClick={star2Toggle}>{second}</Star>
           <Star onClick={star3Toggle}>{third}</Star>
           <Star onClick={star4Toggle}>{fourth}</Star>
           <Star onClick={star5Toggle}>{fifth}</Star>
            */}
-          <Star onClick={()=>{starsToggle(1)}}>{stars[0]}</Star> 
-          <Star onClick={()=>{starsToggle(2)}}>{stars[1]}</Star>
-          <Star onClick={()=>{starsToggle(3)}}>{stars[2]}</Star>
-          <Star onClick={()=>{starsToggle(4)}}>{stars[3]}</Star>
-          <Star onClick={()=>{starsToggle(5)}}>{stars[4]}</Star>
-          
-          </Stars>
-        
-      <ImageContainer>
+          <Star
+            onClick={() => {
+              starsToggle(1);
+            }}
+          >
+            {stars[0]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(2);
+            }}
+          >
+            {stars[1]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(3);
+            }}
+          >
+            {stars[2]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(4);
+            }}
+          >
+            {stars[3]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(5);
+            }}
+          >
+            {stars[4]}
+          </Star>
+        </Stars>
 
-        <ImageForm>
+        <ImageContainer>
+          <ImageForm>
             <input
               id="image_input"
               type="file"
@@ -294,23 +287,22 @@ const starsToggle = (num)=>{
               name="photo"
               onChange={onChangeImage}
             />
-             <FileIconContainer>
-               <FileIcon for="image_input">📸</FileIcon>             
-             </FileIconContainer> 
+            <FileIconContainer>
+              <FileIcon for="image_input">📸</FileIcon>
+            </FileIconContainer>
           </ImageForm>
-        
+
           <File>
-         {(file===undefined) ?  null :<img src={file} alt="image" />}
-        </File> 
-      </ImageContainer>
+            {file === undefined ? null : <img src={file} alt="image" />}
+          </File>
+        </ImageContainer>
         <form>
           <TypeInput
             type="text"
             placeholder="이름"
             onChange={onChangeReviewName}
           />
-        
-          
+
           <br />
           <TypeInput
             type="text"
@@ -323,9 +315,7 @@ const starsToggle = (num)=>{
             onChange={onChangeReviewContent}
           />
           <br />
-         
         </form>
-       
       </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>
