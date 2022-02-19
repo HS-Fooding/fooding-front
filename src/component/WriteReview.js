@@ -259,7 +259,9 @@ const starsToggle = (num)=>{
 
   return (
     <WriteReviewContainer>
-      <Header title={"리뷰 쓰기"} />
+      <Link to={"/Review"}>
+        <Header title={"리뷰 쓰기"} />
+      </Link>
       <FormContainer>
       
           {/* <TypeInput

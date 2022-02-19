@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import GlobalStyle from "../GlobalStyle";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -23,14 +24,25 @@ const WriteReviewBtn = styled.button`
 `;
 
 const Reviews = styled.div`
+  padding-top: 90px;
   width: 100%;
+  height: 510px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: orange;
-  overflow:auto;
+  background-color: white;
+  overflow: auto;
+  /* padding-top: 50px; */
 
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+`;
+
+const InnerReviews = styled.div`
+  height: 500px;
+  padding-top: 10px;
 `;
 
 const ReviewBox = styled.div`
@@ -45,11 +57,13 @@ const ReviewBox = styled.div`
   &:last-child {
     /*margin-bottom: 200px;*/
   }
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 `;
 
 const ReviewContent = styled.div`
   &:first-child {
     font-size: 20px;
+    margin-bottom: 5px;
   }
   &:nth-child(2) {
     font-size: 13px;
@@ -60,10 +74,6 @@ const ReviewContent = styled.div`
     width: 100%;
     height: 80px;
   }
-`;
-
-const InnerReviews = styled.div`
-  height: 570px;
 `;
 
 const Review = () => {
@@ -91,9 +101,10 @@ const Review = () => {
 
   return (
     <Container>
-      <Reviews>
+      <Link to={"/"}>
         <Header title={"리뷰 목록"} />
-
+      </Link>
+      <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
             <ReviewBox key={index}>

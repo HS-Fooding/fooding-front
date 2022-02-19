@@ -1,26 +1,36 @@
 import styled from "styled-components";
 import GlobalStyle from "../GlobalStyle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 30px;
+  height: 40px;
   background-color: ${(props) => props.theme.mainColor};
   color: white;
-  padding: 5px;
-  font-size: 12px;
+  padding: 5px 15px;
+  font-size: 15px;
   /* border-bottom: 1px solid ${(props) => props.theme.borderGrayColor}; */
   position: absolute;
   top: 0;
+
+  .icon {
+    cursor: pointer;
+  }
 `;
 
 const Header = ({ title }) => {
   return (
     <>
       <GlobalStyle />
-      <Container>{title}</Container>
+      <Container>
+        <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        <span>{title}</span>
+        <div></div>
+      </Container>
     </>
   );
 };
