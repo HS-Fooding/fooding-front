@@ -1,6 +1,9 @@
 import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 const GlobalStyle = createGlobalStyle`
+${reset};
+
 body {
     display: flex;
     justify-content: center;
@@ -12,7 +15,7 @@ body {
   }
 *{
     box-sizing: border-box;
-  }
+}
 `;
 
 export default GlobalStyle;
