@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "./Review";
 import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
@@ -51,11 +51,75 @@ const ContentTextArea = styled.textarea`
   }
 `;
 const FormContainer = styled.div`
-  padding-top: 70px;
-  width: 90%;
-  height: 80%;
+  padding-top: 40px;
+  width: 100%;
+  height: 90%;
+  flex-direction:column;
   display: flex;
-  justify-content: center;
+  align-items:center;
+ 
+`;
+const ImageForm = styled.form`
+input[type="file"] {
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+}
+
+`;
+const ImageContainer = styled.div`
+  width:100%;
+  height:110px;
+  background-color: ${(props) => props.theme.mainColor};
+  display:flex;
+  align-items:start;
+  img {
+    width:70px;
+    height:70px;
+    margin-left:10px;
+    
+  }
+ 
+`;
+const Stars = styled.div`
+  width:100%;
+  height:50px;
+   display:flex;
+ 
+  justify-content:space-evenly;
+  margin-bottom:10px;
+  border-bottom:solid 1px gray;
+  `;
+const Star = styled.span`
+  font-size:30px;
+  cursor:pointer;
+`;
+const FileIconContainer = styled.div` 
+margin-left:10px;
+  width:70px;
+  height:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background-color:white; 
+  cursor:pointer;
+`;
+const File = styled.div`
+  margin-left:10px;
+  
+  padding-top:20px;
+  width:70px;
+  height:70px;
+ img{
+  width:70px;
+  height:70px;
+ }
+`;
+const FileIcon = styled.label`
+  font-size:20px;
+  cursor:pointer;
 `;
 const WriteReview = () => {
   const [reviewName, setReviewName] = useState("");
@@ -63,15 +127,21 @@ const WriteReview = () => {
   const [reviewPw, setReviewPw] = useState("");
   const [reviewContent, setReviewContent] = useState("");
   const [img, setImg] = useState();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(undefined);
   const [files, setFiles] = useState([]);
+  
+  const [star,setStar] = useState(0);
 
+  // const [first,setFirst]= useState("☆");
+  // const [second,setSecond]= useState("☆");
+  // const [third,setThird]= useState("☆");
+  // const [fourth,setFourth]= useState("☆");
+  // const [fifth,setFifth]= useState("☆");
+ 
+  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
-  const onChangeReviewStar = (e) => {
-    const toNum = Number(e.target.value);
-    setReviewStar(toNum);
-  };
+  
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
   // const popup=(e)=>{
@@ -79,8 +149,61 @@ const WriteReview = () => {
   //   setReviewPw(setPassword);
   //   submit(e);
   //   navigate("/review");
-  // }
+    // }
+//     const star1Toggle = (e) =>{
+//       e.preventDefault();
+//       setFirst("★");
+//       countStar();
+      
+//     }
+//     const star2Toggle = (e) =>{
+//       e.preventDefault();
+//       setSecond("★");
+//       countStar();
+//     }
+//     const star3Toggle = (e) =>{
+//       e.preventDefault();
+//       setThird("★");
+//       countStar();
+//     }
+//     const star4Toggle = (e) =>{
+//       e.preventDefault();
+//       setFourth("★");
+//       countStar();
+//     }
+//     const star5Toggle = (e) =>{
+//       e.preventDefault();
+//       setFifth("★");
+//       countStar();
+// }
+const starsToggle = (num)=>{
 
+  setReviewStar(num);
+  switch(num){
+    case 1:
+      setStars(["★","☆","☆","☆","☆"]);
+    break;
+    case 2:
+      setStars(["★","★","☆","☆","☆"]);
+      break;
+    case 3:
+      setStars(["★","★","★","☆","☆"]);
+    
+      break;
+    case 4:
+      setStars(["★","★","★","★","☆"]);
+    
+    break;
+    case 5:
+      setStars(["★","★","★","★","★"]);
+      break;
+  }
+}
+
+    const countStar = ()=>{
+      let temp = star+1;
+      setStar(star+1);
+    }
   const onChangeImage = (e) => {
     e.preventDefault();
     const img = e.target.files[0];
@@ -106,21 +229,17 @@ const WriteReview = () => {
     const data = new FormData();
 
     let content = {
-      content: "hi",
-      star: 3,
-      password: "11",
-      name: "dy",
+      content: reviewContent,
+      star: reviewStar,
+      password: reviewPw,
+      name: reviewName,
     };
     data.append(
       "request",
       new Blob([JSON.stringify(content)], { type: "application/json" })
-      //{ contentType: "application/json" }
     );
 
-    //data.append("image", img);
-    //data.append("image", "image/cap.PNG");
     data.append("image", img);
-
     axios
       .post("http://13.124.207.219:8080/sample_project/members", data, {
         headers: {
@@ -135,60 +254,61 @@ const WriteReview = () => {
         console.log(err);
       });
 
-    /* 
-    var config = {
-      method: "post",
-      url: "http://13.124.207.219:8080/sample_project/members",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-     */
-
-    /*   axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        var axios = require("axios");
-
-        var config = {
-          method: "get",
-          url: `http://13.124.207.219:8080/sample_project/members`,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-
-        axios(config)
-          .then(function (response) {
-            console.log("리뷰 get", JSON.stringify(response.data));
-            navigate("/review");
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      })
-      .catch(function (error) {
-        console.log(error);
-      }); */
+    
   };
 
   return (
     <WriteReviewContainer>
       <Header title={"리뷰 쓰기"} />
       <FormContainer>
+      
+          {/* <TypeInput
+            type="text"
+            placeholder="별점"
+            onChange={onChangeReviewStar}
+          /> */}
+          <Stars>
+          {/* <Star onClick={star1Toggle}>{first}</Star> 
+          <Star onClick={star2Toggle}>{second}</Star>
+          <Star onClick={star3Toggle}>{third}</Star>
+          <Star onClick={star4Toggle}>{fourth}</Star>
+          <Star onClick={star5Toggle}>{fifth}</Star>
+           */}
+          <Star onClick={()=>{starsToggle(1)}}>{stars[0]}</Star> 
+          <Star onClick={()=>{starsToggle(2)}}>{stars[1]}</Star>
+          <Star onClick={()=>{starsToggle(3)}}>{stars[2]}</Star>
+          <Star onClick={()=>{starsToggle(4)}}>{stars[3]}</Star>
+          <Star onClick={()=>{starsToggle(5)}}>{stars[4]}</Star>
+          
+          </Stars>
+        
+      <ImageContainer>
+
+        <ImageForm>
+            <input
+              id="image_input"
+              type="file"
+              accept="image/jpg,image/png,image/jpeg,image/gif"
+              name="photo"
+              onChange={onChangeImage}
+            />
+             <FileIconContainer>
+               <FileIcon for="image_input">📸</FileIcon>             
+             </FileIconContainer> 
+          </ImageForm>
+        
+          <File>
+         {(file===undefined) ?  null :<img src={file} alt="image" />}
+        </File> 
+      </ImageContainer>
         <form>
           <TypeInput
             type="text"
             placeholder="이름"
             onChange={onChangeReviewName}
           />
-          <br />
-          <TypeInput
-            type="text"
-            placeholder="별점"
-            onChange={onChangeReviewStar}
-          />
+        
+          
           <br />
           <TypeInput
             type="text"
@@ -201,19 +321,9 @@ const WriteReview = () => {
             onChange={onChangeReviewContent}
           />
           <br />
-          <form>
-            <input
-              id="image_input"
-              type="file"
-              accept="image/jpg,image/png,image/jpeg,image/gif"
-              name="photo"
-              onChange={onChangeImage}
-            />
-          </form>
+         
         </form>
-        <div>
-          <img src={file} alt="image" />
-        </div>
+       
       </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>

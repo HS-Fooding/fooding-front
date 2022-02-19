@@ -28,8 +28,9 @@ const Reviews = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: white;
-  overflow: auto;
+  background-color: orange;
+  overflow:auto;
+
 `;
 
 const ReviewBox = styled.div`
