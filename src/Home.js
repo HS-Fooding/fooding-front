@@ -5,6 +5,7 @@ import GlobalStyle from "./GlobalStyle";
 
 const Container = styled.div``;
 const Button = styled.button`
+  margin-top:10px;
   border:none;
   background-color:${(props) => props.theme.mainColor};
   width:100%;
@@ -19,6 +20,9 @@ const Home = () => {
       <Container>
         <Link to={"/review"}>
           <Button>리뷰버튼</Button>
+        </Link>
+        <Link to={"/login"}>
+          <Button>로그인하기</Button>
         </Link>
       </Container>
     </>

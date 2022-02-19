@@ -74,6 +74,7 @@ const ImageContainer = styled.div`
   height:110px;
   background-color: ${(props) => props.theme.mainColor};
   display:flex;
+  overflow:auto;
   align-items:start;
   img {
     width:70px;
@@ -108,10 +109,11 @@ margin-left:10px;
 `;
 const File = styled.div`
   margin-left:10px;
-  
+  display:flex;
   padding-top:20px;
   width:70px;
   height:70px;
+
  img{
   width:70px;
   height:70px;
@@ -126,8 +128,8 @@ const WriteReview = () => {
   const [reviewStar, setReviewStar] = useState("");
   const [reviewPw, setReviewPw] = useState("");
   const [reviewContent, setReviewContent] = useState("");
-  const [img, setImg] = useState();
-  const [file, setFile] = useState(undefined);
+  const [imgs, setImg] = useState([]);
+  const [file, setFile] = useState([]);
   const [files, setFiles] = useState([]);
   
   const [star,setStar] = useState(0);
@@ -207,16 +209,19 @@ const starsToggle = (num)=>{
   const onChangeImage = (e) => {
     e.preventDefault();
     const img = e.target.files[0];
-    console.log("img: ", img);
-    setImg(img);
+    
+    const tempArr=[...imgs,img];
+    setImg([...imgs,img]);
+console.log("tempArr",tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
-    setFile(prevFile);
+    setFile([...file,prevFile]);
+    console.log("imgs: ", file);
     console.log("prevFile:", prevFile);
   };
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(img);
+    console.log("imgs",imgs);
     var axios = require("axios");
     /*   var data = JSON.stringify({
       name: reviewName,
@@ -239,7 +244,7 @@ const starsToggle = (num)=>{
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
-    data.append("image", img);
+    data.append("image", imgs);
     axios
       .post("http://13.124.207.219:8080/sample_project/members", data, {
         headers: {
@@ -249,6 +254,7 @@ const starsToggle = (num)=>{
       })
       .then((res) => {
         console.log(res);
+        navigate("/Review");
       })
       .catch((err) => {
         console.log(err);
@@ -300,7 +306,7 @@ const starsToggle = (num)=>{
           </ImageForm>
         
           <File>
-         {(file===undefined) ?  null :<img src={file} alt="image" />}
+         {(file===undefined) ?  null : (file.map((one)=>( <img src={one} alt={one} />) ))}
         </File> 
       </ImageContainer>
         <form>
