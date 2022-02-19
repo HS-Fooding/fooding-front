@@ -10,12 +10,11 @@ body {
     align-items: center;
     border: 1px solid black;
     width: 350px;
-    height: 600px;
-    
+    height: 600px;  
   }
-*{
+* {
     box-sizing: border-box;
-}
+  }
 `;
 
 export default GlobalStyle;
