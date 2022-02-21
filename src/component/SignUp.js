@@ -26,7 +26,7 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-  margin-top: 40px;
+  margin-top: 60px;
   height: 500px;
   padding: 20px;
   position: relative;
@@ -79,7 +79,9 @@ const SubmitBtn = styled.button`
   border-radius: 3px;
   font-size: 15px;
   cursor: pointer;
-  width: 100%;
+  width: 308px;
+  position: absolute;
+  bottom: 0;
 `;
 
 function SignUp() {
