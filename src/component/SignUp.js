@@ -29,6 +29,7 @@ const Form = styled.form`
   margin-top: 40px;
   height: 500px;
   padding: 20px;
+  position: relative;
 `;
 
 const Input = styled.input.attrs({ required: true })`
@@ -40,19 +41,6 @@ const Input = styled.input.attrs({ required: true })`
   &:focus {
     outline: none;
   }
-`;
-
-const SubmitBtn = styled.button`
-  position: absolute;
-  bottom: 0;
-  border: none;
-  background-color: ${(props) => props.theme.mainColor};
-  color: white;
-  height: 50px;
-  border-radius: 3px;
-  font-size: 15px;
-  cursor: pointer;
-  width: 100%;
 `;
 
 const RadioBox = styled.div`
@@ -83,27 +71,45 @@ const Message = styled.span`
   bottom: 12px;
 `;
 
+const SubmitBtn = styled.button`
+  border: none;
+  background-color: ${(props) => props.theme.mainColor};
+  color: white;
+  height: 50px;
+  border-radius: 3px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+`;
+
 function SignUp() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     setError,
   } = useForm({
     defaultValues: {
-      email: "@naver.com",
+      sex: "female",
     },
   });
 
   const onValid = (data) => {
     // 데이터 전송시 작동, data는 입력된 값들
+
     console.log(data);
+
+    console.log(2022 - data.age.substring(0, 4) + 1); // 나이 계산
+
     if (data.password !== data.password1) {
       setError(
         "password1",
         { message: "비밀번호가 맞지 않습니다." },
         { shouldFocus: true }
       );
+    } else {
+      reset();
     }
     //setError("extraError", { message: "Server offline." });
   };
@@ -137,31 +143,17 @@ function SignUp() {
             },
           })}
           placeholder="비밀번호"
+          type="password"
         />
         <Message>{errors?.password?.message}</Message>
         <Input
           {...register("password1", {
             required: "비밀번호 확인을 입력하세요.",
-            minLength: {
-              value: 8,
-              message: "최소 8자 이상 입력하세요.",
-            },
           })}
           placeholder="비밀번호 확인"
+          type="password"
         />
         <Message>{errors?.password1?.message}</Message>
-        <Input
-          {...register("email", {
-            required: "이메일을 입력하세요.",
-            pattern: {
-              value: /^[A-Za-z0-9._%+-]+@naver.com$/,
-              message: "Only naver.com emails allowed.",
-            },
-          })}
-          placeholder="Email"
-        />
-
-        <Message>{errors?.email?.message}</Message>
 
         <Input
           {...register("userName", {
@@ -180,14 +172,25 @@ function SignUp() {
         <Message>{errors?.userName?.message}</Message>
 
         <div style={{ display: "flex", width: "100%" }}>
-          <Input {...register("age")} placeholder="나이" />
-          <Message>{errors?.age?.message}</Message>
+          <Input
+            {...register("age", {
+              required: "나이를 입력하세요.",
+              minLength: {
+                value: 8,
+                message: "8자리를 입력하세요.",
+              },
+              pattern: { value: /[0-9]/g, message: "숫자만 입력해주세요." },
+            })}
+            placeholder="생년월일 (8자리 입력)"
+          />
+
           <RadioBox>
             <RadioButton
               type="radio"
               name="sex"
               value="female"
-              checked="checked"
+              {...register("sex")}
+              readOnly
             />
             <span>여성</span>
             <RadioButton
@@ -195,13 +198,13 @@ function SignUp() {
               name="sex"
               value="male"
               style={{ marginLeft: 12 }}
-              {...register("sex", {
-                required: "성별을 입력하세요.",
-              })}
+              {...register("sex")}
+              readOnly
             />
             <span>남성</span>
           </RadioBox>
         </div>
+        <Message>{errors?.age?.message}</Message>
         <SubmitBtn>회원가입</SubmitBtn>
         <Message>{errors?.extraError?.message}</Message>
       </Form>

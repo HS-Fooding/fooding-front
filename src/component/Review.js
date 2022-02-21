@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
-import GlobalStyle from "../GlobalStyle";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -62,17 +61,20 @@ const ReviewBox = styled.div`
 
 const ReviewContent = styled.div`
   &:first-child {
-    font-size: 20px;
+    font-size: 17px;
     margin-bottom: 5px;
   }
   &:nth-child(2) {
     font-size: 13px;
+    color: rgba(0, 0, 0, 0.3);
   }
   &:last-child {
     padding-top: 10px;
     font-size: 15px;
     width: 100%;
     height: 80px;
+    overflow: auto;
+    line-height: 1.3;
   }
 `;
 
@@ -92,7 +94,7 @@ const Review = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data.data);
-        setReviews(response.data.data);
+        setReviews(response.data.data.reverse());
       })
       .catch(function (error) {
         console.log(error);
@@ -108,9 +110,17 @@ const Review = () => {
         <InnerReviews>
           {reviews.map((review, index) => (
             <ReviewBox key={index}>
-              <ReviewContent>{review.name}</ReviewContent>
+              <ReviewContent>
+                {review.name.length > 17
+                  ? review.name.slice(0, 17) + ".."
+                  : review.name}
+              </ReviewContent>
               <ReviewContent>{review.star}</ReviewContent>
-              <ReviewContent>{review.content}</ReviewContent>
+              <ReviewContent>
+                {review.content.length > 60
+                  ? review.content.slice(0, 60) + ".."
+                  : review.content}
+              </ReviewContent>
             </ReviewBox>
           ))}
         </InnerReviews>
