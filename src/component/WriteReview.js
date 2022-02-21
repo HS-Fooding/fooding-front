@@ -44,7 +44,7 @@ const ContentTextArea = styled.textarea`
   resize: none;
   border: none;
   border-bottom: 1px solid gray;
-  padding-top: 15px;
+
   font-family: "Source Sans Pro", sans-serif;
   &:focus {
     outline: none;
@@ -70,12 +70,15 @@ input[type="file"] {
 
 `;
 const ImageContainer = styled.div`
-  width:100%;
+  width:95%;
   height:110px;
-  background-color: ${(props) => props.theme.mainColor};
+  background-color:#ecf0f1;
   display:flex;
   overflow:auto;
   align-items:start;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   img {
     width:70px;
     height:70px;
@@ -85,17 +88,19 @@ const ImageContainer = styled.div`
  
 `;
 const Stars = styled.div`
-  width:100%;
+  width:60%;
   height:50px;
-   display:flex;
- 
+  display:flex;
   justify-content:space-evenly;
+  margin-top:10px;
   margin-bottom:10px;
-  border-bottom:solid 1px gray;
+  
   `;
 const Star = styled.span`
   font-size:30px;
   cursor:pointer;
+ 
+  color:#fbc531;
 `;
 const FileIconContainer = styled.div` 
 margin-left:10px;
@@ -113,15 +118,25 @@ const File = styled.div`
   padding-top:20px;
   width:70px;
   height:70px;
-
+  
  img{
   width:70px;
-  height:70px;
+  height:70px;box-sizing: border-box;
  }
 `;
 const FileIcon = styled.label`
   font-size:20px;
   cursor:pointer;
+`;
+const ContentForm= styled.form`
+ width:90%;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ & input,textarea{
+   width:90%;
+ }
+ height:300px;
 `;
 const WriteReview = () => {
   const [reviewName, setReviewName] = useState("");
@@ -146,38 +161,7 @@ const WriteReview = () => {
   
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
-  // const popup=(e)=>{
-  //   let setPassword = prompt("비밀번호 입력","");
-  //   setReviewPw(setPassword);
-  //   submit(e);
-  //   navigate("/review");
-    // }
-//     const star1Toggle = (e) =>{
-//       e.preventDefault();
-//       setFirst("★");
-//       countStar();
-      
-//     }
-//     const star2Toggle = (e) =>{
-//       e.preventDefault();
-//       setSecond("★");
-//       countStar();
-//     }
-//     const star3Toggle = (e) =>{
-//       e.preventDefault();
-//       setThird("★");
-//       countStar();
-//     }
-//     const star4Toggle = (e) =>{
-//       e.preventDefault();
-//       setFourth("★");
-//       countStar();
-//     }
-//     const star5Toggle = (e) =>{
-//       e.preventDefault();
-//       setFifth("★");
-//       countStar();
-// }
+ 
 const starsToggle = (num)=>{
 
   setReviewStar(num);
@@ -244,7 +228,9 @@ console.log("tempArr",tempArr);
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
-    data.append("image", imgs);
+    imgs.map((img)=>{
+      data.append("image", img)
+    });
     axios
       .post("http://13.124.207.219:8080/sample_project/members", data, {
         headers: {
@@ -255,6 +241,7 @@ console.log("tempArr",tempArr);
       .then((res) => {
         console.log(res);
         navigate("/Review");
+        
       })
       .catch((err) => {
         console.log(err);
@@ -309,14 +296,12 @@ console.log("tempArr",tempArr);
          {(file===undefined) ?  null : (file.map((one)=>( <img src={one} alt={one} />) ))}
         </File> 
       </ImageContainer>
-        <form>
+        <ContentForm>
           <TypeInput
             type="text"
             placeholder="이름"
             onChange={onChangeReviewName}
-          />
-        
-          
+          />         
           <br />
           <TypeInput
             type="text"
@@ -330,7 +315,7 @@ console.log("tempArr",tempArr);
           />
           <br />
          
-        </form>
+        </ContentForm>
        
       </FormContainer>
 
