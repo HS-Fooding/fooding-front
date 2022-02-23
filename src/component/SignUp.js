@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Header from "./Header";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { url } from "../Api";
 
 /*
 {
@@ -97,12 +98,51 @@ function SignUp() {
     },
   });
 
+  const signUpPost = (data) => {
+    console.log(data);
+    const userAge = 2022 - data.age.substring(0, 4) + 1; // 나이 계산
+    console.log(userAge);
+
+    var axios = require("axios");
+    var data = JSON.stringify({
+      userId: data.Id,
+      userPassword: data.password,
+      sex: data.sex == "male" ? true : false,
+      userName: data.userName,
+      nickName: data.nickName,
+      age: userAge,
+      role: "ROLE_USER",
+    });
+
+    var config = {
+      method: "post",
+      url: url + "/sample_project/join",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const onValid = (data) => {
     // 데이터 전송시 작동, data는 입력된 값들
-
-    console.log(data);
-
-    console.log(2022 - data.age.substring(0, 4) + 1); // 나이 계산
+    /*
+    Id: "asdfasdf"
+    age: "20200202"
+    password: "asdfasdf"
+    password1: "asdfasdf"
+    nickName"dd"
+    sex: "male"
+    userName: "asdf"
+*/
 
     if (data.password !== data.password1) {
       setError(
@@ -112,7 +152,9 @@ function SignUp() {
       );
     } else {
       reset();
+      signUpPost(data);
     }
+
     //setError("extraError", { message: "Server offline." });
   };
 
@@ -156,10 +198,24 @@ function SignUp() {
           type="password"
         />
         <Message>{errors?.password1?.message}</Message>
-
         <Input
           {...register("userName", {
+            required: "이름을 입력하세요.",
+            minLength: {
+              value: 2,
+              message: "최소 2자 이상 입력하세요.",
+            },
+          })}
+          placeholder="이름 (실명 입력)"
+        />
+        <Message>{errors?.password?.message}</Message>
+        <Input
+          {...register("nickName", {
             required: "닉네임을 입력하세요.",
+            minLength: {
+              value: 2,
+              message: "최소 2자 이상 입력하세요.",
+            },
             validate: {
               /*noNico: (value) =>
                 value.includes("nico") ? "no nicos allowed" : true,
@@ -171,7 +227,7 @@ function SignUp() {
           })}
           placeholder="닉네임"
         />
-        <Message>{errors?.userName?.message}</Message>
+        <Message>{errors?.nickName?.message}</Message>
 
         <div style={{ display: "flex", width: "100%" }}>
           <Input
