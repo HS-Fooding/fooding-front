@@ -5,9 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
+import FontAwesomeIcon from "./FontAwesome";
 
+// border: 1px solid black;
 const WriteReviewContainer = styled.div`
-  border: 1px solid black;
+  
   width: 350px;
   height: 600px;
   position: relative;
@@ -218,10 +220,10 @@ console.log("tempArr",tempArr);
     const data = new FormData();
 
     let content = {
+      title: reviewName,
       content: reviewContent,
       star: reviewStar,
-      password: reviewPw,
-      name: reviewName,
+     
     };
     data.append(
       "request",
@@ -232,7 +234,7 @@ console.log("tempArr",tempArr);
       data.append("image", img)
     });
     axios
-      .post("http://13.124.207.219:8080/sample_project/members", data, {
+      .post("/sample_project/review", data, {
         headers: {
           "Content-Type": "multipart/form-data",
           // "Content-Type": "application/json",
@@ -288,7 +290,7 @@ console.log("tempArr",tempArr);
               onChange={onChangeImage}
             />
              <FileIconContainer>
-               <FileIcon for="image_input">📸</FileIcon>             
+               <FileIcon for="image_input">  <FontAwesomeIcon></FontAwesomeIcon></FileIcon>             
              </FileIconContainer> 
           </ImageForm>
         
@@ -316,8 +318,8 @@ console.log("tempArr",tempArr);
           <br />
          
         </ContentForm>
-       
-      </FormContainer>
+         
+        </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>
         전송

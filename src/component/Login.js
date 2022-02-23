@@ -3,9 +3,9 @@ import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import GlobalStyle from "../GlobalStyle";
-
+  // border: 1px solid black;
 const Container = styled.div`
-  border: 1px solid black;
+
   width: 350px;
   height: 600px;
   position: relative;

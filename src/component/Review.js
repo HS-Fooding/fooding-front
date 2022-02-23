@@ -85,7 +85,7 @@ const Review = () => {
 
     var config = {
       method: "get",
-      url: `http://13.124.207.219:8080/sample_project/members`,
+      url: `/sample_project/review`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -93,8 +93,9 @@ const Review = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data.data);
-        setReviews(response.data.data.reverse());
+        console.log(response);
+        console.log(response.data);
+        setReviews(response.data.reverse());
       })
       .catch(function (error) {
         console.log(error);
@@ -111,9 +112,9 @@ const Review = () => {
           {reviews.map((review, index) => (
             <ReviewBox key={index}>
               <ReviewContent>
-                {review.name.length > 17
-                  ? review.name.slice(0, 17) + ".."
-                  : review.name}
+                {review.title.length > 17
+                  ? review.title.slice(0, 17) + ".."
+                  : review.title}
               </ReviewContent>
               <ReviewContent>{review.star}</ReviewContent>
               <ReviewContent>
