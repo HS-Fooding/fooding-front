@@ -146,11 +146,15 @@ const WriteReview = () => {
   const [reviewPw, setReviewPw] = useState("");
   const [reviewContent, setReviewContent] = useState("");
   const [imgs, setImg] = useState([]);
+
+
   const [file, setFile] = useState([]);
+  const [useFile,setUseFile] = useState([]);
+
   const [files, setFiles] = useState([]);
   
   const [star,setStar] = useState(0);
-
+  
   // const [first,setFirst]= useState("☆");
   // const [second,setSecond]= useState("☆");
   // const [third,setThird]= useState("☆");
@@ -197,12 +201,13 @@ const starsToggle = (num)=>{
     const img = e.target.files[0];
     
     const tempArr=[...imgs,img];
-    setImg([...imgs,img]);
-console.log("tempArr",tempArr);
+    setImg(tempArr);
+    console.log("tempArr",tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
     setFile([...file,prevFile]);
     console.log("imgs: ", file);
     console.log("prevFile:", prevFile);
+    e.target.value = ''; 
   };
 
   const submit = (e) => {
@@ -251,7 +256,9 @@ console.log("tempArr",tempArr);
 
     
   };
-
+  useEffect(()=>{
+    setUseFile(file);
+  },[file]);
   return (
     <WriteReviewContainer>
       <Link to={"/Review"}>
@@ -295,7 +302,7 @@ console.log("tempArr",tempArr);
           </ImageForm>
         
           <File>
-         {(file===undefined) ?  null : (file.map((one)=>( <img src={one} alt={one} />) ))}
+         {(useFile===undefined) ?  null : (useFile.map((one)=>( <img src={one} alt={one} />) ))}
         </File> 
       </ImageContainer>
         <ContentForm>

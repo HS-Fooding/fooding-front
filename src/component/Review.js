@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import { url } from "../Api";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -46,7 +47,7 @@ const InnerReviews = styled.div`
 
 const ReviewBox = styled.div`
   width: 300px;
-  height: 140px;
+  height: 350px;
   padding: 10px;
   margin: 10px;
   background-color: white;
@@ -60,11 +61,13 @@ const ReviewBox = styled.div`
 `;
 
 const ReviewContent = styled.div`
+  margin: 10px 0px;
   &:first-child {
     font-size: 17px;
     margin-bottom: 5px;
   }
   &:nth-child(2) {
+    /* star */
     font-size: 13px;
     color: rgba(0, 0, 0, 0.3);
   }
@@ -78,6 +81,18 @@ const ReviewContent = styled.div`
   }
 `;
 
+const ReviewImg = styled.div`
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  img {
+    object-fit: cover;
+  }
+`;
+
 const Review = () => {
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
@@ -85,7 +100,7 @@ const Review = () => {
 
     var config = {
       method: "get",
-      url: `/sample_project/review`,
+      url: url + "/sample_project/review",
       headers: {
         "Content-Type": "application/json",
       },
@@ -93,8 +108,8 @@ const Review = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response);
         console.log(response.data);
+
         setReviews(response.data.reverse());
       })
       .catch(function (error) {
@@ -112,11 +127,41 @@ const Review = () => {
           {reviews.map((review, index) => (
             <ReviewBox key={index}>
               <ReviewContent>
-                {review.title.length > 17
-                  ? review.title.slice(0, 17) + ".."
-                  : review.title}
+                {review.author.length > 17
+                  ? review.author.slice(0, 17) + ".."
+                  : review.author}
               </ReviewContent>
-              <ReviewContent>{review.star}</ReviewContent>
+              <ReviewContent>
+                <span>
+                  {review.registerDate.replaceAll("-", ".").slice(0, 10)}
+                </span>
+                <span
+                  style={{
+                    color: "#fbc531",
+                    alignItems: "center",
+                    marginLeft: "8px",
+                  }}
+                >
+                  ★
+                </span>
+
+                {review.star}
+              </ReviewContent>
+              <ReviewImg>
+                {review.images.map((img, index) => (
+                  <>
+                    <img
+                      src={img}
+                      key={index}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        marginRight: "10px",
+                      }}
+                    />
+                  </>
+                ))}
+              </ReviewImg>
               <ReviewContent>
                 {review.content.length > 60
                   ? review.content.slice(0, 60) + ".."
