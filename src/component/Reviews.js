@@ -69,7 +69,7 @@ const ReviewContent = styled.div`
   &:nth-child(2) {
     /* star */
     font-size: 13px;
-    color: rgba(0, 0, 0, 0.3);
+    color: ${(props) => props.theme.fontGrayColor};
   }
   &:last-child {
     padding-top: 10px;
@@ -125,49 +125,54 @@ const Review = () => {
       <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
-            <ReviewBox key={index}>
-              <ReviewContent>
-                {review.author.length > 17
-                  ? review.author.slice(0, 17) + ".."
-                  : review.author}
-              </ReviewContent>
-              <ReviewContent>
-                <span>
-                  {review.registerDate.replaceAll("-", ".").slice(0, 10)}
-                </span>
-                <span
-                  style={{
-                    color: "#fbc531",
-                    alignItems: "center",
-                    marginLeft: "8px",
-                  }}
-                >
-                  ★
-                </span>
+            <Link
+              to={`/${review.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <ReviewBox key={index}>
+                <ReviewContent>
+                  {review.author.length > 17
+                    ? review.author.slice(0, 17) + ".."
+                    : review.author}
+                </ReviewContent>
+                <ReviewContent>
+                  <span>
+                    {review.registerDate.replaceAll("-", ".").slice(0, 10)}
+                  </span>
+                  <span
+                    style={{
+                      color: "#fbc531",
+                      alignItems: "center",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    ★
+                  </span>
 
-                {review.star}
-              </ReviewContent>
-              <ReviewImg>
-                {review.images.map((img, index) => (
-                  <>
-                    <img
-                      src={img}
-                      key={index}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        marginRight: "10px",
-                      }}
-                    />
-                  </>
-                ))}
-              </ReviewImg>
-              <ReviewContent>
-                {review.content.length > 60
-                  ? review.content.slice(0, 60) + ".."
-                  : review.content}
-              </ReviewContent>
-            </ReviewBox>
+                  {review.star}
+                </ReviewContent>
+                <ReviewImg>
+                  {review.images.map((img, index) => (
+                    <>
+                      <img
+                        src={img}
+                        key={index}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          marginRight: "10px",
+                        }}
+                      />
+                    </>
+                  ))}
+                </ReviewImg>
+                <ReviewContent>
+                  {review.content.length > 60
+                    ? review.content.slice(0, 60) + ".."
+                    : review.content}
+                </ReviewContent>
+              </ReviewBox>
+            </Link>
           ))}
         </InnerReviews>
       </Reviews>

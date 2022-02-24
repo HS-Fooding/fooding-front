@@ -5,12 +5,12 @@ import GlobalStyle from "./GlobalStyle";
 
 const Container = styled.div``;
 const Button = styled.button`
-  margin-top:10px;
-  border:none;
-  background-color:${(props) => props.theme.mainColor};
-  width:100%;
-  &:hover{
-    cursor:pointer;
+  margin-top: 10px;
+  border: none;
+  background-color: ${(props) => props.theme.mainColor};
+  width: 100%;
+  &:hover {
+    cursor: pointer;
   }
 `;
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Link to={"/review"}>
+        <Link to={"/reviews"}>
           <Button>리뷰버튼</Button>
         </Link>
         <Link to={"/login"}>
