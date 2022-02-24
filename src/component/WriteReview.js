@@ -6,7 +6,7 @@ import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
 import FontAwesomeIcon from "./FontAwesome";
-
+import {Cookies} from "react-cookie";
 // border: 1px solid black;
 const WriteReviewContainer = styled.div`
   
@@ -160,14 +160,17 @@ const WriteReview = () => {
   // const [third,setThird]= useState("☆");
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
- 
+ const [session,setSession] = useState();
   const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
   
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
- 
+  const cookies = new Cookies();
+   const getCookie=(name)=>{
+     return cookies.get(name);
+  }
 const starsToggle = (num)=>{
 
   setReviewStar(num);
@@ -191,7 +194,10 @@ const starsToggle = (num)=>{
       break;
   }
 }
+useEffect(()=>{
+  console.log("getCookie",getCookie("JSESSIONID"));
 
+},[]);
     const countStar = ()=>{
       let temp = star+1;
       setStar(star+1);
@@ -221,7 +227,8 @@ const starsToggle = (num)=>{
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
     }); */
-
+ 
+   
     const data = new FormData();
 
     let content = {
@@ -243,6 +250,7 @@ const starsToggle = (num)=>{
         headers: {
           "Content-Type": "multipart/form-data",
           // "Content-Type": "application/json",
+
         },
       })
       .then((res) => {

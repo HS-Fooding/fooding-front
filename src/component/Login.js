@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import GlobalStyle from "../GlobalStyle";
+import {Cookies} from "react-cookie";
+import { url } from "../Api";
   // border: 1px solid black;
 const Container = styled.div`
 
@@ -78,13 +80,48 @@ const Login=()=>{
 const [id,setId] = useState();
 const [ps,setPs] = useState();
 
-const changeId=(e)=>{setId(e.target.value);}
-const changePs=(e)=>{setPs(e.target.value);}
+const changeId=(e)=>setId(e.target.value);
+const changePs=(e)=>setPs(e.target.value);
 const submitLogin=(e)=>{
-  e.preventDefulat();
+  e.preventDefault();
+  var axios = require("axios");
+  /*   var data = JSON.stringify({
+    name: reviewName,
+    star: reviewStar,
+    password: reviewPw,
+    content: reviewContent,
+    image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
+  }); */
+
+  
+
+  let content =JSON.stringify({
+   userId:id,
+   userPassword:ps,
+   
+  });
+
+  var config = {
+    method: "post",
+    url: url + "/sample_project/login",
+    headers: {
+      "Content-Type": "application/json",
+      
+    },
+    data: content,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log("response ",response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
 
 }
+
     return(
       <Container>
       <Link to={"/"}>
