@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { url } from "../Api";
-import {Cookies} from "react-cookie";
+import { Cookies } from "react-cookie";
 const Container = styled.div`
   border: 1px solid black;
   width: 350px;
@@ -96,12 +96,11 @@ const ReviewImg = styled.div`
 const Review = () => {
   const [reviews, setReviews] = useState([]);
   const cookies = new Cookies();
-  const getCookie=(name)=>{
-    
+  const getCookie = (name) => {
     return cookies.get(name);
- }
+  };
   useEffect(() => {
-    console.log("cookie",getCookie("JSESSION"));
+    console.log("cookie", getCookie("JSESSION"));
     var axios = require("axios");
 
     var config = {
@@ -132,6 +131,7 @@ const Review = () => {
         <InnerReviews>
           {reviews.map((review, index) => (
             <Link
+              key={index}
               to={`/${review.id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >

@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Container from "./Reviews";
 import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import { Navigate } from "react-router";
-import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
 import FontAwesomeIcon from "./FontAwesome";
-import {Cookies} from "react-cookie";
+import { Cookies } from "react-cookie";
 // border: 1px solid black;
 const WriteReviewContainer = styled.div`
-  
   width: 350px;
   height: 600px;
   position: relative;
@@ -144,94 +140,69 @@ const WriteReview = () => {
   const [reviewContent, setReviewContent] = useState("");
   const [imgs, setImg] = useState([]);
 
-
   const [file, setFile] = useState([]);
-  const [useFile,setUseFile] = useState([]);
+  const [useFile, setUseFile] = useState([]);
 
   const [files, setFiles] = useState([]);
-<<<<<<< HEAD
 
   const [star, setStar] = useState(0);
 
-=======
-  
-  const [star,setStar] = useState(0);
-  
->>>>>>> origin/master
   // const [first,setFirst]= useState("☆");
   // const [second,setSecond]= useState("☆");
   // const [third,setThird]= useState("☆");
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
- const [session,setSession] = useState();
-  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
+  const [session, setSession] = useState();
+  const [stars, setStars] = useState(["☆", "☆", "☆", "☆", "☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
-
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
   const cookies = new Cookies();
-   const getCookie=(name)=>{
-     return cookies.get(name);
-  }
-const starsToggle = (num)=>{
+  const getCookie = (name) => {
+    return cookies.get(name);
+  };
+  const starsToggle = (num) => {
+    setReviewStar(num);
+    switch (num) {
+      case 1:
+        setStars(["★", "☆", "☆", "☆", "☆"]);
+        break;
+      case 2:
+        setStars(["★", "★", "☆", "☆", "☆"]);
+        break;
+      case 3:
+        setStars(["★", "★", "★", "☆", "☆"]);
 
-  setReviewStar(num);
-  switch(num){
-    case 1:
-      setStars(["★","☆","☆","☆","☆"]);
-    break;
-    case 2:
-      setStars(["★","★","☆","☆","☆"]);
-      break;
-    case 3:
-      setStars(["★","★","★","☆","☆"]);
-    
-      break;
-    case 4:
-      setStars(["★","★","★","★","☆"]);
-    
-    break;
-    case 5:
-      setStars(["★","★","★","★","★"]);
-      break;
-  }
-}
-useEffect(()=>{
-  console.log("getCookie",getCookie("JSESSIONID"));
+        break;
+      case 4:
+        setStars(["★", "★", "★", "★", "☆"]);
 
-},[]);
-    const countStar = ()=>{
-      let temp = star+1;
-      setStar(star+1);
+        break;
+      case 5:
+        setStars(["★", "★", "★", "★", "★"]);
+        break;
     }
   };
-
+  useEffect(() => {
+    console.log("getCookie", getCookie("JSESSIONID"));
+  }, []);
   const countStar = () => {
     let temp = star + 1;
     setStar(star + 1);
   };
-
-  const SetFileFunc = (prevFile) => {
-    useEffect(() => {
-      setFile([...file, prevFile]);
-    }, [file]);
-  };
-
   const onChangeImage = (e) => {
     e.preventDefault();
     const img = e.target.files[0];
-    
-    const tempArr=[...imgs,img];
+
+    const tempArr = [...imgs, img];
     setImg(tempArr);
-    console.log("tempArr",tempArr);
+    console.log("tempArr", tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
-
-    SetFileFunc(prevFile);
-
+    setFile([...file, prevFile]);
     console.log("imgs: ", file);
     console.log("prevFile:", prevFile);
-    e.target.value = ''; 
+    e.target.value = "";
   };
 
   const submit = (e) => {
@@ -245,15 +216,13 @@ useEffect(()=>{
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
     }); */
- 
-   
+
     const data = new FormData();
 
     let content = {
       title: reviewName,
       content: reviewContent,
       star: reviewStar,
-     
     };
     data.append(
       "request",
@@ -268,7 +237,6 @@ useEffect(()=>{
         headers: {
           "Content-Type": "multipart/form-data",
           // "Content-Type": "application/json",
-
         },
       })
       .then((res) => {
@@ -279,12 +247,12 @@ useEffect(()=>{
         console.log(err);
       });
   };
-  useEffect(()=>{
+  useEffect(() => {
     setUseFile(file);
-  },[file]);
+  }, [file]);
   return (
     <WriteReviewContainer>
-      <Link to={"/Review"}>
+      <Link to={"/Reviews"}>
         <Header title={"리뷰 쓰기"} />
       </Link>
       <FormContainer>
@@ -346,15 +314,20 @@ useEffect(()=>{
               name="photo"
               onChange={onChangeImage}
             />
-             <FileIconContainer>
-               <FileIcon for="image_input">  <FontAwesomeIcon></FontAwesomeIcon></FileIcon>             
-             </FileIconContainer> 
+            <FileIconContainer>
+              <FileIcon for="image_input">
+                {" "}
+                <FontAwesomeIcon></FontAwesomeIcon>
+              </FileIcon>
+            </FileIconContainer>
           </ImageForm>
 
           <File>
-         {(useFile===undefined) ?  null : (useFile.map((one)=>( <img src={one} alt={one} />) ))}
-        </File> 
-      </ImageContainer>
+            {useFile === undefined
+              ? null
+              : useFile.map((one) => <img src={one} alt={one} />)}
+          </File>
+        </ImageContainer>
         <ContentForm>
           <TypeInput
             type="text"
@@ -374,8 +347,7 @@ useEffect(()=>{
           />
           <br />
         </ContentForm>
-         
-        </FormContainer>
+      </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>
         전송
