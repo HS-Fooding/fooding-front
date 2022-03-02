@@ -79,9 +79,27 @@ background-color: ${(props) => props.theme.subColor};
 const Login=()=>{
 const [id,setId] = useState();
 const [ps,setPs] = useState();
-
 const changeId=(e)=>setId(e.target.value);
 const changePs=(e)=>setPs(e.target.value);
+const cookies = new Cookies();
+const setCookie=(name,value)=>{
+  return cookies.set(name,value);
+}
+// const getCookie=(name)=>{
+//   return cookies.get(name);
+// }
+useEffect(()=>{
+  document.cookie="SameSite=None;Secure";
+},[]);
+
+var getCookie = function(name) {
+  var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  console.log("value",value);
+  return value? value[2] : null;
+  };
+  
+  
+
 const submitLogin=(e)=>{
   e.preventDefault();
   var axios = require("axios");
@@ -92,7 +110,7 @@ const submitLogin=(e)=>{
     content: reviewContent,
     image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
   }); */
-
+  
   
 
   let content =JSON.stringify({
@@ -103,25 +121,29 @@ const submitLogin=(e)=>{
 
   var config = {
     method: "post",
-    url: url + "/sample_project/login",
+    url: url+"/login",
     headers: {
       "Content-Type": "application/json",
-      
     },
     data: content,
+    
+     withCredentials:'same-origin',
   };
+ // axios.post(`${url}/sample_project/login`,{
+  //   userId:id,
+  //   userPassword:ps,
+  // })
 
   axios(config)
     .then(function (response) {
+    
       console.log("response ",response);
+      console.log("getCookie",getCookie("JSESSIONID"));
     })
     .catch(function (error) {
       console.log(error);
     });
-
-
 }
-
     return(
       <Container>
       <Link to={"/"}>

@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Header from "./Header";
 import { Link } from "react-router-dom";
 import { url } from "../Api";
-import {Cookies} from "react-cookie";
+// import {Cookies} from "react-cookie";
 const Container = styled.div`
   border: 1px solid black;
   width: 350px;
@@ -95,27 +95,28 @@ const ReviewImg = styled.div`
 
 const Review = () => {
   const [reviews, setReviews] = useState([]);
-  const cookies = new Cookies();
-  const getCookie=(name)=>{
-    
-    return cookies.get(name);
- }
+//   const cookies = new Cookies();
+//   const getCookie=(name)=>{
+//     return cookies.get(name);
+//  }
   useEffect(() => {
-    console.log("cookie",getCookie("JSESSION"));
+    // console.log("cookie",getCookie("JSESSION"));
+
     var axios = require("axios");
 
     var config = {
       method: "get",
-      url: url + "/sample_project/review",
+      url: url + "/review",
       headers: {
         "Content-Type": "application/json",
+        "Cookie": "cookie1=value; cookie2=value; cookie3=value;"
       },
     };
 
     axios(config)
       .then(function (response) {
         console.log(response.data);
-
+       
         setReviews(response.data.reverse());
       })
       .catch(function (error) {

@@ -5,8 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
-import FontAwesomeIcon from "./FontAwesome";
+import CameraIcon from "../FontAwesomeIcons/CameraFontAwesome";
+import SolidStarIcon from "../FontAwesomeIcons/SolidStarFontAwesome";
+import RegularStarIcon from "../FontAwesomeIcons/RegularStarFontAwesome";
 import {Cookies} from "react-cookie";
+import url from "../Api";
 // border: 1px solid black;
 const WriteReviewContainer = styled.div`
   
@@ -90,16 +93,17 @@ const ImageContainer = styled.div`
  
 `;
 const Stars = styled.div`
-  width:60%;
+  width:50%;
   height:50px;
   display:flex;
   justify-content:space-evenly;
+  align-items:center;
   margin-top:10px;
   margin-bottom:10px;
   
   `;
 const Star = styled.span`
-  font-size:30px;
+  font-size:25px;
   cursor:pointer;
  
   color:#fbc531;
@@ -161,10 +165,9 @@ const WriteReview = () => {
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
  const [session,setSession] = useState();
-  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
+  const [stars,setStars] = useState([<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
-  
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
   const cookies = new Cookies();
@@ -176,21 +179,21 @@ const starsToggle = (num)=>{
   setReviewStar(num);
   switch(num){
     case 1:
-      setStars(["★","☆","☆","☆","☆"]);
+      setStars([<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
     break;
     case 2:
-      setStars(["★","★","☆","☆","☆"]);
+      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
       break;
     case 3:
-      setStars(["★","★","★","☆","☆"]);
+      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
     
       break;
     case 4:
-      setStars(["★","★","★","★","☆"]);
+      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>]);
     
     break;
     case 5:
-      setStars(["★","★","★","★","★"]);
+      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>]);
       break;
   }
 }
@@ -246,7 +249,7 @@ useEffect(()=>{
       data.append("image", img)
     });
     axios
-      .post("/sample_project/review", data, {
+      .post("http://13.124.207.219:8080/sample_project/review", data, {
         headers: {
           "Content-Type": "multipart/form-data",
           // "Content-Type": "application/json",
@@ -271,6 +274,7 @@ useEffect(()=>{
     <WriteReviewContainer>
       <Link to={"/Review"}>
         <Header title={"리뷰 쓰기"} />
+        
       </Link>
       <FormContainer>
       
@@ -305,10 +309,9 @@ useEffect(()=>{
               onChange={onChangeImage}
             />
              <FileIconContainer>
-               <FileIcon for="image_input">  <FontAwesomeIcon></FontAwesomeIcon></FileIcon>             
+               <FileIcon for="image_input"> <CameraIcon></CameraIcon></FileIcon>             
              </FileIconContainer> 
-          </ImageForm>
-        
+          </ImageForm>   
           <File>
          {(useFile===undefined) ?  null : (useFile.map((one)=>( <img src={one} alt={one} />) ))}
         </File> 
