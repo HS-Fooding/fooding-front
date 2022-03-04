@@ -5,9 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
-import CameraIcon from "../FontAwesomeIcons/CameraFontAwesome";
-import SolidStarIcon from "../FontAwesomeIcons/SolidStarFontAwesome";
-import RegularStarIcon from "../FontAwesomeIcons/RegularStarFontAwesome";
+import FontAwesomeIcon from "./FontAwesome";
 import {Cookies} from "react-cookie";
 import url from "../Api";
 // border: 1px solid black;
@@ -93,17 +91,16 @@ const ImageContainer = styled.div`
  
 `;
 const Stars = styled.div`
-  width:50%;
+  width:60%;
   height:50px;
   display:flex;
   justify-content:space-evenly;
-  align-items:center;
   margin-top:10px;
   margin-bottom:10px;
   
   `;
 const Star = styled.span`
-  font-size:25px;
+  font-size:30px;
   cursor:pointer;
  
   color:#fbc531;
@@ -165,7 +162,7 @@ const WriteReview = () => {
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
  const [session,setSession] = useState();
-  const [stars,setStars] = useState([<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
+  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
@@ -179,27 +176,27 @@ const starsToggle = (num)=>{
   setReviewStar(num);
   switch(num){
     case 1:
-      setStars([<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
+      setStars(["★","☆","☆","☆","☆"]);
     break;
     case 2:
-      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
+      setStars(["★","★","☆","☆","☆"]);
       break;
     case 3:
-      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>,<RegularStarIcon></RegularStarIcon>]);
+      setStars(["★","★","★","☆","☆"]);
     
       break;
     case 4:
-      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<RegularStarIcon></RegularStarIcon>]);
+      setStars(["★","★","★","★","☆"]);
     
     break;
     case 5:
-      setStars([<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>,<SolidStarIcon></SolidStarIcon>]);
+      setStars(["★","★","★","★","★"]);
       break;
   }
 }
 useEffect(()=>{
   console.log("getCookie",getCookie("JSESSIONID"));
-
+  console.log("documentcookie",document.cookie);
 },[]);
     const countStar = ()=>{
       let temp = star+1;
@@ -253,7 +250,7 @@ useEffect(()=>{
         headers: {
           "Content-Type": "multipart/form-data",
           // "Content-Type": "application/json",
-
+          Authorization:getCookie("cookie"),
         },
       })
       .then((res) => {
@@ -274,7 +271,6 @@ useEffect(()=>{
     <WriteReviewContainer>
       <Link to={"/Review"}>
         <Header title={"리뷰 쓰기"} />
-        
       </Link>
       <FormContainer>
       
@@ -309,9 +305,10 @@ useEffect(()=>{
               onChange={onChangeImage}
             />
              <FileIconContainer>
-               <FileIcon for="image_input"> <CameraIcon></CameraIcon></FileIcon>             
+               <FileIcon for="image_input">  <FontAwesomeIcon></FontAwesomeIcon></FileIcon>             
              </FileIconContainer> 
-          </ImageForm>   
+          </ImageForm>
+        
           <File>
          {(useFile===undefined) ?  null : (useFile.map((one)=>( <img src={one} alt={one} />) ))}
         </File> 

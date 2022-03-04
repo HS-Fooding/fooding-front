@@ -76,32 +76,57 @@ background-color: ${(props) => props.theme.subColor};
   cursor:pointer;
 }
 `;
+
 const Login=()=>{
 const [id,setId] = useState();
 const [ps,setPs] = useState();
 const changeId=(e)=>setId(e.target.value);
 const changePs=(e)=>setPs(e.target.value);
-const cookies = new Cookies();
-const setCookie=(name,value)=>{
-  return cookies.set(name,value);
-}
+useEffect(()=>{
+  console.log("documentcookie",document.cookie);
+})
 // const getCookie=(name)=>{
 //   return cookies.get(name);
 // }
-useEffect(()=>{
-  document.cookie="SameSite=None;Secure";
-},[]);
+// useEffect(()=>{
+//   //setCookie("JSESSIONID","");
+//   document.cookie="SameSite=None;Secure";
+// },[]);
 
 var getCookie = function(name) {
   var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
   console.log("value",value);
   return value? value[2] : null;
   };
+let setCookie = (cookie_name,value,exdays)=>{
+   let exdate=new Date();
+   exdate.setDate(exdate.getDate()+exdays);
+   let c_value = escape(value) +((exdays==null)?"":";expires="+exdate.toUTCString());
+   document.cookie=cookie_name+"="+value;
+}
   
-  
+// export function loginUser(){
+//   var axios = require("axios");
+//   axios.defaults.withCredentials=true;
+//   const request = axios
+//   .post(`${url}/sample_project/login`,{
+//       content,
+//       withCredentials:true,
+//       headers:{ 
+//         crossDomain:true,
+//         'Content-Type':'application/json',
+//        },
+//   }).then(response => response.data);
+//   return {
+//     type:'USER_LOGIN',
+//     payload:request,
+//   };
+// }  
 
 const submitLogin=(e)=>{
   e.preventDefault();
+
+ // loginUser();
   var axios = require("axios");
   /*   var data = JSON.stringify({
     name: reviewName,
@@ -111,39 +136,62 @@ const submitLogin=(e)=>{
     image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
   }); */
   
-  
 
-  let content =JSON.stringify({
-   userId:id,
-   userPassword:ps,
+  // let content =JSON.stringify({
+  //  userId:id,
+  //  userPassword:ps,
    
-  });
-
+  // });
+  let content ={
+    userId:id,
+    userPassword:ps,
+   };
   var config = {
     method: "post",
     url: url+"/login",
     headers: {
+      crossDomain:true,
       "Content-Type": "application/json",
+     
     },
     data: content,
-    
-     withCredentials:'same-origin',
-  };
- // axios.post(`${url}/sample_project/login`,{
-  //   userId:id,
-  //   userPassword:ps,
-  // })
 
+    withCredentials:true,
+  };
   axios(config)
     .then(function (response) {
     
       console.log("response ",response);
-      console.log("getCookie",getCookie("JSESSIONID"));
+      console.log("response.data.name",response.data.name);
+      setCookie("cookie",response.data.name,new Date());
+     
     })
     .catch(function (error) {
       console.log(error);
     });
+
+
+
+
+
+//fetch
+// const url = `${url}/sample_project/login`
+// const option ={
+//    method:'POST',
+//    header:{
+//      'Accept':'application/json',
+//      'Content-Type':'application/json',
+//   },
+//   body:JSON.stringify({
+//     userId:id,
+//     userPassword:ps,
+//   })
+// }
+//   fetch(url,option).then(response => console.log(response))
+
+
 }
+
     return(
       <Container>
       <Link to={"/"}>

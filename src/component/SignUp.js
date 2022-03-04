@@ -116,7 +116,7 @@ function SignUp() {
 
     var config = {
       method: "post",
-      url: url + "/join",
+      url: url + "/sample_project/join",
       headers: {
         "Content-Type": "application/json",
       },

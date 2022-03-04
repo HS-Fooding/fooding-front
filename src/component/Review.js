@@ -106,7 +106,7 @@ const Review = () => {
 
     var config = {
       method: "get",
-      url: url + "/review",
+      url: url + "/sample_project/review",
       headers: {
         "Content-Type": "application/json",
         "Cookie": "cookie1=value; cookie2=value; cookie3=value;"
