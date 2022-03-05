@@ -5,12 +5,12 @@ import GlobalStyle from "./GlobalStyle";
 
 const Container = styled.div``;
 const Button = styled.button`
-  margin-top:10px;
-  border:none;
-  background-color:${(props) => props.theme.mainColor};
-  width:100%;
-  &:hover{
-    cursor:pointer;
+  margin-top: 10px;
+  border: none;
+  background-color: ${(props) => props.theme.mainColor};
+  width: 100%;
+  &:hover {
+    cursor: pointer;
   }
 `;
 const Home = () => {
@@ -23,6 +23,9 @@ const Home = () => {
         </Link>
         <Link to={"/login"}>
           <Button>로그인하기</Button>
+        </Link>
+        <Link to={"/sign"}>
+          <Button>회원가입</Button>
         </Link>
       </Container>
     </>
