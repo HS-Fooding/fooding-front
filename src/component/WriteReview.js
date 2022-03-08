@@ -243,7 +243,7 @@ const WriteReview = () => {
     console.log(content);
 
     data.append(
-      "request",
+      "review",
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 

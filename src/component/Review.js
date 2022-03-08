@@ -95,10 +95,10 @@ const ReviewImg = styled.div`
 
 const Review = () => {
   const [reviews, setReviews] = useState([]);
-//   const cookies = new Cookies();
-//   const getCookie=(name)=>{
-//     return cookies.get(name);
-//  }
+  //   const cookies = new Cookies();
+  //   const getCookie=(name)=>{
+  //     return cookies.get(name);
+  //  }
   useEffect(() => {
     // console.log("cookie",getCookie("JSESSION"));
 
@@ -109,14 +109,14 @@ const Review = () => {
       url: url + "/sample_project/review",
       headers: {
         "Content-Type": "application/json",
-        "Cookie": "cookie1=value; cookie2=value; cookie3=value;"
+        Cookie: "cookie1=value; cookie2=value; cookie3=value;",
       },
     };
 
     axios(config)
       .then(function (response) {
         console.log(response.data);
-       
+
         setReviews(response.data.reverse());
       })
       .catch(function (error) {
@@ -132,49 +132,51 @@ const Review = () => {
       <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
-            <ReviewBox key={index}>
-              <ReviewContent>
-                {review.author.length > 17
-                  ? review.author.slice(0, 17) + ".."
-                  : review.author}
-              </ReviewContent>
-              <ReviewContent>
-                <span>
-                  {review.registerDate.replaceAll("-", ".").slice(0, 10)}
-                </span>
-                <span
-                  style={{
-                    color: "#fbc531",
-                    alignItems: "center",
-                    marginLeft: "8px",
-                  }}
-                >
-                  ★
-                </span>
+            <Link to={`/${review.id}`}>
+              <ReviewBox key={index}>
+                <ReviewContent>
+                  {review.author.length > 17
+                    ? review.author.slice(0, 17) + ".."
+                    : review.author}
+                </ReviewContent>
+                <ReviewContent>
+                  <span>
+                    {review.registerDate.replaceAll("-", ".").slice(0, 10)}
+                  </span>
+                  <span
+                    style={{
+                      color: "#fbc531",
+                      alignItems: "center",
+                      marginLeft: "8px",
+                    }}
+                  >
+                    ★
+                  </span>
 
-                {review.star}
-              </ReviewContent>
-              <ReviewImg>
-                {review.images.map((img, index) => (
-                  <>
-                    <img
-                      src={img}
-                      key={index}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        marginRight: "10px",
-                      }}
-                    />
-                  </>
-                ))}
-              </ReviewImg>
-              <ReviewContent>
-                {review.content.length > 60
-                  ? review.content.slice(0, 60) + ".."
-                  : review.content}
-              </ReviewContent>
-            </ReviewBox>
+                  {review.star}
+                </ReviewContent>
+                <ReviewImg>
+                  {review.images.map((img, index) => (
+                    <>
+                      <img
+                        src={img}
+                        key={index}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          marginRight: "10px",
+                        }}
+                      />
+                    </>
+                  ))}
+                </ReviewImg>
+                <ReviewContent>
+                  {review.content.length > 60
+                    ? review.content.slice(0, 60) + ".."
+                    : review.content}
+                </ReviewContent>
+              </ReviewBox>
+            </Link>
           ))}
         </InnerReviews>
       </Reviews>
