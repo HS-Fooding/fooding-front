@@ -8,6 +8,7 @@ import SignUp from "./component/SignUp.js";
 import Login from "./component/Login.js";
 import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
+import ReviewDetail from "./component/ReviewDetail";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/writeReview" element={<WriteReview />}></Route>
           <Route path="/sign" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/reviewDetail" element={<ReviewDetail />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

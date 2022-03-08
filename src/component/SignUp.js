@@ -171,7 +171,7 @@ function SignUp() {
           {...register("Id", {
             required: "아이디를 입력하세요.",
             minLength: {
-              value: 8,
+              value: 1,
               message: "최소 8자 이상 입력하세요.",
             },
           })}
@@ -182,7 +182,7 @@ function SignUp() {
           {...register("password", {
             required: "비밀번호를 입력하세요.",
             minLength: {
-              value: 8,
+              value: 1,
               message: "최소 8자 이상 입력하세요.",
             },
           })}

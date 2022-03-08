@@ -6,11 +6,10 @@ import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
 import FontAwesomeIcon from "./FontAwesome";
-import {Cookies} from "react-cookie";
-import url from "../Api";
+
+import { url, token } from "../Api";
 // border: 1px solid black;
 const WriteReviewContainer = styled.div`
-  
   width: 350px;
   height: 600px;
   position: relative;
@@ -57,89 +56,86 @@ const FormContainer = styled.div`
   padding-top: 40px;
   width: 100%;
   height: 90%;
-  flex-direction:column;
+  flex-direction: column;
   display: flex;
-  align-items:center;
- 
+  align-items: center;
 `;
 const ImageForm = styled.form`
-input[type="file"] {
-  width: 0;
-  height: 0;
-  padding: 0;
-  overflow: hidden;
-  border: none;
-}
-
+  input[type="file"] {
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+  }
 `;
 const ImageContainer = styled.div`
-  width:95%;
-  height:110px;
-  background-color:#ecf0f1;
-  display:flex;
-  overflow:auto;
-  align-items:start;
+  width: 95%;
+  height: 110px;
+  background-color: #ecf0f1;
+  display: flex;
+  overflow: auto;
+  align-items: start;
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
   img {
-    width:70px;
-    height:70px;
-    margin-left:10px;
-    
+    width: 70px;
+    height: 70px;
+    margin-left: 10px;
   }
- 
 `;
 const Stars = styled.div`
-  width:60%;
-  height:50px;
-  display:flex;
-  justify-content:space-evenly;
-  margin-top:10px;
-  margin-bottom:10px;
-  
-  `;
-const Star = styled.span`
-  font-size:30px;
-  cursor:pointer;
- 
-  color:#fbc531;
+  width: 60%;
+  height: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
-const FileIconContainer = styled.div` 
-margin-left:10px;
-  width:70px;
-  height:70px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background-color:white; 
-  cursor:pointer;
+const Star = styled.span`
+  font-size: 30px;
+  cursor: pointer;
+
+  color: #fbc531;
+`;
+const FileIconContainer = styled.div`
+  margin-left: 10px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  cursor: pointer;
 `;
 const File = styled.div`
-  margin-left:10px;
-  display:flex;
-  padding-top:20px;
-  width:70px;
-  height:70px;
-  
- img{
-  width:70px;
-  height:70px;box-sizing: border-box;
- }
+  margin-left: 10px;
+  display: flex;
+  padding-top: 20px;
+  width: 70px;
+  height: 70px;
+
+  img {
+    width: 70px;
+    height: 70px;
+    box-sizing: border-box;
+  }
 `;
 const FileIcon = styled.label`
-  font-size:20px;
-  cursor:pointer;
+  font-size: 20px;
+  cursor: pointer;
 `;
-const ContentForm= styled.form`
- width:90%;
- display:flex;
- flex-direction:column;
- align-items:center;
- & input,textarea{
-   width:90%;
- }
- height:300px;
+const ContentForm = styled.form`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & input,
+  textarea {
+    width: 90%;
+  }
+  height: 300px;
 `;
 const WriteReview = () => {
   const [reviewName, setReviewName] = useState("");
@@ -148,77 +144,78 @@ const WriteReview = () => {
   const [reviewContent, setReviewContent] = useState("");
   const [imgs, setImg] = useState([]);
 
-
   const [file, setFile] = useState([]);
-  const [useFile,setUseFile] = useState([]);
+  const [useFile, setUseFile] = useState([]);
 
   const [files, setFiles] = useState([]);
-  
-  const [star,setStar] = useState(0);
-  
+
+  const [star, setStar] = useState(0);
+
   // const [first,setFirst]= useState("☆");
   // const [second,setSecond]= useState("☆");
   // const [third,setThird]= useState("☆");
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
- const [session,setSession] = useState();
-  const [stars,setStars] = useState(["☆","☆","☆","☆","☆"]);
+  const [session, setSession] = useState();
+  const [stars, setStars] = useState(["☆", "☆", "☆", "☆", "☆"]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
   const onChangeReviewPw = (e) => setReviewPw(e.target.value);
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
-  const cookies = new Cookies();
-   const getCookie=(name)=>{
-     return cookies.get(name);
-  }
-const starsToggle = (num)=>{
+  /*  const cookies = new Cookies();
+  const getCookie = (name) => {
+    return cookies.get(name);
+  }; */
+  const starsToggle = (num) => {
+    setReviewStar(num);
+    switch (num) {
+      case 1:
+        setStars(["★", "☆", "☆", "☆", "☆"]);
+        break;
+      case 2:
+        setStars(["★", "★", "☆", "☆", "☆"]);
+        break;
+      case 3:
+        setStars(["★", "★", "★", "☆", "☆"]);
 
-  setReviewStar(num);
-  switch(num){
-    case 1:
-      setStars(["★","☆","☆","☆","☆"]);
-    break;
-    case 2:
-      setStars(["★","★","☆","☆","☆"]);
-      break;
-    case 3:
-      setStars(["★","★","★","☆","☆"]);
-    
-      break;
-    case 4:
-      setStars(["★","★","★","★","☆"]);
-    
-    break;
-    case 5:
-      setStars(["★","★","★","★","★"]);
-      break;
-  }
-}
-useEffect(()=>{
-  console.log("getCookie",getCookie("JSESSIONID"));
-  console.log("documentcookie",document.cookie);
-},[]);
-    const countStar = ()=>{
-      let temp = star+1;
-      setStar(star+1);
+        break;
+      case 4:
+        setStars(["★", "★", "★", "★", "☆"]);
+
+        break;
+      case 5:
+        setStars(["★", "★", "★", "★", "★"]);
+        break;
     }
+  };
+  useEffect(() => {
+    //console.log("getCookie", getCookie("JSESSIONID"));
+    // console.log("documentcookie", document.cookie);
+    //console.log("token", token);
+    const getToken = localStorage.getItem("token");
+    console.log(getToken);
+  }, []);
+  const countStar = () => {
+    let temp = star + 1;
+    setStar(star + 1);
+  };
   const onChangeImage = (e) => {
     e.preventDefault();
     const img = e.target.files[0];
-    
-    const tempArr=[...imgs,img];
+
+    const tempArr = [...imgs, img];
     setImg(tempArr);
-    console.log("tempArr",tempArr);
+    console.log("tempArr", tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
-    setFile([...file,prevFile]);
+    setFile([...file, prevFile]);
     console.log("imgs: ", file);
     console.log("prevFile:", prevFile);
-    e.target.value = ''; 
+    e.target.value = "";
   };
 
   const submit = (e) => {
     e.preventDefault();
-    console.log("imgs",imgs);
+    console.log("imgs", imgs);
     var axios = require("axios");
     /*   var data = JSON.stringify({
       name: reviewName,
@@ -227,76 +224,108 @@ useEffect(()=>{
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
     }); */
- 
-   
-    const data = new FormData();
 
+    const data = new FormData();
+    const getToken = localStorage.getItem("token");
+
+    console.log(
+      "type",
+      typeof reviewName,
+      typeof parseFloat(reviewStar),
+      typeof reviewContent
+    );
     let content = {
       title: reviewName,
+      star: parseFloat(reviewStar),
       content: reviewContent,
-      star: reviewStar,
-     
     };
+
+    console.log(content);
+
     data.append(
       "request",
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
-    imgs.map((img)=>{
-      data.append("image", img)
+    imgs.map((img) => {
+      data.append("image", img);
     });
     axios
-      .post("http://13.124.207.219:8080/sample_project/review", data, {
+      .post(url + "/sample_project/review", data, {
         headers: {
           "Content-Type": "multipart/form-data",
-          // "Content-Type": "application/json",
-          Authorization:getCookie("cookie"),
+          //"Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
         },
       })
       .then((res) => {
         console.log(res);
         navigate("/Review");
-        
       })
       .catch((err) => {
         console.log(err);
       });
-
-    
   };
-  useEffect(()=>{
+  useEffect(() => {
     setUseFile(file);
-  },[file]);
+  }, [file]);
   return (
     <WriteReviewContainer>
       <Link to={"/Review"}>
         <Header title={"리뷰 쓰기"} />
       </Link>
       <FormContainer>
-      
-          {/* <TypeInput
+        {/* <TypeInput
             type="text"
             placeholder="별점"
             onChange={onChangeReviewStar}
           /> */}
-          <Stars>
+        <Stars>
           {/* <Star onClick={star1Toggle}>{first}</Star> 
           <Star onClick={star2Toggle}>{second}</Star>
           <Star onClick={star3Toggle}>{third}</Star>
           <Star onClick={star4Toggle}>{fourth}</Star>
           <Star onClick={star5Toggle}>{fifth}</Star>
            */}
-          <Star onClick={()=>{starsToggle(1)}}>{stars[0]}</Star> 
-          <Star onClick={()=>{starsToggle(2)}}>{stars[1]}</Star>
-          <Star onClick={()=>{starsToggle(3)}}>{stars[2]}</Star>
-          <Star onClick={()=>{starsToggle(4)}}>{stars[3]}</Star>
-          <Star onClick={()=>{starsToggle(5)}}>{stars[4]}</Star>
-          
-          </Stars>
-        
-      <ImageContainer>
+          <Star
+            onClick={() => {
+              starsToggle(1);
+            }}
+          >
+            {stars[0]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(2);
+            }}
+          >
+            {stars[1]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(3);
+            }}
+          >
+            {stars[2]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(4);
+            }}
+          >
+            {stars[3]}
+          </Star>
+          <Star
+            onClick={() => {
+              starsToggle(5);
+            }}
+          >
+            {stars[4]}
+          </Star>
+        </Stars>
 
-        <ImageForm>
+        <ImageContainer>
+          <ImageForm>
             <input
               id="image_input"
               type="file"
@@ -304,37 +333,36 @@ useEffect(()=>{
               name="photo"
               onChange={onChangeImage}
             />
-             <FileIconContainer>
-               <FileIcon for="image_input">  <FontAwesomeIcon></FontAwesomeIcon></FileIcon>             
-             </FileIconContainer> 
+            <FileIconContainer>
+              <FileIcon htmlFor="image_input">
+                {" "}
+                <FontAwesomeIcon></FontAwesomeIcon>
+              </FileIcon>
+            </FileIconContainer>
           </ImageForm>
-        
+
           <File>
-         {(useFile===undefined) ?  null : (useFile.map((one)=>( <img src={one} alt={one} />) ))}
-        </File> 
-      </ImageContainer>
+            {useFile === undefined
+              ? null
+              : useFile.map((one) => <img src={one} alt={one} />)}
+          </File>
+        </ImageContainer>
         <ContentForm>
           <TypeInput
             type="text"
             placeholder="이름"
             onChange={onChangeReviewName}
-          />         
-          <br />
-          <TypeInput
-            type="text"
-            placeholder="비밀번호"
-            onChange={onChangeReviewPw}
           />
+          <br />
+
           <br />
           <ContentTextArea
             placeholder="내용을 입력하세요"
             onChange={onChangeReviewContent}
           />
           <br />
-         
         </ContentForm>
-         
-        </FormContainer>
+      </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>
         전송

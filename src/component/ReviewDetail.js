@@ -128,18 +128,19 @@ const ReviewDetail = () => {
 
   return (
     <Container>
-      <Link to={"/Reviews"}>
+      <Link to={"/Review"}>
         <Header />
       </Link>
       <ReviewContent>
-        <div className="userName">{review.author}</div>
+        <div className="userName">{review.author}김도연</div>
         <div className="dateStar">
           <span> {review.registerDate?.replaceAll("-", ".").slice(0, 10)}</span>
           <span>★</span>
-          <span>{review.star}</span>
+          <span>{review.star}4.5</span>
         </div>
-        <div className="title">{review.title}</div>
+        <div className="title">타이틀{review.title}</div>
         <div className="image">
+          <img src="https://tistory4.daumcdn.net/tistory/3031640/skin/images/keypoint_red.svg" />
           {review.images?.map((img, index) => (
             <div key={index}>
               <img src={img} />
@@ -147,6 +148,7 @@ const ReviewDetail = () => {
           ))}
         </div>
         <div className="content">
+          ㅁ니알머ㅣㄴ어라ㅣㅁㄴㅇ러ㅣ
           {review.content?.split("\n").map((line, index) => {
             return (
               <>
