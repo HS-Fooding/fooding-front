@@ -10,7 +10,8 @@ const Container = styled.div`
   height: 600px;
   position: relative;
   box-sizing: border-box;
-`;
+  
+`; 
 
 const WriteReviewBtn = styled.button`
   position: absolute;

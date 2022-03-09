@@ -5,8 +5,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
-import FontAwesomeIcon from "./FontAwesome";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera,faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as FaStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { url, token } from "../Api";
 // border: 1px solid black;
 const WriteReviewContainer = styled.div`
@@ -170,21 +172,23 @@ const WriteReview = () => {
     setReviewStar(num);
     switch (num) {
       case 1:
-        setStars(["★", "☆", "☆", "☆", "☆"]);
+        setStars([  <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+           "☆", "☆", "☆"]);
         break;
       case 2:
-        setStars(["★", "★", "☆", "☆", "☆"]);
+        setStars([<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />, "☆", "☆", "☆"]);
         break;
       case 3:
-        setStars(["★", "★", "★", "☆", "☆"]);
+        setStars([<FontAwesomeIcon icon={faStar} />, <FontAwesomeIcon icon={faStar} />, <FontAwesomeIcon icon={faStar} />, "☆", "☆"]);
 
         break;
       case 4:
-        setStars(["★", "★", "★", "★", "☆"]);
+        setStars([<FontAwesomeIcon icon={faStar} />, <FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />, "☆"]);
 
         break;
       case 5:
-        setStars(["★", "★", "★", "★", "★"]);
+        setStars([<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />,<FontAwesomeIcon icon={faStar} />,]);
         break;
     }
   };
@@ -243,7 +247,7 @@ const WriteReview = () => {
     console.log(content);
 
     data.append(
-      "request",
+      "review",
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
@@ -336,7 +340,7 @@ const WriteReview = () => {
             <FileIconContainer>
               <FileIcon htmlFor="image_input">
                 {" "}
-                <FontAwesomeIcon></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faCamera} />
               </FileIcon>
             </FileIconContainer>
           </ImageForm>
@@ -350,7 +354,7 @@ const WriteReview = () => {
         <ContentForm>
           <TypeInput
             type="text"
-            placeholder="이름"
+            placeholder="제목"
             onChange={onChangeReviewName}
           />
           <br />
