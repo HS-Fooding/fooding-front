@@ -20,7 +20,7 @@ function App() {
           <Route path="/writeReview" element={<WriteReview />}></Route>
           <Route path="/sign" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/reviewDetail" element={<ReviewDetail />}></Route>
+          <Route path="/:reviewId" element={<ReviewDetail />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

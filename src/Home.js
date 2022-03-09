@@ -27,9 +27,6 @@ const Home = () => {
         <Link to={"/sign"}>
           <Button>회원가입</Button>
         </Link>
-        <Link to={"/reviewDetail"}>
-          <Button>리뷰 디테일 테스트</Button>
-        </Link>
       </Container>
     </>
   );
