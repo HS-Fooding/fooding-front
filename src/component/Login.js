@@ -106,7 +106,6 @@ const Modal = styled.div`
   font-size:13px;
   opacity:0;
   animation:${appearDisappear} 2s ease-in-out;
-  
 
 `;
 // const modalAnimation ={
