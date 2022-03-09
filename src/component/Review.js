@@ -51,11 +51,16 @@ const ReviewBox = styled.div`
   padding: 10px;
   margin: 10px;
   background-color: white;
+
   display: flex;
   flex-direction: column;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   &:last-child {
     /*margin-bottom: 200px;*/
+  }
+
+  .title {
+    font-weight: bold;
   }
   box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 `;
@@ -71,15 +76,18 @@ const ReviewContent = styled.div`
     font-size: 13px;
     color: rgba(0, 0, 0, 0.3);
   }
+
   &:last-child {
     padding-top: 10px;
-    font-size: 15px;
+    font-size: 13px;
     width: 100%;
-    height: 80px;
+    height: 90px;
     overflow: auto;
-    line-height: 1.3;
+    line-height: 1.5;
   }
 `;
+
+const ReviewTitle = styled.div``;
 
 const ReviewImg = styled.div`
   width: 100%;
@@ -132,7 +140,10 @@ const Review = () => {
       <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
-            <Link to={`/${review.id}`}>
+            <Link
+              to={`/${review.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <ReviewBox key={index}>
                 <ReviewContent>
                   {review.author.length > 17
@@ -170,9 +181,14 @@ const Review = () => {
                     </>
                   ))}
                 </ReviewImg>
+                <ReviewContent className="title">
+                  {review.title.length > 25
+                    ? review.title.slice(0, 25) + ".."
+                    : review.title}
+                </ReviewContent>
                 <ReviewContent>
-                  {review.content.length > 60
-                    ? review.content.slice(0, 60) + ".."
+                  {review.content.length > 100
+                    ? review.content.slice(0, 100) + ".."
                     : review.content}
                 </ReviewContent>
               </ReviewBox>

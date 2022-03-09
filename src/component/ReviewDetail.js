@@ -47,11 +47,15 @@ const ReviewContent = styled.div`
   .title {
     font-weight: 600;
     margin: 12px 0px;
+    line-height: 1.4;
   }
   .content {
     margin: 12px 0px;
+    line-height: 1.7;
+    font-size: 14px;
   }
   .image {
+    display: flex;
     overflow: auto;
     ::-webkit-scrollbar {
       display: none;
@@ -73,6 +77,7 @@ const CommentInputBox = styled.div`
   width: 100%;
   background-color: white;
   border-top: 1px solid ${(props) => props.theme.borderGrayColor};
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -80,6 +85,7 @@ const CommentInputBox = styled.div`
   color: ${(props) => props.theme.fontGrayColor};
   svg {
     cursor: pointer;
+    color: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -101,11 +107,12 @@ const CommentContainer = styled.div`
   //background-color: pink;
   // height: 150px;
   margin-bottom: 100px;
+  padding: 10px;
 `;
 
 const CommentsUl = styled.ul``;
 
-const CommentsLi = styled.li`
+const CommentsLi = styled.div`
   margin: 10px;
   width: auto;
 `;
@@ -117,10 +124,15 @@ const CommentBox = styled.div`
   background-color: #f5f5f5;
   border-radius: 10px;
   padding: 8px;
+  line-height: 1.1;
+  font-size: 14px;
 
   .replyName {
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+  }
+  .replyContent {
+    line-height: 1.5;
   }
 `;
 
@@ -140,23 +152,41 @@ const BigImageBox = styled.div`
   img {
     width: 100%;
   }
+
   button {
     cursor: pointer;
-    padding: 14px;
     position: absolute;
-    top: 0;
-    left: 0;
-    border: 0;
-    outline: 0;
     background-color: inherit;
     color: white;
+    border: 0;
+    outline: 0;
+  }
+  .closeBtn {
+    padding: 14px;
+    top: 0;
+    left: 0;
+  }
+  .nextBtn {
+    top: 50%;
+    right: 0;
+  }
+
+  .preBtn {
+    top: 50%;
+    left: 0;
   }
 `;
 
 const DateReply = styled.div`
+  color: rgba(0, 0, 0, 0.5);
   font-size: 10px;
+  margin-left: 4px;
+  margin-top: 5px;
+  margin-bottom: 19px;
   button {
+    margin-left: 10px;
     background-color: inherit;
+    color: inherit;
     outline: none;
     border: none;
     font-size: 10px;
@@ -170,7 +200,7 @@ const ReviewDetail = () => {
   const commentRef = useRef();
   const [bigImg, setBigImg] = useState(false);
   const [comments, setComments] = useState([]);
-  const [parentReply, setParentReply] = useState();
+  const [clickImg, setClickImg] = useState();
 
   var axios = require("axios");
 
@@ -212,6 +242,12 @@ const ReviewDetail = () => {
     commentRef.current.value = `@${parent} `;
   };
 
+  const makeImgBig = (index) => {
+    setBigImg(true);
+    console.log("index:", index);
+    setClickImg(index);
+  };
+
   useEffect(() => {
     var config = {
       method: "get",
@@ -251,19 +287,21 @@ const ReviewDetail = () => {
             <span>★</span>
             <span>{review.star}</span>
           </div>
-          <div className="title">{review.title}</div>
+
           <div className="image">
             {review.images?.map((img, index) => (
               <div key={index}>
                 <img
+                  style={{ cursor: "pointer" }}
                   src={img}
                   onClick={() => {
-                    setBigImg(true);
+                    makeImgBig(index);
                   }}
                 />
               </div>
             ))}
           </div>
+          <div className="title">{review.title}</div>
           <div className="content">
             {review.content?.split("\n").map((line, index) => {
               return (
@@ -277,26 +315,25 @@ const ReviewDetail = () => {
           </div>
         </ReviewContent>
         <CommentContainer>
-          <CommentsUl>
-            {comments?.map((reply, index) => (
-              <CommentsLi key={index}>
-                <CommentBox>
-                  <span class="replyName">{reply.author}</span>
-                  <span class="replyContent"> {reply.content}</span>
-                </CommentBox>
-                <DateReply>
-                  <span>{reply.modifiedDate.slice(0, 10)}</span>
-                  <button
-                    onClick={() => {
-                      postReply(reply.id, reply.author);
-                    }}
-                  >
-                    답글 달기
-                  </button>
-                </DateReply>
-              </CommentsLi>
-            ))}
-          </CommentsUl>
+          {comments?.map((reply, index) => (
+            <CommentsLi key={index}>
+              <CommentBox>
+                <span className="replyName">{reply.author}</span>
+                <span className="replyContent"> {reply.content}</span>
+              </CommentBox>
+              <DateReply>
+                <span>{reply.modifiedDate.slice(0, 10)}</span>
+                <button
+                  onClick={() => {
+                    postReply(reply.id, reply.author);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  답글 달기
+                </button>
+              </DateReply>
+            </CommentsLi>
+          ))}
         </CommentContainer>
         <CommentInputBox>
           <CommentInput ref={commentRef} />
@@ -306,17 +343,40 @@ const ReviewDetail = () => {
         </CommentInputBox>
         <BigImageBox bigImg={bigImg}>
           <button
+            class="closeBtn"
             onClick={() => {
               setBigImg(false);
             }}
           >
             <i className="fa-solid fa-x fa-lg"></i>
           </button>
-          {review.images?.map((img, index) => (
-            <div key={index}>
-              <img src={img} />
-            </div>
-          ))}
+          {review.images?.map((img, index) =>
+            index == clickImg ? (
+              <div key={index}>
+                <img src={img} />
+              </div>
+            ) : null
+          )}
+          <button
+            style={{ display: review.images?.length === 1 ? "none" : "block" }}
+            class="preBtn"
+            onClick={() => {
+              setClickImg((current) => (current === 0 ? current : current - 1));
+            }}
+          >
+            <i class="fa-solid fa-angle-left fa-2x"></i>
+          </button>
+          <button
+            style={{ display: review.images?.length === 1 ? "none" : "block" }}
+            class="nextBtn"
+            onClick={() => {
+              setClickImg((current) =>
+                review.images.length === current + 1 ? current : current + 1
+              );
+            }}
+          >
+            <i class="fa-solid fa-angle-right fa-2x"></i>
+          </button>
         </BigImageBox>
       </MainBox>
     </Container>
