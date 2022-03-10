@@ -9,7 +9,7 @@ import Header from "./Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera,faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as FaStarRegular } from "@fortawesome/free-regular-svg-icons";
-import { url, token } from "../Api";
+import { url } from "../Api";
 // border: 1px solid black;
 const token = localStorage.getItem("token");
 const WriteReviewContainer = styled.div`

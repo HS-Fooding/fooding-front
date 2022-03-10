@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "./Header";
-import { Link } from "react-router-dom";
+import {useNavigate, Link } from "react-router-dom";
 import GlobalStyle from "../GlobalStyle";
 import { Cookies } from "react-cookie";
 import { url } from "../Api";
 import { motion, AnimatePresence } from "framer-motion";
 // border: 1px solid black;
+
 const Container = styled.div`
   width: 350px;
   height: 600px;
@@ -135,6 +136,7 @@ const Login = () => {
   const changeId = (e) => setId(e.target.value);
   const changePs = (e) => setPs(e.target.value);
   const [modal,setModal] = useState(false);
+  let navigate = useNavigate();
   useEffect(() => {
     console.log("documentcookie", document.cookie);
   });
@@ -218,7 +220,7 @@ const Login = () => {
         setCookie("cookie", response.data.name, new Date());
         localStorage.setItem("token", response.data.accessToken);
         console.log(response.status);
-        
+        navigate("/");
       })
       .catch(function (error) {
         //console.log(error);

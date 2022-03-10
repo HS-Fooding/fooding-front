@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Router, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import GlobalStyle from "./GlobalStyle";
-
+import { url } from "./Api";
 const Container = styled.div``;
 const Button = styled.button`
   margin-top: 10px;
@@ -13,21 +13,62 @@ const Button = styled.button`
     cursor: pointer;
   }
 `;
+const token = localStorage.getItem("token");
+
+
 const Home = () => {
+  let navigate = useNavigate();
+  let [isToken,setIsToken] = useState(false);
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    console.log("render");
+    if(token==undefined) {
+      console.log("istoken false");
+      setIsToken(false);}
+    else {
+      console.log("istoken true");
+      setIsToken(true);}
+  },[]);
+  const logoutFun = ()=>{
+    localStorage.clear();
+    setIsToken(false);
+    // var axios = require("axios");
+    // axios
+    //   .post(url + "/sample_project/logout", {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }
+
   return (
     <>
+ 
       <GlobalStyle />
+     
       <Container>
+      {token==null ? navigate("/login") : null }
         <Link to={"/review"}>
           <Button>리뷰버튼</Button>
         </Link>
-        <Link to={"/login"}>
+        {isToken==false ? <Link to={"/login"}>
           <Button>로그인하기</Button>
-        </Link>
+        </Link> : 
+          <Button onClick={logoutFun}>로그아웃하기</Button>
+        }
         <Link to={"/sign"}>
-          <Button>회원가입</Button>
+          <Button>회원가입 </Button>
         </Link>
+       
       </Container>
+      
     </>
   );
 };

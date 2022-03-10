@@ -108,6 +108,7 @@ const Review = () => {
   //   const getCookie=(name)=>{
   //     return cookies.get(name);
   //  }
+  let token = localStorage.getItem("token");
   useEffect(() => {
     // console.log("cookie",getCookie("JSESSION"));
 
@@ -197,9 +198,10 @@ const Review = () => {
           ))}
         </InnerReviews>
       </Reviews>
-      <Link to={"/WriteReview"}>
-        <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
-      </Link>
+      {token==null ?<Link to={"/login"}> <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+      </Link>: <Link to={"/WriteReview"}><WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+      </Link> }
+       
     </Container>
   );
 };
