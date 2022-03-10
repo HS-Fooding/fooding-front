@@ -177,7 +177,6 @@ const WriteReview = () => {
         break;
       case 3:
         setStars(["★", "★", "★", "☆", "☆"]);
-
         break;
       case 4:
         setStars(["★", "★", "★", "★", "☆"]);
@@ -224,7 +223,7 @@ const WriteReview = () => {
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
     }); */
-
+    
     const data = new FormData();
     const getToken = localStorage.getItem("token");
 
