@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "./Header";
-import { Link } from "react-router-dom";
+import {useNavigate, Link } from "react-router-dom";
 import GlobalStyle from "../GlobalStyle";
 import { Cookies } from "react-cookie";
 import { url } from "../Api";
+import { motion, AnimatePresence } from "framer-motion";
 // border: 1px solid black;
+
 const Container = styled.div`
   width: 350px;
   height: 600px;
@@ -78,12 +80,63 @@ const SignUpBut = styled.button`
     cursor: pointer;
   }
 `;
+const appearDisappear = keyframes`
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:1.0;
+    }
+    100%{
+      opacity:0;
+    }
 
+`;
+const Modal = styled.div`
+  z-index:1;
+  position:absolute;
+  width:90%;
+  margin-top:60%;
+  height:50px;
+  background-color:gray;
+  color:white;
+  border-radius: 13px;
+   display:flex;
+   justify-content:center;
+   align-items: center;
+  font-size:13px;
+  opacity:0;
+  animation:${appearDisappear} 2s ease-in-out;
+
+`;
+// const modalAnimation ={
+//   entry:{
+//     opacity:0,
+//     scale:0,
+//   },
+//   center:{
+//     opacity:1,
+//     transition: {
+//       duration: 0.3,
+//     },
+//     scale:1,
+//   },
+//   exit:{
+//     opacity:0,
+//     transition: {
+//       duration: 0.3,
+     
+//     }, 
+//     scale:0,
+//   },
+// }
 const Login = () => {
   const [id, setId] = useState();
   const [ps, setPs] = useState();
   const changeId = (e) => setId(e.target.value);
   const changePs = (e) => setPs(e.target.value);
+  const [modal,setModal] = useState(false);
+  let navigate = useNavigate();
   useEffect(() => {
     console.log("documentcookie", document.cookie);
   });
@@ -166,9 +219,14 @@ const Login = () => {
         console.log("response.data.name", response.data.name);
         setCookie("cookie", response.data.name, new Date());
         localStorage.setItem("token", response.data.accessToken);
+        console.log(response.status);
+        navigate("/");
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
+        //에러가 떴으면 모달창 띄우기
+        setModal(true);
+  
       });
 
     //fetch
@@ -192,6 +250,14 @@ const Login = () => {
       <Link to={"/"}>
         <Header title={"로그인"} />
       </Link>
+      <AnimatePresence>
+        {modal ?
+         <Modal>
+        이메일 주소 혹은 비밀번호를 다시 확인하세요.
+      </Modal>
+       : null}
+      </AnimatePresence>
+    
       <FormContainer>
         <Icon>🍮</Icon>
 

@@ -5,10 +5,13 @@ import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../GlobalStyle";
 import Header from "./Header";
-import FontAwesomeIcon from "./FontAwesome";
 
-import { url, token } from "../Api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as FaStarRegular } from "@fortawesome/free-regular-svg-icons";
+import { url } from "../Api";
 // border: 1px solid black;
+const token = localStorage.getItem("token");
 const WriteReviewContainer = styled.div`
   width: 350px;
   height: 600px;
@@ -170,20 +173,51 @@ const WriteReview = () => {
     setReviewStar(num);
     switch (num) {
       case 1:
-        setStars(["★", "☆", "☆", "☆", "☆"]);
+        setStars([
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+          "☆",
+          "☆",
+          "☆",
+        ]);
         break;
       case 2:
-        setStars(["★", "★", "☆", "☆", "☆"]);
+        setStars([
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          "☆",
+          "☆",
+          "☆",
+        ]);
         break;
       case 3:
-        setStars(["★", "★", "★", "☆", "☆"]);
+        setStars([
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          "☆",
+          "☆",
+        ]);
+
         break;
       case 4:
-        setStars(["★", "★", "★", "★", "☆"]);
+        setStars([
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          "☆",
+        ]);
 
         break;
       case 5:
-        setStars(["★", "★", "★", "★", "★"]);
+        setStars([
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon={faStar} />,
+        ]);
         break;
     }
   };
@@ -223,7 +257,7 @@ const WriteReview = () => {
       content: reviewContent,
       image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
     }); */
-    
+
     const data = new FormData();
     const getToken = localStorage.getItem("token");
 
@@ -335,7 +369,7 @@ const WriteReview = () => {
             <FileIconContainer>
               <FileIcon htmlFor="image_input">
                 {" "}
-                <FontAwesomeIcon></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faCamera} />
               </FileIcon>
             </FileIconContainer>
           </ImageForm>
@@ -349,7 +383,7 @@ const WriteReview = () => {
         <ContentForm>
           <TypeInput
             type="text"
-            placeholder="이름"
+            placeholder="제목"
             onChange={onChangeReviewName}
           />
           <br />
