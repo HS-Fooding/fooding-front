@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Router, Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import { url } from "./Api";
@@ -15,21 +23,21 @@ const Button = styled.button`
 `;
 const token = localStorage.getItem("token");
 
-
 const Home = () => {
   let navigate = useNavigate();
-  let [isToken,setIsToken] = useState(false);
-  useEffect(()=>{
+  let [isToken, setIsToken] = useState(false);
+  useEffect(() => {
     const token = localStorage.getItem("token");
     console.log("render");
-    if(token==undefined) {
+    if (token == undefined) {
       console.log("istoken false");
-      setIsToken(false);}
-    else {
+      setIsToken(false);
+    } else {
       console.log("istoken true");
-      setIsToken(true);}
-  },[]);
-  const logoutFun = ()=>{
+      setIsToken(true);
+    }
+  }, []);
+  const logoutFun = () => {
     localStorage.clear();
     setIsToken(false);
     // var axios = require("axios");
@@ -46,29 +54,28 @@ const Home = () => {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-  }
+  };
 
   return (
     <>
- 
       <GlobalStyle />
-     
+
       <Container>
-      {token==null ? navigate("/login") : null }
+        {token == null ? navigate("/login") : null}
         <Link to={"/review"}>
-          <Button>리뷰버튼</Button>
+          <Button>리뷰</Button>
         </Link>
-        {isToken==false ? <Link to={"/login"}>
-          <Button>로그인하기</Button>
-        </Link> : 
+        {isToken == false ? (
+          <Link to={"/login"}>
+            <Button>로그인하기</Button>
+          </Link>
+        ) : (
           <Button onClick={logoutFun}>로그아웃하기</Button>
-        }
+        )}
         <Link to={"/sign"}>
           <Button>회원가입 </Button>
         </Link>
-       
       </Container>
-      
     </>
   );
 };

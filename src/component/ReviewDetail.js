@@ -110,8 +110,6 @@ const CommentContainer = styled.div`
   padding: 10px;
 `;
 
-const CommentsUl = styled.ul``;
-
 const CommentsLi = styled.div`
   margin: 10px;
   width: auto;
@@ -120,19 +118,26 @@ const CommentsLi = styled.div`
 const CommentBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: auto;
+  //display: inline-block;
+  //width: auto;
+
   background-color: #f5f5f5;
-  border-radius: 10px;
-  padding: 8px;
+  border-radius: 20px;
+  //border-bottom: 1px solid gray;
+  //box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  padding: 8px 13px;
   line-height: 1.1;
   font-size: 14px;
 
   .replyName {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
   }
   .replyContent {
-    line-height: 1.5;
+    line-height: 1.2;
+  }
+  .mention {
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
@@ -156,7 +161,7 @@ const BigImageBox = styled.div`
   button {
     cursor: pointer;
     position: absolute;
-    background-color: inherit;
+    background-color: transparent;
     color: white;
     border: 0;
     outline: 0;
@@ -169,11 +174,13 @@ const BigImageBox = styled.div`
   .nextBtn {
     top: 50%;
     right: 0;
+    color: white;
   }
 
   .preBtn {
     top: 50%;
     left: 0;
+    color: white;
   }
 `;
 
@@ -183,6 +190,7 @@ const DateReply = styled.div`
   margin-left: 4px;
   margin-top: 5px;
   margin-bottom: 19px;
+  //border-bottom: 1px solid gray;
   button {
     margin-left: 10px;
     background-color: inherit;
@@ -273,9 +281,8 @@ const ReviewDetail = () => {
 
   return (
     <Container>
-      <Link to={"/Review"}>
-        <Header />
-      </Link>
+      <Header back={"/Review"} />
+
       <MainBox>
         <ReviewContent>
           <div className="userName">{review.author}</div>
@@ -317,10 +324,20 @@ const ReviewDetail = () => {
         <CommentContainer>
           {comments?.map((reply, index) => (
             <CommentsLi key={index}>
-              <CommentBox>
-                <span className="replyName">{reply.author}</span>
-                <span className="replyContent"> {reply.content}</span>
-              </CommentBox>
+              <div style={{ display: "inline-block" }}>
+                <CommentBox>
+                  <span className="replyName">{reply.author}</span>
+
+                  {reply.content.includes("@") == true ? (
+                    <div style={{ display: "flex" }}>
+                      <p class="mention">{reply.content.split(" ")[0]}</p>
+                      <p>&nbsp; {reply.content.split(" ").slice(1)}</p>
+                    </div>
+                  ) : (
+                    <span className="replyContent">{reply.content}</span>
+                  )}
+                </CommentBox>
+              </div>
               <DateReply>
                 <span>{reply.modifiedDate.slice(0, 10)}</span>
                 <button

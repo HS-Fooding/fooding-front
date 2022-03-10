@@ -22,6 +22,7 @@ const SubmitButton = styled.button`
   border: none;
   width: 350px;
   height: 80px;
+  font-size: 15px;
   position: absolute;
   bottom: 0px;
   background-color: ${(props) => props.theme.mainColor};
@@ -34,10 +35,11 @@ const SubmitButton = styled.button`
 `;
 const TypeInput = styled.input`
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   width: 220px;
-  font-size: 25px;
+  font-size: 18px;
   padding-top: 15px;
+  padding-bottom: 5px;
   &:focus {
     outline: none;
   }
@@ -45,10 +47,10 @@ const TypeInput = styled.input`
 const ContentTextArea = styled.textarea`
   width: 220px;
   height: 200px;
-  font-size: 20px;
+  font-size: 14px;
   resize: none;
   border: none;
-  border-bottom: 1px solid gray;
+  //border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
 
   font-family: "Source Sans Pro", sans-serif;
   &:focus {
@@ -73,9 +75,11 @@ const ImageForm = styled.form`
   }
 `;
 const ImageContainer = styled.div`
-  width: 95%;
+  width: 87%;
   height: 110px;
-  background-color: #ecf0f1;
+  //background-color: #ecf0f1;
+  border-top: 1px solid ${(props) => props.theme.borderGrayColor};
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   overflow: auto;
   align-items: start;
@@ -93,11 +97,11 @@ const Stars = styled.div`
   height: 50px;
   display: flex;
   justify-content: space-evenly;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 10px;
 `;
 const Star = styled.span`
-  font-size: 30px;
+  font-size: 25px;
   cursor: pointer;
 
   color: #fbc531;
@@ -111,6 +115,9 @@ const FileIconContainer = styled.div`
   align-items: center;
   background-color: white;
   cursor: pointer;
+
+  background-color: rgba(0, 0, 0, 0.1);
+  color: white;
 `;
 const File = styled.div`
   margin-left: 10px;
@@ -130,7 +137,7 @@ const FileIcon = styled.label`
   cursor: pointer;
 `;
 const ContentForm = styled.form`
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,6 +146,7 @@ const ContentForm = styled.form`
     width: 90%;
   }
   height: 300px;
+  color: ${(props) => props.theme.fontGrayColor};
 `;
 const WriteReview = () => {
   const [reviewName, setReviewName] = useState("");
@@ -160,34 +168,37 @@ const WriteReview = () => {
   // const [fourth,setFourth]= useState("☆");
   // const [fifth,setFifth]= useState("☆");
   const [session, setSession] = useState();
-  const [stars, setStars] = useState(["☆", "☆", "☆", "☆", "☆"]);
+  const [stars, setStars] = useState([
+    <FontAwesomeIcon icon="fa-regular fa-star" />,
+    <FontAwesomeIcon icon="fa-regular fa-star" />,
+    <FontAwesomeIcon icon="fa-regular fa-star" />,
+    <FontAwesomeIcon icon="fa-regular fa-star" />,
+    <FontAwesomeIcon icon="fa-regular fa-star" />,
+  ]);
   let navigate = useNavigate();
   const onChangeReviewName = (e) => setReviewName(e.target.value);
-  const onChangeReviewPw = (e) => setReviewPw(e.target.value);
+
   const onChangeReviewContent = (e) => setReviewContent(e.target.value);
-  /*  const cookies = new Cookies();
-  const getCookie = (name) => {
-    return cookies.get(name);
-  }; */
+
   const starsToggle = (num) => {
     setReviewStar(num);
     switch (num) {
       case 1:
         setStars([
           <FontAwesomeIcon icon={faStar} />,
+          <FontAwesomeIcon icon="fa-regular fa-star " />,
           <FontAwesomeIcon icon="fa-regular fa-star" />,
-          "☆",
-          "☆",
-          "☆",
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
         ]);
         break;
       case 2:
         setStars([
           <FontAwesomeIcon icon={faStar} />,
           <FontAwesomeIcon icon={faStar} />,
-          "☆",
-          "☆",
-          "☆",
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
         ]);
         break;
       case 3:
@@ -195,8 +206,8 @@ const WriteReview = () => {
           <FontAwesomeIcon icon={faStar} />,
           <FontAwesomeIcon icon={faStar} />,
           <FontAwesomeIcon icon={faStar} />,
-          "☆",
-          "☆",
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
         ]);
 
         break;
@@ -206,7 +217,7 @@ const WriteReview = () => {
           <FontAwesomeIcon icon={faStar} />,
           <FontAwesomeIcon icon={faStar} />,
           <FontAwesomeIcon icon={faStar} />,
-          "☆",
+          <FontAwesomeIcon icon="fa-regular fa-star" />,
         ]);
 
         break;
@@ -250,13 +261,6 @@ const WriteReview = () => {
     e.preventDefault();
     console.log("imgs", imgs);
     var axios = require("axios");
-    /*   var data = JSON.stringify({
-      name: reviewName,
-      star: reviewStar,
-      password: reviewPw,
-      content: reviewContent,
-      image: "a;slkdfjas;lkdjf;laskdjf;laksjdf;laksjdf;lkj//asdfalsdk",
-    }); */
 
     const data = new FormData();
     const getToken = localStorage.getItem("token");
@@ -304,9 +308,8 @@ const WriteReview = () => {
   }, [file]);
   return (
     <WriteReviewContainer>
-      <Link to={"/Review"}>
-        <Header title={"리뷰 쓰기"} />
-      </Link>
+      <Header back={"/Review"} title={"리뷰 쓰기"} />
+
       <FormContainer>
         {/* <TypeInput
             type="text"
@@ -369,7 +372,7 @@ const WriteReview = () => {
             <FileIconContainer>
               <FileIcon htmlFor="image_input">
                 {" "}
-                <FontAwesomeIcon icon={faCamera} />
+                <FontAwesomeIcon style={{ color: "white" }} icon={faCamera} />
               </FileIcon>
             </FileIconContainer>
           </ImageForm>
@@ -383,7 +386,7 @@ const WriteReview = () => {
         <ContentForm>
           <TypeInput
             type="text"
-            placeholder="제목"
+            placeholder="제목을 입력하세요"
             onChange={onChangeReviewName}
           />
           <br />
@@ -398,7 +401,7 @@ const WriteReview = () => {
       </FormContainer>
 
       <SubmitButton formEncType="multipart/form-data" onClick={submit}>
-        전송
+        입력
       </SubmitButton>
     </WriteReviewContainer>
   );

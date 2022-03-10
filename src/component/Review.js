@@ -10,8 +10,7 @@ const Container = styled.div`
   height: 600px;
   position: relative;
   box-sizing: border-box;
-  
-`; 
+`;
 
 const WriteReviewBtn = styled.button`
   position: absolute;
@@ -92,6 +91,7 @@ const ReviewTitle = styled.div``;
 
 const ReviewImg = styled.div`
   width: 100%;
+  margin-bottom: 10px;
   display: flex;
   overflow: auto;
   ::-webkit-scrollbar {
@@ -136,9 +136,8 @@ const Review = () => {
 
   return (
     <Container>
-      <Link to={"/"}>
-        <Header title={"리뷰 목록"} />
-      </Link>
+      <Header back={"/"} title={"리뷰 목록"} />
+
       <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
@@ -198,10 +197,16 @@ const Review = () => {
           ))}
         </InnerReviews>
       </Reviews>
-      {token==null ?<Link to={"/login"}> <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
-      </Link>: <Link to={"/WriteReview"}><WriteReviewBtn>리뷰 작성</WriteReviewBtn>
-      </Link> }
-       
+      {token == null ? (
+        <Link to={"/login"}>
+          {" "}
+          <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+        </Link>
+      ) : (
+        <Link to={"/WriteReview"}>
+          <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+        </Link>
+      )}
     </Container>
   );
 };
