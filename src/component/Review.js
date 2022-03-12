@@ -198,10 +198,9 @@ const Review = () => {
           ))}
         </InnerReviews>
       </Reviews>
-      {token==null ?<Link to={"/login"}> <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+      {token==null ?<Link to={"/login"} > <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
       </Link>: <Link to={"/WriteReview"}><WriteReviewBtn>리뷰 작성</WriteReviewBtn>
       </Link> }
-       
     </Container>
   );
 };

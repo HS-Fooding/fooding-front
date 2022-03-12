@@ -95,9 +95,10 @@ const Stars = styled.div`
   justify-content: space-evenly;
   margin-top: 10px;
   margin-bottom: 10px;
+  
 `;
 const Star = styled.span`
-  font-size: 30px;
+  font-size: 25px;
   cursor: pointer;
 
   color: #fbc531;
