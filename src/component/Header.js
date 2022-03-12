@@ -2,6 +2,7 @@ import styled from "styled-components";
 import GlobalStyle from "../GlobalStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -9,25 +10,32 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 40px;
-  background-color: ${(props) => props.theme.mainColor};
-  color: white;
+  background-color: white;
+  color: black;
   padding: 5px 15px;
   font-size: 15px;
-  /* border-bottom: 1px solid ${(props) => props.theme.borderGrayColor}; */
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
   position: absolute;
   top: 0;
+  font-weight: bold;
 
   .icon {
     cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.manColor};
+    }
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
-const Header = ({ title }) => {
+const Header = ({ title, back }) => {
   return (
     <>
       <GlobalStyle />
       <Container>
-        <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        <Link to={back}>
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        </Link>
         <span>{title}</span>
         <div></div>
       </Container>

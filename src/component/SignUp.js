@@ -2,21 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Header from "./Header";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { url } from "../Api";
-
-/*
-{
-	"userId" : "아이디",
-	"userPassword" : "패스워드",
-	"sex" : true,
-	"userName": "정현승",
-	"nickName": "별명",
-	"email": "hansung@naver.com",
-	"age" : 26,
-	"role" : "ROLE_USER"
-}
-*/
 
 const Container = styled.div`
   border: 1px solid black;
@@ -86,6 +73,8 @@ const SubmitBtn = styled.button`
 `;
 
 function SignUp() {
+  let navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -101,7 +90,6 @@ function SignUp() {
   const signUpPost = (data) => {
     console.log(data);
     const userAge = 2022 - data.age.substring(0, 4) + 1; // 나이 계산
-    console.log(userAge);
 
     var axios = require("axios");
     var data = JSON.stringify({
@@ -134,15 +122,6 @@ function SignUp() {
 
   const onValid = (data) => {
     // 데이터 전송시 작동, data는 입력된 값들
-    /*
-    Id: "asdfasdf"
-    age: "20200202"
-    password: "asdfasdf"
-    password1: "asdfasdf"
-    nickName"dd"
-    sex: "male"
-    userName: "asdf"
-*/
 
     if (data.password !== data.password1) {
       setError(
@@ -151,18 +130,16 @@ function SignUp() {
         { shouldFocus: true }
       );
     } else {
+      navigate("/");
       reset();
       signUpPost(data);
     }
-
-    //setError("extraError", { message: "Server offline." });
   };
 
   return (
     <Container>
-      <Link to={"/"}>
-        <Header title={"회원가입"} />
-      </Link>
+      <Header back={"/"} title={"회원가입"} />
+
       <Form
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit(onValid)}
@@ -171,7 +148,7 @@ function SignUp() {
           {...register("Id", {
             required: "아이디를 입력하세요.",
             minLength: {
-              value: 1,
+              value: 8,
               message: "최소 8자 이상 입력하세요.",
             },
           })}
@@ -182,7 +159,7 @@ function SignUp() {
           {...register("password", {
             required: "비밀번호를 입력하세요.",
             minLength: {
-              value: 1,
+              value: 8,
               message: "최소 8자 이상 입력하세요.",
             },
           })}
