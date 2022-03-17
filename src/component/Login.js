@@ -95,6 +95,7 @@ const appearDisappear = keyframes`
     }
     100%{
       opacity:0;
+      
     }
 
 `;
@@ -113,6 +114,7 @@ const Modal = styled.div`
   font-size: 13px;
   opacity: 0;
   animation: ${appearDisappear} 2s ease-in-out;
+
 `;
 // const modalAnimation ={
 //   entry:{
@@ -141,10 +143,14 @@ const Login = () => {
   const changeId = (e) => setId(e.target.value);
   const changePs = (e) => setPs(e.target.value);
   const [modal, setModal] = useState(false);
+  const [tempModal,setTempModal] = useState(false);
   let navigate = useNavigate();
   useEffect(() => {
     console.log("documentcookie", document.cookie);
-  });
+   // console.log("modal",modal);
+//modal이 true로 바뀌면 
+ 
+  },[modal]);
   // const getCookie=(name)=>{
   //   return cookies.get(name);
   // }
@@ -166,7 +172,10 @@ const Login = () => {
       (exdays == null ? "" : ";expires=" + exdate.toUTCString());
     document.cookie = cookie_name + "=" + value;
   };
+const check = ()=>{
 
+console.log("checkModal",modal);
+}
   const submitLogin = (e) => {
     e.preventDefault();
 
@@ -201,19 +210,35 @@ const Login = () => {
         //console.log(error);
         //에러가 떴으면 모달창 띄우기
         setModal(true);
+        
+        setTempModal(true);
+     //   console.log("modal1",modal);
+       //modal div를 아예 지우기
+      
+       // console.log("modal2",modal);
+       modalSet();
+       //check();
       });
+    
   };
-
+  function delay(){
+    return new Promise(resolve =>setTimeout(resolve,2000));
+  }
+async function modalSet(){
+  await delay();
+  setModal(false);
+}
   return (
     <Container>
       <Header back={"/"} title={"로그인"} />
-
-      <AnimatePresence>
+{/* 2초뒤에 없애기 */}
+      <><AnimatePresence>
         {modal ? (
           <Modal>이메일 주소 혹은 비밀번호를 다시 확인하세요.</Modal>
         ) : null}
+       
       </AnimatePresence>
-
+      </>
       <FormContainer>
         <Icon>🍮</Icon>
 
@@ -224,7 +249,7 @@ const Login = () => {
           <input type="password" onChange={changePs} placeholder="Password" />
           <LoginBut onClick={submitLogin}>LOGIN</LoginBut>
           <br />
-          <span style={{ fontSize: "14px" }}>OR</span> <br />
+          <span style={{ fontSize: "14px" }}>OR {modal ? "true" : "false"}</span> <br />
           <Link to="/sign">
             <SignUpBut>SIGN IN</SignUpBut>
           </Link>

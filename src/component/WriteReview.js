@@ -99,6 +99,7 @@ const Stars = styled.div`
   justify-content: space-evenly;
   margin-top: 30px;
   margin-bottom: 10px;
+  
 `;
 const Star = styled.span`
   font-size: 25px;
