@@ -6,11 +6,11 @@ ${reset};
 
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    //justify-content: center;
+    //align-items: center;
     border: 1px solid #e4e2e1;
-    width: 350px;
-    height: 600px;  
+    //width: 350px;
+    //height: 600px;  
    
   
   }
