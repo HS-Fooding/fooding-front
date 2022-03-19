@@ -9,7 +9,9 @@ import Login from "./component/Login.js";
 import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import ReviewDetail from "./component/ReviewDetail";
-import ManageRestaurant from "./component/ManageRestaurant";
+import Register from "./manage/Register";
+import Reservation from "./manage/Reservation";
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -21,7 +23,8 @@ function App() {
           <Route path="/sign" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/:reviewId" element={<ReviewDetail />}></Route>
-          <Route path="/manageRestaurant" element={<ManageRestaurant />}></Route> 
+          <Route path="/reservation" element={<Reservation />}></Route>
+          <Route path="/register" element={<Register />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -18,7 +18,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   font-weight: bold;
-
+  z-index:3;
   .icon {
     cursor: pointer;
     &:hover {
