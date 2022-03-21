@@ -7,7 +7,7 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  //align-items: center;
+  /* align-items: center; */
   position: fixed;
   width: 100%;
   height: 100px;
@@ -16,6 +16,7 @@ const Nav = styled.nav`
   padding: 20px 60px;
   background-color: #21201e;
   color: white;
+  box-sizing: border-box;
 `;
 
 const TopMenu = styled.div`
@@ -74,7 +75,7 @@ const Header = () => {
   const reservationMatch = useMatch("/reservation");
   const registerMatch = useMatch("/register");
   return (
-    <Nav>
+    <Nav style={{zIndex:1}}>
       <TopMenu>
         <Items>
           <Item className="small">로그인</Item>
