@@ -75,7 +75,7 @@ const Header = () => {
   const reservationMatch = useMatch("/reservation");
   const registerMatch = useMatch("/register");
   return (
-    <Nav style={{zIndex:1}}>
+    <Nav style={{zIndex:3}}>
       <TopMenu>
         <Items>
           <Item className="small">로그인</Item>
