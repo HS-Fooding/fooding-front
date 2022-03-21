@@ -31,11 +31,8 @@ const InputFormDiv = styled.div`
     position: relative;
 
     button {
-      border: none;
-      margin-top: 5px;
-      width: 100px;
-      height: 35px;
-      border-radius: 60px;
+      position: absolute;
+      right: 0;
     }
     input {
       border: none;
@@ -43,8 +40,8 @@ const InputFormDiv = styled.div`
       width: 100%;
       height: 35px;
       font-size: 18px;
-      padding-top: 10px;
-      padding-bottom: 5px;
+      /* padding-top: 10px;
+      padding-bottom: 5px; */
       box-sizing: border-box;
     }
     textarea {
@@ -63,8 +60,11 @@ const InputFormDiv = styled.div`
   }
 `;
 const Button = styled.button`
-  position: absolute;
-  right: 0;
+  border: none;
+  margin-top: 5px;
+  width: 100px;
+  height: 35px;
+  border-radius: 26px;
   cursor: pointer;
 `;
 
@@ -140,7 +140,7 @@ const InfoForm = styled.form`
 const NameBox = styled.div`
   width: 140px;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: ${(props) => props.theme.fillGrayColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -149,7 +149,7 @@ const NameBox = styled.div`
 const SubBox = styled.div`
   width: 20%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: ${(props) => props.theme.fillGrayColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,6 +158,11 @@ const InputBox = styled.div`
   width: 345px;
   height: 94%;
   margin-left: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0px;
+  padding-bottom: 0px;
 `;
 
 const NumContainer = styled.div`
@@ -211,7 +216,7 @@ const MenuList = styled.div`
 const MenuHeader = styled.div`
   height: 40px;
   width: 100%;
-  background-color: rgb(237, 237, 237);
+  background-color: ${(props) => props.theme.fillGrayColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,6 +225,10 @@ const MenuHeader = styled.div`
   //border-top: ${(props) => props.theme.menuBorderColor};
   .menuImg {
     width: 20%;
+    input {
+      display: none;
+    }
+    position: relative;
   }
   .menuName {
     width: 20%;
@@ -246,15 +255,25 @@ const MenuProp = styled.div`
     width: 90px;
     height: 90px;
     object-fit: cover;
+    position: absolute;
+    display: inline-block;
+    content: "";
+    border-style: hidden;
+    border: 0px;
+    border-width: 0px;
   }
   input {
     width: 100%;
     height: 30px;
+    border-radius: 5px;
+    border: ${(props) => props.theme.menuBorderColor};
   }
   textarea {
     width: 100%;
     height: 70px;
     resize: none;
+    border-radius: 5px;
+    border: ${(props) => props.theme.menuBorderColor};
   }
 
   input:focus,
@@ -273,7 +292,20 @@ const MenuInput = styled(MenuHeader)`
   height: 100px;
 `;
 
-const AddMenuBtn = styled.button`
+const FileIcon = styled.label`
+  font-size: 20px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-color: none;
+  position: absolute;
+  z-index: 2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+`;
+
+const AddMenuBtn = styled(Button)`
   width: 100px;
 `;
 
@@ -292,6 +324,23 @@ function Register() {
     const img = e.target.files[0];
 
   }
+  const [menuImg, setMenuImg] = useState();
+  const [file, setFile] = useState();
+
+
+  const onChangeImage = (e) => {
+    e.preventDefault();
+    const img = e.target.files[0];
+
+    // const tempArr = [...imgs, img];
+    setMenuImg(img);
+
+    const prevFile = URL.createObjectURL(e.target.files[0]);
+    setFile(prevFile);
+
+    e.target.value = "";
+  };
+
   return (
     <Container>
       <Header />
@@ -393,12 +442,14 @@ function Register() {
                 <SubBox>평일 시간대</SubBox>
                 <input
                   type="time"
+                  value="11:00:00"
                   className="TimeInput"
                   {...register("weekdayTimeStart")}
                 />
                 <p>부터</p>
                 <input
                   type="time"
+                  value="21:00:00"
                   className="TimeInput"
                   {...register("weekdayTimeEnd")}
                 />
@@ -407,12 +458,14 @@ function Register() {
               <div className="InputNTitleContainer">
                 <SubBox>주말 시간대</SubBox>
                 <input
+                  value="11:00:00"
                   type="time"
                   className="TimeInput"
                   {...register("weekendTimeStart")}
                 />
                 <p>부터</p>
                 <input
+                  value="21:00:00"
                   type="time"
                   className="TimeInput"
                   {...register("weekendTimeEnd")}
@@ -451,7 +504,29 @@ function Register() {
         </MenuItem>
         {addMenu ? (
           <MenuInput>
-            <MenuProp className="menuImg"></MenuProp>
+            <MenuProp className="menuImg">
+              <input
+                id="image_input"
+                type="file"
+                accept="image/jpg,image/png,image/jpeg,image/gif"
+                name="photo"
+                onChange={onChangeImage}
+              />
+              <FileIcon htmlFor="image_input">
+                {file === undefined ? (
+                  <FontAwesomeIcon
+                    style={{
+                      color: "rgba(200, 200, 200, 0.5)",
+                      fontSize: "50px",
+                    }}
+                    icon={faCamera}
+                  />
+                ) : null}
+              </FileIcon>
+              {file !== undefined ? (
+                <img src={file} style={{ border: "0" }} />
+              ) : null}
+            </MenuProp>
             <MenuProp className="menuName">
               <input placeholder="메뉴명" />
             </MenuProp>
@@ -465,9 +540,9 @@ function Register() {
         ) : null}
       </MenuList>
       {addMenu ? (
-        <AddMenuBtn onClick={addMenuFunc}>등록</AddMenuBtn>
+        <Button onClick={addMenuFunc}>등록</Button>
       ) : (
-        <AddMenuBtn onClick={addMenuFunc}>추가</AddMenuBtn>
+        <Button onClick={addMenuFunc}>추가</Button>
       )}
     </Container>
     // </div>
