@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import SimpleSlider from "./SimpleSlider";
+import Slider from "react-slick";
 
 const Container = styled.div`
   width: 100%;
@@ -117,11 +118,21 @@ const MarketImgDiv = styled.div`
 const MarketImg = styled.img`
   width: 210px;
   height: 179px;
-  position: absolute;
-  left: 0;
-  top: 0;
+
+  /* position: absolute; */
+  /* left: 0;
+  top: 0; */
   object-fit: cover;
 `;
+
+const SliderDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const InfoForm = styled.form`
   .NumberContainer {
     height: 80px;
@@ -325,6 +336,61 @@ const AddMenuBtn = styled(Button)`
   width: 100px;
 `;
 
+const StyledSlider = styled(Slider)`
+  height: 100%; //슬라이드 컨테이너 영역
+
+  svg:focus {
+    outline: none;
+  }
+
+  .slick-list {
+    //슬라이드 스크린
+    width: 210px;
+    height: 179px;
+    //margin: 0 auto;
+    overflow-x: hidden;
+    background: transparent;
+  }
+
+  .slick-slide div {
+    //슬라이더  컨텐츠
+    /* cursor: pointer; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 179px;
+    background-color: transparent;
+    color: ${(props) => props.theme.fillGrayColor};
+    &:active {
+      outline: none;
+    }
+  }
+
+  .slick-prev {
+    /* position: absolute;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    z-index: 10px; */
+    /* position: relative;
+    left: 50px; */
+    padding-left: 25px;
+    z-index: 1;
+  }
+
+  .slick-dots {
+    //슬라이드의 위치
+    bottom: 1px;
+    margin-top: 100px;
+  }
+
+  .slick-track {
+    //이건 잘 모르겠음
+    width: 100%;
+  }
+`;
+
 function Register() {
   const [menu, setMenu] = useState("");
   const [price, setPrice] = useState("");
@@ -360,9 +426,18 @@ function Register() {
     e.target.value = "";
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
     <Container>
       <Header />
+
       <InputFormDiv>
         <form className="NameForm">
           <div
@@ -410,8 +485,23 @@ function Register() {
                       name="market_img"
                       onChange={marketImgChange}
                     />
-                    <label for="market_img_input">
-                      <SimpleSlider images={marketImgs} />
+                    <label htmlFor="market_img_input">
+                      <SliderDiv>
+                        <StyledSlider {...settings}>
+                          {marketImgs?.length !== 0 ? (
+                            marketImgs?.map((one, index) => (
+                              <div>
+                                <MarketImg src={one} key={index} />
+                              </div>
+                            ))
+                          ) : (
+                            <FontAwesomeIcon
+                              style={{ color: "rgba(0, 0, 0, 0.1)" }}
+                              icon={faCamera}
+                            />
+                          )}{" "}
+                        </StyledSlider>
+                      </SliderDiv>
                     </label>
                   </form>
                 </MarketImgDiv>
@@ -538,7 +628,7 @@ function Register() {
                   <FontAwesomeIcon
                     style={{
                       color: "rgba(200, 200, 200, 0.5)",
-                      fontSize: "50px",
+                      fontSize: "30px",
                     }}
                     icon={faCamera}
                   />

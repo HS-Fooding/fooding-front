@@ -7,8 +7,10 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 const MarketImg = styled.img`
-  width: 210px;
-  height: 179px;
+  /* width: 210px;
+  height: 179px; */
+  width: 50px;
+  height: 50px;
   position: absolute;
   left: 0;
   top: 0;
@@ -27,18 +29,20 @@ function SimpleSlider({ images }) {
   console.log("Slider:", images);
   return (
     <div>
-      {" "}
-      <h2> Single Item</h2>{" "}
       <Slider {...settings}>
         {images?.length !== 0 ? (
           images?.map((one, index) => (
-            <MarketImg src={one} key={index}></MarketImg>
+            <div>
+              <img src={one} key={index} />
+            </div>
           ))
         ) : (
-          <FontAwesomeIcon
-            style={{ color: "rgba(0, 0, 0, 0.1)" }}
-            icon={faCamera}
-          />
+          <div>
+            <FontAwesomeIcon
+              style={{ color: "rgba(0, 0, 0, 0.1)" }}
+              icon={faCamera}
+            />
+          </div>
         )}{" "}
       </Slider>{" "}
     </div>
