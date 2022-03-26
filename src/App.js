@@ -25,6 +25,7 @@ function App() {
           <Route path="/:reviewId" element={<ReviewDetail />}></Route>
           <Route path="/reservation" element={<Reservation />}></Route>
           <Route path="/register" element={<Register />}></Route>
+         
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

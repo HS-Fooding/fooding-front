@@ -23,6 +23,7 @@ const InputFormDiv = styled.div`
     .BorderTop {
       border-top: ${(props) => props.theme.menuBorderColor};
     }
+    
   }
   form {
     height: 400px;
@@ -39,7 +40,7 @@ const InputFormDiv = styled.div`
       border-bottom: 1px solid white;
       width: 100%;
       height: 35px;
-      font-size: 18px;
+      font-size: 15px;
       /* padding-top: 10px;
       padding-bottom: 5px; */
       box-sizing: border-box;
@@ -76,6 +77,11 @@ const InputContainer = styled.div`
   height: 60px;
   border-bottom: ${(props) => props.theme.menuBorderColor};
 
+  .InputAddressContainer{
+    width: 80%;
+    height: 20px;
+    
+  }
 `;
 const MarketImgDiv=styled.div`
  
@@ -120,11 +126,17 @@ const MarketImg = styled.img`
   width:210px;
   height:179px;
   position:absolute;
+  object-fit:cover;
   left:0;
   top:0;
   
 `;
 const InfoForm = styled.form`
+  height:300px;
+ 
+  .AddressContainer{
+    height:40px;
+  }
   .NumberContainer {
     height: 80px;
     margin-top: 10px;
@@ -199,16 +211,17 @@ const NumContainer = styled.div`
 const SmallInput = styled.input``;
 
 const MenuList = styled.div`
+
   display: flex;
   flex-direction: column;
   width: 100%;
   justify-content: center;
   align-items: center;
   width: 700px;
-  //border: ${(props) => props.theme.menuBorderColor};
+  /* border: ${(props) => props.theme.menuBorderColor}; */
 
   margin-bottom: 20px;
-  margin-top: 50px;
+  margin-top: 150px;
   border-top: ${(props) => props.theme.menuBorderColor};
   border-left: ${(props) => props.theme.menuBorderColor};
 `;
@@ -379,6 +392,7 @@ function Register() {
                 </InputBox>
               </InputContainer>
             </div>
+
             <div style={{ width: "30%", height: "180px" }}>
               <InputContainer style={{ height: "100%" }}>
               <MarketImgDiv>
@@ -403,9 +417,50 @@ function Register() {
               </InputContainer>
             </div>
           </div>
+
         </form>
-        <InfoForm>
+        <InfoForm> 
+          {/* 주소 입력  */}
           {/* <div style={{ width: "100%", height: "100px",}}> */}
+          <InputContainer className="AddressContainer BorderTop">
+            <NameBox>
+              <p>주소</p>
+            </NameBox>
+            <InputBox style={{width:"80%"}}>
+              {/* <div className="InputAddressContainer"> */}
+                <input
+                  className="NumInputStyle"
+                  {...register("address")}
+                  placeholder="주소를 입력하시오"
+                  style={{ marginTop: "1px" }}
+                />
+              {/* </div> */}
+              </InputBox>
+          </InputContainer>
+          <InputContainer className="AddressContainer">
+            <NameBox>
+              <p>카테고리</p>
+            </NameBox>
+            <InputBox style={{width:"80%"}}>
+              {/* <div className="InputAddressContainer"> */}
+                <select>
+                   <option>KOREAN</option>
+                   <option>JAPANESE</option>
+                   <option>CHINESE</option>
+                   <option>WESTERN</option>
+                   <option>SNACK</option>
+                   <option>NOODLE</option>
+                   <option>SOUP</option>
+                   <option>BBQ</option>
+                   <option>PORK</option>
+                   <option>BEEF</option>
+                   <option>CHICKEN</option>
+                   <option>LAMB</option>
+                   <option>CAFE</option>
+                </select>
+              {/* </div> */}
+              </InputBox>
+          </InputContainer>
           <InputContainer className="NumberContainer BorderTop">
             <NameBox>
               <p>번호</p>
