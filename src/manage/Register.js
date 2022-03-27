@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faCamera } from "@fortawesome/free-solid-svg-icons"
+import SimpleSlider from "./SimpleSlider";
+import Slider from "react-slick";
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -76,61 +79,61 @@ const InputContainer = styled.div`
   width: 100%;
   height: 60px;
   border-bottom: ${(props) => props.theme.menuBorderColor};
-
-  .InputAddressContainer{
-    width: 80%;
-    height: 20px;
-    
-  }
 `;
-const MarketImgDiv=styled.div`
- 
+const MarketImgDiv = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  position:relative;
-  .MarketImgForm{
-  width:100px;
-  height:100px;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  & input[type="file"]{
-    width: 0;
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-    border:none;
-    display:none;
-
-  }
-  & label {
-    width: 209px;
-    height: 180px;
-    position:absolute;
-   background-color:white;
-    left:0;
-    top:0;
-    /* z-index:2; */
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:45px;
-    border: ${(props) => props.theme.menuBorderColor};
-   cursor:pointer;
-  
-  }
+  position: relative;
+  .MarketImgForm {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & input[type="file"] {
+      width: 0;
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+      border: none;
+      display: none;
+    }
+    & label {
+      width: 209px;
+      height: 180px;
+      position: absolute;
+      background-color: white;
+      left: 0;
+      top: 0;
+      /* z-index:2; */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 45px;
+      border: ${(props) => props.theme.menuBorderColor};
+      cursor: pointer;
+    }
   }
 `;
 const MarketImg = styled.img`
-  width:210px;
-  height:179px;
-  position:absolute;
-  object-fit:cover;
-  left:0;
-  top:0;
-  
+  width: 210px;
+  height: 179px;
+
+  /* position: absolute; */
+  /* left: 0;
+  top: 0; */
+  object-fit: cover;
 `;
+
+const SliderDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const InfoForm = styled.form`
   height:300px;
  
@@ -247,10 +250,13 @@ const MenuHeader = styled.div`
     width: 20%;
   }
   .menuPrice {
-    width: 20%;
+    width: 15%;
   }
-  .menuDes {
-    width: 40%;
+  .menuDesc {
+    width: 37%;
+  }
+  .menuDel {
+    width: 8%;
   }
 `;
 
@@ -263,6 +269,8 @@ const MenuProp = styled.div`
   border-right: ${(props) => props.theme.menuBorderColor};
 
   padding: 9px;
+
+
 
   img {
     width: 90px;
@@ -293,11 +301,24 @@ const MenuProp = styled.div`
   textarea:focus {
     outline: none;
   }
+ 
+  
 `;
 
 const MenuItem = styled(MenuHeader)`
   background-color: white;
   height: 100px;
+
+  .menuDel {
+    //trash
+    button {
+      color: red;
+      border: 1px solid red;
+      background-color: white;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  }
 `;
 
 const MenuInput = styled(MenuHeader)`
@@ -313,13 +334,68 @@ const FileIcon = styled.label`
   background-color: none;
   position: absolute;
   z-index: 2;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const AddMenuBtn = styled(Button)`
   width: 100px;
+`;
+
+const StyledSlider = styled(Slider)`
+  height: 100%; //슬라이드 컨테이너 영역
+
+  svg:focus {
+    outline: none;
+  }
+
+  .slick-list {
+    //슬라이드 스크린
+    width: 210px;
+    height: 179px;
+    //margin: 0 auto;
+    overflow-x: hidden;
+    background: transparent;
+  }
+
+  .slick-slide div {
+    //슬라이더  컨텐츠
+    /* cursor: pointer; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 179px;
+    background-color: transparent;
+    color: ${(props) => props.theme.fillGrayColor};
+    &:active {
+      outline: none;
+    }
+  }
+
+  .slick-prev {
+    /* position: absolute;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    z-index: 10px; */
+    /* position: relative;
+    left: 50px; */
+    padding-left: 25px;
+    z-index: 1;
+  }
+
+  .slick-dots {
+    //슬라이드의 위치
+    bottom: 1px;
+    margin-top: 100px;
+  }
+
+  .slick-track {
+    //이건 잘 모르겠음
+    width: 100%;
+  }
 `;
 
 function Register() {
@@ -329,23 +405,26 @@ function Register() {
   const menuChange = (event) => setMenu(event.target.value);
   const priceChange = (event) => setPrice(event.target.value);
   const [addMenu, setAddMenu] = useState(false);
-  const [marketImg,setMarketImg] = useState();
-  const addMenuFunc = () => setAddMenu((current) => !current);
-  const marketImgChange=(e)=>{
-    e.preventDefault();
-    setMarketImg(URL.createObjectURL(e.target.files[0]));
-    const img = e.target.files[0];
-
-  }
+  const [marketImgs, setMarketImgs] = useState([]);
   const [menuImg, setMenuImg] = useState();
   const [file, setFile] = useState();
 
+  const addMenuFunc = () => setAddMenu((current) => !current);
+
+  const marketImgChange = (e) => {
+    e.preventDefault();
+    // setMarketImg(URL.createObjectURL(e.target.files[0]));
+    const img = URL.createObjectURL(e.target.files[0]);
+
+    const tempArr = [...marketImgs, img];
+    setMarketImgs(tempArr);
+    console.log(tempArr);
+  };
 
   const onChangeImage = (e) => {
     e.preventDefault();
     const img = e.target.files[0];
 
-    // const tempArr = [...imgs, img];
     setMenuImg(img);
 
     const prevFile = URL.createObjectURL(e.target.files[0]);
@@ -354,9 +433,18 @@ function Register() {
     e.target.value = "";
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   return (
     <Container>
       <Header />
+
       <InputFormDiv>
         <form className="NameForm">
           <div
@@ -395,23 +483,34 @@ function Register() {
 
             <div style={{ width: "30%", height: "180px" }}>
               <InputContainer style={{ height: "100%" }}>
-              <MarketImgDiv>
-              <form className="MarketImgForm">
-              <input 
-                  id="market_img_input"
-                  type="image"
-                   type="file"
-                   accept="image/jpg,image/png,image/jpeg,image/gif"
-                   name="market_img"
-                   onChange={marketImgChange}
-                  />
-                  <label for="market_img_input"> 
-                  {marketImg ? <MarketImg src={marketImg}></MarketImg> : 
-                  
-                    <FontAwesomeIcon 
-                    style={{ color: "rgba(0, 0, 0, 0.1)" }} 
-                    icon={faCamera} />
-                   }  </label>
+                <MarketImgDiv>
+                  <form className="MarketImgForm">
+                    <input
+                      id="market_img_input"
+                      type="image"
+                      type="file"
+                      accept="image/jpg,image/png,image/jpeg,image/gif"
+                      name="market_img"
+                      onChange={marketImgChange}
+                    />
+                    <label htmlFor="market_img_input">
+                      <SliderDiv>
+                        <StyledSlider {...settings}>
+                          {marketImgs?.length !== 0 ? (
+                            marketImgs?.map((one, index) => (
+                              <div>
+                                <MarketImg src={one} key={index} />
+                              </div>
+                            ))
+                          ) : (
+                            <FontAwesomeIcon
+                              style={{ color: "rgba(0, 0, 0, 0.1)" }}
+                              icon={faCamera}
+                            />
+                          )}{" "}
+                        </StyledSlider>
+                      </SliderDiv>
+                    </label>
                   </form>
                 </MarketImgDiv>
               </InputContainer>
@@ -547,7 +646,8 @@ function Register() {
           <MenuProp className="menuImg">이미지</MenuProp>
           <MenuProp className="menuName">메뉴명</MenuProp>
           <MenuProp className="menuPrice">가격</MenuProp>
-          <MenuProp className="menuDes">상세설명</MenuProp>
+          <MenuProp className="menuDesc">상세설명</MenuProp>
+          <MenuProp className="menuDel">삭제</MenuProp>
         </MenuHeader>
         <MenuItem>
           <MenuProp className="menuImg">
@@ -555,7 +655,12 @@ function Register() {
           </MenuProp>
           <MenuProp className="menuName">불닭볶음면</MenuProp>
           <MenuProp className="menuPrice">1300</MenuProp>
-          <MenuProp className="menuDes">너무 맵고 맛있다.</MenuProp>
+          <MenuProp className="menuDesc">너무 맵고 맛있다.</MenuProp>
+          <MenuProp className="menuDel">
+            <button>
+              <i className="fa-solid fa-trash"></i>
+            </button>
+          </MenuProp>
         </MenuItem>
         {addMenu ? (
           <MenuInput>
@@ -572,7 +677,7 @@ function Register() {
                   <FontAwesomeIcon
                     style={{
                       color: "rgba(200, 200, 200, 0.5)",
-                      fontSize: "50px",
+                      fontSize: "30px",
                     }}
                     icon={faCamera}
                   />
@@ -588,7 +693,7 @@ function Register() {
             <MenuProp className="menuPrice">
               <input placeholder="가격" />
             </MenuProp>
-            <MenuProp className="menuDes">
+            <MenuProp className="menuDesc" style={{ width: "45%" }}>
               <textarea placeholder="상세설명" />
             </MenuProp>
           </MenuInput>
