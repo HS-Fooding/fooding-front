@@ -174,10 +174,35 @@ const InputBox = styled.div`
   height: 94%;
   margin-left: 3px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
+  .SelectCategoryContainer{
+    margin-left:30px;
+    width:130px;
+  }
+  .CategoryTags{
+    display:flex;
+    justify-content:"space-evenly";  
+    width:400px;
+    height:30px;
+    background-color:orange;
+      .EachCategoryTag{
+        display:flex;
+        width:120px;
+        background-color:"orange";
+        .EachCategoryButton{
+          border:3px solid black;
+          border-radius:3px;
+          width:20px;
+          height:20px;
+          &:hover{
+            cursor:pointer;
+          }
+        }
+      }
+    }
 `;
 
 const NumContainer = styled.div`
@@ -408,8 +433,15 @@ function Register() {
   const [marketImgs, setMarketImgs] = useState([]);
   const [menuImg, setMenuImg] = useState();
   const [file, setFile] = useState();
-
+  
+  const [categorySelected,setCategorySelected]=useState([]);
   const addMenuFunc = () => setAddMenu((current) => !current);
+  let categoryList = [];
+  // useEffect(()=>{
+  //   let temp = categorySelected;
+  //   categoryList.push(temp);
+  //   console.log(categoryList);
+  // },[categorySelected]);
 
   const marketImgChange = (e) => {
     e.preventDefault();
@@ -432,7 +464,7 @@ function Register() {
 
     e.target.value = "";
   };
-
+ 
   const settings = {
     dots: true,
     infinite: true,
@@ -440,7 +472,42 @@ function Register() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  const handleSelect = (e)=>{
+    // if(categorySelected.length>0){
+    //   categorySelected.map((value,index)=>{
+    //   console.log("e.target.value ",e.target.value,"value ",value);
+    //   if(e.target.value==value){
+        
+    //   }
+    //   else{
+    //     setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
+    //   }
+    //   })
+    // }
+    // else{
+    //    setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
+    //   }
 
+    if(!categorySelected.includes(e.target.value)){
+      setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
+    }
+   
+    
+  }
+  const categoryButtonClick =(index)=>{
+ 
+    
+    // setCategorySelected((currentArray)=>currentArray.map((value,index)=>{
+    //   if(value===e.target.value){
+    //     currentArray.pop(value);
+    //   }
+    // }));
+    // const li = e.target.parentElement;
+    // console.log(li);
+    // li.remove();
+    setCategorySelected(categorySelected.filter((item, categoryIndex) => index !== categoryIndex));
+  
+  }
   return (
     <Container>
       <Header />
@@ -540,24 +607,32 @@ function Register() {
             <NameBox>
               <p>카테고리</p>
             </NameBox>
-            <InputBox style={{width:"80%"}}>
-              {/* <div className="InputAddressContainer"> */}
-                <select>
-                   <option>KOREAN</option>
-                   <option>JAPANESE</option>
-                   <option>CHINESE</option>
-                   <option>WESTERN</option>
-                   <option>SNACK</option>
-                   <option>NOODLE</option>
-                   <option>SOUP</option>
-                   <option>BBQ</option>
-                   <option>PORK</option>
-                   <option>BEEF</option>
-                   <option>CHICKEN</option>
-                   <option>LAMB</option>
-                   <option>CAFE</option>
+            <InputBox style={{width:"80%", display:"flex", justifyContent:"flexStart"}}>
+              <div className="SelectCategoryContainer">
+                <select onChange={handleSelect} value={categorySelected}>
+                   <option value="KOREAN">한식</option>
+                   <option value="JAPANESE">일식</option>
+                   <option value="CHINESE">중식</option>
+                   <option value="WESTERN">WESTERN</option>
+                   <option value="SNACK">SNACK</option>
+                   <option value="NOODLE">NOODLE</option>
+                   <option value="SOUP">SOUP</option>
+                   <option value="BBQ">BBQ</option>
+                   <option value="PORK">PORK</option>
+                   <option value="BEEF">BEEF</option>
+                   <option value="CHICKEN">CHICKEN</option>
+                   <option value="LAMB">LAMB</option>
+                   <option value="CAFE">CAFE</option>
                 </select>
-              {/* </div> */}
+              
+              </div>
+              {/* <div style={{color:"white"}}></div> */}
+              {/* <div>수정된 카테고리 {categorySelected}</div> */}
+              <ul className="CategoryTags">                
+                {categorySelected.map((value,index)=>{
+                  return (<li key={index} className="EachCategoryTag"><div className="EachCategoryButton" onClick={()=>categoryButtonClick(index)}>X</div>{value}</li>)
+                })}
+                </ul>
               </InputBox>
           </InputContainer>
           <InputContainer className="NumberContainer BorderTop">
