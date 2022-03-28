@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons"
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import SimpleSlider from "./SimpleSlider";
 import Slider from "react-slick";
 
@@ -26,7 +26,6 @@ const InputFormDiv = styled.div`
     .BorderTop {
       border-top: ${(props) => props.theme.menuBorderColor};
     }
-    
   }
   form {
     height: 400px;
@@ -135,10 +134,10 @@ const SliderDiv = styled.div`
 `;
 
 const InfoForm = styled.form`
-  height:300px;
- 
-  .AddressContainer{
-    height:40px;
+  height: 300px;
+
+  .AddressContainer {
+    height: 40px;
   }
   .NumberContainer {
     height: 80px;
@@ -214,7 +213,6 @@ const NumContainer = styled.div`
 const SmallInput = styled.input``;
 
 const MenuList = styled.div`
-
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -240,7 +238,7 @@ const MenuHeader = styled.div`
   border-bottom: ${(props) => props.theme.menuBorderColor};
   //border-top: ${(props) => props.theme.menuBorderColor};
   .menuImg {
-    width: 20%;
+    width: 15%;
     input {
       display: none;
     }
@@ -253,10 +251,34 @@ const MenuHeader = styled.div`
     width: 15%;
   }
   .menuDesc {
-    width: 37%;
+    width: 40%;
   }
   .menuDel {
-    width: 8%;
+    width: 10%;
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"] + label {
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      border: 1px solid #707070;
+      position: relative;
+    }
+    input[id="check1"]:checked + label::after {
+      content: "✔";
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    span {
+      margin-left: 4px;
+      font-size: 12px;
+    }
   }
 `;
 
@@ -269,8 +291,6 @@ const MenuProp = styled.div`
   border-right: ${(props) => props.theme.menuBorderColor};
 
   padding: 9px;
-
-
 
   img {
     width: 90px;
@@ -301,8 +321,6 @@ const MenuProp = styled.div`
   textarea:focus {
     outline: none;
   }
- 
-  
 `;
 
 const MenuItem = styled(MenuHeader)`
@@ -516,49 +534,48 @@ function Register() {
               </InputContainer>
             </div>
           </div>
-
         </form>
-        <InfoForm> 
+        <InfoForm>
           {/* 주소 입력  */}
           {/* <div style={{ width: "100%", height: "100px",}}> */}
           <InputContainer className="AddressContainer BorderTop">
             <NameBox>
               <p>주소</p>
             </NameBox>
-            <InputBox style={{width:"80%"}}>
+            <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
-                <input
-                  className="NumInputStyle"
-                  {...register("address")}
-                  placeholder="주소를 입력하시오"
-                  style={{ marginTop: "1px" }}
-                />
+              <input
+                className="NumInputStyle"
+                {...register("address")}
+                placeholder="주소를 입력하시오"
+                style={{ marginTop: "1px" }}
+              />
               {/* </div> */}
-              </InputBox>
+            </InputBox>
           </InputContainer>
           <InputContainer className="AddressContainer">
             <NameBox>
               <p>카테고리</p>
             </NameBox>
-            <InputBox style={{width:"80%"}}>
+            <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
-                <select>
-                   <option>KOREAN</option>
-                   <option>JAPANESE</option>
-                   <option>CHINESE</option>
-                   <option>WESTERN</option>
-                   <option>SNACK</option>
-                   <option>NOODLE</option>
-                   <option>SOUP</option>
-                   <option>BBQ</option>
-                   <option>PORK</option>
-                   <option>BEEF</option>
-                   <option>CHICKEN</option>
-                   <option>LAMB</option>
-                   <option>CAFE</option>
-                </select>
+              <select>
+                <option>KOREAN</option>
+                <option>JAPANESE</option>
+                <option>CHINESE</option>
+                <option>WESTERN</option>
+                <option>SNACK</option>
+                <option>NOODLE</option>
+                <option>SOUP</option>
+                <option>BBQ</option>
+                <option>PORK</option>
+                <option>BEEF</option>
+                <option>CHICKEN</option>
+                <option>LAMB</option>
+                <option>CAFE</option>
+              </select>
               {/* </div> */}
-              </InputBox>
+            </InputBox>
           </InputContainer>
           <InputContainer className="NumberContainer BorderTop">
             <NameBox>
@@ -647,7 +664,7 @@ function Register() {
           <MenuProp className="menuName">메뉴명</MenuProp>
           <MenuProp className="menuPrice">가격</MenuProp>
           <MenuProp className="menuDesc">상세설명</MenuProp>
-          <MenuProp className="menuDel">삭제</MenuProp>
+          <MenuProp className="menuDel"></MenuProp>
         </MenuHeader>
         <MenuItem>
           <MenuProp className="menuImg">
@@ -658,7 +675,8 @@ function Register() {
           <MenuProp className="menuDesc">너무 맵고 맛있다.</MenuProp>
           <MenuProp className="menuDel">
             <button>
-              <i className="fa-solid fa-trash"></i>
+              {/* <i className="fa-solid fa-trash"></i> */}
+              삭제
             </button>
           </MenuProp>
         </MenuItem>
@@ -693,8 +711,13 @@ function Register() {
             <MenuProp className="menuPrice">
               <input placeholder="가격" />
             </MenuProp>
-            <MenuProp className="menuDesc" style={{ width: "45%" }}>
+            <MenuProp className="menuDesc">
               <textarea placeholder="상세설명" />
+            </MenuProp>
+            <MenuProp className="menuDel">
+              <input type="checkbox" id="check1" />
+              <label htmlFor="check1"></label>
+              <span>대표</span>
             </MenuProp>
           </MenuInput>
         ) : null}
