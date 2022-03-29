@@ -240,6 +240,29 @@ function SignUp() {
           </RadioBox>
         </div>
         <Message>{errors?.age?.message}</Message>
+        <select {...register("favor")}>
+          <option>KOREAN</option>
+          <option>JAPANESE</option>
+          <option>CHINESE</option>
+          <option>WESTERN</option>
+          <option>SNACK</option>
+          <option>NOODLE</option>
+          <option>SOUP</option>
+          <option>BBQ</option>
+          <option>PORK</option>
+          <option>BEEF</option>
+          <option>CHICKEN</option>
+          <option>LAMB</option>
+          <option>CAFE</option>
+        </select>
+        <select {...register("job")}>
+          <option>STUDENT</option>
+          <option>UNIV_STUDENT</option>
+          <option>WORKER</option>
+          <option>FREELANCER</option>
+          <option>HOUSEWIVES</option>
+          <option>NONE</option>
+        </select>
         <SubmitBtn>회원가입</SubmitBtn>
         <Message>{errors?.extraError?.message}</Message>
       </Form>

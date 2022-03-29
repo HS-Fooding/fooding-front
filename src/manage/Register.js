@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons"
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import SimpleSlider from "./SimpleSlider";
 import Slider from "react-slick";
 
@@ -26,7 +26,6 @@ const InputFormDiv = styled.div`
     .BorderTop {
       border-top: ${(props) => props.theme.menuBorderColor};
     }
-    
   }
   form {
     height: 400px;
@@ -135,10 +134,13 @@ const SliderDiv = styled.div`
 `;
 
 const InfoForm = styled.form`
-  height:300px;
- 
-  .AddressContainer{
-    height:40px;
+  height: 300px;
+
+  .AddressContainer {
+    height: 40px;
+  }
+  .CategoryContainer{
+    height:70px;
   }
   .NumberContainer {
     height: 80px;
@@ -180,23 +182,38 @@ const InputBox = styled.div`
   padding-bottom: 0px;
   .SelectCategoryContainer{
     margin-left:30px;
-    width:130px;
+    width:100px;
   }
   .CategoryTags{
     display:flex;
-    justify-content:"space-evenly";  
+    flex-wrap:wrap;
+    justify-content:flex-start; 
+    align-items : flex-start;
     width:400px;
-    height:30px;
-    background-color:orange;
+    height:45px;
+    
       .EachCategoryTag{
         display:flex;
-        width:120px;
-        background-color:"orange";
+        align-items: center;
+        font-size:12px;
+        /* width:85px;         */
+        height:22px;
+        color:gray;
+        padding-right:8px;
+        border-radius: 5px;
+        background-color: ${(props) => props.theme.fillGrayColor};
+        margin-right:6px;
+        margin-bottom:7px;
         .EachCategoryButton{
-          border:3px solid black;
+          display:flex;
+          justify-content: center;
+          align-items:center;
+          /* border:0.5px solid gray; */
           border-radius:3px;
-          width:20px;
-          height:20px;
+          width:15px;
+          height:14px;
+          margin-left:5px;
+          margin-right:7px;
           &:hover{
             cursor:pointer;
           }
@@ -239,7 +256,6 @@ const NumContainer = styled.div`
 const SmallInput = styled.input``;
 
 const MenuList = styled.div`
-
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -265,7 +281,7 @@ const MenuHeader = styled.div`
   border-bottom: ${(props) => props.theme.menuBorderColor};
   //border-top: ${(props) => props.theme.menuBorderColor};
   .menuImg {
-    width: 20%;
+    width: 15%;
     input {
       display: none;
     }
@@ -278,10 +294,34 @@ const MenuHeader = styled.div`
     width: 15%;
   }
   .menuDesc {
-    width: 37%;
+    width: 40%;
   }
   .menuDel {
-    width: 8%;
+    width: 10%;
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"] + label {
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      border: 1px solid #707070;
+      position: relative;
+    }
+    input[id="check1"]:checked + label::after {
+      content: "✔";
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    span {
+      margin-left: 4px;
+      font-size: 12px;
+    }
   }
 `;
 
@@ -294,8 +334,6 @@ const MenuProp = styled.div`
   border-right: ${(props) => props.theme.menuBorderColor};
 
   padding: 9px;
-
-
 
   img {
     width: 90px;
@@ -326,8 +364,6 @@ const MenuProp = styled.div`
   textarea:focus {
     outline: none;
   }
- 
-  
 `;
 
 const MenuItem = styled(MenuHeader)`
@@ -435,6 +471,7 @@ function Register() {
   const [file, setFile] = useState();
   
   const [categorySelected,setCategorySelected]=useState([]);
+  const [categoryValueSelected,setCategoryValueSelected] = useState([]);
   const addMenuFunc = () => setAddMenu((current) => !current);
   let categoryList = [];
   // useEffect(()=>{
@@ -473,40 +510,21 @@ function Register() {
     slidesToScroll: 1,
   };
   const handleSelect = (e)=>{
-    // if(categorySelected.length>0){
-    //   categorySelected.map((value,index)=>{
-    //   console.log("e.target.value ",e.target.value,"value ",value);
-    //   if(e.target.value==value){
-        
-    //   }
-    //   else{
-    //     setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
-    //   }
-    //   })
-    // }
-    // else{
-    //    setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
-    //   }
-
-    if(!categorySelected.includes(e.target.value)){
-      setCategorySelected((currentArray)=>[e.target.value,...currentArray]);
+     if(!categoryValueSelected.includes(e.target.value)){
+      setCategoryValueSelected((currentArray)=>[...currentArray,e.target.value]);
+      console.log("valueList",categoryValueSelected);
+     }
+     if(!categorySelected.includes(e.target.options[e.target.selectedIndex].text)){
+      setCategorySelected((currentArray)=>[...currentArray,e.target.options[e.target.selectedIndex].text]);
+    console.log("list",categorySelected);
     }
    
     
   }
   const categoryButtonClick =(index)=>{
  
-    
-    // setCategorySelected((currentArray)=>currentArray.map((value,index)=>{
-    //   if(value===e.target.value){
-    //     currentArray.pop(value);
-    //   }
-    // }));
-    // const li = e.target.parentElement;
-    // console.log(li);
-    // li.remove();
     setCategorySelected(categorySelected.filter((item, categoryIndex) => index !== categoryIndex));
-  
+    console.log("list",categorySelected);
   }
   return (
     <Container>
@@ -583,46 +601,51 @@ function Register() {
               </InputContainer>
             </div>
           </div>
-
         </form>
-        <InfoForm> 
+        <InfoForm>
           {/* 주소 입력  */}
           {/* <div style={{ width: "100%", height: "100px",}}> */}
           <InputContainer className="AddressContainer BorderTop">
             <NameBox>
               <p>주소</p>
             </NameBox>
-            <InputBox style={{width:"80%"}}>
+            <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
-                <input
-                  className="NumInputStyle"
-                  {...register("address")}
-                  placeholder="주소를 입력하시오"
-                  style={{ marginTop: "1px" }}
-                />
+              <input
+                className="NumInputStyle"
+                {...register("address")}
+                placeholder="주소를 입력하시오"
+                style={{ marginTop: "1px" }}
+              />
               {/* </div> */}
-              </InputBox>
+            </InputBox>
           </InputContainer>
-          <InputContainer className="AddressContainer">
+          <InputContainer className="CategoryContainer">
             <NameBox>
               <p>카테고리</p>
             </NameBox>
             <InputBox style={{width:"80%", display:"flex", justifyContent:"flexStart"}}>
               <div className="SelectCategoryContainer">
                 <select onChange={handleSelect} value={categorySelected}>
-                   <option value="KOREAN">한식</option>
+                   <option></option>                  
+                   <option value="KOREAN" selected>한식</option>
                    <option value="JAPANESE">일식</option>
                    <option value="CHINESE">중식</option>
-                   <option value="WESTERN">WESTERN</option>
-                   <option value="SNACK">SNACK</option>
-                   <option value="NOODLE">NOODLE</option>
-                   <option value="SOUP">SOUP</option>
-                   <option value="BBQ">BBQ</option>
-                   <option value="PORK">PORK</option>
-                   <option value="BEEF">BEEF</option>
-                   <option value="CHICKEN">CHICKEN</option>
-                   <option value="LAMB">LAMB</option>
-                   <option value="CAFE">CAFE</option>
+                   <option value="WESTERN">양식</option>
+                   <option value="TAIWAN">태국</option>
+                   <option value="VIETNAM">베트남</option>                                                         
+                   <option value="SNACK">분식</option>
+                   <option value="NOODLE">면요리</option>
+                   <option value="BBQ">바베큐</option>
+                   <option value="PORK">돼지고기</option>
+                   <option value="BEEF">소고기</option>
+                   <option value="CHICKEN">닭고기</option>                   
+                   <option value="LAMB">양고기</option>
+                   <option value="BAR">바</option>
+                   <option value="PUB">술집</option>        
+                   <option value="CAFE">카페</option>
+                   <option value="DESSERT">디저트</option>
+                   
                 </select>
               
               </div>
@@ -630,7 +653,7 @@ function Register() {
               {/* <div>수정된 카테고리 {categorySelected}</div> */}
               <ul className="CategoryTags">                
                 {categorySelected.map((value,index)=>{
-                  return (<li key={index} className="EachCategoryTag"><div className="EachCategoryButton" onClick={()=>categoryButtonClick(index)}>X</div>{value}</li>)
+                  return (<div style={{display:"inlineBlock"}}><li key={index} className="EachCategoryTag"><div className="EachCategoryButton" onClick={()=>categoryButtonClick(index)}>X</div><p>{value}</p></li></div>)
                 })}
                 </ul>
               </InputBox>
@@ -722,7 +745,7 @@ function Register() {
           <MenuProp className="menuName">메뉴명</MenuProp>
           <MenuProp className="menuPrice">가격</MenuProp>
           <MenuProp className="menuDesc">상세설명</MenuProp>
-          <MenuProp className="menuDel">삭제</MenuProp>
+          <MenuProp className="menuDel"></MenuProp>
         </MenuHeader>
         <MenuItem>
           <MenuProp className="menuImg">
@@ -733,7 +756,8 @@ function Register() {
           <MenuProp className="menuDesc">너무 맵고 맛있다.</MenuProp>
           <MenuProp className="menuDel">
             <button>
-              <i className="fa-solid fa-trash"></i>
+              {/* <i className="fa-solid fa-trash"></i> */}
+              삭제
             </button>
           </MenuProp>
         </MenuItem>
@@ -768,8 +792,13 @@ function Register() {
             <MenuProp className="menuPrice">
               <input placeholder="가격" />
             </MenuProp>
-            <MenuProp className="menuDesc" style={{ width: "45%" }}>
+            <MenuProp className="menuDesc">
               <textarea placeholder="상세설명" />
+            </MenuProp>
+            <MenuProp className="menuDel">
+              <input type="checkbox" id="check1" />
+              <label htmlFor="check1"></label>
+              <span>대표</span>
             </MenuProp>
           </MenuInput>
         ) : null}
