@@ -139,6 +139,9 @@ const InfoForm = styled.form`
   .AddressContainer {
     height: 40px;
   }
+  .CategoryContainer{
+    height:70px;
+  }
   .NumberContainer {
     height: 80px;
     margin-top: 10px;
@@ -173,10 +176,50 @@ const InputBox = styled.div`
   height: 94%;
   margin-left: 3px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
+  .SelectCategoryContainer{
+    margin-left:30px;
+    width:100px;
+  }
+  .CategoryTags{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-start; 
+    align-items : flex-start;
+    width:400px;
+    height:45px;
+    
+      .EachCategoryTag{
+        display:flex;
+        align-items: center;
+        font-size:12px;
+        /* width:85px;         */
+        height:22px;
+        color:gray;
+        padding-right:8px;
+        border-radius: 5px;
+        background-color: ${(props) => props.theme.fillGrayColor};
+        margin-right:6px;
+        margin-bottom:7px;
+        .EachCategoryButton{
+          display:flex;
+          justify-content: center;
+          align-items:center;
+          /* border:0.5px solid gray; */
+          border-radius:3px;
+          width:15px;
+          height:14px;
+          margin-left:5px;
+          margin-right:7px;
+          &:hover{
+            cursor:pointer;
+          }
+        }
+      }
+    }
 `;
 
 const NumContainer = styled.div`
@@ -426,8 +469,16 @@ function Register() {
   const [marketImgs, setMarketImgs] = useState([]);
   const [menuImg, setMenuImg] = useState();
   const [file, setFile] = useState();
-
+  
+  const [categorySelected,setCategorySelected]=useState([]);
+  const [categoryValueSelected,setCategoryValueSelected] = useState([]);
   const addMenuFunc = () => setAddMenu((current) => !current);
+  let categoryList = [];
+  // useEffect(()=>{
+  //   let temp = categorySelected;
+  //   categoryList.push(temp);
+  //   console.log(categoryList);
+  // },[categorySelected]);
 
   const marketImgChange = (e) => {
     e.preventDefault();
@@ -450,7 +501,7 @@ function Register() {
 
     e.target.value = "";
   };
-
+ 
   const settings = {
     dots: true,
     infinite: true,
@@ -458,7 +509,23 @@ function Register() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-
+  const handleSelect = (e)=>{
+     if(!categoryValueSelected.includes(e.target.value)){
+      setCategoryValueSelected((currentArray)=>[...currentArray,e.target.value]);
+      console.log("valueList",categoryValueSelected);
+     }
+     if(!categorySelected.includes(e.target.options[e.target.selectedIndex].text)){
+      setCategorySelected((currentArray)=>[...currentArray,e.target.options[e.target.selectedIndex].text]);
+    console.log("list",categorySelected);
+    }
+   
+    
+  }
+  const categoryButtonClick =(index)=>{
+ 
+    setCategorySelected(categorySelected.filter((item, categoryIndex) => index !== categoryIndex));
+    console.log("list",categorySelected);
+  }
   return (
     <Container>
       <Header />
@@ -553,29 +620,43 @@ function Register() {
               {/* </div> */}
             </InputBox>
           </InputContainer>
-          <InputContainer className="AddressContainer">
+          <InputContainer className="CategoryContainer">
             <NameBox>
               <p>카테고리</p>
             </NameBox>
-            <InputBox style={{ width: "80%" }}>
-              {/* <div className="InputAddressContainer"> */}
-              <select>
-                <option>KOREAN</option>
-                <option>JAPANESE</option>
-                <option>CHINESE</option>
-                <option>WESTERN</option>
-                <option>SNACK</option>
-                <option>NOODLE</option>
-                <option>SOUP</option>
-                <option>BBQ</option>
-                <option>PORK</option>
-                <option>BEEF</option>
-                <option>CHICKEN</option>
-                <option>LAMB</option>
-                <option>CAFE</option>
-              </select>
-              {/* </div> */}
-            </InputBox>
+            <InputBox style={{width:"80%", display:"flex", justifyContent:"flexStart"}}>
+              <div className="SelectCategoryContainer">
+                <select onChange={handleSelect} value={categorySelected}>
+                   <option></option>                  
+                   <option value="KOREAN" selected>한식</option>
+                   <option value="JAPANESE">일식</option>
+                   <option value="CHINESE">중식</option>
+                   <option value="WESTERN">양식</option>
+                   <option value="TAIWAN">태국</option>
+                   <option value="VIETNAM">베트남</option>                                                         
+                   <option value="SNACK">분식</option>
+                   <option value="NOODLE">면요리</option>
+                   <option value="BBQ">바베큐</option>
+                   <option value="PORK">돼지고기</option>
+                   <option value="BEEF">소고기</option>
+                   <option value="CHICKEN">닭고기</option>                   
+                   <option value="LAMB">양고기</option>
+                   <option value="BAR">바</option>
+                   <option value="PUB">술집</option>        
+                   <option value="CAFE">카페</option>
+                   <option value="DESSERT">디저트</option>
+                   
+                </select>
+              
+              </div>
+              {/* <div style={{color:"white"}}></div> */}
+              {/* <div>수정된 카테고리 {categorySelected}</div> */}
+              <ul className="CategoryTags">                
+                {categorySelected.map((value,index)=>{
+                  return (<div style={{display:"inlineBlock"}}><li key={index} className="EachCategoryTag"><div className="EachCategoryButton" onClick={()=>categoryButtonClick(index)}>X</div><p>{value}</p></li></div>)
+                })}
+                </ul>
+              </InputBox>
           </InputContainer>
           <InputContainer className="NumberContainer BorderTop">
             <NameBox>
