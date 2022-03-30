@@ -91,6 +91,18 @@ function SignUp() {
     console.log(data);
     const userAge = 2022 - data.age.substring(0, 4) + 1; // 나이 계산
 
+    //   {
+    //     "id" : "testAdmin",
+    //     "password" : "testAdminpw",
+    //      "name" : "testAdmin",
+    //     "nickName" : "testAdmin",
+    //      "sex" : true,
+    //     "age" : 10,
+    //      "favor" : ["KOREAN"],
+    //     "role" : ["ROLE_ADMIN"],
+    //      "job" : "STUDENT"
+    //  }
+
     var axios = require("axios");
     var data = JSON.stringify({
       userId: data.Id,
@@ -99,12 +111,12 @@ function SignUp() {
       userName: data.userName,
       nickName: data.nickName,
       age: userAge,
-      role: "ROLE_USER",
+      role: ["ROLE_USER"],
     });
 
     var config = {
       method: "post",
-      url: url + "/sample_project/join",
+      url: url + "/fooding/join",
       headers: {
         "Content-Type": "application/json",
       },
@@ -122,6 +134,8 @@ function SignUp() {
 
   const onValid = (data) => {
     // 데이터 전송시 작동, data는 입력된 값들
+
+    console.log(data);
 
     if (data.password !== data.password1) {
       setError(
@@ -148,7 +162,7 @@ function SignUp() {
           {...register("Id", {
             required: "아이디를 입력하세요.",
             minLength: {
-              value: 8,
+              value: 1,
               message: "최소 8자 이상 입력하세요.",
             },
           })}
@@ -159,7 +173,7 @@ function SignUp() {
           {...register("password", {
             required: "비밀번호를 입력하세요.",
             minLength: {
-              value: 8,
+              value: 1,
               message: "최소 8자 이상 입력하세요.",
             },
           })}

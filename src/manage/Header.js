@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useMatch } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
@@ -36,6 +36,7 @@ const Item = styled.li`
   align-self: flex-end;
   position: relative;
   transition: color 0.3s ease-in-out;
+  cursor: pointer;
 
   a {
     text-decoration: none;
@@ -74,11 +75,35 @@ const Circle = styled(motion.span)`
 const Header = () => {
   const reservationMatch = useMatch("/reservation");
   const registerMatch = useMatch("/register");
+
+  let [isToken, setIsToken] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token == undefined) {
+      setIsToken(false);
+    } else {
+      setIsToken(true);
+    }
+  }, []);
+
+  const logOut = () => {
+    localStorage.clear();
+    setIsToken(false);
+  };
   return (
-    <Nav style={{zIndex:3}}>
+    <Nav style={{ zIndex: 3 }}>
       <TopMenu>
         <Items>
-          <Item className="small">로그인</Item>
+          {isToken == false ? (
+            <Item className="small">
+              <Link to="/manager/login">로그인</Link>
+            </Item>
+          ) : (
+            <Item onClick={logOut} className="small">
+              로그아웃
+            </Item>
+          )}
           <Item className="small">회원가입</Item>
         </Items>
       </TopMenu>

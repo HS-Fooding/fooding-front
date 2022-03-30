@@ -11,6 +11,7 @@ import theme from "./theme";
 import ReviewDetail from "./component/ReviewDetail";
 import Register from "./manage/Register";
 import Reservation from "./manage/Reservation";
+import LoginMg from "./manage/LoginMg";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="/:reviewId" element={<ReviewDetail />}></Route>
           <Route path="/reservation" element={<Reservation />}></Route>
           <Route path="/register" element={<Register />}></Route>
-         
+          <Route path="/manager/login" element={<LoginMg />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
