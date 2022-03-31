@@ -563,7 +563,7 @@ function Register() {
           },
           intro : values.detail,
           location : street,
-          category : [], //categoryValueSelected,
+          category : ["KOREAN","CHINESE","WESTERN"], //categoryValueSelected,
         };
         console.log("content이전",content);
         data.append("restaurant",  new Blob([JSON.stringify(content)], { type: "application/json" }));
