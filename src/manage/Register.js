@@ -2,10 +2,12 @@ import Header from "./Header";
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
+import { Navigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import SimpleSlider from "./SimpleSlider";
 import Slider from "react-slick";
+import { url } from "../Api";
 
 const Container = styled.div`
   width: 100%;
@@ -469,7 +471,7 @@ function Register() {
   const [marketImgs, setMarketImgs] = useState([]);
   const [menuImg, setMenuImg] = useState();
   const [file, setFile] = useState();
-  
+  const [streetAddress,setStreetAddress] = useState({});
   const [categorySelected,setCategorySelected]=useState([]);
   const [categoryValueSelected,setCategoryValueSelected] = useState([]);
   const addMenuFunc = () => setAddMenu((current) => !current);
@@ -526,6 +528,81 @@ function Register() {
     setCategorySelected(categorySelected.filter((item, categoryIndex) => index !== categoryIndex));
     console.log("list",categorySelected);
   }
+  const submitInfo = (e)=>{
+    var axios = require("axios"); 
+      e.preventDefault();
+      const values = getValues();
+      console.log("values",values);
+      const getToken = localStorage.getItem("token");
+      const data = new FormData();
+      const address = values.address;
+      let street;
+      axios.post(url + "/fooding/geocode",address, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      })
+      .then((res) => {
+        console.log("post 됨");
+        console.log(res.data);
+        setStreetAddress(res.data);
+        street=res.data;
+    
+      }).then((res) => {
+        const content = {
+          name : values.businessName,
+          tel : [values.businessNum, values.personalNum],
+          weekdaysWorkHour : {
+              open : values.weekdayTimeStart,
+              close :values.weekdayTimeEnd
+          },
+          weekendsWorkHour : {
+              open : values.weekendTimeStart,
+              close :values.weekendTimeEnd 
+          },
+          intro : values.detail,
+          location : street,
+          category : [], //categoryValueSelected,
+        };
+        console.log("content이전",content);
+        data.append("restaurant",  new Blob([JSON.stringify(content)], { type: "application/json" }));
+        axios
+        .post(url + "/fooding/admin/restaurant", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            // "Content-Type": "application/json",
+            Authorization: "Bearer " + getToken,
+          },
+
+        })
+        .catch((err) => {
+          console.log("content 컨텐츠",content);
+          console.log(err);
+          
+
+        });
+      });
+      var config={
+        method: "get",
+        url: url + "/fooding/restaurant?coord=true",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      };
+      axios(config)
+      .then((res)=>{
+        console.log(res);
+
+      })
+      .catch((err)=>{
+        console.log(err)
+      });
+   
+       
+  }
+    
   return (
     <Container>
       <Header />
@@ -729,11 +806,7 @@ function Register() {
 
           {/* </div> */}
           <Button
-            onClick={(e) => {
-              e.preventDefault();
-              const values = getValues();
-              console.log("values ", values);
-            }}
+            onClick={submitInfo}
           >
             등록
           </Button>
@@ -808,8 +881,10 @@ function Register() {
       ) : (
         <Button onClick={addMenuFunc}>추가</Button>
       )}
+     
     </Container>
     // </div>
   );
+  
 }
 export default Register;
