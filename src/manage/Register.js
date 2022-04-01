@@ -8,6 +8,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import SimpleSlider from "./SimpleSlider";
 import Slider from "react-slick";
 import { url } from "../Api";
+import Menu from "./component/Menu";
 
 const Container = styled.div`
   width: 100%;
@@ -141,8 +142,8 @@ const InfoForm = styled.form`
   .AddressContainer {
     height: 40px;
   }
-  .CategoryContainer{
-    height:70px;
+  .CategoryContainer {
+    height: 70px;
   }
   .NumberContainer {
     height: 80px;
@@ -182,46 +183,46 @@ const InputBox = styled.div`
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
-  .SelectCategoryContainer{
-    margin-left:30px;
-    width:100px;
+  .SelectCategoryContainer {
+    margin-left: 30px;
+    width: 100px;
   }
-  .CategoryTags{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:flex-start; 
-    align-items : flex-start;
-    width:400px;
-    height:45px;
-    
-      .EachCategoryTag{
-        display:flex;
+  .CategoryTags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 400px;
+    height: 45px;
+
+    .EachCategoryTag {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      /* width:85px;         */
+      height: 22px;
+      color: gray;
+      padding-right: 8px;
+      border-radius: 5px;
+      background-color: ${(props) => props.theme.fillGrayColor};
+      margin-right: 6px;
+      margin-bottom: 7px;
+      .EachCategoryButton {
+        display: flex;
+        justify-content: center;
         align-items: center;
-        font-size:12px;
-        /* width:85px;         */
-        height:22px;
-        color:gray;
-        padding-right:8px;
-        border-radius: 5px;
-        background-color: ${(props) => props.theme.fillGrayColor};
-        margin-right:6px;
-        margin-bottom:7px;
-        .EachCategoryButton{
-          display:flex;
-          justify-content: center;
-          align-items:center;
-          /* border:0.5px solid gray; */
-          border-radius:3px;
-          width:15px;
-          height:14px;
-          margin-left:5px;
-          margin-right:7px;
-          &:hover{
-            cursor:pointer;
-          }
+        /* border:0.5px solid gray; */
+        border-radius: 3px;
+        width: 15px;
+        height: 14px;
+        margin-left: 5px;
+        margin-right: 7px;
+        &:hover {
+          cursor: pointer;
         }
       }
     }
+  }
 `;
 
 const NumContainer = styled.div`
@@ -256,155 +257,6 @@ const NumContainer = styled.div`
 `;
 
 const SmallInput = styled.input``;
-
-const MenuList = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  width: 700px;
-  /* border: ${(props) => props.theme.menuBorderColor}; */
-
-  margin-bottom: 20px;
-  margin-top: 150px;
-  border-top: ${(props) => props.theme.menuBorderColor};
-  border-left: ${(props) => props.theme.menuBorderColor};
-`;
-
-const MenuHeader = styled.div`
-  height: 40px;
-  width: 100%;
-  background-color: ${(props) => props.theme.fillGrayColor};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  //border-bottom: ${(props) => props.theme.menuBorderColor};
-  border-bottom: ${(props) => props.theme.menuBorderColor};
-  //border-top: ${(props) => props.theme.menuBorderColor};
-  .menuImg {
-    width: 15%;
-    input {
-      display: none;
-    }
-    position: relative;
-  }
-  .menuName {
-    width: 20%;
-  }
-  .menuPrice {
-    width: 15%;
-  }
-  .menuDesc {
-    width: 40%;
-  }
-  .menuDel {
-    width: 10%;
-    input[type="checkbox"] {
-      display: none;
-    }
-    input[type="checkbox"] + label {
-      display: inline-block;
-      width: 17px;
-      height: 17px;
-      border: 1px solid #707070;
-      position: relative;
-    }
-    input[id="check1"]:checked + label::after {
-      content: "✔";
-      font-size: 15px;
-      width: 15px;
-      height: 15px;
-      text-align: center;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    span {
-      margin-left: 4px;
-      font-size: 12px;
-    }
-  }
-`;
-
-const MenuProp = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-right: ${(props) => props.theme.menuBorderColor};
-
-  padding: 9px;
-
-  img {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    position: absolute;
-    display: inline-block;
-    content: "";
-    border-style: hidden;
-    border: 0px;
-    border-width: 0px;
-  }
-  input {
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-    border: ${(props) => props.theme.menuBorderColor};
-  }
-  textarea {
-    width: 100%;
-    height: 70px;
-    resize: none;
-    border-radius: 5px;
-    border: ${(props) => props.theme.menuBorderColor};
-  }
-
-  input:focus,
-  textarea:focus {
-    outline: none;
-  }
-`;
-
-const MenuItem = styled(MenuHeader)`
-  background-color: white;
-  height: 100px;
-
-  .menuDel {
-    //trash
-    button {
-      color: red;
-      border: 1px solid red;
-      background-color: white;
-      border-radius: 2px;
-      cursor: pointer;
-    }
-  }
-`;
-
-const MenuInput = styled(MenuHeader)`
-  background-color: white;
-  height: 100px;
-`;
-
-const FileIcon = styled.label`
-  font-size: 20px;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  background-color: none;
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const AddMenuBtn = styled(Button)`
-  width: 100px;
-`;
 
 const StyledSlider = styled(Slider)`
   height: 100%; //슬라이드 컨테이너 영역
@@ -462,19 +314,15 @@ const StyledSlider = styled(Slider)`
 `;
 
 function Register() {
-  const [menu, setMenu] = useState("");
   const [price, setPrice] = useState("");
   const { register, watch, getValues } = useForm();
-  const menuChange = (event) => setMenu(event.target.value);
-  const priceChange = (event) => setPrice(event.target.value);
-  const [addMenu, setAddMenu] = useState(false);
+
   const [marketImgs, setMarketImgs] = useState([]);
-  const [menuImg, setMenuImg] = useState();
-  const [file, setFile] = useState();
-  const [streetAddress,setStreetAddress] = useState({});
-  const [categorySelected,setCategorySelected]=useState([]);
-  const [categoryValueSelected,setCategoryValueSelected] = useState([]);
-  const addMenuFunc = () => setAddMenu((current) => !current);
+
+  const [streetAddress, setStreetAddress] = useState({});
+  const [categorySelected, setCategorySelected] = useState([]);
+  const [categoryValueSelected, setCategoryValueSelected] = useState([]);
+  const [file,setFile]=useState([]);
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
@@ -489,18 +337,11 @@ function Register() {
 
     const tempArr = [...marketImgs, img];
     setMarketImgs(tempArr);
-    console.log(tempArr);
-  };
-
-  const onChangeImage = (e) => {
-    e.preventDefault();
-    const img = e.target.files[0];
-
-    setMenuImg(img);
-
+    console.log("마켓이미지",tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
-    setFile(prevFile);
-
+    setFile([...file, prevFile]);
+    console.log("imgs: ", file);
+    console.log("prevFile:", prevFile);
     e.target.value = "";
   };
  
@@ -511,98 +352,97 @@ function Register() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  const handleSelect = (e)=>{
-     if(!categoryValueSelected.includes(e.target.value)){
-      setCategoryValueSelected((currentArray)=>[...currentArray,e.target.value]);
-      console.log("valueList",categoryValueSelected);
-     }
-     if(!categorySelected.includes(e.target.options[e.target.selectedIndex].text)){
-      setCategorySelected((currentArray)=>[...currentArray,e.target.options[e.target.selectedIndex].text]);
-    console.log("list",categorySelected);
+  const handleSelect = (e) => {
+    if (!categoryValueSelected.includes(e.target.value)) {
+      setCategoryValueSelected((currentArray) => [
+        ...currentArray,
+        e.target.value,
+      ]);
+      console.log("valueList", categoryValueSelected);
     }
-   
-    
-  }
-  const categoryButtonClick =(index)=>{
+    if (
+      !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
+    ) {
+      setCategorySelected((currentArray) => [
+        ...currentArray,
+        e.target.options[e.target.selectedIndex].text,
+      ]);
+      console.log("list", categorySelected);
+    }
+  };
+  const categoryButtonClick = (index) => {
+    setCategorySelected(
+      categorySelected.filter((item, categoryIndex) => index !== categoryIndex)
+    );
+    console.log("list", categorySelected);
+  };
  
-    setCategorySelected(categorySelected.filter((item, categoryIndex) => index !== categoryIndex));
-    console.log("list",categorySelected);
-  }
-  const submitInfo = (e)=>{
-    var axios = require("axios"); 
-      e.preventDefault();
-      const values = getValues();
-      console.log("values",values);
-      const getToken = localStorage.getItem("token");
-      const data = new FormData();
-      const address = values.address;
-      let street;
-      axios.post(url + "/fooding/geocode",address, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + getToken,
-        },
-      })
-      .then((res) => {
-        console.log("post 됨");
-        console.log(res.data);
-        setStreetAddress(res.data);
-        street=res.data;
+  const submitInfo = (e) => {
+    var axios = require("axios");
+    e.preventDefault();
+    const values = getValues();
+    console.log("values", values);
+    const getToken = localStorage.getItem("token");
+    const data = new FormData();
+    const address = values.address;
+    let street;
+    // axios
+    //   .post(url + "/fooding/geocode", address, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + getToken,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log("post 됨");
+    //     console.log(res.data);
+    //     setStreetAddress(res.data);
+    //     street=res.data;
     
-      }).then((res) => {
-        const content = {
-          name : values.businessName,
-          tel : [values.businessNum, values.personalNum],
-          weekdaysWorkHour : {
-              open : values.weekdayTimeStart,
-              close :values.weekdayTimeEnd
-          },
-          weekendsWorkHour : {
-              open : values.weekendTimeStart,
-              close :values.weekendTimeEnd 
-          },
-          intro : values.detail,
-          location : street,
-          category : ["KOREAN","CHINESE","WESTERN"], //categoryValueSelected,
-        };
-        console.log("content이전",content);
-        data.append("restaurant",  new Blob([JSON.stringify(content)], { type: "application/json" }));
-        axios
-        .post(url + "/fooding/admin/restaurant", data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            // "Content-Type": "application/json",
-            Authorization: "Bearer " + getToken,
-          },
-
-        })
-        .catch((err) => {
-          console.log("content 컨텐츠",content);
-          console.log(err);
-          
-
-        });
-      });
-      var config={
-        method: "get",
-        url: url + "/fooding/restaurant?coord=true",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + getToken,
-        },
-      };
-      axios(config)
-      .then((res)=>{
-        console.log(res);
-
-      })
-      .catch((err)=>{
-        console.log(err)
-      });
-   
+    //   }).then((res) => {
        
-  }
+    //   });
+      const content = {
+        name : values.businessName,
+        tel : [values.businessNum, values.personalNum],
+        weekdaysWorkHour : {
+            open : values.weekdayTimeStart,
+            close :values.weekdayTimeEnd,
+        },
+        weekendsWorkHour : {
+            open : values.weekendTimeStart,
+            close :values.weekendTimeEnd ,
+        },
+        intro : values.detail,
+        location : {"addressName":"서울 송파구 삼학사로13길 16","region1Depth":"서울","region2Depth":"송파구","region3Depth":"삼전동","roadName":"삼학사로13길","buildingNo":"16","coordinate":{"x":127.09524,"y":37.50346}},
+        category : ["CHINESE"], //categoryValueSelected,
+      };
+      console.log("content이전",content);
+      data.append("restaurant",  new Blob([JSON.stringify(content)], { type: "application/json" }));
+      marketImgs.map((img) => {
+        data.append("image", img);
+      });
+      axios
+      .post(url + "/fooding/admin/restaurant", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          // "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+
+      }).then((res)=>{
+        console.log("마켓 아이디",res);
+
+      })
+      .catch((err) => {
+        console.log("content 컨텐츠",content);
+        console.log("img",marketImgs);
+        console.log(err);
+      });
     
+  
+  };
+
   return (
     <Container>
       <Header />
@@ -701,39 +541,57 @@ function Register() {
             <NameBox>
               <p>카테고리</p>
             </NameBox>
-            <InputBox style={{width:"80%", display:"flex", justifyContent:"flexStart"}}>
+            <InputBox
+              style={{
+                width: "80%",
+                display: "flex",
+                justifyContent: "flexStart",
+              }}
+            >
               <div className="SelectCategoryContainer">
                 <select onChange={handleSelect} value={categorySelected}>
-                   <option></option>                  
-                   <option value="KOREAN" selected>한식</option>
-                   <option value="JAPANESE">일식</option>
-                   <option value="CHINESE">중식</option>
-                   <option value="WESTERN">양식</option>
-                   <option value="TAIWAN">태국</option>
-                   <option value="VIETNAM">베트남</option>                                                         
-                   <option value="SNACK">분식</option>
-                   <option value="NOODLE">면요리</option>
-                   <option value="BBQ">바베큐</option>
-                   <option value="PORK">돼지고기</option>
-                   <option value="BEEF">소고기</option>
-                   <option value="CHICKEN">닭고기</option>                   
-                   <option value="LAMB">양고기</option>
-                   <option value="BAR">바</option>
-                   <option value="PUB">술집</option>        
-                   <option value="CAFE">카페</option>
-                   <option value="DESSERT">디저트</option>
-                   
+                  <option></option>
+                  <option value="KOREAN" selected>
+                    한식
+                  </option>
+                  <option value="JAPANESE">일식</option>
+                  <option value="CHINESE">중식</option>
+                  <option value="WESTERN">양식</option>
+                  <option value="TAIWAN">태국</option>
+                  <option value="VIETNAM">베트남</option>
+                  <option value="SNACK">분식</option>
+                  <option value="NOODLE">면요리</option>
+                  <option value="BBQ">바베큐</option>
+                  <option value="PORK">돼지고기</option>
+                  <option value="BEEF">소고기</option>
+                  <option value="CHICKEN">닭고기</option>
+                  <option value="LAMB">양고기</option>
+                  <option value="BAR">바</option>
+                  <option value="PUB">술집</option>
+                  <option value="CAFE">카페</option>
+                  <option value="DESSERT">디저트</option>
                 </select>
-              
               </div>
               {/* <div style={{color:"white"}}></div> */}
               {/* <div>수정된 카테고리 {categorySelected}</div> */}
-              <ul className="CategoryTags">                
-                {categorySelected.map((value,index)=>{
-                  return (<div style={{display:"inlineBlock"}}><li key={index} className="EachCategoryTag"><div className="EachCategoryButton" onClick={()=>categoryButtonClick(index)}>X</div><p>{value}</p></li></div>)
+              <ul className="CategoryTags">
+                {categorySelected.map((value, index) => {
+                  return (
+                    <div style={{ display: "inlineBlock" }}>
+                      <li key={index} className="EachCategoryTag">
+                        <div
+                          className="EachCategoryButton"
+                          onClick={() => categoryButtonClick(index)}
+                        >
+                          X
+                        </div>
+                        <p>{value}</p>
+                      </li>
+                    </div>
+                  );
                 })}
-                </ul>
-              </InputBox>
+              </ul>
+            </InputBox>
           </InputContainer>
           <InputContainer className="NumberContainer BorderTop">
             <NameBox>
@@ -805,86 +663,12 @@ function Register() {
           </InputContainer>
 
           {/* </div> */}
-          <Button
-            onClick={submitInfo}
-          >
-            등록
-          </Button>
+          <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
       </InputFormDiv>
-      <MenuList>
-        <MenuHeader>
-          <MenuProp className="menuImg">이미지</MenuProp>
-          <MenuProp className="menuName">메뉴명</MenuProp>
-          <MenuProp className="menuPrice">가격</MenuProp>
-          <MenuProp className="menuDesc">상세설명</MenuProp>
-          <MenuProp className="menuDel"></MenuProp>
-        </MenuHeader>
-        <MenuItem>
-          <MenuProp className="menuImg">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTKPDx1O2bYkd2XpUCoufgO03ERC5JzdxdIl9GFVXNf9q5j9kov4AInChkSy8Q0girIxM&usqp=CAU" />
-          </MenuProp>
-          <MenuProp className="menuName">불닭볶음면</MenuProp>
-          <MenuProp className="menuPrice">1300</MenuProp>
-          <MenuProp className="menuDesc">너무 맵고 맛있다.</MenuProp>
-          <MenuProp className="menuDel">
-            <button>
-              {/* <i className="fa-solid fa-trash"></i> */}
-              삭제
-            </button>
-          </MenuProp>
-        </MenuItem>
-        {addMenu ? (
-          <MenuInput>
-            <MenuProp className="menuImg">
-              <input
-                id="image_input"
-                type="file"
-                accept="image/jpg,image/png,image/jpeg,image/gif"
-                name="photo"
-                onChange={onChangeImage}
-              />
-              <FileIcon htmlFor="image_input">
-                {file === undefined ? (
-                  <FontAwesomeIcon
-                    style={{
-                      color: "rgba(200, 200, 200, 0.5)",
-                      fontSize: "30px",
-                    }}
-                    icon={faCamera}
-                  />
-                ) : null}
-              </FileIcon>
-              {file !== undefined ? (
-                <img src={file} style={{ border: "0" }} />
-              ) : null}
-            </MenuProp>
-            <MenuProp className="menuName">
-              <input placeholder="메뉴명" />
-            </MenuProp>
-            <MenuProp className="menuPrice">
-              <input placeholder="가격" />
-            </MenuProp>
-            <MenuProp className="menuDesc">
-              <textarea placeholder="상세설명" />
-            </MenuProp>
-            <MenuProp className="menuDel">
-              <input type="checkbox" id="check1" />
-              <label htmlFor="check1"></label>
-              <span>대표</span>
-            </MenuProp>
-          </MenuInput>
-        ) : null}
-      </MenuList>
-      {addMenu ? (
-        <Button onClick={addMenuFunc}>등록</Button>
-      ) : (
-        <Button onClick={addMenuFunc}>추가</Button>
-      )}
-     
+      <Menu />
     </Container>
     // </div>
   );
-  
 }
 export default Register;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useMatch } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const Nav = styled.nav`
   display: flex;
@@ -75,16 +76,19 @@ const Circle = styled(motion.span)`
 const Header = () => {
   const reservationMatch = useMatch("/reservation");
   const registerMatch = useMatch("/register");
+  let location = useLocation();
 
   let [isToken, setIsToken] = useState(false);
 
   useEffect(() => {
+    //window.location.reload(); // 새로고침
     const token = localStorage.getItem("token");
     if (token == undefined) {
       setIsToken(false);
     } else {
       setIsToken(true);
     }
+    console.log("useEffect");
   }, []);
 
   const logOut = () => {
