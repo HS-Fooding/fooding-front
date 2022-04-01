@@ -12,6 +12,7 @@ import ReviewDetail from "./component/ReviewDetail";
 import Register from "./manage/Register";
 import Reservation from "./manage/Reservation";
 import LoginMg from "./manage/LoginMg";
+import SignUpMg from "./manage/SignUpMg";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/reservation" element={<Reservation />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/manager/login" element={<LoginMg />}></Route>
+          <Route path="/manager/signup" element={<SignUpMg />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

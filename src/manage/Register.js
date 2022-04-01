@@ -1,4 +1,4 @@
-import Header from "./Header";
+import Header from "./component/Header";
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";

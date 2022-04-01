@@ -108,7 +108,9 @@ const Header = () => {
               로그아웃
             </Item>
           )}
-          <Item className="small">회원가입</Item>
+          <Item className="small">
+            <Link to="/manager/signup">회원가입</Link>
+          </Item>
         </Items>
       </TopMenu>
       <MainMenu>

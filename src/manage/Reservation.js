@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./Header";
+import Header from "./component/Header";
 import Canvas from "./Canvas";
 import SimpleSlider from "./SimpleSlider";
 function Reservation() {
@@ -8,7 +8,6 @@ function Reservation() {
       <Header />
       <h1 style={{ marginBottom: "100px" }}>Reservation</h1>
       {/* <Canvas style={{ marginTop: "200px;" }}></Canvas> */}
-  
     </div>
   );
 }
