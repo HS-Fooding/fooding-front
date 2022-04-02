@@ -12,6 +12,11 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
+
+  .submit {
+    position: absolute;
+    left: 0;
+  }
 `;
 
 const MenuList = styled.div`
@@ -343,12 +348,13 @@ const Menu = ({ marketId }) => {
             </MenuInput>
           ) : null}
         </MenuList>
-        {addMenu ? (
-          <Button onClick={addMenuFunc}>등록</Button>
-        ) : (
-          <Button onClick={addMenuFunc}>추가</Button>
-        )}
+        <Button class="submitBtn">등록</Button>
       </form>
+      {addMenu ? (
+        <Button onClick={addMenuFunc}>닫기</Button>
+      ) : (
+        <Button onClick={addMenuFunc}>추가</Button>
+      )}
     </div>
   );
 };
