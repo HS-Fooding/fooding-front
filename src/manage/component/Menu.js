@@ -3,6 +3,7 @@ import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Button = styled.button`
   border: none;
@@ -162,14 +163,46 @@ const AddMenuBtn = styled(Button)`
   width: 100px;
 `;
 
-const Menu = () => {
+const MainMenu = styled.span`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 10px;
+  color: red;
+`;
+
+const Menu = ({ marketId }) => {
   const [addMenu, setAddMenu] = useState(false);
   const [menu, setMenu] = useState("");
   const [menuImg, setMenuImg] = useState();
   const [file, setFile] = useState();
   const { register, handleSubmit, reset, watch, getValues } = useForm();
 
-  const menuChange = (event) => setMenu(event.target.value);
+  const [menus, setMenus] = useState([]);
+
+  const marketIdLS = localStorage.getItem("marketId");
+  const getToken = localStorage.getItem("token");
+
+  const getMenus = () => {
+    var config = {
+      method: "get",
+      url: `http://13.124.207.219:8080/fooding/restaurant/${marketIdLS}/menu`,
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setMenus(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getMenus();
+  }, [marketIdLS]);
+
   //const priceChange = (event) => setPrice(event.target.value);
 
   const addMenuFunc = () => setAddMenu((current) => !current);
@@ -186,12 +219,44 @@ const Menu = () => {
     e.target.value = "";
   };
 
-  const menuPost = () => {};
+  const menuPost = (postData) => {
+    const content = {
+      name: postData.menuName,
+      description: postData.menuDesc,
+      price: postData.menuPrice,
+      isRepresentative: postData.menuMain,
+    };
+
+    let data = new FormData();
+    data.append(
+      "menu",
+      new Blob([JSON.stringify(content)], { type: "application/json" })
+    );
+    data.append("image", menuImg);
+
+    axios
+      .post(
+        `http://13.124.207.219:8080/fooding/admin/restaurant/${marketIdLS}/menu`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            //  "Content-Type": "application/json",
+            Authorization: "Bearer " + getToken,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        getMenus();
+      })
+      .catch((err) => {});
+  };
 
   const onValid = (data) => {
     console.log(data);
     reset();
-    menuPost();
+    menuPost(data);
   };
 
   return (
@@ -205,20 +270,27 @@ const Menu = () => {
             <MenuProp className="menuDesc">상세설명</MenuProp>
             <MenuProp className="menuDel"></MenuProp>
           </MenuHeader>
-          <MenuItem>
-            <MenuProp className="menuImg">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTKPDx1O2bYkd2XpUCoufgO03ERC5JzdxdIl9GFVXNf9q5j9kov4AInChkSy8Q0girIxM&usqp=CAU" />
-            </MenuProp>
-            <MenuProp className="menuName">불닭볶음면</MenuProp>
-            <MenuProp className="menuPrice">1300</MenuProp>
-            <MenuProp className="menuDesc">너무 맵고 맛있다.</MenuProp>
-            <MenuProp className="menuDel">
-              <button>
-                {/* <i className="fa-solid fa-trash"></i> */}
-                삭제
-              </button>
-            </MenuProp>
-          </MenuItem>
+
+          {menus.map((menu, index) => (
+            <MenuItem key={index}>
+              <MenuProp className="menuImg">
+                <img src={menu.image} />
+              </MenuProp>
+              <MenuProp className="menuName" style={{ position: "relative" }}>
+                <span>{menu.name}</span>
+                {menu.representative ? <MainMenu>*대표</MainMenu> : null}
+              </MenuProp>
+              <MenuProp className="menuPrice">{menu.price}</MenuProp>
+              <MenuProp className="menuDesc">{menu.description}</MenuProp>
+              <MenuProp className="menuDel">
+                <button>
+                  {/* <i className="fa-solid fa-trash"></i> */}
+                  삭제
+                </button>
+              </MenuProp>
+            </MenuItem>
+          ))}
+
           {addMenu ? (
             <MenuInput>
               <MenuProp className="menuImg">

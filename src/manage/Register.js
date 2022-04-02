@@ -323,6 +323,7 @@ function Register() {
   const [categorySelected, setCategorySelected] = useState([]);
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
   const [file, setFile] = useState([]);
+  const [marketId, setMarketId] = useState();
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
@@ -383,7 +384,7 @@ function Register() {
     const values = getValues();
     console.log("values", values);
     const getToken = localStorage.getItem("token");
-    const data = new FormData();
+    let data = new FormData();
     const address = values.address;
     let street;
     // axios
@@ -423,7 +424,7 @@ function Register() {
         buildingNo: "16",
         coordinate: { x: 127.09524, y: 37.50346 },
       },
-      category: ["CHINESE"], //categoryValueSelected,
+      category: [], //categoryValueSelected,
     };
     console.log("content이전", content);
     data.append(
@@ -436,13 +437,15 @@ function Register() {
     axios
       .post(url + "/fooding/admin/restaurant", data, {
         headers: {
-          //"Content-Type": "multipart/form-data",
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
+          //  "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
         },
       })
       .then((res) => {
-        console.log("마켓 아이디", res);
+        console.log("마켓 아이디", res.data);
+        setMarketId(res.data);
+        localStorage.setItem("marketId", res.data);
       })
       .catch((err) => {
         console.log("content 컨텐츠", content);
@@ -674,7 +677,7 @@ function Register() {
           <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
       </InputFormDiv>
-      <Menu />
+      <Menu marketId={marketId} />
     </Container>
     // </div>
   );
