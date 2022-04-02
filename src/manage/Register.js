@@ -323,6 +323,7 @@ function Register() {
   const [categorySelected, setCategorySelected] = useState([]);
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
   const [file,setFile]=useState([]);
+  const [marketId,setMarketId] = useState();
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
@@ -383,7 +384,7 @@ function Register() {
     const values = getValues();
     console.log("values", values);
     const getToken = localStorage.getItem("token");
-    const data = new FormData();
+    let data = new FormData();
     const address = values.address;
     let street;
     // axios
@@ -407,7 +408,7 @@ function Register() {
         tel : [values.businessNum, values.personalNum],
         weekdaysWorkHour : {
             open : values.weekdayTimeStart,
-            close :values.weekdayTimeEnd,
+            close : values.weekdayTimeEnd,
         },
         weekendsWorkHour : {
             open : values.weekendTimeStart,
@@ -415,24 +416,25 @@ function Register() {
         },
         intro : values.detail,
         location : {"addressName":"서울 송파구 삼학사로13길 16","region1Depth":"서울","region2Depth":"송파구","region3Depth":"삼전동","roadName":"삼학사로13길","buildingNo":"16","coordinate":{"x":127.09524,"y":37.50346}},
-        category : ["CHINESE"], //categoryValueSelected,
+        category : [], //categoryValueSelected,
       };
       console.log("content이전",content);
-      data.append("restaurant",  new Blob([JSON.stringify(content)], { type: "application/json" }));
+      data.append("restaurant", 
+       new Blob([JSON.stringify(content)], { type: "application/json" })
+       );
       marketImgs.map((img) => {
         data.append("image", img);
       });
       axios
       .post(url + "/fooding/admin/restaurant", data, {
         headers: {
-          "Content-Type": "multipart/form-data",
-          // "Content-Type": "application/json",
+           "Content-Type": "multipart/form-data",
+        //  "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
         },
-
       }).then((res)=>{
-        console.log("마켓 아이디",res);
-
+        console.log("마켓 아이디",res.data);
+        setMarketId(res.data);
       })
       .catch((err) => {
         console.log("content 컨텐츠",content);
