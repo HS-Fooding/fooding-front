@@ -20,8 +20,7 @@ const Container = styled.div`
 `;
 const InputFormDiv = styled.div`
   width: 700px;
-  background-color:red;
-  height: 400px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -184,6 +183,18 @@ const InputBox = styled.div`
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
+  .parkingLabel{
+    display:flex;
+  }
+  input[type=radio] {
+    border: 0px;
+    width:50px;
+    height: 3em;
+    font-size:5px;
+    display:flex;
+    align-items:center;
+    background-color:blue;
+}
   .SelectCategoryContainer {
     margin-left: 30px;
     width: 100px;
@@ -235,6 +246,11 @@ const NumContainer = styled.div`
     font-size: 15px;
     height: 25px;
     margin-left: 3px;
+  }
+  .TimeInputStyle{
+    width:40%;
+    font-size:25px;
+    
   }
   .InputNTitleContainer {
     width: 100%;
@@ -545,34 +561,55 @@ function Register() {
               {/* </div> */}
             </InputBox>
           </InputContainer>
-          <InputContainer className="ParkContainer BorderTop">
+          <InputContainer className="ParkContainer">
             <NameBox>
               <p>주차 가능 여부</p>
             </NameBox>
             <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
+              <label className="parkingLabel" htmlFor="can">
               <input
-                className="NumInputStyle"
-                {...register("address")}
-                placeholder="주소를 입력하시오"
-                style={{ marginTop: "1px" }}
-              />
+                {...register('parking', { required: true })}
+                type="radio"
+                name="parking"
+                value="can"
+                className="form-check-input"
+                id="can"
+              />{' '}
+              <p>가능</p>
+          </label>
+          <label className="parkingLabel" htmlFor="cant">
+            <input
+              {...register('parking', { required: true })}
+              type="radio"
+              name="parking"
+              value="Pizza"
+              className="form-check-input"
+              id="cant"
+            />{' '}
+            <p>불가능</p>
+          </label>       
               {/* </div> */}
             </InputBox>
+        
           </InputContainer>
-          <InputContainer className="UseTimeContainer BorderTop">
+          <InputContainer className="UseTimeContainer">
             <NameBox>
               <p>최대 이용 시간</p>
             </NameBox>
-            <InputBox style={{ width: "80%" }}>
-              {/* <div className="InputAddressContainer"> */}
+            <InputBox style={{ width: "80%" }}>     
               <input
-                className="NumInputStyle"
-                {...register("address")}
-                placeholder="주소를 입력하시오"
+              type="number"
+                className="TimeInputStyle"
+                {...register("availableHour")}
                 style={{ marginTop: "1px" }}
-              />
-              {/* </div> */}
+              />시간
+              <input
+                className="TimeInputStyle"
+                {...register("availableMinute")}
+                style={{ marginTop: "1px" }}
+              />분
+            
             </InputBox>
           </InputContainer>
           <InputContainer className="CategoryContainer">
