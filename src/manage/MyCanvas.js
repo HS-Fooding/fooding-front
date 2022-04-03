@@ -28,6 +28,48 @@ const Button2 = styled.button`
     position: absolute;
     padding: 0;
     margin: 0;
+    top: 20%;
+    right: 5%;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 26px;
+    cursor: pointer;
+    z-index: 2;
+`;
+
+const Button3 = styled.button`
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 30%;
+    right: 5%;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 26px;
+    cursor: pointer;
+    z-index: 2;
+`;
+
+const Button4 = styled.button`
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 40%;
+    right: 5%;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 26px;
+    cursor: pointer;
+    z-index: 2;
+`;
+
+const Button5 = styled.button`
+    position: absolute;
+    padding: 0;
+    margin: 0;
     top: 50%;
     right: 5%;
     border: none;
@@ -38,7 +80,21 @@ const Button2 = styled.button`
     z-index: 2;
 `;
 
-const MyRectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Button6 = styled.button`
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 60%;
+    right: 5%;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 26px;
+    cursor: pointer;
+    z-index: 2;
+`;
+
+const Table = ({ shapeProps, isSelected, onSelect, onChange }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -106,7 +162,7 @@ const MyRectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
     );
 };
 
-const MyCircle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Seat = ({ shapeProps, isSelected, onSelect, onChange }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -120,7 +176,26 @@ const MyCircle = ({ shapeProps, isSelected, onSelect, onChange }) => {
 
     return (
         <React.Fragment>
-            <Circle
+            <Circle ref={shapeRef} {...shapeProps} draggable />
+        </React.Fragment>
+    );
+};
+
+const Wall = ({ shapeProps, isSelected, onSelect, onChange }) => {
+    const shapeRef = React.useRef();
+    const trRef = React.useRef();
+
+    React.useEffect(() => {
+        if (isSelected) {
+            // we need to attach transformer manually
+            trRef.current.nodes([shapeRef.current]);
+            trRef.current.getLayer().batchDraw();
+        }
+    }, [isSelected]);
+
+    return (
+        <React.Fragment>
+            <Rect
                 onClick={onSelect}
                 onTap={onSelect}
                 ref={shapeRef}
@@ -151,10 +226,13 @@ const MyCircle = ({ shapeProps, isSelected, onSelect, onChange }) => {
                         y: node.y(),
                         // set minimal value
                         width: Math.max(5, node.width() * scaleX),
-                        height: Math.max(node.height() * scaleY),
+                        height: Math.max(5),
+                        rotation: node.rotation(),
                     });
+                    console.log("Rotation!!!! : " + e.target.rotation());
                 }}
             />
+
             {isSelected && (
                 <Transformer
                     ref={trRef}
@@ -171,42 +249,86 @@ const MyCircle = ({ shapeProps, isSelected, onSelect, onChange }) => {
     );
 };
 
-const initialRectangles = [
-    {
-        x: 10,
-        y: 10,
-        width: 100,
-        height: 100,
-        fill: "red",
-        rotation: 0,
-        id: "rect1",
-    },
-    {
-        x: 150,
-        y: 150,
-        width: 100,
-        height: 100,
-        fill: "green",
-        rotation: 0,
-        id: "rect2",
-    },
-];
+const Window_Door = ({ shapeProps, isSelected, onSelect, onChange }) => {
+    const shapeRef = React.useRef();
+    const trRef = React.useRef();
 
-const initialCircles = [
-    {
-        x: 200,
-        y: 100,
-        radius: 50,
-        fill: "blue",
-    },
-];
+    React.useEffect(() => {
+        if (isSelected) {
+            // we need to attach transformer manually
+            trRef.current.nodes([shapeRef.current]);
+            trRef.current.getLayer().batchDraw();
+        }
+    }, [isSelected]);
+
+    return (
+        <React.Fragment>
+            <Rect
+                onClick={onSelect}
+                onTap={onSelect}
+                ref={shapeRef}
+                {...shapeProps}
+                draggable
+                onDragEnd={(e) => {
+                    onChange({
+                        ...shapeProps,
+                        x: e.target.x(),
+                        y: e.target.y(),
+                    });
+                }}
+                onTransformEnd={(e) => {
+                    // transformer is changing scale of the node
+                    // and NOT its width or height
+                    // but in the store we have only width and height
+                    // to match the data better we will reset scale on transform end
+                    const node = shapeRef.current;
+                    const scaleX = node.scaleX();
+                    const scaleY = node.scaleY();
+
+                    // we will reset it back
+                    node.scaleX(1);
+                    node.scaleY(1);
+                    onChange({
+                        ...shapeProps,
+                        x: node.x(),
+                        y: node.y(),
+                        // set minimal value
+                        width: Math.max(5, node.width() * scaleX),
+                        height: Math.max(8),
+                        rotation: node.rotation(),
+                    });
+                }}
+            />
+
+            {isSelected && (
+                <Transformer
+                    ref={trRef}
+                    boundBoxFunc={(oldBox, newBox) => {
+                        // limit resize
+                        if (newBox.width < 5 || newBox.height < 5) {
+                            return oldBox;
+                        }
+                        return newBox;
+                    }}
+                />
+            )}
+        </React.Fragment>
+    );
+};
 
 const MyCanvas = () => {
-    const [rectangles, setRectangles] = React.useState(initialRectangles);
-    const [circles, setCircles] = React.useState(initialCircles);
+    const [tables, setTables] = React.useState([]);
+    const [seats, setSeats] = React.useState([]);
+    const [walls, setWalls] = React.useState([]);
+    const [windows, setWindows] = React.useState([]);
+    const [doors, setDoors] = React.useState([]);
+
     const [selectedId, selectShape] = React.useState(null);
-    const [rectClickCnt, setRectClickCnt] = React.useState(1);
-    const [circClickCnt, setCircClickCnt] = React.useState(1);
+    const [tableCnt, setTableCnt] = React.useState(1);
+    const [seatCnt, setSeatCnt] = React.useState(1);
+    const [wallCnt, setWallCnt] = React.useState(1);
+    const [windowCnt, setWindowCnt] = React.useState(1);
+    const [doorCnt, setDoorCnt] = React.useState(1);
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
@@ -216,38 +338,91 @@ const MyCanvas = () => {
         }
     };
 
-    const newRect = () => {
-        const rect = {
-            x: 100 + rectClickCnt * 20,
-            y: 100 + rectClickCnt * 20,
+    const createTable = () => {
+        const table = {
+            x: 100 + tableCnt * 20,
+            y: 100 + tableCnt * 20,
             width: 100,
             height: 100,
-            fill: "green",
-            rotation: 20,
-            id: "rect" + rectClickCnt,
+            fill: "brown",
+            rotation: 0,
+            id: "table" + tableCnt,
         };
-        setRectClickCnt(rectClickCnt + 1);
-        // setRectangles(rectangles.push(rect));
-        console.log(rectangles.push(rect));
+        setTableCnt(tableCnt + 1);
+        tables.push(table);
     };
 
-    const newCirc = () => {
-        const circ = {
-            x: 200 + circClickCnt * 20,
-            y: 200 + circClickCnt * 20,
-            radius: 50,
-            fill: "blue",
-            id: "circ" + circClickCnt,
+    const createSeat = () => {
+        const seat = {
+            x: 200 + seatCnt * 20,
+            y: 200 + seatCnt * 20,
+            radius: 20,
+            fill: "gray",
+            id: "seat" + seatCnt,
         };
-        setCircClickCnt(circClickCnt + 1);
-        // setRectangles(rectangles.push(rect));
-        console.log(circles.push(circ));
+        setSeatCnt(seatCnt + 1);
+        seats.push(seat);
+    };
+
+    const createWall = () => {
+        const wall = {
+            x: 100 + wallCnt * 20,
+            y: 100 + wallCnt * 20,
+            width: 250,
+            height: 5,
+            fill: "black",
+            rotation: 0,
+            id: "wall" + wallCnt,
+        };
+        setWallCnt(wallCnt + 1);
+        walls.push(wall);
+    };
+
+    const createWindow = () => {
+        const window = {
+            x: 100 + windowCnt * 20,
+            y: 100 + windowCnt * 20,
+            width: 250,
+            height: 8,
+            fill: "skyblue",
+            rotation: 0,
+            id: "window" + windowCnt,
+        };
+        setWindowCnt(windowCnt + 1);
+        windows.push(window);
+    };
+
+    const createDoor = () => {
+        const door = {
+            x: 100 + doorCnt * 20,
+            y: 100 + doorCnt * 20,
+            width: 50,
+            height: 15,
+            fill: "green",
+            rotation: 0,
+            id: "door" + doorCnt,
+        };
+        setDoorCnt(doorCnt + 1);
+        doors.push(door);
+    };
+
+    const getInfo = () => {
+        const tables = tables.map((m) => {
+            console.log(m.id);
+            console.log(m.x, ", ", m.y);
+            console.log(m.width, " / ", m.height);
+            console.log(m.rotation);
+        });
     };
 
     return (
         <Container>
-            <Button1 onClick={newRect}>New Rect</Button1>
-            <Button2 onClick={newCirc}>New Circ</Button2>
+            <Button1 onClick={createTable}>테이블 생성</Button1>
+            <Button2 onClick={createSeat}>좌석 생성</Button2>
+            <Button3 onClick={createWall}>벽 생성</Button3>
+            <Button4 onClick={createWindow}>창문 생성</Button4>
+            <Button5 onClick={createDoor}>출입구 생성</Button5>
+            <Button6 onClick={getInfo}>console.log(info)</Button6>
             <Stage
                 width={window.innerWidth}
                 height={window.innerHeight}
@@ -255,37 +430,79 @@ const MyCanvas = () => {
                 onTouchStart={checkDeselect}
             >
                 <Layer>
-                    {rectangles.map((rect, i) => {
+                    {tables.map((table, i) => {
                         return (
-                            <MyRectangle
+                            <Table
                                 key={i}
-                                shapeProps={rect}
-                                isSelected={rect.id === selectedId}
+                                shapeProps={table}
+                                isSelected={table.id === selectedId}
                                 onSelect={() => {
-                                    selectShape(rect.id);
+                                    selectShape(table.id);
                                 }}
                                 onChange={(newAttrs) => {
-                                    const rects = rectangles.slice();
+                                    const rects = tables.slice();
                                     rects[i] = newAttrs;
-                                    setRectangles(rects);
+                                    setTables(rects);
                                 }}
                             />
                         );
                     })}
-
-                    {circles.map((circle, i) => {
+                    {seats.map((seat, i) => {
                         return (
-                            <MyCircle
+                            <Seat
                                 key={i}
-                                shapeProps={circle}
-                                isSelected={circle.id === selectedId}
+                                shapeProps={seat}
+                                isSelected={seat.id === selectedId}
+                            />
+                        );
+                    })}
+                    {walls.map((wall, i) => {
+                        return (
+                            <Wall
+                                key={i}
+                                shapeProps={wall}
+                                isSelected={wall.id === selectedId}
                                 onSelect={() => {
-                                    selectShape(circle.id);
+                                    selectShape(wall.id);
                                 }}
                                 onChange={(newAttrs) => {
-                                    const circs = circles.slice();
-                                    circs[i] = newAttrs;
-                                    setCircles(circs);
+                                    const tmp = walls.slice();
+                                    tmp[i] = newAttrs;
+                                    setWalls(tmp);
+                                }}
+                            />
+                        );
+                    })}
+                    {windows.map((window, i) => {
+                        return (
+                            <Window_Door
+                                key={i}
+                                shapeProps={window}
+                                isSelected={window.id === selectedId}
+                                onSelect={() => {
+                                    selectShape(window.id);
+                                }}
+                                onChange={(newAttrs) => {
+                                    const tmp = windows.slice();
+                                    tmp[i] = newAttrs;
+                                    setWindows(tmp);
+                                }}
+                            />
+                        );
+                    })}
+                    {doors.map((door, i) => {
+                        return (
+                            <Window_Door
+                                key={i}
+                                shapeProps={door}
+                                isSelected={door.id === selectedId}
+                                onSelect={() => {
+                                    selectShape(door.id);
+                                }}
+                                onChange={(newAttrs) => {
+                                    const tmp = doors.slice();
+                                    tmp[i] = newAttrs;
+                                    setDoors(tmp);
                                 }}
                             />
                         );
