@@ -163,7 +163,7 @@ const Table = ({ shapeProps, isSelected, onSelect, onChange }) => {
     );
 };
 
-const Seat = ({ shapeProps, isSelected }) => {
+const Seat = ({ shapeProps, isSelected, onChange }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -177,7 +177,18 @@ const Seat = ({ shapeProps, isSelected }) => {
 
     return (
         <React.Fragment>
-            <Circle ref={shapeRef} {...shapeProps} draggable />
+            <Circle
+                ref={shapeRef}
+                {...shapeProps}
+                draggable
+                onDragEnd={(e) => {
+                    onChange({
+                        ...shapeProps,
+                        x: e.target.x(),
+                        y: e.target.y(),
+                    });
+                }}
+            />
         </React.Fragment>
     );
 };
@@ -407,16 +418,6 @@ const MyCanvas = () => {
         doors.push(door);
     };
 
-    const colorFilter = (obj) => {
-        if ("fill" in obj) return true;
-        else return false;
-    };
-
-    const widthFilter = (obj) => {
-        if ("width" in obj) return false;
-        else return true;
-    };
-
     const postData = () => {
         // const data = JSON.stringify({
         //     tables: tables.filter(colorFilter),
@@ -519,7 +520,7 @@ const MyCanvas = () => {
                                 onChange={(newAttrs) => {
                                     const tmp = tables.slice();
                                     tmp[i] = newAttrs;
-                                    setTables(...tables, newAttrs);
+                                    setTables(tmp);
                                 }}
                             />
                         );
@@ -530,6 +531,11 @@ const MyCanvas = () => {
                                 key={i}
                                 shapeProps={seat}
                                 isSelected={seat.id === selectedId}
+                                onChange={(newAttrs) => {
+                                    const tmp = seats.slice();
+                                    tmp[i] = newAttrs;
+                                    setSeats(tmp);
+                                }}
                             />
                         );
                     })}
