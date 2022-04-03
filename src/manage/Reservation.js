@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./component/Header";
 import Canvas from "./Canvas";
 import SimpleSlider from "./SimpleSlider";
+
 function Reservation() {
   return (
     <div>
