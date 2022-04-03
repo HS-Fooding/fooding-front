@@ -1,6 +1,7 @@
 import React from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled from "styled-components";
+import axios from "axios";
 
 const Container = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -162,7 +163,7 @@ const Table = ({ shapeProps, isSelected, onSelect, onChange }) => {
     );
 };
 
-const Seat = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Seat = ({ shapeProps, isSelected }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -406,13 +407,89 @@ const MyCanvas = () => {
         doors.push(door);
     };
 
-    const getInfo = () => {
-        const tables = tables.map((m) => {
-            console.log(m.id);
-            console.log(m.x, ", ", m.y);
-            console.log(m.width, " / ", m.height);
-            console.log(m.rotation);
+    const colorFilter = (obj) => {
+        if ("fill" in obj) return true;
+        else return false;
+    };
+
+    const widthFilter = (obj) => {
+        if ("width" in obj) return false;
+        else return true;
+    };
+
+    const postData = () => {
+        // const data = JSON.stringify({
+        //     tables: tables.filter(colorFilter),
+        //     seats: seats,
+        //     walls: walls.filter(widthFilter),
+        //     windows: windows.filter(widthFilter),
+        //     doors: doors.filter(widthFilter),
+        // });
+        const data = JSON.stringify({
+            tables: tables.map((m) => {
+                return {
+                    id: m.id,
+                    x: m.x,
+                    y: m.y,
+                    width: m.width,
+                    height: m.height,
+                    rotation: m.rotation,
+                };
+            }),
+            seats: seats.map((m) => {
+                return {
+                    id: m.id,
+                    x: m.x,
+                    y: m.y,
+                };
+            }),
+            walls: walls.map((m) => {
+                return {
+                    id: m.id,
+                    x: m.x,
+                    y: m.y,
+                    width: m.width,
+                    rotation: m.rotation,
+                };
+            }),
+            windows: windows.map((m) => {
+                return {
+                    id: m.id,
+                    x: m.x,
+                    y: m.y,
+                    width: m.width,
+                    rotation: m.rotation,
+                };
+            }),
+            doors: doors.map((m) => {
+                return {
+                    id: m.id,
+                    x: m.x,
+                    y: m.y,
+                    width: m.width,
+                    rotation: m.rotation,
+                };
+            }),
         });
+
+        console.log(data);
+
+        // const config = {
+        //     method: "post",
+        //     url: url + "/fooding/admin/restaurant/{id}/structure",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     data: data,
+        // };
+
+        // axios(config)
+        //     .then(function (response) {
+        //         console.log(response.data);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     };
 
     return (
@@ -422,7 +499,7 @@ const MyCanvas = () => {
             <Button3 onClick={createWall}>벽 생성</Button3>
             <Button4 onClick={createWindow}>창문 생성</Button4>
             <Button5 onClick={createDoor}>출입구 생성</Button5>
-            <Button6 onClick={getInfo}>console.log(info)</Button6>
+            <Button6 onClick={postData}>Submit</Button6>
             <Stage
                 width={window.innerWidth}
                 height={window.innerHeight}
@@ -440,9 +517,9 @@ const MyCanvas = () => {
                                     selectShape(table.id);
                                 }}
                                 onChange={(newAttrs) => {
-                                    const rects = tables.slice();
-                                    rects[i] = newAttrs;
-                                    setTables(rects);
+                                    const tmp = tables.slice();
+                                    tmp[i] = newAttrs;
+                                    setTables(...tables, newAttrs);
                                 }}
                             />
                         );
