@@ -137,7 +137,7 @@ const SliderDiv = styled.div`
 `;
 
 const InfoForm = styled.form`
-  height: 300px;
+  height: 450px;
 
   .AddressContainer {
     height: 40px;
@@ -672,7 +672,12 @@ function Register() {
               </div>
             </NumContainer>
           </InputContainer>
-
+          <InputContainer>
+          <NameBox>
+              <p>주차 가능 여부</p>
+            </NameBox>
+            
+          </InputContainer>
           {/* </div> */}
           <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
