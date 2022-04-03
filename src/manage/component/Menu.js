@@ -350,13 +350,12 @@ const Menu = ({ marketId }) => {
             </MenuInput>
           ) : null}
         </MenuList>
-        <Button class="submitBtn">등록</Button>
+        {addMenu ? (
+          <Button onClick={addMenuFunc}>닫기</Button>
+        ) : (
+          <Button onClick={addMenuFunc}>추가</Button>
+        )}
       </form>
-      {addMenu ? (
-        <Button onClick={addMenuFunc}>닫기</Button>
-      ) : (
-        <Button onClick={addMenuFunc}>추가</Button>
-      )}
     </div>
   );
 };
