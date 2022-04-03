@@ -259,6 +259,8 @@ const Menu = ({ marketId }) => {
   };
 
   const onValid = (data) => {
+    console.log("onvalid 함수");
+
     console.log(data);
     reset();
     menuPost(data);
