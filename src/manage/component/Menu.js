@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { url } from "../../Api";
 
 const Button = styled.button`
   border: none;
@@ -177,9 +178,9 @@ const MainMenu = styled.span`
 `;
 
 const Menu = ({ marketId }) => {
-  const [addMenu, setAddMenu] = useState(false);
+  const [addMenu, setAddMenu] = useState(true);
   const [menu, setMenu] = useState("");
-  const [menuImg, setMenuImg] = useState();
+  const [menuImg, setMenuImg] = useState([]);
   const [file, setFile] = useState();
   const { register, handleSubmit, reset, watch, getValues } = useForm();
 
@@ -191,7 +192,7 @@ const Menu = ({ marketId }) => {
   const getMenus = () => {
     var config = {
       method: "get",
-      url: `http://13.124.207.219:8080/fooding/restaurant/${marketIdLS}/menu`,
+      url: url + `/fooding/restaurant/${marketIdLS}/menu`,
       headers: {},
     };
 
@@ -216,7 +217,7 @@ const Menu = ({ marketId }) => {
     e.preventDefault();
     const img = e.target.files[0];
 
-    setMenuImg(img);
+    setMenuImg([img]);
 
     const prevFile = URL.createObjectURL(e.target.files[0]);
     setFile(prevFile);
@@ -231,26 +232,34 @@ const Menu = ({ marketId }) => {
       price: postData.menuPrice,
       isRepresentative: postData.menuMain,
     };
+    console.log();
 
     let data = new FormData();
     data.append(
       "menu",
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
-    data.append("image", menuImg);
 
+    // if (menuImg === "") {
+    //   console.log("menuImg 없음");
+    //   data.append("image", menuImg);
+    // } else {
+    //   data.append("image", menuImg);
+    // }
+
+    menuImg.map((img) => {
+      data.append("image", img);
+    });
+
+    console.log(menuImg);
     axios
-      .post(
-        `http://13.124.207.219:8080/fooding/admin/restaurant/${marketIdLS}/menu`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            //  "Content-Type": "application/json",
-            Authorization: "Bearer " + getToken,
-          },
-        }
-      )
+      .post(url + `/fooding/admin/restaurant/${marketIdLS}/menu`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          //  "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      })
       .then((res) => {
         console.log(res);
         getMenus();
@@ -260,10 +269,34 @@ const Menu = ({ marketId }) => {
 
   const onValid = (data) => {
     console.log("onvalid 함수");
-
+    const values = getValues();
     console.log(data);
+    setMenuImg("");
+    setFile(undefined);
     reset();
-    menuPost(data);
+    menuPost(values);
+  };
+
+  const deleteMenu = (id) => {
+    console.log(id);
+    var config = {
+      method: "delete",
+      url: url + `/fooding/admin/restaurant/${marketIdLS}/menu/${id}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+        //...data.getHeaders()
+      },
+      //data : data
+    };
+
+    axios(config)
+      .then(function (response) {
+        getMenus();
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -290,7 +323,7 @@ const Menu = ({ marketId }) => {
               <MenuProp className="menuPrice">{menu.price}</MenuProp>
               <MenuProp className="menuDesc">{menu.description}</MenuProp>
               <MenuProp className="menuDel">
-                <button>
+                <button onClick={() => deleteMenu(menu.id)}>
                   {/* <i className="fa-solid fa-trash"></i> */}
                   삭제
                 </button>
@@ -350,12 +383,25 @@ const Menu = ({ marketId }) => {
             </MenuInput>
           ) : null}
         </MenuList>
+      </form>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "100px",
+        }}
+      >
         {addMenu ? (
           <Button onClick={addMenuFunc}>닫기</Button>
         ) : (
           <Button onClick={addMenuFunc}>추가</Button>
         )}
-      </form>
+        {addMenu ? (
+          <Button onClick={onValid} class="submitBtn">
+            등록
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 };
