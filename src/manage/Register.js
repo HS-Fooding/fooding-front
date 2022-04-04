@@ -183,6 +183,15 @@ const InputBox = styled.div`
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
+  .TimeDiv{
+    display:flex;
+    align-items: center;
+    height:35px;
+    width:100px;
+  }
+  .TimeInputStyle{
+    width:40px;
+  }
   .parkingLabel{
     display:flex;
   }
@@ -247,11 +256,7 @@ const NumContainer = styled.div`
     height: 25px;
     margin-left: 3px;
   }
-  .TimeInputStyle{
-    width:40%;
-    font-size:25px;
-    
-  }
+  
   .InputNTitleContainer {
     width: 100%;
     height: 40px;
@@ -392,13 +397,18 @@ function Register() {
     setCategorySelected(
       categorySelected.filter((item, categoryIndex) => index !== categoryIndex)
     );
+    setCategoryValueSelected(
+      categoryValueSelected.filter((item, categoryIndex) => index !== categoryIndex)
+    );
     console.log("list", categorySelected);
+    console.log("value list",categoryValueSelected);
   };
 
   const submitInfo = (e) => {
     var axios = require("axios");
     e.preventDefault();
     const values = getValues();
+    let changeToMinutes = parseInt(values.availableHour*60)+parseInt(values.availableMinute);
     console.log("values", values);
     const getToken = localStorage.getItem("token");
     let data = new FormData();
@@ -434,7 +444,9 @@ function Register() {
           },
           intro: values.detail,
           location: street,
-          category: [], //categoryValueSelected,
+          category: categoryValueSelected,
+           parkingInfo : values.parking,
+           maximumUsageTime :changeToMinutes ,
         };
         console.log("content이전", content);
         data.append(
@@ -572,7 +584,7 @@ function Register() {
                 {...register('parking', { required: true })}
                 type="radio"
                 name="parking"
-                value="can"
+                value="주차 공간 있음"
                 className="form-check-input"
                 id="can"
               />{' '}
@@ -583,7 +595,7 @@ function Register() {
               {...register('parking', { required: true })}
               type="radio"
               name="parking"
-              value="Pizza"
+              value="주차 공간 없음"
               className="form-check-input"
               id="cant"
             />{' '}
@@ -597,19 +609,28 @@ function Register() {
             <NameBox>
               <p>최대 이용 시간</p>
             </NameBox>
-            <InputBox style={{ width: "80%" }}>     
+            <InputBox style={{ width: "80%", paddingLeft:"15px" }}>   
+            <div className="TimeDiv">  
               <input
               type="number"
+              min="0" 
+              max="10"
                 className="TimeInputStyle"
                 {...register("availableHour")}
                 style={{ marginTop: "1px" }}
-              />시간
+              /><p>시간</p>
+            </div>
+            <div className="TimeDiv">  
               <input
+                type="number"
+                step="10"
+                min="10"
+                max="50"
                 className="TimeInputStyle"
                 {...register("availableMinute")}
                 style={{ marginTop: "1px" }}
-              />분
-            
+              /><p>분</p>
+            </div>
             </InputBox>
           </InputContainer>
           <InputContainer className="CategoryContainer">
