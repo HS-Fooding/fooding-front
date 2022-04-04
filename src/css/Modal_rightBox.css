@@ -1,0 +1,44 @@
+.rightBox {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightBox
+.box__msg {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 4rem;
+    overflow-wrap: break-word;
+    transition: 0.5s;
+}
+
+.rightBox
+.box__msg.valid {
+    color: #f43648;
+}
+
+.rightBox
+.box__btn {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.rightBox
+.box__btn.valid {
+color: #f43648;
+}
+
+.rightBox
+.box__btn.valid:hover {
+color: #fff;
+background-color: #f43648;
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled from "styled-components";
+import Modal from "./component/Modal";
 import axios from "axios";
 
 const Container = styled.div`
@@ -592,6 +593,7 @@ const MyCanvas = () => {
           })}
         </Layer>
       </Stage>
+      <Modal wavList={null} imageList={null} />
     </Container>
   );
 };
