@@ -139,7 +139,9 @@ const SliderDiv = styled.div`
 const InfoForm = styled.form`
   height: 500px;
 
-  .AddressContainer,.ParkContainer,.UseTimeContainer{
+  .AddressContainer,
+  .ParkContainer,
+  .UseTimeContainer {
     height: 40px;
   }
   .CategoryContainer {
@@ -183,27 +185,27 @@ const InputBox = styled.div`
   align-items: center;
   padding-top: 0px;
   padding-bottom: 0px;
-  .TimeDiv{
-    display:flex;
+  .TimeDiv {
+    display: flex;
     align-items: center;
-    height:35px;
-    width:100px;
+    height: 35px;
+    width: 100px;
   }
-  .TimeInputStyle{
-    width:40px;
+  .TimeInputStyle {
+    width: 40px;
   }
-  .parkingLabel{
-    display:flex;
+  .parkingLabel {
+    display: flex;
   }
-  input[type=radio] {
+  input[type="radio"] {
     border: 0px;
-    width:50px;
+    width: 50px;
     height: 3em;
-    font-size:5px;
-    display:flex;
-    align-items:center;
-    background-color:blue;
-}
+    font-size: 5px;
+    display: flex;
+    align-items: center;
+    background-color: blue;
+  }
   .SelectCategoryContainer {
     margin-left: 30px;
     width: 100px;
@@ -256,7 +258,7 @@ const NumContainer = styled.div`
     height: 25px;
     margin-left: 3px;
   }
-  
+
   .InputNTitleContainer {
     width: 100%;
     height: 40px;
@@ -398,17 +400,20 @@ function Register() {
       categorySelected.filter((item, categoryIndex) => index !== categoryIndex)
     );
     setCategoryValueSelected(
-      categoryValueSelected.filter((item, categoryIndex) => index !== categoryIndex)
+      categoryValueSelected.filter(
+        (item, categoryIndex) => index !== categoryIndex
+      )
     );
     console.log("list", categorySelected);
-    console.log("value list",categoryValueSelected);
+    console.log("value list", categoryValueSelected);
   };
 
   const submitInfo = (e) => {
     var axios = require("axios");
     e.preventDefault();
     const values = getValues();
-    let changeToMinutes = parseInt(values.availableHour*60)+parseInt(values.availableMinute);
+    let changeToMinutes =
+      parseInt(values.availableHour * 60) + parseInt(values.availableMinute);
     console.log("values", values);
     const getToken = localStorage.getItem("token");
     let data = new FormData();
@@ -425,12 +430,10 @@ function Register() {
         console.log("post 됨");
         console.log(res.data);
         setStreetAddress(res.data);
-        street=res.data;
-
-      }).then((res) => {
-
+        street = res.data;
       })
-      .then(()=>{
+      .then((res) => {})
+      .then(() => {
         const content = {
           name: values.businessName,
           tel: [values.businessNum, values.personalNum],
@@ -445,8 +448,8 @@ function Register() {
           intro: values.detail,
           location: street,
           category: categoryValueSelected,
-           parkingInfo : values.parking,
-           maximumUsageTime :changeToMinutes ,
+          parkingInfo: values.parking,
+          maximumUsageTime: changeToMinutes,
         };
         console.log("content이전", content);
         data.append(
@@ -474,9 +477,7 @@ function Register() {
             console.log("img", marketImgs);
             console.log(err);
           });
-
-      })
-  
+      });
   };
 
   return (
@@ -580,57 +581,58 @@ function Register() {
             <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
               <label className="parkingLabel" htmlFor="can">
-              <input
-                {...register('parking', { required: true })}
-                type="radio"
-                name="parking"
-                value="주차 공간 있음"
-                className="form-check-input"
-                id="can"
-              />{' '}
-              <p>가능</p>
-          </label>
-          <label className="parkingLabel" htmlFor="cant">
-            <input
-              {...register('parking', { required: true })}
-              type="radio"
-              name="parking"
-              value="주차 공간 없음"
-              className="form-check-input"
-              id="cant"
-            />{' '}
-            <p>불가능</p>
-          </label>       
+                <input
+                  {...register("parking", { required: true })}
+                  type="radio"
+                  name="parking"
+                  value="주차 공간 있음"
+                  className="form-check-input"
+                  id="can"
+                />{" "}
+                <p>가능</p>
+              </label>
+              <label className="parkingLabel" htmlFor="cant">
+                <input
+                  {...register("parking", { required: true })}
+                  type="radio"
+                  name="parking"
+                  value="주차 공간 없음"
+                  className="form-check-input"
+                  id="cant"
+                />{" "}
+                <p>불가능</p>
+              </label>
               {/* </div> */}
             </InputBox>
-        
           </InputContainer>
           <InputContainer className="UseTimeContainer">
             <NameBox>
               <p>최대 이용 시간</p>
             </NameBox>
-            <InputBox style={{ width: "80%", paddingLeft:"15px" }}>   
-            <div className="TimeDiv">  
-              <input
-              type="number"
-              min="0" 
-              max="10"
-                className="TimeInputStyle"
-                {...register("availableHour")}
-                style={{ marginTop: "1px" }}
-              /><p>시간</p>
-            </div>
-            <div className="TimeDiv">  
-              <input
-                type="number"
-                step="10"
-                min="10"
-                max="50"
-                className="TimeInputStyle"
-                {...register("availableMinute")}
-                style={{ marginTop: "1px" }}
-              /><p>분</p>
-            </div>
+            <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
+              <div className="TimeDiv">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  className="TimeInputStyle"
+                  {...register("availableHour")}
+                  style={{ marginTop: "1px" }}
+                />
+                <p>시간</p>
+              </div>
+              <div className="TimeDiv">
+                <input
+                  type="number"
+                  step="10"
+                  min="10"
+                  max="50"
+                  className="TimeInputStyle"
+                  {...register("availableMinute")}
+                  style={{ marginTop: "1px" }}
+                />
+                <p>분</p>
+              </div>
             </InputBox>
           </InputContainer>
           <InputContainer className="CategoryContainer">
@@ -757,9 +759,9 @@ function Register() {
               </div>
             </NumContainer>
           </InputContainer>
-        {/* 주차정보 , 최대 이용 시간*/}
+          {/* 주차정보 , 최대 이용 시간*/}
           {/* </div> */}
-          
+
           <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
       </InputFormDiv>

@@ -50,6 +50,9 @@ const MenuHeader = styled.div`
     input {
       display: none;
     }
+    img {
+      border: none;
+    }
     position: relative;
   }
   .menuName {
@@ -100,6 +103,13 @@ const MenuProp = styled.div`
 
   padding: 9px;
 
+  .menuImg {
+    border: none;
+    img {
+      border: none;
+    }
+  }
+
   img {
     width: 90px;
     height: 90px;
@@ -107,9 +117,10 @@ const MenuProp = styled.div`
     position: absolute;
     display: inline-block;
     content: "";
-    border-style: hidden;
-    border: 0px;
-    border-width: 0px;
+    // border-style: hidden;
+    //border: 0px;
+    // border-width: 0px;
+    // border: none;
   }
   input {
     width: 100%;
@@ -135,6 +146,11 @@ const MenuItem = styled(MenuHeader)`
   background-color: white;
   height: 100px;
 
+  .menuImg {
+    img {
+      border: none;
+    }
+  }
   .menuDel {
     //trash
     button {
@@ -192,6 +208,7 @@ const Menu = ({ marketId }) => {
   const getMenus = () => {
     var config = {
       method: "get",
+      //url: url + `/fooding/restaurant/${marketIdLS}/menu`,
       url: url + `/fooding/restaurant/${marketIdLS}/menu`,
       headers: {},
     };
@@ -240,9 +257,9 @@ const Menu = ({ marketId }) => {
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
-    // if (menuImg === "") {
+    // if (menuImg === []) {
     //   console.log("menuImg 없음");
-    //   data.append("image", menuImg);
+    //   //data.append("image", menuImg);
     // } else {
     //   data.append("image", menuImg);
     // }
@@ -251,7 +268,12 @@ const Menu = ({ marketId }) => {
       data.append("image", img);
     });
 
+    //data.append("image", menuImg);
+
     console.log(menuImg);
+
+    // ${marketIdLS}
+
     axios
       .post(url + `/fooding/admin/restaurant/${marketIdLS}/menu`, data, {
         headers: {
@@ -314,7 +336,7 @@ const Menu = ({ marketId }) => {
           {menus.map((menu, index) => (
             <MenuItem key={index}>
               <MenuProp className="menuImg">
-                <img src={menu.image} />
+                <img src={menu.image} class="menuImgTag" />
               </MenuProp>
               <MenuProp className="menuName" style={{ position: "relative" }}>
                 <span>{menu.name}</span>
