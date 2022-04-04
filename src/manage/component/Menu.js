@@ -116,7 +116,7 @@ const MenuProp = styled.div`
     width: 100%;
     height: 30px;
     border-radius: 5px;
-    /* border: ${(props) => props.theme.menuBorderColor}; */
+    border: ${(props) => props.theme.menuBorderColor};
   }
   textarea {
     width: 100%;
@@ -137,7 +137,7 @@ const MenuItem = styled(MenuHeader)`
   height: 100px;
   
   .menuDel {
-    //trash
+    
     button {
       color: red;
       border: 1px solid red;
