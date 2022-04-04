@@ -47,6 +47,7 @@ const MenuHeader = styled.div`
   //border-top: ${(props) => props.theme.menuBorderColor};
   .menuImg {
     width: 15%;
+    
     input {
       display: none;
     }
@@ -115,7 +116,7 @@ const MenuProp = styled.div`
     width: 100%;
     height: 30px;
     border-radius: 5px;
-    border: ${(props) => props.theme.menuBorderColor};
+    /* border: ${(props) => props.theme.menuBorderColor}; */
   }
   textarea {
     width: 100%;
@@ -134,7 +135,7 @@ const MenuProp = styled.div`
 const MenuItem = styled(MenuHeader)`
   background-color: white;
   height: 100px;
-
+  
   .menuDel {
     //trash
     button {
@@ -159,6 +160,7 @@ const FileIcon = styled.label`
   height: 100%;
   background-color: none;
   position: absolute;
+  
   z-index: 2;
   display: flex;
   justify-content: center;
@@ -247,11 +249,9 @@ const Menu = ({ marketId }) => {
     //   data.append("image", menuImg);
     // }
 
-    menuImg.map((img) => {
-      data.append("image", img);
-    });
-
+    data.append("image", menuImg);
     console.log(menuImg);
+    console.log("post전 ",data);
     axios
       .post(url + `/fooding/admin/restaurant/${marketIdLS}/menu`, data, {
         headers: {
@@ -262,6 +262,7 @@ const Menu = ({ marketId }) => {
       })
       .then((res) => {
         console.log(res);
+        console.log("post전 ",data);
         getMenus();
       })
       .catch((err) => {});
@@ -313,8 +314,8 @@ const Menu = ({ marketId }) => {
 
           {menus.map((menu, index) => (
             <MenuItem key={index}>
-              <MenuProp className="menuImg">
-                <img src={menu.image} />
+              <MenuProp className="menuImg"  style={{ border:"0" , outline: "0" }}>
+                <img src={menu.image} style={{ border:"0" , outline: "0" }}/>
               </MenuProp>
               <MenuProp className="menuName" style={{ position: "relative" }}>
                 <span>{menu.name}</span>
@@ -338,6 +339,7 @@ const Menu = ({ marketId }) => {
                   {...register("menuImg", {
                     required: "아이디를 입력하세요.",
                   })}
+                  style={{border:"0"}}
                   id="image_input"
                   type="file"
                   accept="image/jpg,image/png,image/jpeg,image/gif"

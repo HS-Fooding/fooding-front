@@ -188,9 +188,11 @@ const InputBox = styled.div`
     align-items: center;
     height:35px;
     width:100px;
+    margin-left:8px;
   }
+ 
   .TimeInputStyle{
-    width:40px;
+    width:35px;
   }
   .parkingLabel{
     display:flex;
@@ -456,6 +458,7 @@ function Register() {
         marketImgs.map((img) => {
           data.append("image", img);
         });
+
         axios
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
@@ -575,7 +578,7 @@ function Register() {
           </InputContainer>
           <InputContainer className="ParkContainer">
             <NameBox>
-              <p>주차 가능 여부</p>
+              <p>주차 정보</p>
             </NameBox>
             <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
