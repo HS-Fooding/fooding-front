@@ -727,7 +727,8 @@ function Register() {
                 <SubBox>평일 시간대</SubBox>
                 <input
                   type="time"
-                  value="11:00:00"
+                  //value="11:00:00"
+                  placeholder="11:00:00"
                   className="TimeInput"
                   {...register("weekdayTimeStart")}
                 />

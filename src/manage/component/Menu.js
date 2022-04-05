@@ -264,7 +264,7 @@ const Menu = ({ marketId }) => {
     //   data.append("image", menuImg);
     // }
 
-    menuImg.map((img) => {
+    menuImg?.map((img) => {
       data.append("image", img);
     });
 
