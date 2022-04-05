@@ -17,21 +17,20 @@
   padding: 0 1rem;
 }
 
-.leftBox__content 
 .leftBox__title,
-  .leftBox__description,
-  .leftBox__name {
+.leftBox__description,
+.leftBox__name {
     width: 100%;
     height: 90%;
-  }
-  .leftBox__content 
-  .leftBox__title,
-    .leftBox__description,
-    .leftBox__name  h3 {
+}
+
+.leftBox__title h3,
+.leftBox__description h3,
+.leftBox__name  h3 {
     color: #fff;
     margin-bottom: 1rem;
     font-size: 2rem;
-  }
+}
 
 .leftBox__title__content,
 .leftBox__description__content,
@@ -46,17 +45,17 @@
   color: #fff;
   background-color: rgba(0, 0, 0, 0.1);
 }
-
-.leftBox__title__content,
-.leftBox__description__content,
+.leftBox__title__content span,
+.leftBox__description__content span,
 .leftBox__name__content span {
-    display: block;
-    height: 100%;
-    width: 100%;
-    overflow-wrap: break-word;
-    overflow: hidden;
-    opacity: 0.7;
-  }
+  display: block;
+  height: 100%;
+  width: 100%;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  opacity: 0.7;
+}
+
 
 .leftBox__content__description {
   /* //   flex: 2; */
