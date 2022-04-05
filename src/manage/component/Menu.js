@@ -248,8 +248,10 @@ const Menu = ({ marketId }) => {
     // } else {
     //   data.append("image", menuImg);
     // }
-
-    data.append("image", menuImg);
+menuImg.map((img)=>{
+  data.append("image",img);
+})
+  
     console.log(menuImg);
     console.log("post전 ",data);
     axios

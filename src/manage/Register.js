@@ -350,12 +350,36 @@ function Register() {
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
   const [file, setFile] = useState([]);
   const [marketId, setMarketId] = useState();
+
+  const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("");
+  const [weekdayTimeStartState,setWeekdayTimeStartState]=useState("");
+  const [weekendTimeEndState,setWeekendTimeEndState]=useState();
+  const [weekendTimeStartState,setWeekendTimeStartState]=useState();
+  
+  
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
   //   categoryList.push(temp);
   //   console.log(categoryList);
   // },[categorySelected]);
+  const weekdayTimeEndHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekdayTimeEndState(val);
+  }
+  const weekdayTimeStartHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekdayTimeStartState(val);
+  }
+  const weekendTimeEndHandleForm = (e) =>{
+    const val = e.target.value;
+    setWeekendTimeEndState(val);
+  }
+  const weekendTimeStartHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekendTimeStartState(val);
+
+  }
 
   const marketImgChange = (e) => {
     e.preventDefault();
@@ -619,6 +643,7 @@ function Register() {
                   min="0"
                   max="10"
                   className="TimeInputStyle"
+                  
                   {...register("availableHour")}
                   style={{ marginTop: "1px" }}
                 />
@@ -730,33 +755,33 @@ function Register() {
                 <SubBox>평일 시간대</SubBox>
                 <input
                   type="time"
-                  value="11:00:00"
-                  className="TimeInput"
-                  {...register("weekdayTimeStart")}
+                  // onChange={weekdayTimeStartHandleForm}
+                  className="TimeInput"        
+                  // value={weekdayTimeStartState}
+                  placeholder="9:00"
                 />
                 <p>부터</p>
                 <input
                   type="time"
-                  value="21:00:00"
+                  onChange={weekdayTimeEndHandleForm}
                   className="TimeInput"
-                  {...register("weekdayTimeEnd")}
+                  placeholder="20:00"
                 />
                 <p>까지</p>
               </div>
               <div className="InputNTitleContainer">
                 <SubBox>주말 시간대</SubBox>
-                <input
-                  value="11:00:00"
+                <input                  
                   type="time"
                   className="TimeInput"
-                  {...register("weekendTimeStart")}
+                  onChange={weekendTimeStartHandleForm}
+                  value="9:00"
                 />
                 <p>부터</p>
-                <input
-                  value="21:00:00"
+                <input                 
                   type="time"
-                  className="TimeInput"
-                  {...register("weekendTimeEnd")}
+                  className="TimeInput" 
+                  onChange={weekendTimeEndHandleForm}
                 />
                 <p>까지</p>
               </div>
