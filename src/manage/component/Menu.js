@@ -264,10 +264,17 @@ const Menu = ({ marketId }) => {
     //   data.append("image", menuImg);
     // }f
 
-    // menuImg?.map((img) => {
+    // if(menuImg !== []){
+    //   menuImg.map((img) => {
+    //     data.append("image", img);
+    //   });
+    // }c
+    console.log(menuImg);
+
+    // menuImg.map((img) => {
     //   data.append("image", img);
     // });
-    
+
     data.append("image", menuImg[0]);
 
     console.log(menuImg);

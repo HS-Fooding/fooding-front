@@ -368,7 +368,7 @@ function Register() {
     const id = localStorage.getItem("marketId");
       var axios= require("axios");
       axios
-      .get(url + "/fooding/restaurant/", id, {
+      .get(url + `/fooding/restaurant/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
