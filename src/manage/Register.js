@@ -188,11 +188,13 @@ const InputBox = styled.div`
   .TimeDiv {
     display: flex;
     align-items: center;
-    height: 35px;
-    width: 100px;
+    height:35px;
+    width:100px;
+    margin-left:8px;
   }
-  .TimeInputStyle {
-    width: 40px;
+ 
+  .TimeInputStyle{
+    width:35px;
   }
   .parkingLabel {
     display: flex;
@@ -348,12 +350,54 @@ function Register() {
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
   const [file, setFile] = useState([]);
   const [marketId, setMarketId] = useState();
+
+  const [weekdayTimeStartState,setWeekdayTimeStartState]=useState("11:00:00");
+  const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("21:00:00");
+  const [weekendTimeStartState,setWeekendTimeStartState]=useState("11:00:00");
+  const [weekendTimeEndState,setWeekendTimeEndState]=useState("21:00:00");
+  
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
   //   categoryList.push(temp);
   //   console.log(categoryList);
   // },[categorySelected]);
+  
+  useEffect(()=>{
+    const getToken = localStorage.getItem("token");
+    const id = localStorage.getItem("marketId");
+      var axios= require("axios");
+      axios
+      .get(url + `/fooding/restaurant/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      })
+      .then((res) => {
+        console.log("get 됨");
+        console.log(res.data);
+
+      })
+      .then((res) => {})
+  });
+  const weekdayTimeEndHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekdayTimeEndState(val);
+  }
+  const weekdayTimeStartHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekdayTimeStartState(val);
+  }
+  const weekendTimeEndHandleForm = (e) =>{
+    const val = e.target.value;
+    setWeekendTimeEndState(val);
+  }
+  const weekendTimeStartHandleForm = (e)=>{
+    const val = e.target.value;
+    setWeekendTimeStartState(val);
+
+  }
 
   const marketImgChange = (e) => {
     e.preventDefault();
@@ -438,12 +482,12 @@ function Register() {
           name: values.businessName,
           tel: [values.businessNum, values.personalNum],
           weekdaysWorkHour: {
-            open: values.weekdayTimeStart,
-            close: values.weekdayTimeEnd,
+            open: weekdayTimeStartState,
+            close: weekdayTimeEndState,
           },
           weekendsWorkHour: {
-            open: values.weekendTimeStart,
-            close: values.weekendTimeEnd,
+            open: weekendTimeStartState,
+            close: weekendTimeEndState,
           },
           intro: values.detail,
           location: street,
@@ -459,6 +503,7 @@ function Register() {
         marketImgs.map((img) => {
           data.append("image", img);
         });
+
         axios
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
@@ -576,7 +621,7 @@ function Register() {
           </InputContainer>
           <InputContainer className="ParkContainer">
             <NameBox>
-              <p>주차 가능 여부</p>
+              <p>주차 정보</p>
             </NameBox>
             <InputBox style={{ width: "80%" }}>
               {/* <div className="InputAddressContainer"> */}
@@ -615,7 +660,7 @@ function Register() {
                   type="number"
                   min="0"
                   max="10"
-                  className="TimeInputStyle"
+                  className="TimeInputStyle"                
                   {...register("availableHour")}
                   style={{ marginTop: "1px" }}
                 />
@@ -726,35 +771,35 @@ function Register() {
               <div className="InputNTitleContainer">
                 <SubBox>평일 시간대</SubBox>
                 <input
-                  type="time"
-                  //value="11:00:00"
-                  placeholder="11:00:00"
+                  type="time"                 
+                  value={weekdayTimeStartState}                 
                   className="TimeInput"
-                  {...register("weekdayTimeStart")}
+                  onChange={weekdayTimeStartHandleForm}
+                //  {...register("weekdayTimeStart")}
                 />
                 <p>부터</p>
                 <input
                   type="time"
-                  value="21:00:00"
+                  value={weekdayTimeEndState}           
+                  onChange={weekdayTimeEndHandleForm}
                   className="TimeInput"
-                  {...register("weekdayTimeEnd")}
                 />
                 <p>까지</p>
               </div>
               <div className="InputNTitleContainer">
                 <SubBox>주말 시간대</SubBox>
-                <input
-                  value="11:00:00"
+                <input                  
                   type="time"
                   className="TimeInput"
-                  {...register("weekendTimeStart")}
+                  onChange={weekendTimeStartHandleForm}
+                  value={weekendTimeStartState} 
                 />
                 <p>부터</p>
-                <input
-                  value="21:00:00"
+                <input                 
                   type="time"
-                  className="TimeInput"
-                  {...register("weekendTimeEnd")}
+                  className="TimeInput" 
+                  onChange={weekendTimeEndHandleForm}
+                  value={weekendTimeEndState} 
                 />
                 <p>까지</p>
               </div>
