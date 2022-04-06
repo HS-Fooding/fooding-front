@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { Navigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import SimpleSlider from "./SimpleSlider";
 import Slider from "react-slick";
 import { url } from "../Api";
 import Menu from "./component/Menu";
+import axios from "axios";
 
 const Container = styled.div`
   width: 100%;
@@ -188,13 +188,13 @@ const InputBox = styled.div`
   .TimeDiv {
     display: flex;
     align-items: center;
-    height:35px;
-    width:100px;
-    margin-left:8px;
+    height: 35px;
+    width: 100px;
+    margin-left: 8px;
   }
- 
-  .TimeInputStyle{
-    width:35px;
+
+  .TimeInputStyle {
+    width: 35px;
   }
   .parkingLabel {
     display: flex;
@@ -340,7 +340,6 @@ const StyledSlider = styled(Slider)`
 `;
 
 function Register() {
-  const [price, setPrice] = useState("");
   const { register, watch, getValues } = useForm();
 
   const [marketImgs, setMarketImgs] = useState([]);
@@ -351,23 +350,26 @@ function Register() {
   const [file, setFile] = useState([]);
   const [marketId, setMarketId] = useState();
 
-  const [weekdayTimeStartState,setWeekdayTimeStartState]=useState("11:00:00");
-  const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("21:00:00");
-  const [weekendTimeStartState,setWeekendTimeStartState]=useState("11:00:00");
-  const [weekendTimeEndState,setWeekendTimeEndState]=useState("21:00:00");
-  
+  const [weekdayTimeStartState, setWeekdayTimeStartState] =
+    useState("11:00:00");
+  const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00:00");
+  const [weekendTimeStartState, setWeekendTimeStartState] =
+    useState("11:00:00");
+  const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
+  const [getSuccess, setGetSuccess] = useState(false);
+  const [marketInfo, setMarketInfo] = useState();
+
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
   //   categoryList.push(temp);
   //   console.log(categoryList);
   // },[categorySelected]);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const getToken = localStorage.getItem("token");
     const id = localStorage.getItem("marketId");
-      var axios= require("axios");
-      axios
+    axios
       .get(url + `/fooding/restaurant/${id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -377,27 +379,27 @@ function Register() {
       .then((res) => {
         console.log("get 됨");
         console.log(res.data);
+        setMarketInfo(res.data);
+        setGetSuccess(true);
+      });
+  }, []);
 
-      })
-      .then((res) => {})
-  });
-  const weekdayTimeEndHandleForm = (e)=>{
+  const weekdayTimeEndHandleForm = (e) => {
     const val = e.target.value;
     setWeekdayTimeEndState(val);
-  }
-  const weekdayTimeStartHandleForm = (e)=>{
+  };
+  const weekdayTimeStartHandleForm = (e) => {
     const val = e.target.value;
     setWeekdayTimeStartState(val);
-  }
-  const weekendTimeEndHandleForm = (e) =>{
+  };
+  const weekendTimeEndHandleForm = (e) => {
     const val = e.target.value;
     setWeekendTimeEndState(val);
-  }
-  const weekendTimeStartHandleForm = (e)=>{
+  };
+  const weekendTimeStartHandleForm = (e) => {
     const val = e.target.value;
     setWeekendTimeStartState(val);
-
-  }
+  };
 
   const marketImgChange = (e) => {
     e.preventDefault();
@@ -545,10 +547,14 @@ function Register() {
                   <p>상호명</p>
                 </NameBox>
                 <InputBox>
-                  <input
-                    {...register("businessName")}
-                    placeholder="상호명을 입력하시오."
-                  />
+                  {marketInfo === null ? (
+                    <input
+                      {...register("businessName")}
+                      placeholder="상호명을 입력하시오."
+                    />
+                  ) : (
+                    <span>{marketInfo?.name}</span>
+                  )}
                 </InputBox>
               </InputContainer>
               <InputContainer style={{ height: "120px" }}>
@@ -556,11 +562,15 @@ function Register() {
                   <p>상세설명</p>
                 </NameBox>
                 <InputBox>
-                  <textarea
-                    {...register("detail")}
-                    style={{ fontFamily: "Roboto" }}
-                    placeholder="상세설명을 입력하시오"
-                  />
+                  {marketInfo === null ? (
+                    <textarea
+                      {...register("detail")}
+                      style={{ fontFamily: "Roboto" }}
+                      placeholder="상세설명을 입력하시오"
+                    />
+                  ) : (
+                    <span>{marketInfo?.intro}</span>
+                  )}
                 </InputBox>
               </InputContainer>
             </div>
@@ -602,21 +612,21 @@ function Register() {
           </div>
         </form>
         <InfoForm>
-          {/* 주소 입력  */}
-          {/* <div style={{ width: "100%", height: "100px",}}> */}
           <InputContainer className="AddressContainer BorderTop">
             <NameBox>
               <p>주소</p>
             </NameBox>
             <InputBox style={{ width: "80%" }}>
-              {/* <div className="InputAddressContainer"> */}
-              <input
-                className="NumInputStyle"
-                {...register("address")}
-                placeholder="주소를 입력하시오"
-                style={{ marginTop: "1px" }}
-              />
-              {/* </div> */}
+              {marketInfo === null ? (
+                <input
+                  className="NumInputStyle"
+                  {...register("address")}
+                  placeholder="주소를 입력하시오"
+                  style={{ marginTop: "1px" }}
+                />
+              ) : (
+                <span>{marketInfo?.location.addressName}</span>
+              )}
             </InputBox>
           </InputContainer>
           <InputContainer className="ParkContainer">
@@ -624,30 +634,34 @@ function Register() {
               <p>주차 정보</p>
             </NameBox>
             <InputBox style={{ width: "80%" }}>
-              {/* <div className="InputAddressContainer"> */}
-              <label className="parkingLabel" htmlFor="can">
-                <input
-                  {...register("parking", { required: true })}
-                  type="radio"
-                  name="parking"
-                  value="주차 공간 있음"
-                  className="form-check-input"
-                  id="can"
-                />{" "}
-                <p>가능</p>
-              </label>
-              <label className="parkingLabel" htmlFor="cant">
-                <input
-                  {...register("parking", { required: true })}
-                  type="radio"
-                  name="parking"
-                  value="주차 공간 없음"
-                  className="form-check-input"
-                  id="cant"
-                />{" "}
-                <p>불가능</p>
-              </label>
-              {/* </div> */}
+              {marketInfo === null ? (
+                <>
+                  <label className="parkingLabel" htmlFor="can">
+                    <input
+                      {...register("parking", { required: true })}
+                      type="radio"
+                      name="parking"
+                      value="주차 공간 있음"
+                      className="form-check-input"
+                      id="can"
+                    />
+                    <p>가능</p>
+                  </label>
+                  <label className="parkingLabel" htmlFor="cant">
+                    <input
+                      {...register("parking", { required: true })}
+                      type="radio"
+                      name="parking"
+                      value="주차 공간 없음"
+                      className="form-check-input"
+                      id="cant"
+                    />
+                    <p>불가능</p>
+                  </label>
+                </>
+              ) : (
+                <span>{marketInfo?.parkingInfo}</span>
+              )}
             </InputBox>
           </InputContainer>
           <InputContainer className="UseTimeContainer">
@@ -655,29 +669,35 @@ function Register() {
               <p>최대 이용 시간</p>
             </NameBox>
             <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
-              <div className="TimeDiv">
-                <input
-                  type="number"
-                  min="0"
-                  max="10"
-                  className="TimeInputStyle"                
-                  {...register("availableHour")}
-                  style={{ marginTop: "1px" }}
-                />
-                <p>시간</p>
-              </div>
-              <div className="TimeDiv">
-                <input
-                  type="number"
-                  step="10"
-                  min="10"
-                  max="50"
-                  className="TimeInputStyle"
-                  {...register("availableMinute")}
-                  style={{ marginTop: "1px" }}
-                />
-                <p>분</p>
-              </div>
+              {marketInfo === null ? (
+                <>
+                  <div className="TimeDiv">
+                    <input
+                      type="number"
+                      min="0"
+                      max="10"
+                      className="TimeInputStyle"
+                      {...register("availableHour")}
+                      style={{ marginTop: "1px" }}
+                    />
+                    <p>시간</p>
+                  </div>
+                  <div className="TimeDiv">
+                    <input
+                      type="number"
+                      step="10"
+                      min="10"
+                      max="50"
+                      className="TimeInputStyle"
+                      {...register("availableMinute")}
+                      style={{ marginTop: "1px" }}
+                    />
+                    <p>분</p>
+                  </div>
+                </>
+              ) : (
+                <span>{marketInfo?.maximumUsageTime}</span>
+              )}
             </InputBox>
           </InputContainer>
           <InputContainer className="CategoryContainer">
@@ -691,32 +711,35 @@ function Register() {
                 justifyContent: "flexStart",
               }}
             >
-              <div className="SelectCategoryContainer">
-                <select onChange={handleSelect} value={categorySelected}>
-                  <option></option>
-                  <option value="KOREAN" selected>
-                    한식
-                  </option>
-                  <option value="JAPANESE">일식</option>
-                  <option value="CHINESE">중식</option>
-                  <option value="WESTERN">양식</option>
-                  <option value="TAIWAN">태국</option>
-                  <option value="VIETNAM">베트남</option>
-                  <option value="SNACK">분식</option>
-                  <option value="NOODLE">면요리</option>
-                  <option value="BBQ">바베큐</option>
-                  <option value="PORK">돼지고기</option>
-                  <option value="BEEF">소고기</option>
-                  <option value="CHICKEN">닭고기</option>
-                  <option value="LAMB">양고기</option>
-                  <option value="BAR">바</option>
-                  <option value="PUB">술집</option>
-                  <option value="CAFE">카페</option>
-                  <option value="DESSERT">디저트</option>
-                </select>
-              </div>
-              {/* <div style={{color:"white"}}></div> */}
-              {/* <div>수정된 카테고리 {categorySelected}</div> */}
+              {marketInfo === null ? (
+                <div className="SelectCategoryContainer">
+                  <select onChange={handleSelect} value={categorySelected}>
+                    <option></option>
+                    <option value="KOREAN" selected>
+                      한식
+                    </option>
+                    <option value="JAPANESE">일식</option>
+                    <option value="CHINESE">중식</option>
+                    <option value="WESTERN">양식</option>
+                    <option value="TAIWAN">태국</option>
+                    <option value="VIETNAM">베트남</option>
+                    <option value="SNACK">분식</option>
+                    <option value="NOODLE">면요리</option>
+                    <option value="BBQ">바베큐</option>
+                    <option value="PORK">돼지고기</option>
+                    <option value="BEEF">소고기</option>
+                    <option value="CHICKEN">닭고기</option>
+                    <option value="LAMB">양고기</option>
+                    <option value="BAR">바</option>
+                    <option value="PUB">술집</option>
+                    <option value="CAFE">카페</option>
+                    <option value="DESSERT">디저트</option>
+                  </select>
+                </div>
+              ) : (
+                <span>{marketInfo?.category}</span>
+              )}
+
               <ul className="CategoryTags">
                 {categorySelected.map((value, index) => {
                   return (
@@ -743,21 +766,29 @@ function Register() {
             <NumContainer>
               <div className="InputNTitleContainer">
                 <SubBox>사업자 번호</SubBox>
-                <input
-                  className="NumInputStyle"
-                  {...register("businessNum")}
-                  placeholder="번호를 입력하시오"
-                  style={{ marginTop: "1px" }}
-                />
+                {marketInfo === null ? (
+                  <input
+                    className="NumInputStyle"
+                    {...register("businessNum")}
+                    placeholder="번호를 입력하시오"
+                    style={{ marginTop: "1px" }}
+                  />
+                ) : (
+                  <span>{marketInfo?.tel[0]}</span>
+                )}
               </div>
               <div className="InputNTitleContainer">
                 <SubBox>개인 번호</SubBox>
-                <input
-                  className="NumInputStyle"
-                  {...register("personalNum")}
-                  placeholder="번호를 입력하시오"
-                  style={{ alignItems: "center" }}
-                />
+                {marketInfo === null ? (
+                  <input
+                    className="NumInputStyle"
+                    {...register("personalNum")}
+                    placeholder="번호를 입력하시오"
+                    style={{ alignItems: "center" }}
+                  />
+                ) : (
+                  <span>{marketInfo?.tel[1]}</span>
+                )}
               </div>
             </NumContainer>
           </InputContainer>
@@ -770,38 +801,57 @@ function Register() {
             <NumContainer>
               <div className="InputNTitleContainer">
                 <SubBox>평일 시간대</SubBox>
-                <input
-                  type="time"                 
-                  value={weekdayTimeStartState}                 
-                  className="TimeInput"
-                  onChange={weekdayTimeStartHandleForm}
-                //  {...register("weekdayTimeStart")}
-                />
-                <p>부터</p>
-                <input
-                  type="time"
-                  value={weekdayTimeEndState}           
-                  onChange={weekdayTimeEndHandleForm}
-                  className="TimeInput"
-                />
-                <p>까지</p>
+                {marketInfo === null ? (
+                  <>
+                    <input
+                      type="time"
+                      value={weekdayTimeStartState}
+                      className="TimeInput"
+                      onChange={weekdayTimeStartHandleForm}
+                      //  {...register("weekdayTimeStart")}
+                    />
+                    <p>부터</p>
+                    <input
+                      type="time"
+                      value={weekdayTimeEndState}
+                      onChange={weekdayTimeEndHandleForm}
+                      className="TimeInput"
+                    />
+                    <p>까지</p>
+                  </>
+                ) : (
+                  <span>
+                    {marketInfo?.weekdaysWorkHour.open}~
+                    {marketInfo?.weekdaysWorkHour.close}{" "}
+                  </span>
+                )}
               </div>
               <div className="InputNTitleContainer">
                 <SubBox>주말 시간대</SubBox>
-                <input                  
-                  type="time"
-                  className="TimeInput"
-                  onChange={weekendTimeStartHandleForm}
-                  value={weekendTimeStartState} 
-                />
-                <p>부터</p>
-                <input                 
-                  type="time"
-                  className="TimeInput" 
-                  onChange={weekendTimeEndHandleForm}
-                  value={weekendTimeEndState} 
-                />
-                <p>까지</p>
+                {marketInfo === null ? (
+                  <>
+                    <input
+                      type="time"
+                      className="TimeInput"
+                      onChange={weekendTimeStartHandleForm}
+                      value={weekendTimeStartState}
+                    />
+                    <p>부터</p>
+                    <input
+                      type="time"
+                      className="TimeInput"
+                      onChange={weekendTimeEndHandleForm}
+                      value={weekendTimeEndState}
+                    />
+                    <p>까지</p>
+                  </>
+                ) : (
+                  <span>
+                    {" "}
+                    {marketInfo?.weekendsWorkHour.open}~
+                    {marketInfo?.weekendsWorkHour.close}{" "}
+                  </span>
+                )}
               </div>
             </NumContainer>
           </InputContainer>
