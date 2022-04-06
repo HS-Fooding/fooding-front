@@ -45,61 +45,64 @@ const Modal = ({ parentCallback, modal }) => {
   const handleSubmit = async () => {
     setModalTrigger(false);
     const modal = false;
-    parentCallback(tableNum, peopleNum, tableSize, modal);
-        // need to redirect
-    };
-    const [figureWidth,setFigureWidth] = useState(1);
-    const [figureHeight,setFigureHeight] = useState(1);
-    const [tableWidthPixel,setTableWidthPixel] = useState();
-    const [tableHeightPixel,setTableHeightPixel] = useState();
-    const tableWidthMinus = ()=>{
-        if(figureWidth-1===0){
-            setFigureWidth(1);
-        }
-        else{
-            setFigureWidth(figureWidth-1);
-            let tableWidth = figureWidth-1;
-            setTableWidthPixel(tableWidth*100);
-            console.log(tableWidthPixel,"바로 반영되는지 확인");
-        }
-        
+    parentCallback(
+      tableNum,
+      peopleNum,
+      tableWidthPixel,
+      tableHeightPixel,
+      modal
+    );
+    // need to redirect
+  };
+  const [figureWidth, setFigureWidth] = useState(1);
+  const [figureHeight, setFigureHeight] = useState(1);
+  const [tableWidthPixel, setTableWidthPixel] = useState(100);
+  const [tableHeightPixel, setTableHeightPixel] = useState(100);
+  const tableWidthMinus = () => {
+    if (figureWidth - 1 === 0) {
+      setFigureWidth(1);
+    } else {
+      setFigureWidth(figureWidth - 1);
+      let tableWidth = figureWidth - 1;
+      setTableWidthPixel(tableWidth * 100);
+      console.log(tableWidthPixel, "바로 반영되는지 확인");
     }
-    const tableWidthPlus = ()=>{
-        setFigureWidth(figureWidth+1);
-        let tableWidth = figureWidth+1;
-        setTableWidthPixel(tableWidth*100);
-        console.log(tableWidthPixel,"바로 반영되는지 확인");
-        
+  };
+  const tableWidthPlus = () => {
+    setFigureWidth(figureWidth + 1);
+    let tableWidth = figureWidth + 1;
+    setTableWidthPixel(tableWidth * 100);
+    console.log(tableWidthPixel, "바로 반영되는지 확인");
+  };
+  const tableHeightMinus = () => {
+    if (figureHeight - 1 === 0) {
+      setFigureHeight(1);
+    } else {
+      let tableHeight = figureHeight - 1;
+      setFigureHeight(figureHeight - 1);
+      setTableHeightPixel(tableHeight * 100);
+      console.log(tableHeightPixel, "바로 반영되는지 확인");
     }
-    const tableHeightMinus = ()=>{
-            if(figureHeight-1===0){
-              setFigureHeight(1);
-          }
-          else{
-              let tableHeight=figureHeight-1;
-              setFigureHeight(figureHeight-1);
-              setTableHeightPixel(tableHeight*100);
-              console.log(tableHeightPixel,"바로 반영되는지 확인");
-          }
-      }
-    const tableHeightPlus = () =>{
-            setFigureHeight(figureHeight+1);
-            let tableHeight=figureHeight+1;
-            setTableHeightPixel(tableHeight*100);
-            console.log(tableHeightPixel,"바로 반영되는지 확인");
-    }
-    const changeWidthValue = (e)=>{
-        e.preventDefault();
-    }
-    const changeHeightValue=(e)=>{
-        e.preventDefault();
-    }
+  };
+  const tableHeightPlus = () => {
+    setFigureHeight(figureHeight + 1);
+    let tableHeight = figureHeight + 1;
+    setTableHeightPixel(tableHeight * 100);
+    console.log(tableHeightPixel, "바로 반영되는지 확인");
+  };
+  const changeWidthValue = (e) => {
+    e.preventDefault();
+  };
+  const changeHeightValue = (e) => {
+    e.preventDefault();
+  };
   const handleValidation = () => {
     let tmp = [...validation];
 
     tmp[0] = tableNum.length >= 1 ? true : false;
     tmp[1] = peopleNum.length >= 1 ? true : false;
-    tmp[2] = tableSize.length >= 1 ? true : false;
+    //tmp[2] = tableSize.length >= 1 ? true : false;
+    tmp[2] = true;
 
     setValidation(tmp);
     tmp.includes(false) ? setIsPassedValid(false) : setIsPassedValid(true);
@@ -108,6 +111,7 @@ const Modal = ({ parentCallback, modal }) => {
   useEffect(() => {
     handleValidation();
   }, [tableNum, peopleNum, tableSize]);
+
   return (
     <>
       <div
@@ -165,6 +169,8 @@ const Modal = ({ parentCallback, modal }) => {
             <button
               onClick={() => {
                 setModalTrigger(false);
+                const modal = false;
+                parentCallback(tableNum, peopleNum, tableSize, modal);
               }}
             >
               닫기
@@ -197,7 +203,7 @@ const Modal = ({ parentCallback, modal }) => {
                     onKeyPress={onKeyPress}
                   />
                 </div>
-           
+
                 <div className="leftForm__content leftForm__description">
                   <span>
                     최대, 최소 인원
@@ -237,22 +243,34 @@ const Modal = ({ parentCallback, modal }) => {
                     onChange={onChange}
                     onKeyPress={onKeyPress}
                   /> */}
-                       <div className="inputFigureNumber">
-                                    <div className="inputTableWidth">   
-                                    <p>가로</p>                              
-                                    <button onClick={tableWidthMinus}><p>-</p></button>
-                                    <div className="tableTag"><p>{figureWidth}</p> </div>
-                                     <button onClick={tableWidthPlus}><p>+</p></button>    
-                                    </div>
-                                    <div>
-                                  <div className="inputTableHeight">
-                                  <p>세로</p>   
-                                  <button onClick={tableHeightMinus}><p>-</p></button>
-                                    <div className="tableTag"><p>{figureHeight}</p> </div>
-                                    <button onClick={tableHeightPlus}><p>+</p></button>
-                                        </div>
-                                    </div>
-                                </div>
+                  <div className="inputFigureNumber">
+                    <div className="inputTableWidth">
+                      <p>가로</p>
+                      <button onClick={tableWidthMinus}>
+                        <p>-</p>
+                      </button>
+                      <div className="tableTag">
+                        <p>{figureWidth}</p>{" "}
+                      </div>
+                      <button onClick={tableWidthPlus}>
+                        <p>+</p>
+                      </button>
+                    </div>
+                    <div>
+                      <div className="inputTableHeight">
+                        <p>세로</p>
+                        <button onClick={tableHeightMinus}>
+                          <p>-</p>
+                        </button>
+                        <div className="tableTag">
+                          <p>{figureHeight}</p>{" "}
+                        </div>
+                        <button onClick={tableHeightPlus}>
+                          <p>+</p>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="rightForm__contents">
@@ -285,5 +303,5 @@ const Modal = ({ parentCallback, modal }) => {
       </div>
     </>
   );
-                    };
+};
 export default Modal;
