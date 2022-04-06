@@ -262,13 +262,20 @@ const Menu = ({ marketId }) => {
     //   //data.append("image", menuImg);
     // } else {
     //   data.append("image", menuImg);
-    // }
+    // }f
 
-    menuImg?.map((img) => {
-      data.append("image", img);
-    });
+    // if(menuImg !== []){
+    //   menuImg.map((img) => {
+    //     data.append("image", img);
+    //   });
+    // }c
+    console.log(menuImg);
 
-    //data.append("image", menuImg);
+    // menuImg.map((img) => {
+    //   data.append("image", img);
+    // });
+
+    data.append("image", menuImg[0]);
 
     console.log(menuImg);
 

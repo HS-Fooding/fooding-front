@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled from "styled-components";
 import Modal from "./component/Modal";
@@ -343,6 +343,12 @@ const MyCanvas = () => {
   const [windowCnt, setWindowCnt] = React.useState(1);
   const [doorCnt, setDoorCnt] = React.useState(1);
 
+  const [modal, setModal] = useState(false);
+
+  const [tableNum, setTableNum] = useState();
+  const [peopleNum, setPeopleNum] = useState();
+  const [tableSize, setTableSize] = useState();
+
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -351,7 +357,13 @@ const MyCanvas = () => {
     }
   };
 
+  const openModal = () => {
+    setModal(true);
+  };
+
   const createTable = () => {
+    openModal();
+
     const table = {
       x: 100 + tableCnt * 20,
       y: 100 + tableCnt * 20,
@@ -494,6 +506,15 @@ const MyCanvas = () => {
     //     });
   };
 
+  const handleCallback = (tableNum, peopleNum, tableSize, modal) => {
+    console.log("부모:", tableNum, peopleNum, tableSize, modal);
+    setTableNum(tableNum);
+    setPeopleNum(peopleNum);
+    setTableSize(tableSize);
+
+    modal ? setModal(true) : setModal(false);
+  };
+
   return (
     <Container>
       <Button1 onClick={createTable}>테이블 생성</Button1>
@@ -593,7 +614,7 @@ const MyCanvas = () => {
           })}
         </Layer>
       </Stage>
-      <Modal wavList={null} imageList={null} />
+      {modal ? <Modal parentCallback={handleCallback} /> : null}
     </Container>
   );
 };
