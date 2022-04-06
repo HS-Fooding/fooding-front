@@ -47,9 +47,11 @@ const MenuHeader = styled.div`
   //border-top: ${(props) => props.theme.menuBorderColor};
   .menuImg {
     width: 15%;
-    
     input {
       display: none;
+    }
+    img {
+      border: none;
     }
     position: relative;
   }
@@ -101,6 +103,13 @@ const MenuProp = styled.div`
 
   padding: 9px;
 
+  .menuImg {
+    border: none;
+    img {
+      border: none;
+    }
+  }
+
   img {
     width: 90px;
     height: 90px;
@@ -108,9 +117,10 @@ const MenuProp = styled.div`
     position: absolute;
     display: inline-block;
     content: "";
-    border-style: hidden;
-    border: 0px;
-    border-width: 0px;
+    // border-style: hidden;
+    //border: 0px;
+    // border-width: 0px;
+    // border: none;
   }
   input {
     width: 100%;
@@ -135,9 +145,14 @@ const MenuProp = styled.div`
 const MenuItem = styled(MenuHeader)`
   background-color: white;
   height: 100px;
-  
+
+  .menuImg {
+    img {
+      border: none;
+    }
+  }
   .menuDel {
-    
+    //trash
     button {
       color: red;
       border: 1px solid red;
@@ -160,7 +175,6 @@ const FileIcon = styled.label`
   height: 100%;
   background-color: none;
   position: absolute;
-  
   z-index: 2;
   display: flex;
   justify-content: center;
@@ -194,6 +208,7 @@ const Menu = ({ marketId }) => {
   const getMenus = () => {
     var config = {
       method: "get",
+      //url: url + `/fooding/restaurant/${marketIdLS}/menu`,
       url: url + `/fooding/restaurant/${marketIdLS}/menu`,
       headers: {},
     };
@@ -242,18 +257,23 @@ const Menu = ({ marketId }) => {
       new Blob([JSON.stringify(content)], { type: "application/json" })
     );
 
-    // if (menuImg === "") {
+    // if (menuImg === []) {
     //   console.log("menuImg 없음");
-    //   data.append("image", menuImg);
+    //   //data.append("image", menuImg);
     // } else {
     //   data.append("image", menuImg);
-    // }
-menuImg.map((img)=>{
-  data.append("image",img);
-})
-  
+    // }f
+
+    // menuImg?.map((img) => {
+    //   data.append("image", img);
+    // });
+    
+    data.append("image", menuImg[0]);
+
     console.log(menuImg);
-    console.log("post전 ",data);
+
+    // ${marketIdLS}
+
     axios
       .post(url + `/fooding/admin/restaurant/${marketIdLS}/menu`, data, {
         headers: {
@@ -264,7 +284,6 @@ menuImg.map((img)=>{
       })
       .then((res) => {
         console.log(res);
-        console.log("post전 ",data);
         getMenus();
       })
       .catch((err) => {});
@@ -316,8 +335,8 @@ menuImg.map((img)=>{
 
           {menus.map((menu, index) => (
             <MenuItem key={index}>
-              <MenuProp className="menuImg"  style={{ border:"0" , outline: "0" }}>
-                <img src={menu.image} style={{ border:"0" , outline: "0" }}/>
+              <MenuProp className="menuImg">
+                <img src={menu.image} class="menuImgTag" />
               </MenuProp>
               <MenuProp className="menuName" style={{ position: "relative" }}>
                 <span>{menu.name}</span>
@@ -341,7 +360,6 @@ menuImg.map((img)=>{
                   {...register("menuImg", {
                     required: "아이디를 입력하세요.",
                   })}
-                  style={{border:"0"}}
                   id="image_input"
                   type="file"
                   accept="image/jpg,image/png,image/jpeg,image/gif"

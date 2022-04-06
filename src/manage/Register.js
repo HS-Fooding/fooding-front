@@ -351,11 +351,10 @@ function Register() {
   const [file, setFile] = useState([]);
   const [marketId, setMarketId] = useState();
 
-  const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("");
-  const [weekdayTimeStartState,setWeekdayTimeStartState]=useState("");
-  const [weekendTimeEndState,setWeekendTimeEndState]=useState();
-  const [weekendTimeStartState,setWeekendTimeStartState]=useState();
-  
+  const [weekdayTimeStartState,setWeekdayTimeStartState]=useState("11:00:00");
+  const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("21:00:00");
+  const [weekendTimeStartState,setWeekendTimeStartState]=useState("11:00:00");
+  const [weekendTimeEndState,setWeekendTimeEndState]=useState("21:00:00");
   
   let categoryList = [];
   // useEffect(()=>{
@@ -363,6 +362,25 @@ function Register() {
   //   categoryList.push(temp);
   //   console.log(categoryList);
   // },[categorySelected]);
+  
+  useEffect(()=>{
+    const getToken = localStorage.getItem("token");
+    const id = localStorage.getItem("marketId");
+      var axios= require("axios");
+      axios
+      .get(url + "/fooding/restaurant/", id, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      })
+      .then((res) => {
+        console.log("get 됨");
+        console.log(res.data);
+
+      })
+      .then((res) => {})
+  });
   const weekdayTimeEndHandleForm = (e)=>{
     const val = e.target.value;
     setWeekdayTimeEndState(val);
@@ -464,12 +482,12 @@ function Register() {
           name: values.businessName,
           tel: [values.businessNum, values.personalNum],
           weekdaysWorkHour: {
-            open: values.weekdayTimeStart,
-            close: values.weekdayTimeEnd,
+            open: weekdayTimeStartState,
+            close: weekdayTimeEndState,
           },
           weekendsWorkHour: {
-            open: values.weekendTimeStart,
-            close: values.weekendTimeEnd,
+            open: weekendTimeStartState,
+            close: weekendTimeEndState,
           },
           intro: values.detail,
           location: street,
@@ -642,8 +660,7 @@ function Register() {
                   type="number"
                   min="0"
                   max="10"
-                  className="TimeInputStyle"
-                  
+                  className="TimeInputStyle"                
                   {...register("availableHour")}
                   style={{ marginTop: "1px" }}
                 />
@@ -754,18 +771,18 @@ function Register() {
               <div className="InputNTitleContainer">
                 <SubBox>평일 시간대</SubBox>
                 <input
-                  type="time"
-                  // onChange={weekdayTimeStartHandleForm}
-                  className="TimeInput"        
-                  // value={weekdayTimeStartState}
-                  placeholder="9:00"
+                  type="time"                 
+                  value={weekdayTimeStartState}                 
+                  className="TimeInput"
+                  onChange={weekdayTimeStartHandleForm}
+                //  {...register("weekdayTimeStart")}
                 />
                 <p>부터</p>
                 <input
                   type="time"
+                  value={weekdayTimeEndState}           
                   onChange={weekdayTimeEndHandleForm}
                   className="TimeInput"
-                  placeholder="20:00"
                 />
                 <p>까지</p>
               </div>
@@ -775,13 +792,14 @@ function Register() {
                   type="time"
                   className="TimeInput"
                   onChange={weekendTimeStartHandleForm}
-                  value="9:00"
+                  value={weekendTimeStartState} 
                 />
                 <p>부터</p>
                 <input                 
                   type="time"
                   className="TimeInput" 
                   onChange={weekendTimeEndHandleForm}
+                  value={weekendTimeEndState} 
                 />
                 <p>까지</p>
               </div>
