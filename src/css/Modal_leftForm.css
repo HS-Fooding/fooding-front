@@ -8,7 +8,7 @@
     align-items: flex-start;
     padding: 1rem;
     width: 100%;
-    height: 100%;
+    height: 470px;
     transition: 0.5s;
     
 }
@@ -93,6 +93,8 @@ color: rgb(255, 230, 0);
 
 .leftForm__content__title,
 .leftForm__content__description,
+.leftForm__content__minPeople,
+.leftForm__content__maxPeople,
 .leftForm__content__name {
     border: none;
     background-color: rgba(0, 0, 0, 0.1);
@@ -103,8 +105,9 @@ color: rgb(255, 230, 0);
     padding: 0.5rem;
 }
 
-.leftForm__content__description {
-    height: 70%;
+.leftForm__content__maxPeople {
+    height: 40px;
+    margin-top:10px;
 }
   
 .leftForm__title,
@@ -116,6 +119,7 @@ color: rgb(255, 230, 0);
 .leftForm__description {
     flex: 2;
     width: 100%;
+    height:100px;
     display: flex;
     flex-direction: column;
     justify-content: start;

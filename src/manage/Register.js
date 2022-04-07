@@ -355,7 +355,8 @@ function Register() {
   const [weekdayTimeEndState,setWeekdayTimeEndState]=useState("21:00:00");
   const [weekendTimeStartState,setWeekendTimeStartState]=useState("11:00:00");
   const [weekendTimeEndState,setWeekendTimeEndState]=useState("21:00:00");
-  
+  const [isMarketInfo,setIsMarketInfo] = useState();
+  const [marketInfo,saveMarketInfo]= useState();
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
@@ -377,10 +378,15 @@ function Register() {
       .then((res) => {
         console.log("get 됨");
         console.log(res.data);
-
+        saveMarketInfo(res.data);
+        
+        setIsMarketInfo(true)
       })
-      .then((res) => {})
-  });
+      .catch((err) => {
+        setIsMarketInfo(false);
+        console.log(err);
+      })
+  },[]);
   const weekdayTimeEndHandleForm = (e)=>{
     const val = e.target.value;
     setWeekdayTimeEndState(val);
@@ -528,8 +534,143 @@ function Register() {
   return (
     <Container>
       <Header />
+{isMarketInfo ?  <InputFormDiv>
+        <form className="NameForm">
+          <div
+            style={{
+              width: "100%",
+              height: "150px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ width: "70%" }}>
+              <InputContainer className="BorderTop">
+                <NameBox>
+                  <p>상호명</p>
+                </NameBox>
+                <InputBox>
+               {marketInfo.name}
+                </InputBox>
+              </InputContainer>
+              <InputContainer style={{ height: "120px" }}>
+                <NameBox>
+                  <p>상세설명</p>
+                </NameBox>
+                <InputBox>
+                {marketInfo.intro}
+                </InputBox>
+              </InputContainer>
+            </div>
 
-      <InputFormDiv>
+            <div style={{ width: "30%", height: "180px" }}>
+              <InputContainer style={{ height: "100%" }}>
+                <MarketImgDiv>                                    
+                          {marketInfo.images?.length !== 0 ? (
+                            marketInfo.images?.map((one, index) => (
+                              <div>
+                                <MarketImg src={one} key={index} />
+                              </div>
+                            ))
+                          ) : null }{" "}
+                        
+                  
+                </MarketImgDiv>
+              </InputContainer>
+            </div>
+          </div>
+        </form>
+        <InfoForm>
+          {/* 주소 입력  */}
+          {/* <div style={{ width: "100%", height: "100px",}}> */}
+          <InputContainer className="AddressContainer BorderTop">
+            <NameBox>
+              <p>주소</p>
+            </NameBox>
+            <InputBox style={{ width: "80%" }}>
+             {marketInfo.location.addressName}
+            </InputBox>
+          </InputContainer>
+          <InputContainer className="ParkContainer">
+            <NameBox>
+              <p>주차 정보</p>
+            </NameBox>
+            <InputBox style={{ width: "80%" }}>
+              {/* <div className="InputAddressContainer"> */}
+              {marketInfo.parkingInfo}
+              {/* </div> */}
+            </InputBox>
+          </InputContainer>
+          <InputContainer className="UseTimeContainer">
+            <NameBox>
+              <p>최대 이용 시간</p>
+            </NameBox>
+            <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
+              {Math.floor(marketInfo.maximumUsageTime/60)}시간 {marketInfo.maximumUsageTime%60}분
+            </InputBox>
+          </InputContainer>
+          <InputContainer className="CategoryContainer">
+            <NameBox>
+              <p>카테고리</p>
+            </NameBox>
+            <InputBox
+              style={{
+                width: "80%",
+                display: "flex",
+                justifyContent: "flexStart",
+              }}
+            >
+            {/* {(marketInfo.category).map((one,index)=>{
+              one
+            })        
+            }  */}
+            </InputBox>
+          </InputContainer>
+          <InputContainer className="NumberContainer BorderTop">
+            <NameBox>
+              <p>번호</p>
+            </NameBox>
+            <NumContainer>
+              <div className="InputNTitleContainer">
+                <SubBox>사업자 번호</SubBox>
+                  {marketInfo.tel[0]}
+              </div>
+              <div className="InputNTitleContainer">
+                <SubBox>개인 번호</SubBox>
+                {marketInfo.tel[1]}
+              </div>
+            </NumContainer>
+          </InputContainer>
+          {/* </div> */}
+          {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
+          <InputContainer className="Time BorderTop">
+            <NameBox>
+              <p>시간</p>
+            </NameBox>
+            <NumContainer>
+              {/* <div className="InputNTitleContainer">
+                <SubBox>평일 시간대</SubBox>
+                <p>{marketInfo.weekdaysWorkHour}</p>
+                <p>부터</p>
+                
+                <p>{marketInfo.weekdaysWorkHour}</p>
+                <p>까지</p>
+              </div>
+              <div className="InputNTitleContainer">
+                <SubBox>주말 시간대</SubBox>
+                <p>{marketInfo.weekendsWorkHour}</p>
+                <p>부터</p>
+                <p>{marketInfo.weekendsWorkHour}</p>
+                <p>까지</p>
+              </div> */}
+            </NumContainer>
+          </InputContainer>
+          {/* 주차정보 , 최대 이용 시간*/}
+          {/* </div> */}
+
+        
+        </InfoForm>
+      </InputFormDiv> : <InputFormDiv>
         <form className="NameForm">
           <div
             style={{
@@ -811,6 +952,10 @@ function Register() {
           <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
       </InputFormDiv>
+       
+      
+      
+       }
       <Menu marketId={marketId} />
     </Container>
     // </div>

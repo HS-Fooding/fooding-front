@@ -9,9 +9,11 @@ const Modal = ({ parentCallback, modal }) => {
 
   const [signStatus, setSignStatus] = useState(true); // true: left
   const [tableNum, setTableNum] = useState("");
-  const [peopleNum, setPeopleNum] = useState("");
+  const [minPeopleNum, setMinPeopleNum] = useState("");
+  const [maxPeopleNum, setMaxPeopleNum] = useState("");
+  
   const [tableSize, setTableSize] = useState("");
-  const [validation, setValidation] = useState([false, false, false]);
+  const [validation, setValidation] = useState([false, false, false, false]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
@@ -23,9 +25,13 @@ const Modal = ({ parentCallback, modal }) => {
 
     if (className === "leftForm__content__title") {
       setTableNum(value);
-    } else if (className === "leftForm__content__description") {
-      setPeopleNum(value);
-    } else if (className === "leftForm__content__name") {
+    } else if (className === "leftForm__content__minPeople") {
+      setMinPeopleNum(value);
+
+    }else if(className==="leftForm__content__maxPeople"){
+      setMaxPeopleNum(value);
+    } 
+    else if (className === "leftForm__content__name") {
       setTableSize(value);
     }
   };
@@ -33,7 +39,8 @@ const Modal = ({ parentCallback, modal }) => {
   const onClick = () => {
     setSignStatus(!signStatus);
     console.log("tableNum:", tableNum);
-    console.log("peopleNum:", peopleNum);
+    console.log("minpeopleNum:", minPeopleNum);
+    console.log("maxpeopleNum:", maxPeopleNum);
     console.log("tableSize:", tableSize);
   };
 
@@ -45,7 +52,7 @@ const Modal = ({ parentCallback, modal }) => {
   const handleSubmit = async () => {
     setModalTrigger(false);
     const modal = false;
-    parentCallback(tableNum, peopleNum, tableSize, modal);
+    parentCallback(tableNum, minPeopleNum, maxPeopleNum, tableSize, modal);
         // need to redirect
     };
     const [figureWidth,setFigureWidth] = useState(1);
@@ -98,16 +105,18 @@ const Modal = ({ parentCallback, modal }) => {
     let tmp = [...validation];
 
     tmp[0] = tableNum.length >= 1 ? true : false;
-    tmp[1] = peopleNum.length >= 1 ? true : false;
-    tmp[2] = tableSize.length >= 1 ? true : false;
-
+    tmp[1] = minPeopleNum.length >= 1 ? true : false;
+    tmp[2] = maxPeopleNum.lenght >=1 ? true : false;
+    tmp[3] =true;
+    
     setValidation(tmp);
     tmp.includes(false) ? setIsPassedValid(false) : setIsPassedValid(true);
   };
 
   useEffect(() => {
     handleValidation();
-  }, [tableNum, peopleNum, tableSize]);
+    console.log("tableNum",tableNum,"minPeopleNum",minPeopleNum,"maxPeopleNum",maxPeopleNum,"tablewidthSize",figureWidth,"figureHeight",figureHeight);
+  }, [tableNum, minPeopleNum, maxPeopleNum, tableSize]);
   return (
     <>
       <div
@@ -135,7 +144,7 @@ const Modal = ({ parentCallback, modal }) => {
                   <div className="leftBox__description">
                     <h3>최대, 최소 인원</h3>
                     <p className="leftBox__description__content">
-                      <span>{peopleNum}</span>
+                      <span>{minPeopleNum}</span>
                     </p>
                   </div>
                 </div>
@@ -191,7 +200,7 @@ const Modal = ({ parentCallback, modal }) => {
                   <input
                     className="leftForm__content__title"
                     type="text"
-                    placeholder="Title.."
+                    placeholder="테이블 번호"
                     value={tableNum}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
@@ -201,7 +210,7 @@ const Modal = ({ parentCallback, modal }) => {
                 <div className="leftForm__content leftForm__description">
                   <span>
                     최대, 최소 인원
-                    {validation[1] ? (
+                    {(true && true) ? (
                       // <AiOutlineCheckCircle className="validation-icon check" />
                       <span>😅</span>
                     ) : (
@@ -209,19 +218,27 @@ const Modal = ({ parentCallback, modal }) => {
                       <span>😡</span>
                     )}
                   </span>
-                  <textarea
-                    className="leftForm__content__description"
+                  <input
+                    className="leftForm__content__minPeople"
                     type="text"
-                    placeholder="Description.."
-                    value={peopleNum}
+                    placeholder="최소인원"
+                    value={minPeopleNum}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
                   />
+                  <input 
+                  className="leftForm__content__maxPeople"
+                    type="text"
+                    placeholder="최대인원"
+                    value={maxPeopleNum}
+                    onChange={onChange}
+                    onKeyPress={onKeyPress}
+                   />
                 </div>
                 <div className="leftForm__content leftForm__name">
                   <span>
                     테이블 사이즈
-                    {validation[2] ? (
+                    {true ? (
                       // <AiOutlineCheckCircle className="validation-icon check" />
                       <span>😅</span>
                     ) : (
