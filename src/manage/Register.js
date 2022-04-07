@@ -366,7 +366,7 @@ function Register() {
   //   console.log(categoryList);
   // },[categorySelected]);
 
-  useEffect(() => {
+  const getMarketInfo = () => {
     const getToken = localStorage.getItem("token");
     const id = localStorage.getItem("marketId");
     axios
@@ -382,6 +382,10 @@ function Register() {
         setMarketInfo(res.data);
         setGetSuccess(true);
       });
+  };
+
+  useEffect(() => {
+    getMarketInfo();
   }, []);
 
   const weekdayTimeEndHandleForm = (e) => {

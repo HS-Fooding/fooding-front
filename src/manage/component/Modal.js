@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Modal = ({ parentCallback, modal }) => {
-  const API_URL = "http://127.0.0.1:8000/add_music";
-
   const [signStatus, setSignStatus] = useState(true); // true: left
   const [tableNum, setTableNum] = useState("");
   const [peopleNum, setPeopleNum] = useState("");
