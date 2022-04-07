@@ -9,17 +9,17 @@ const Modal = ({ parentCallback, modal }) => {
   const [tableNum, setTableNum] = useState("");
   const [minPeopleNum, setMinPeopleNum] = useState("");
   const [maxPeopleNum, setMaxPeopleNum] = useState("");
-  
+
   const [tableSize, setTableSize] = useState("");
   const [validation, setValidation] = useState([true, true, true, true]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const [figureWidth,setFigureWidth] = useState(1);
-  const [figureHeight,setFigureHeight] = useState(1);
-  const [tableWidthPixel,setTableWidthPixel] = useState();
-  const [tableHeightPixel,setTableHeightPixel] = useState();
+  const [figureWidth, setFigureWidth] = useState(1);
+  const [figureHeight, setFigureHeight] = useState(1);
+  const [tableWidthPixel, setTableWidthPixel] = useState(100);
+  const [tableHeightPixel, setTableHeightPixel] = useState(100);
   const onChange = (event) => {
     const {
       target: { value, className },
@@ -29,11 +29,9 @@ const Modal = ({ parentCallback, modal }) => {
       setTableNum(value);
     } else if (className === "leftForm__content__minPeople") {
       setMinPeopleNum(value);
-
-    }else if(className==="leftForm__content__maxPeople"){
+    } else if (className === "leftForm__content__maxPeople") {
       setMaxPeopleNum(value);
-    } 
-    else if (className === "leftForm__content__name") {
+    } else if (className === "leftForm__content__name") {
       setTableSize(value);
     }
   };
@@ -62,20 +60,17 @@ const Modal = ({ parentCallback, modal }) => {
       tableHeightPixel,
       modal
     );
-  
   };
-  const tableWidthMinus = ()=>{
-    if(figureWidth-1===0){
-        setFigureWidth(1);
+  const tableWidthMinus = () => {
+    if (figureWidth - 1 === 0) {
+      setFigureWidth(1);
+    } else {
+      setFigureWidth(figureWidth - 1);
+      let tableWidth = figureWidth - 1;
+      setTableWidthPixel(tableWidth * 100);
+      console.log(tableWidthPixel, "바로 반영되는지 확인");
     }
-    else{
-        setFigureWidth(figureWidth-1);
-        let tableWidth = figureWidth-1;
-        setTableWidthPixel(tableWidth*100);
-        console.log(tableWidthPixel,"바로 반영되는지 확인");
-    }
-    
-}
+  };
   const tableWidthPlus = () => {
     setFigureWidth(figureWidth + 1);
     let tableWidth = figureWidth + 1;
@@ -107,9 +102,9 @@ const Modal = ({ parentCallback, modal }) => {
   const handleValidation = () => {
     let tmp = [...validation];
 
-    tmp[0] = tableNum===null ? false : true;
-    tmp[1] = minPeopleNum===null ? false : true;
-    tmp[2] = maxPeopleNum===null ? false : true;
+    tmp[0] = tableNum === null ? false : true;
+    tmp[1] = minPeopleNum === null ? false : true;
+    tmp[2] = maxPeopleNum === null ? false : true;
     tmp[3] = true;
     // tmp[4] = true;
     setValidation(tmp);
@@ -118,7 +113,18 @@ const Modal = ({ parentCallback, modal }) => {
 
   useEffect(() => {
     handleValidation();
-    console.log("tableNum",tableNum,"minPeopleNum",minPeopleNum,"maxPeopleNum",maxPeopleNum,"tablewidthSize",figureWidth,"figureHeight",figureHeight);
+    console.log(
+      "tableNum",
+      tableNum,
+      "minPeopleNum",
+      minPeopleNum,
+      "maxPeopleNum",
+      maxPeopleNum,
+      "tablewidthSize",
+      figureWidth,
+      "figureHeight",
+      figureHeight
+    );
   }, [tableNum, minPeopleNum, maxPeopleNum, figureWidth]);
   return (
     <>
@@ -178,12 +184,14 @@ const Modal = ({ parentCallback, modal }) => {
               onClick={() => {
                 setModalTrigger(false);
                 const modal = false;
-                parentCallback( tableNum,
+                parentCallback(
+                  tableNum,
                   maxPeopleNum,
                   minPeopleNum,
                   tableWidthPixel,
                   tableHeightPixel,
-                  modal);
+                  modal
+                );
               }}
             >
               닫기
@@ -220,7 +228,7 @@ const Modal = ({ parentCallback, modal }) => {
                 <div className="leftForm__content leftForm__description">
                   <span>
                     최대, 최소 인원
-                    {(true && true) ? (
+                    {true && true ? (
                       // <AiOutlineCheckCircle className="validation-icon check" />
                       <span>😅</span>
                     ) : (
@@ -236,14 +244,14 @@ const Modal = ({ parentCallback, modal }) => {
                     onChange={onChange}
                     onKeyPress={onKeyPress}
                   />
-                  <input 
-                  className="leftForm__content__maxPeople"
+                  <input
+                    className="leftForm__content__maxPeople"
                     type="text"
                     placeholder="최대인원"
                     value={maxPeopleNum}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
-                   />
+                  />
                 </div>
                 <div className="leftForm__content leftForm__name">
                   <span>
