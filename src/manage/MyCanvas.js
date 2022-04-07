@@ -348,6 +348,8 @@ const MyCanvas = () => {
   const [tableNum, setTableNum] = useState();
   const [peopleNum, setPeopleNum] = useState();
   const [tableSize, setTableSize] = useState();
+  const [tableWidth, setTableWidth] = useState();
+  const [tableHeight, setTableHeight] = useState();
 
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
@@ -361,14 +363,14 @@ const MyCanvas = () => {
     setModal(true);
   };
 
-  const createTable = () => {
-    openModal();
+  const createTable = (tableWidth, tableHeight) => {
+    //openModal();
 
     const table = {
       x: 100 + tableCnt * 20,
       y: 100 + tableCnt * 20,
-      width: 100,
-      height: 100,
+      width: tableWidth,
+      height: tableHeight,
       fill: "brown",
       rotation: 0,
       id: "table" + tableCnt,
@@ -506,18 +508,29 @@ const MyCanvas = () => {
     //     });
   };
 
-  const handleCallback = (tableNum, peopleNum, tableSize, modal) => {
-    console.log("부모:", tableNum, peopleNum, tableSize, modal);
+  const handleCallback = (
+    tableNum,
+    maxPeopleNum,
+    minPeopleNum,
+    tableWidth,
+    tableHeight,
+    modal
+  ) => {
+    console.log("부모:", tableNum, tableWidth, tableHeight, modal);
+
     setTableNum(tableNum);
     setPeopleNum(peopleNum);
-    setTableSize(tableSize);
+    setTableHeight(tableHeight);
+    setTableWidth(tableWidth);
 
     modal ? setModal(true) : setModal(false);
+
+    createTable(tableWidth, tableHeight);
   };
 
   return (
     <Container>
-      <Button1 onClick={createTable}>테이블 생성</Button1>
+      <Button1 onClick={openModal}>테이블 생성</Button1>
       <Button2 onClick={createSeat}>좌석 생성</Button2>
       <Button3 onClick={createWall}>벽 생성</Button3>
       <Button4 onClick={createWindow}>창문 생성</Button4>
