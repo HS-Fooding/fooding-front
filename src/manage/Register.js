@@ -283,7 +283,9 @@ const NumContainer = styled.div`
 `;
 
 const SmallInput = styled.input``;
-
+const InfoSpan=styled.span`
+  margin-left:10px;
+`;
 const StyledSlider = styled(Slider)`
   height: 100%; //슬라이드 컨테이너 영역
 
@@ -358,7 +360,44 @@ function Register() {
   const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
   const [getSuccess, setGetSuccess] = useState(false);
   const [marketInfo, setMarketInfo] = useState();
-
+ 
+  const bringCategoryValue = (value) =>{
+    if(value==="KOREAN")
+        return "한식";
+    else if(value==="JAPANESE")
+        return "일식"
+    else if(value==="CHINESE")
+        return "중식"
+    else if(value==="WESTERN")
+        return "양식"    
+    else if(value==="VIETNAM")
+        return "베트남"    
+    else if(value==="TAIWAN")
+          return "태국"    
+    else if(value==="SNACK")
+        return "분식"    
+   else if(value==="NOODLE")
+        return "면요리"    
+    else if(value==="BBQ")
+        return "바베큐"    
+    else if(value==="PORK")
+        return "돼지고기"    
+    else if(value==="BEEF")
+        return "소고기"    
+    else if(value==="CHICKEN")
+        return "닭고기"    
+    else if(value==="LAMB")
+        return "양고기"    
+    else if(value==="CAFE")
+        return "카페"    
+    else if(value==="DESSERT")
+        return "디저트"    
+    else if(value==="BAR")
+        return "바"    
+    else if(value==="PUB")
+        return "술집"    
+    
+  }
   let categoryList = [];
   // useEffect(()=>{
   //   let temp = categorySelected;
@@ -381,11 +420,15 @@ function Register() {
         console.log(res.data);
         setMarketInfo(res.data);
         setGetSuccess(true);
+      }).catch((err)=>{
+        setGetSuccess(false);
+        setMarketInfo(null);
       });
   };
 
   useEffect(() => {
     getMarketInfo();
+  
   }, []);
 
   const weekdayTimeEndHandleForm = (e) => {
@@ -557,7 +600,7 @@ function Register() {
                         placeholder="상호명을 입력하시오."
                       />
                     ) : (
-                      <span>{marketInfo?.name}</span>
+                      <InfoSpan>{marketInfo?.name}</InfoSpan>
                     )}
                   </InputBox>
                 </InputContainer>
@@ -573,7 +616,7 @@ function Register() {
                         placeholder="상세설명을 입력하시오"
                       />
                     ) : (
-                      <span>{marketInfo?.intro}</span>
+                      <InfoSpan>{marketInfo?.intro}</InfoSpan>
                     )}
                   </InputBox>
                 </InputContainer>
@@ -629,7 +672,7 @@ function Register() {
                     style={{ marginTop: "1px" }}
                   />
                 ) : (
-                  <span>{marketInfo?.location.addressName}</span>
+                  <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
                 )}
               </InputBox>
             </InputContainer>
@@ -664,7 +707,7 @@ function Register() {
                     </label>
                   </>
                 ) : (
-                  <span>{marketInfo?.parkingInfo}</span>
+                  <InfoSpan>{marketInfo?.parkingInfo}</InfoSpan>
                 )}
               </InputBox>
             </InputContainer>
@@ -700,7 +743,7 @@ function Register() {
                     </div>
                   </>
                 ) : (
-                  <span>{marketInfo?.maximumUsageTime}</span>
+                  <span>{Math.floor(marketInfo?.maximumUsageTime/60)}시간 {marketInfo?.maximumUsageTime%60}분</span>
                 )}
               </InputBox>
             </InputContainer>
@@ -740,27 +783,47 @@ function Register() {
                       <option value="DESSERT">디저트</option>
                     </select>
                   </div>
+                  
                 ) : (
-                  <span>{marketInfo?.category}</span>
-                )}
-  
-                <ul className="CategoryTags">
-                  {categorySelected.map((value, index) => {
-                    return (
+                  <div style={{"width":"500px","height":"55px","display" : "flex"}}>
+                  <ul className="CategoryTags">
+                     {
+                    marketInfo?.category.map((one,index)=>{
+                      return (
                       <div style={{ display: "inlineBlock" }}>
-                        <li key={index} className="EachCategoryTag">
-                          <div
-                            className="EachCategoryButton"
-                            onClick={() => categoryButtonClick(index)}
-                          >
-                            X
-                          </div>
-                          <p>{value}</p>
-                        </li>
-                      </div>
-                    );
-                  })}
-                </ul>
+                          <li key={index} className="EachCategoryTag" style={{"margin":"0px 5px","padding":"0px 15px"}}> 
+                         {bringCategoryValue(one)}         
+                         </li>
+                         
+                      </div>)           
+                    })                                  
+                    }
+
+                  </ul>
+                  </div>
+                )}
+                {marketInfo===null ? 
+                   <ul className="CategoryTags">
+                   {categorySelected.map((value, index) => {
+                     return (
+                       <div style={{ display: "inlineBlock" }}>
+                         <li key={index} className="EachCategoryTag">
+                           <div
+                             className="EachCategoryButton"
+                             onClick={() => categoryButtonClick(index)}
+                           >
+                             X
+                           </div>
+                           <p>{value}</p>
+                         </li>
+                       </div>
+                     );
+                   })}
+                 </ul>
+                : null}
+            
+  
+              
               </InputBox>
             </InputContainer>
             <InputContainer className="NumberContainer BorderTop">
@@ -778,7 +841,7 @@ function Register() {
                       style={{ marginTop: "1px" }}
                     />
                   ) : (
-                    <span>{marketInfo?.tel[0]}</span>
+                    <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
                   )}
                 </div>
                 <div className="InputNTitleContainer">
@@ -791,7 +854,7 @@ function Register() {
                       style={{ alignItems: "center" }}
                     />
                   ) : (
-                    <span>{marketInfo?.tel[1]}</span>
+                    <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
                   )}
                 </div>
               </NumContainer>
@@ -824,10 +887,10 @@ function Register() {
                       <p>까지</p>
                     </>
                   ) : (
-                    <span>
+                    <InfoSpan>
                       {marketInfo?.weekdaysWorkHour.open}~
                       {marketInfo?.weekdaysWorkHour.close}{" "}
-                    </span>
+                    </InfoSpan>
                   )}
                 </div>
                 <div className="InputNTitleContainer">
@@ -850,11 +913,11 @@ function Register() {
                       <p>까지</p>
                     </>
                   ) : (
-                    <span>
+                    <InfoSpan>
                       {" "}
                       {marketInfo?.weekendsWorkHour.open}~
                       {marketInfo?.weekendsWorkHour.close}{" "}
-                    </span>
+                    </InfoSpan>
                   )}
                 </div>
               </NumContainer>
