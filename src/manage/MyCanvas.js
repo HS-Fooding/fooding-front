@@ -457,7 +457,6 @@ const MyCanvas = () => {
         const data = JSON.stringify({
             tables: tables.map((m) => {
                 return {
-                    id: m.id,
                     x: m.x,
                     y: m.y,
                     width: m.width,
@@ -470,14 +469,12 @@ const MyCanvas = () => {
             }),
             seats: seats.map((m) => {
                 return {
-                    id: m.id,
                     x: m.x,
                     y: m.y,
                 };
             }),
             walls: walls.map((m) => {
                 return {
-                    id: m.id,
                     x: m.x,
                     y: m.y,
                     width: m.width,
@@ -486,7 +483,6 @@ const MyCanvas = () => {
             }),
             windows: windows.map((m) => {
                 return {
-                    id: m.id,
                     x: m.x,
                     y: m.y,
                     width: m.width,
@@ -495,7 +491,6 @@ const MyCanvas = () => {
             }),
             doors: doors.map((m) => {
                 return {
-                    id: m.id,
                     x: m.x,
                     y: m.y,
                     width: m.width,
@@ -567,9 +562,9 @@ const MyCanvas = () => {
             height,
             fill,
             rotation,
-            id,
             minPeople,
             maxPeople,
+            id,
         } = e.target.attrs;
         setTableCnt(tableCnt + 1);
         const table = {
@@ -579,10 +574,10 @@ const MyCanvas = () => {
             height,
             fill,
             rotation,
-            id: tableCnt,
             tableNum: tableCnt,
             minPeople,
             maxPeople,
+            id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
         };
         setTables([...tables, table]);
     };
