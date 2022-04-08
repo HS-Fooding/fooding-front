@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 // import { IoMdWarning } from "react-icons/io";
 // import { AiOutlineCheckCircle } from "react-icons/ai";
 // import { BiUpload } from "react-icons/bi";
+import { render } from "react-dom";
+import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
 import axios from "axios";
 
 const Modal = ({ parentCallback, modal }) => {
@@ -169,8 +171,20 @@ const Modal = ({ parentCallback, modal }) => {
 
               <div className="container__box rightBox">
                 <h2 className={isPassedValid ? "box__msg valid" : "box__msg"}>
-                  {isPassedValid ? "Go Next Step!" : "Fill in the blanks!"}
+                  {/* {isPassedValid ? "Go Next Step!" : "Fill in the blanks!"} */}
                 </h2>
+                <Stage width={400} height={380}>
+                  <Layer>
+                    <Rect
+                      x={200 - tableWidthPixel / 2}
+                      y={200 - tableHeightPixel / 2}
+                      width={tableWidthPixel}
+                      height={tableHeightPixel}
+                      fill="red"
+                      shadowBlur={5}
+                    />
+                  </Layer>
+                </Stage>
                 <button
                   className="box__btn valid"
                   onClick={onClick}
