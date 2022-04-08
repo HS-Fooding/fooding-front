@@ -166,7 +166,7 @@ const Table = ({ shapeProps, isSelected, onSelect, onChange, onDblClick }) => {
     );
 };
 
-const Seat = ({ shapeProps, isSelected, onChange }) => {
+const Seat = ({ shapeProps, isSelected, onChange, onDblClick }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -182,6 +182,7 @@ const Seat = ({ shapeProps, isSelected, onChange }) => {
         <React.Fragment>
             <Circle
                 ref={shapeRef}
+                onDblClick={onDblClick}
                 {...shapeProps}
                 draggable
                 onDragEnd={(e) => {
@@ -196,7 +197,7 @@ const Seat = ({ shapeProps, isSelected, onChange }) => {
     );
 };
 
-const Wall = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Wall = ({ shapeProps, isSelected, onSelect, onChange, onDblClick }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -212,6 +213,7 @@ const Wall = ({ shapeProps, isSelected, onSelect, onChange }) => {
         <React.Fragment>
             <Rect
                 onClick={onSelect}
+                onDblClick={onDblClick}
                 onTap={onSelect}
                 ref={shapeRef}
                 {...shapeProps}
@@ -264,7 +266,13 @@ const Wall = ({ shapeProps, isSelected, onSelect, onChange }) => {
     );
 };
 
-const Window_Door = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Window_Door = ({
+    shapeProps,
+    isSelected,
+    onSelect,
+    onChange,
+    onDblClick,
+}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -280,6 +288,7 @@ const Window_Door = ({ shapeProps, isSelected, onSelect, onChange }) => {
         <React.Fragment>
             <Rect
                 onClick={onSelect}
+                onDblClick={onDblClick}
                 onTap={onSelect}
                 ref={shapeRef}
                 {...shapeProps}
@@ -554,18 +563,9 @@ const MyCanvas = () => {
         );
     };
 
-    const handleDblClick = (e) => {
-        const {
-            x,
-            y,
-            width,
-            height,
-            fill,
-            rotation,
-            minPeople,
-            maxPeople,
-            id,
-        } = e.target.attrs;
+    const handleTableDblClick = (e) => {
+        //prettier-ignore
+        const {x, y, width, height, fill, rotation, minPeople, maxPeople, id,} = e.target.attrs;
         setTableCnt(tableCnt + 1);
         const table = {
             x: x + 10,
@@ -580,6 +580,68 @@ const MyCanvas = () => {
             id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
         };
         setTables([...tables, table]);
+    };
+
+    const handleSeatDblClick = (e) => {
+        //prettier-ignore
+        const {x, y, radius, fill, id} = e.target.attrs;
+        setSeatCnt(seatCnt + 1);
+        const seat = {
+            x: x + 10,
+            y: y + 10,
+            radius,
+            fill,
+            id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
+        };
+        setSeats([...seats, seat]);
+    };
+
+    const handleWallDblClick = (e) => {
+        //prettier-ignore
+        const {x, y, width, height, fill, rotation, id} = e.target.attrs;
+        setWallCnt(wallCnt + 1);
+        const wall = {
+            x: x + 10,
+            y: y + 10,
+            width,
+            height,
+            rotation,
+            fill,
+            id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
+        };
+        setWalls([...walls, wall]);
+    };
+
+    const handleWindowDblClick = (e) => {
+        //prettier-ignore
+        const {x, y, width, height, fill, rotation, id} = e.target.attrs;
+        setWindowCnt(windowCnt + 1);
+        const window = {
+            x: x + 10,
+            y: y + 10,
+            width,
+            height,
+            rotation,
+            fill,
+            id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
+        };
+        setWindows([...windows, window]);
+    };
+
+    const handleDoorDblClick = (e) => {
+        //prettier-ignore
+        const {x, y, width, height, fill, rotation, id} = e.target.attrs;
+        setDoorCnt(doorCnt + 1);
+        const door = {
+            x: x + 10,
+            y: y + 10,
+            width,
+            height,
+            rotation,
+            fill,
+            id: id + 100, // id는 다른 개체들과 구분만 가능하면 됨. 고유하면 됨
+        };
+        setDoors([...doors, door]);
     };
 
     return (
@@ -601,7 +663,7 @@ const MyCanvas = () => {
                         return (
                             <Table
                                 key={i}
-                                onDblClick={handleDblClick}
+                                onDblClick={handleTableDblClick}
                                 shapeProps={table}
                                 isSelected={table.id === selectedId}
                                 onSelect={() => {
@@ -619,6 +681,7 @@ const MyCanvas = () => {
                         return (
                             <Seat
                                 key={i}
+                                onDblClick={handleSeatDblClick}
                                 shapeProps={seat}
                                 isSelected={seat.id === selectedId}
                                 onChange={(newAttrs) => {
@@ -633,6 +696,7 @@ const MyCanvas = () => {
                         return (
                             <Wall
                                 key={i}
+                                onDblClick={handleWallDblClick}
                                 shapeProps={wall}
                                 isSelected={wall.id === selectedId}
                                 onSelect={() => {
@@ -650,6 +714,7 @@ const MyCanvas = () => {
                         return (
                             <Window_Door
                                 key={i}
+                                onDblClick={handleWindowDblClick}
                                 shapeProps={window}
                                 isSelected={window.id === selectedId}
                                 onSelect={() => {
@@ -667,6 +732,7 @@ const MyCanvas = () => {
                         return (
                             <Window_Door
                                 key={i}
+                                onDblClick={handleDoorDblClick}
                                 shapeProps={door}
                                 isSelected={door.id === selectedId}
                                 onSelect={() => {
