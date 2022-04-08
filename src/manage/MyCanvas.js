@@ -3,9 +3,11 @@ import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled from "styled-components";
 import Modal from "./component/Modal";
 import axios from "axios";
+
 import { tab } from "@testing-library/user-event/dist/tab";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-
+import Portal from "./Portal";
+import ContextMenu from "./ContextMenu";
 const Container = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.2);
     width: 80%;
@@ -97,7 +99,19 @@ const Button6 = styled.button`
     cursor: pointer;
     z-index: 2;
 `;
-
+const Button7 = styled.button`
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 60%;
+    right: 5%;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 26px;
+    cursor: pointer;
+    z-index: 2;
+`;
 const Garbage = styled.div`
     position: absolute;
     display: flex;
@@ -117,6 +131,7 @@ const Table = ({
     shapeProps,
     isSelected,
     onSelect,
+    onContextMenu,
     onChange,
     onDblClick,
     isDelete,
@@ -140,6 +155,11 @@ const Table = ({
             <Rect
                 onClick={onSelect}
                 onDblClick={onDblClick}
+                onRClick={(e)=>{
+                    if(e.evt.button===2){
+                        console.log("오른쪽 버튼");
+                    }
+                }}
                 onTap={onSelect}
                 ref={shapeRef}
                 {...shapeProps}
@@ -527,7 +547,7 @@ const MyCanvas = () => {
     const [tableHeight, setTableHeight] = useState();
 
     const [isDelete, setIsDelete] = React.useState(false);
-
+    const [selectedContextMenu,setSelectedContextMenu] = useState(false);
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
         const clickedOnEmpty = e.target === e.target.getStage();
@@ -810,12 +830,32 @@ const MyCanvas = () => {
         };
         setDoors([...doors, door]);
     };
-
+    const handlecontextMenu = (e)=>{
+       
+        e.evt.preventDefault(); 
+        console.log("contextMenu");
+        // const mousePosition = e.target.getStage().getPointerPosition();
+        console.log("contextMenu");
+        setSelectedContextMenu(true);
+    };
     // 삭제
     const handleDelete = () => {
         setIsDelete(true);
     };
+    const changeInfo = ()=>{
+        console.log("selectedId",selectedId);
+        if(selectedId.includes("table")){
+            //수정이 가능하다.
+            const bringTable = tables.map((table,index)=>{
+                if(selectedId===table.id)
+                    return table;
+            })
+            console.log(bringTable);
 
+        }
+        //테이블의 값을 가져와야함. 테이블의 
+        //테이블이라는걸 알아야함. => 
+    }
     return (
         <Container>
             <Button1 onClick={openModal}>테이블 생성</Button1>
@@ -824,6 +864,7 @@ const MyCanvas = () => {
             <Button4 onClick={createWindow}>창문 생성</Button4>
             <Button5 onClick={createDoor}>출입구 생성</Button5>
             <Button6 onClick={postData}>Submit</Button6>
+            <Button7 onClick={changeInfo}>수정</Button7>
             <Garbage onMouseUp={handleDelete}></Garbage>
             <Stage
                 width={window.innerWidth}
@@ -846,6 +887,7 @@ const MyCanvas = () => {
                                 onSelect={() => {
                                     selectShape(table.id);
                                 }}
+                                onContextMenu={handlecontextMenu}
                                 onChange={(newAttrs) => {
                                     const tmp = tables.slice();
                                     tmp[i] = newAttrs;
@@ -854,6 +896,15 @@ const MyCanvas = () => {
                             />
                         );
                     })}
+                    {selectedContextMenu && (                        
+                        <Portal>
+                            <ContextMenu
+                            {...selectedContextMenu}
+                            onOptionSelected={this.handleOptionSelected}
+                        />
+                        </Portal>)
+                        
+                        }
                     {seats.map((seat, i) => {
                         return (
                             <Seat
