@@ -54,13 +54,15 @@ const Modal = ({ parentCallback, modal }) => {
   const handleSubmit = async () => {
     setModalTrigger(false);
     const modal = false;
+    const submit = true;
     parentCallback(
       tableNum,
       maxPeopleNum,
       minPeopleNum,
       tableWidthPixel,
       tableHeightPixel,
-      modal
+      modal,
+      submit
     );
   };
   const tableWidthMinus = () => {
@@ -198,13 +200,15 @@ const Modal = ({ parentCallback, modal }) => {
               onClick={() => {
                 setModalTrigger(false);
                 const modal = false;
+                const submit = false;
                 parentCallback(
                   tableNum,
                   maxPeopleNum,
                   minPeopleNum,
                   tableWidthPixel,
                   tableHeightPixel,
-                  modal
+                  modal,
+                  submit
                 );
               }}
             >
