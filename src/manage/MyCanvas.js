@@ -346,8 +346,10 @@ const MyCanvas = () => {
   const [modal, setModal] = useState(false);
 
   const [tableNum, setTableNum] = useState();
-  const [peopleNum, setPeopleNum] = useState();
-  const [tableSize, setTableSize] = useState();
+
+  const [maxPeople, setMaxPeople] = useState();
+  const [minPeople, setMinPeople] = useState();
+
   const [tableWidth, setTableWidth] = useState();
   const [tableHeight, setTableHeight] = useState();
 
@@ -363,7 +365,13 @@ const MyCanvas = () => {
     setModal(true);
   };
 
-  const createTable = (tableWidth, tableHeight) => {
+  const createTable = (
+    tableNum,
+    tableWidth,
+    tableHeight,
+    minPeopleNum,
+    maxPeopleNum
+  ) => {
     //openModal();
 
     const table = {
@@ -374,6 +382,9 @@ const MyCanvas = () => {
       fill: "brown",
       rotation: 0,
       id: "table" + tableCnt,
+      tableNum: tableNum,
+      minPeople: minPeopleNum,
+      maxPeople: maxPeopleNum,
     };
     setTableCnt(tableCnt + 1);
     tables.push(table);
@@ -450,6 +461,9 @@ const MyCanvas = () => {
           width: m.width,
           height: m.height,
           rotation: m.rotation,
+          tableNum: m.tableNum,
+          minPeople: m.minPeople,
+          maxPeople: m.maxPeople,
         };
       }),
       seats: seats.map((m) => {
@@ -516,16 +530,25 @@ const MyCanvas = () => {
     tableHeight,
     modal
   ) => {
-    console.log("부모:", tableNum, tableWidth, tableHeight, modal);
+    console.log(
+      "부모:",
+      tableNum,
+      maxPeopleNum,
+      minPeopleNum,
+      tableWidth,
+      tableHeight,
+      modal
+    );
 
     setTableNum(tableNum);
-    setPeopleNum(peopleNum);
+    setMinPeople(minPeopleNum);
+    setMaxPeople(maxPeopleNum);
     setTableHeight(tableHeight);
     setTableWidth(tableWidth);
 
     modal ? setModal(true) : setModal(false);
 
-    createTable(tableWidth, tableHeight);
+    createTable(tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
   };
 
   return (
