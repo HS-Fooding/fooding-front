@@ -5,6 +5,7 @@ import Modal from "./component/Modal";
 import axios from "axios";
 import { tab } from "@testing-library/user-event/dist/tab";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import { url } from "../Api";
 
 const Container = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -661,6 +662,9 @@ const MyCanvas = () => {
     //     windows: windows.filter(widthFilter),
     //     doors: doors.filter(widthFilter),
     // });
+
+    const marketId = localStorage.getItem("marketId");
+
     const data = JSON.stringify({
       tables: tables.map((m) => {
         return {
@@ -708,22 +712,22 @@ const MyCanvas = () => {
 
     console.log(data);
 
-    // const config = {
-    //     method: "post",
-    //     url: url + "/fooding/admin/restaurant/{id}/structure",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     data: data,
-    // };
+    const config = {
+      method: "post",
+      url: url + `/fooding/admin/restaurant/${marketId}/structure`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
 
-    // axios(config)
-    //     .then(function (response) {
-    //         console.log(response.data);
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error);
-    //     });
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   // handlDblClick
