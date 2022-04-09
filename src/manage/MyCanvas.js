@@ -100,24 +100,24 @@ const Button6 = styled.button`
   z-index: 2;
 `;
 const Button7 = styled.button`
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    top: 60%;
-    right: 5%;
-    border: none;
-    width: 100px;
-    height: 35px;
-    border-radius: 26px;
-    cursor: pointer;
-    z-index: 2;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  top: 70%;
+  right: 5%;
+  border: none;
+  width: 100px;
+  height: 35px;
+  border-radius: 26px;
+  cursor: pointer;
+  z-index: 2;
 `;
 const Garbage = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 70%;
+  top: 80%;
   right: 8%;
   border: 1px solid rgba(0, 0, 0, 0.5);
   width: 50px;
@@ -523,12 +523,12 @@ const MyCanvas = () => {
   const [wallCnt, setWallCnt] = React.useState(1);
   const [windowCnt, setWindowCnt] = React.useState(1);
   const [doorCnt, setDoorCnt] = React.useState(1);
-    let obj = {};
+  let obj = {};
   const [modal, setModal] = useState(false);
-  const [editTableObj,setEditTableObj] = useState();
-  const [editModal,setEditModal] = useState(false);
+  const [editTableObj, setEditTableObj] = useState();
+  const [editModal, setEditModal] = useState(false);
   const [tableNum, setTableNum] = useState();
-  const [id,setId] = useState();
+  const [id, setId] = useState();
   const [maxPeople, setMaxPeople] = useState();
   const [minPeople, setMinPeople] = useState();
 
@@ -536,7 +536,7 @@ const MyCanvas = () => {
   const [tableHeight, setTableHeight] = useState();
 
   const [isDelete, setIsDelete] = React.useState(false);
-  
+
   const checkDeselect = (e) => {
     // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
@@ -588,7 +588,7 @@ const MyCanvas = () => {
         maxPeopleNum
       );
     }
-    if(edit){
+    if (edit) {
       editTable(
         id,
         tableNum,
@@ -598,28 +598,27 @@ const MyCanvas = () => {
         maxPeopleNum
       );
     }
-   
   };
-  const editTable =( 
-   id,
+  const editTable = (
+    id,
     tableNum,
     tableWidth,
     tableHeight,
     minPeopleNum,
     maxPeopleNum
-    ) =>{
-   console.log("idid",id);
-   tables.map((table,index)=>{
-     if(id===table.id){
-       table.tableNum=tableNum;
-       table.width=tableWidth;
-       table.height=tableHeight;
-       table.minPeople=minPeopleNum;
-       table.maxPeopl=maxPeopleNum;
-     }
-   });
-   console.log(tables);
-};
+  ) => {
+    console.log("idid", id);
+    tables.map((table, index) => {
+      if (id === table.id) {
+        table.tableNum = tableNum;
+        table.width = tableWidth;
+        table.height = tableHeight;
+        table.minPeople = minPeopleNum;
+        table.maxPeopl = maxPeopleNum;
+      }
+    });
+    console.log(tables);
+  };
   // 개체 생성
   const createTable = (
     tableNum,
@@ -859,57 +858,54 @@ const MyCanvas = () => {
     };
     setDoors([...doors, door]);
   };
-const setModalModal = ()=>{
-  console.log("editTableObj",editTableObj);
-  console.log("objobj",obj);
-  setModal(true);
-}
+  const setModalModal = () => {
+    console.log("editTableObj", editTableObj);
+    console.log("objobj", obj);
+    setModal(true);
+  };
   // 삭제
   const handleDelete = () => {
     setIsDelete(true);
   };
-  const changeInfo = ()=>{
-    console.log("selectedId",selectedId);
-    if(selectedId?.includes("table")){
-        //수정이 가능하다.
-        let temp;
-        const bringTable = tables.map((table,index)=>{
-            if(selectedId===table.id){
-           
-        temp = table;
-              return table;
-             
-              }
-        })
-      
-        obj=bringTable;
-        if(editTableObj!==undefined){
-          setEditTableObj("");
-          setEditTableObj(temp);        
+  const changeInfo = () => {
+    console.log("selectedId", selectedId);
+    if (selectedId?.includes("table")) {
+      //수정이 가능하다.
+      let temp;
+      const bringTable = tables.map((table, index) => {
+        if (selectedId === table.id) {
+          temp = table;
+          return table;
         }
-        else{
-          setEditTableObj(temp);
-        }
-        setEditModal(true);
-         setModalModal();
-            //modal 생성자에 true 가 있으면 수정 중이라는거고 없으면 새로 생성하는거 
-    }else{
-        return ;
+      });
+
+      obj = bringTable;
+      if (editTableObj !== undefined) {
+        setEditTableObj("");
+        setEditTableObj(temp);
+      } else {
+        setEditTableObj(temp);
+      }
+      setEditModal(true);
+      setModalModal();
+      //modal 생성자에 true 가 있으면 수정 중이라는거고 없으면 새로 생성하는거
+    } else {
+      return;
     }
-    //테이블의 값을 가져와야함. 테이블의 
-    //테이블이라는걸 알아야함. => 
-}
+    //테이블의 값을 가져와야함. 테이블의
+    //테이블이라는걸 알아야함. =>
+  };
 
   return (
     <Container>
-      <Button1 onClick={openModal}>테이블 생성  </Button1>
+      <Button1 onClick={openModal}>테이블 생성 </Button1>
       <Button2 onClick={createSeat}>좌석 생성</Button2>
       <Button3 onClick={createWall}>벽 생성</Button3>
       <Button4 onClick={createWindow}>창문 생성</Button4>
       <Button5 onClick={createDoor}>출입구 생성</Button5>
       <Button6 onClick={postData}>Submit</Button6>
       <Button7 onClick={changeInfo}>수정</Button7>
-      
+
       <Garbage onMouseUp={handleDelete}></Garbage>
       <Stage
         width={window.innerWidth}
@@ -1027,11 +1023,15 @@ const setModalModal = ()=>{
           })}
         </Layer>
       </Stage>
-      {modal ? <Modal parentCallback={handleCallback}  editModal={editModal} editTableObj={editTableObj} /> : null}
-     
+      {modal ? (
+        <Modal
+          parentCallback={handleCallback}
+          editModal={editModal}
+          editTableObj={editTableObj}
+        />
+      ) : null}
     </Container>
   );
 };
 
 export default MyCanvas;
-
