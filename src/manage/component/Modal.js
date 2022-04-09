@@ -2,24 +2,27 @@ import { useEffect, useState } from "react";
 // import { IoMdWarning } from "react-icons/io";
 // import { AiOutlineCheckCircle } from "react-icons/ai";
 // import { BiUpload } from "react-icons/bi";
+import { render } from "react-dom";
+import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
 import axios from "axios";
 
-const Modal = ({ parentCallback, modal }) => {
+const Modal = ({ parentCallback ,editModal, editTableObj}) => {
   const [signStatus, setSignStatus] = useState(true); // true: left
-  const [tableNum, setTableNum] = useState("");
-  const [minPeopleNum, setMinPeopleNum] = useState("");
-  const [maxPeopleNum, setMaxPeopleNum] = useState("");
-
+ 
+  const [tableNum, setTableNum] = useState(editModal ? editTableObj.tableNum : "");
+  const [minPeopleNum, setMinPeopleNum] = useState(editModal ? editTableObj.minPeople: "");
+  const [maxPeopleNum, setMaxPeopleNum] = useState(editModal ? editTableObj.maxPeople : "");
+  const [id,setId]=useState(editModal ? editTableObj.id : "");
   const [tableSize, setTableSize] = useState("");
   const [validation, setValidation] = useState([true, true, true, true]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const [figureWidth, setFigureWidth] = useState(1);
-  const [figureHeight, setFigureHeight] = useState(1);
-  const [tableWidthPixel, setTableWidthPixel] = useState(100);
-  const [tableHeightPixel, setTableHeightPixel] = useState(100);
+  const [figureWidth, setFigureWidth] = useState(editModal ? editTableObj.width/100: 1);
+  const [figureHeight, setFigureHeight] = useState(editModal ? editTableObj.height/100:1);
+  const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight*100);
+  const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight*100);
   const onChange = (event) => {
     const {
       target: { value, className },
@@ -35,7 +38,6 @@ const Modal = ({ parentCallback, modal }) => {
       setTableSize(value);
     }
   };
-
   const onClick = () => {
     setSignStatus(!signStatus);
     console.log("tableNum:", tableNum);
@@ -49,17 +51,40 @@ const Modal = ({ parentCallback, modal }) => {
     if (code === "Enter") event.preventDefault();
   };
 
-  const handleSubmit = async () => {
-    setModalTrigger(false);
+  const handleEditNSubmit = async () => {
+    if(editModal){
+      setModalTrigger(false);
     const modal = false;
+    const submit = false;
+    const edit = true;
     parentCallback(
+      id,
       tableNum,
       maxPeopleNum,
       minPeopleNum,
       tableWidthPixel,
       tableHeightPixel,
-      modal
+      modal,
+      submit,
+      edit
     );
+    }
+    else{
+    setModalTrigger(false);
+    const modal = false;
+    const submit = true;
+    const edit = false;
+    parentCallback(
+      id,
+      tableNum,
+      maxPeopleNum,
+      minPeopleNum,
+      tableWidthPixel,
+      tableHeightPixel,
+      modal,
+      submit,
+      edit
+    );}
   };
   const tableWidthMinus = () => {
     if (figureWidth - 1 === 0) {
@@ -68,14 +93,12 @@ const Modal = ({ parentCallback, modal }) => {
       setFigureWidth(figureWidth - 1);
       let tableWidth = figureWidth - 1;
       setTableWidthPixel(tableWidth * 100);
-      console.log(tableWidthPixel, "바로 반영되는지 확인");
     }
   };
   const tableWidthPlus = () => {
     setFigureWidth(figureWidth + 1);
     let tableWidth = figureWidth + 1;
     setTableWidthPixel(tableWidth * 100);
-    console.log(tableWidthPixel, "바로 반영되는지 확인");
   };
   const tableHeightMinus = () => {
     if (figureHeight - 1 === 0) {
@@ -84,14 +107,12 @@ const Modal = ({ parentCallback, modal }) => {
       let tableHeight = figureHeight - 1;
       setFigureHeight(figureHeight - 1);
       setTableHeightPixel(tableHeight * 100);
-      console.log(tableHeightPixel, "바로 반영되는지 확인");
     }
   };
   const tableHeightPlus = () => {
     setFigureHeight(figureHeight + 1);
     let tableHeight = figureHeight + 1;
     setTableHeightPixel(tableHeight * 100);
-    console.log(tableHeightPixel, "바로 반영되는지 확인");
   };
   const changeWidthValue = (e) => {
     e.preventDefault();
@@ -113,6 +134,7 @@ const Modal = ({ parentCallback, modal }) => {
 
   useEffect(() => {
     handleValidation();
+    
     console.log(
       "tableNum",
       tableNum,
@@ -169,8 +191,20 @@ const Modal = ({ parentCallback, modal }) => {
 
               <div className="container__box rightBox">
                 <h2 className={isPassedValid ? "box__msg valid" : "box__msg"}>
-                  {isPassedValid ? "Go Next Step!" : "Fill in the blanks!"}
+                  {/* {isPassedValid ? "Go Next Step!" : "Fill in the blanks!"} */}
                 </h2>
+                <Stage width={400} height={380}>
+                  <Layer>
+                    <Rect
+                      x={200 - figureWidth*100 / 2}
+                      y={200 - figureHeight*100 / 2}
+                      width={figureWidth*100}
+                      height={figureHeight*100}
+                      fill="red"
+                      shadowBlur={5}
+                    />
+                  </Layer>
+                </Stage>
                 <button
                   className="box__btn valid"
                   onClick={onClick}
@@ -184,13 +218,18 @@ const Modal = ({ parentCallback, modal }) => {
               onClick={() => {
                 setModalTrigger(false);
                 const modal = false;
+                const submit = false;
+                const edit = false;
                 parentCallback(
+                  id,
                   tableNum,
                   maxPeopleNum,
                   minPeopleNum,
                   tableWidthPixel,
                   tableHeightPixel,
-                  modal
+                  modal,
+                  submit,
+                  edit
                 );
               }}
             >
@@ -318,12 +357,14 @@ const Modal = ({ parentCallback, modal }) => {
                   >
                     Go back
                   </button>
-                  <button
-                    className="rightForm__btn submit-btn"
-                    onClick={handleSubmit}
-                  >
-                    Next
-                  </button>
+             
+                     <button
+                     className="rightForm__btn submit-btn"
+                     onClick={handleEditNSubmit}
+                   >
+                     Next
+                   </button>                    
+              
                 </div>
               </div>
             </div>

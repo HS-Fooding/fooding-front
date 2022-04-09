@@ -534,7 +534,7 @@ function Register() {
         marketImgs.map((img) => {
           data.append("image", img);
         });
-        console.log(data);
+   console.log(data);
         axios
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
