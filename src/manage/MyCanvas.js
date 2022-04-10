@@ -544,6 +544,8 @@ const MyCanvas = () => {
 
   const [isDelete, setIsDelete] = React.useState(false);
 
+  const getToken = localStorage.getItem("token");
+
   const validateRotation = (num) => {
     if (num >= -5 && num <= 5) {
       return 0;
@@ -750,6 +752,7 @@ const MyCanvas = () => {
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketIdLS}/structure`,
+      Authorization: "Bearer " + getToken,
     };
 
     axios(config)
@@ -757,23 +760,10 @@ const MyCanvas = () => {
         console.log(response.data);
         const floor1 = response.data.floors[0];
         console.log(floor1);
-        console.log("useState table", tables);
-        //console.log(floor1.tables)
+
+        const tempTable = [];
 
         floor1.tables.forEach((t, id) => {
-          console.log("foreach문:", t);
-          // createTable(
-          //   t.tableNum,
-          //   t.width,
-          //   t.height,
-          //   t.minPeople,
-          //   t.maxPeople,
-          //   t.x,
-          //   t.y,
-          // id
-          // );
-          //setTables([...tables, t]);
-
           const table = {
             x: t.x,
             y: t.y,
@@ -785,39 +775,67 @@ const MyCanvas = () => {
             tableNum: t.tableNum,
             minPeople: t.minPeople,
             maxPeople: t.maxPeople,
-            available: false,
           };
 
-          console.log("createTable함수 table:", table);
+          tempTable.push(table);
           setId(id);
           setTableCnt(tableCnt + 1);
-          setTables([...tables, table]);
         });
+
+        setTables([...tempTable]);
+
+        const tempDoor = [];
 
         floor1.doors.map((d) => {
-          console.log("문정보:", d);
+          const door = {
+            x: d.x,
+            y: d.y,
+            width: 50,
+            height: 15,
+            fill: "green",
+            rotation: 0,
+            id: "door" + doorCnt,
+          };
 
-          // createDoor(d.x, d.y);
-          // const door = {
-          //   x: d.x,
-          //   y: d.y,
-          //   width: 50,
-          //   height: 15,
-          //   fill: "green",
-          //   rotation: 0,
-          //   id: "door" + doorCnt,
-          // };
-          // setDoorCnt(doorCnt + 1);
-          // setDoors(...doors, door);
+          tempDoor.push(door);
+          setDoorCnt(doorCnt + 1);
         });
+
+        setDoors([...tempDoor]);
+
+        const tempWall = [];
 
         floor1.walls.map((w) => {
-          createWall();
+          const wall = {
+            x: w.x,
+            y: w.y,
+            width: 250,
+            height: 5,
+            fill: "black",
+            rotation: 0,
+            id: "wall" + wallCnt,
+          };
+          tempWall.push(wall);
+          setWallCnt(wallCnt + 1);
         });
 
+        setWalls([...tempWall]);
+
+        const tempSeat = [];
+
         floor1.seats.map((s) => {
-          createSeat();
+          const seat = {
+            x: s.x,
+            y: s.y,
+            radius: 20,
+            fill: "gray",
+            id: "seat" + seatCnt,
+          };
+          tempSeat.push(seat);
+          setSeatCnt(seatCnt + 1);
         });
+
+        setSeats([...tempSeat]);
       })
       .catch(function (error) {
         console.log(error);
@@ -830,14 +848,6 @@ const MyCanvas = () => {
 
   // submit
   const postData = () => {
-    // const data = JSON.stringify({
-    //     tables: tables.filter(colorFilter),
-    //     seats: seats,
-    //     walls: walls.filter(widthFilter),
-    //     windows: windows.filter(widthFilter),
-    //     doors: doors.filter(widthFilter),
-    // });
-
     const marketId = localStorage.getItem("marketId");
 
     const data = JSON.stringify({
@@ -892,6 +902,7 @@ const MyCanvas = () => {
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + getToken,
       },
       data: data,
     };
@@ -1043,6 +1054,7 @@ const MyCanvas = () => {
       >
         <Layer>
           {tables.map((table, i) => {
+            console.log("테이블 그림", table, i);
             return (
               <Table
                 key={i}
