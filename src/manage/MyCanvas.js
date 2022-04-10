@@ -770,7 +770,7 @@ const MyCanvas = () => {
             width: t.width,
             height: t.height,
             fill: "brown",
-            rotation: 0,
+            rotation: t.roation,
             id: "table" + id,
             tableNum: t.tableNum,
             minPeople: t.minPeople,
@@ -793,7 +793,7 @@ const MyCanvas = () => {
             width: 50,
             height: 15,
             fill: "green",
-            rotation: 0,
+            rotation: d.ration,
             id: "door" + doorCnt,
           };
 
@@ -812,7 +812,7 @@ const MyCanvas = () => {
             width: 250,
             height: 5,
             fill: "black",
-            rotation: 0,
+            rotation: w.roation,
             id: "wall" + wallCnt,
           };
           tempWall.push(wall);
