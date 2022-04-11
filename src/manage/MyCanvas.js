@@ -749,7 +749,8 @@ const MyCanvas = () => {
   const getShape = () => {
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/${marketIdLS}/structure`,
+      url: url + `/fooding/restaurant/2/structure`,
+
     };
 
     axios(config)
@@ -827,7 +828,9 @@ const MyCanvas = () => {
   useEffect(() => {
     getShape();
   }, []);
-
+useEffect(()=>{
+  console.log("렌더링");
+},[tables]);
   // submit
   const postData = () => {
     // const data = JSON.stringify({
@@ -886,12 +889,13 @@ const MyCanvas = () => {
     });
 
     console.log(data);
-
+    const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + getToken,
       },
       data: data,
     };
