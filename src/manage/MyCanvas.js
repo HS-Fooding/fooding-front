@@ -167,9 +167,7 @@ const Table = ({
           });
 
           if (isDelete === true) {
-            const tmp = tables.filter(
-              (table) => table.id !== e.target.attrs.id
-            );
+            const tmp = tables.filter((table) => table.id !== e.target.attrs.id);
             setTables([...tmp]);
             setIsDelete(false);
           }
@@ -384,9 +382,7 @@ const Window = ({
             y: e.target.y(),
           });
           if (isDelete === true) {
-            const tmp = windows.filter(
-              (window) => window.id !== e.target.attrs.id
-            );
+            const tmp = windows.filter((window) => window.id !== e.target.attrs.id);
             setWindows([...tmp]);
             setIsDelete(false);
           }
@@ -544,6 +540,8 @@ const MyCanvas = () => {
 
   const [isDelete, setIsDelete] = React.useState(false);
 
+  const getToken = localStorage.getItem("token");
+
   const validateRotation = (num) => {
     if (num >= -5 && num <= 5) {
       return 0;
@@ -605,16 +603,7 @@ const MyCanvas = () => {
     submit,
     edit
   ) => {
-    console.log(
-      "부모:",
-      id,
-      tableNum,
-      maxPeopleNum,
-      minPeopleNum,
-      tableWidth,
-      tableHeight,
-      modal
-    );
+    console.log("부모:", id, tableNum, maxPeopleNum, minPeopleNum, tableWidth, tableHeight, modal);
     setTableNum(tableNum);
     setMinPeople(minPeopleNum);
     setMaxPeople(maxPeopleNum);
@@ -624,33 +613,13 @@ const MyCanvas = () => {
     modal ? setModal(true) : setModal(false);
 
     if (submit) {
-      createTable(
-        tableNum,
-        tableWidth,
-        tableHeight,
-        minPeopleNum,
-        maxPeopleNum
-      );
+      createTable(tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
     }
     if (edit) {
-      editTable(
-        id,
-        tableNum,
-        tableWidth,
-        tableHeight,
-        minPeopleNum,
-        maxPeopleNum
-      );
+      editTable(id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
     }
   };
-  const editTable = (
-    id,
-    tableNum,
-    tableWidth,
-    tableHeight,
-    minPeopleNum,
-    maxPeopleNum
-  ) => {
+  const editTable = (id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
     console.log("idid", id);
     tables.map((table, index) => {
       if (id === table.id) {
@@ -664,13 +633,7 @@ const MyCanvas = () => {
     console.log(tables);
   };
   // 개체 생성
-  const createTable = (
-    tableNum,
-    tableWidth,
-    tableHeight,
-    minPeopleNum,
-    maxPeopleNum
-  ) => {
+  const createTable = (tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
     //openModal();
 
     const table = {
@@ -749,8 +712,8 @@ const MyCanvas = () => {
   const getShape = () => {
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/2/structure`,
-
+      url: url + `/fooding/restaurant/${marketIdLS}/structure`,
+      Authorization: "Bearer " + getToken,
     };
 
     axios(config)
@@ -758,67 +721,90 @@ const MyCanvas = () => {
         console.log(response.data);
         const floor1 = response.data.floors[0];
         console.log(floor1);
-        console.log("useState table", tables);
-        //console.log(floor1.tables)
+
+        const tempTable = [];
+        const tempSeat = [];
+        const tempWall = [];
+        const tempWindow = [];
+        const tempDoor = [];
 
         floor1.tables.forEach((t, id) => {
-          console.log("foreach문:", t);
-          // createTable(
-          //   t.tableNum,
-          //   t.width,
-          //   t.height,
-          //   t.minPeople,
-          //   t.maxPeople,
-          //   t.x,
-          //   t.y,
-          // id
-          // );
-          //setTables([...tables, t]);
-
           const table = {
             x: t.x,
             y: t.y,
             width: t.width,
             height: t.height,
             fill: "brown",
-            rotation: 0,
+            rotation: t.rotation,
             id: "table" + id,
             tableNum: t.tableNum,
             minPeople: t.minPeople,
             maxPeople: t.maxPeople,
-            available: false,
           };
-
-          console.log("createTable함수 table:", table);
+          tempTable.push(table);
           setId(id);
           setTableCnt(tableCnt + 1);
-          setTables([...tables, table]);
-        });
-
-        floor1.doors.map((d) => {
-          console.log("문정보:", d);
-
-          // createDoor(d.x, d.y);
-          // const door = {
-          //   x: d.x,
-          //   y: d.y,
-          //   width: 50,
-          //   height: 15,
-          //   fill: "green",
-          //   rotation: 0,
-          //   id: "door" + doorCnt,
-          // };
-          // setDoorCnt(doorCnt + 1);
-          // setDoors(...doors, door);
-        });
-
-        floor1.walls.map((w) => {
-          createWall();
         });
 
         floor1.seats.map((s) => {
-          createSeat();
+          const seat = {
+            x: s.x,
+            y: s.y,
+            radius: 20,
+            fill: "gray",
+            id: "seat" + seatCnt,
+          };
+          tempSeat.push(seat);
+          setSeatCnt(seatCnt + 1);
         });
+
+        floor1.walls.map((w) => {
+          const wall = {
+            x: w.x,
+            y: w.y,
+            width: w.width,
+            height: 5,
+            fill: "black",
+            rotation: w.rotation,
+            id: "wall" + wallCnt,
+          };
+          tempWall.push(wall);
+          setWallCnt(wallCnt + 1);
+        });
+
+        floor1.windows.map((w) => {
+          const window = {
+            x: w.x,
+            y: w.y,
+            width: w.width,
+            height: 5,
+            fill: "skyblue",
+            rotation: w.rotation,
+            id: "window" + windowCnt,
+          };
+          tempWindow.push(window);
+          setWindowCnt(windowCnt + 1);
+        });
+
+        floor1.doors.map((d) => {
+          const door = {
+            x: d.x,
+            y: d.y,
+            width: d.width,
+            height: 15,
+            fill: "green",
+            rotation: d.ration,
+            id: "door" + doorCnt,
+          };
+          tempDoor.push(door);
+          setDoorCnt(doorCnt + 1);
+        });
+
+        setTables([...tempTable]);
+        setSeats([...tempSeat]);
+        setWalls([...tempWall]);
+        setWindows([...tempWindow]);
+        setDoors([...tempDoor]);
       })
       .catch(function (error) {
         console.log(error);
@@ -833,59 +819,55 @@ useEffect(()=>{
 },[tables]);
   // submit
   const postData = () => {
-    // const data = JSON.stringify({
-    //     tables: tables.filter(colorFilter),
-    //     seats: seats,
-    //     walls: walls.filter(widthFilter),
-    //     windows: windows.filter(widthFilter),
-    //     doors: doors.filter(widthFilter),
-    // });
-
     const marketId = localStorage.getItem("marketId");
 
     const data = JSON.stringify({
-      tables: tables.map((m) => {
-        return {
-          x: m.x,
-          y: m.y,
-          width: m.width,
-          height: m.height,
-          rotation: m.rotation,
-          tableNum: m.tableNum,
-          minPeople: m.minPeople,
-          maxPeople: m.maxPeople,
-        };
-      }),
-      seats: seats.map((m) => {
-        return {
-          x: m.x,
-          y: m.y,
-        };
-      }),
-      walls: walls.map((m) => {
-        return {
-          x: m.x,
-          y: m.y,
-          width: m.width,
-          rotation: m.rotation,
-        };
-      }),
-      windows: windows.map((m) => {
-        return {
-          x: m.x,
-          y: m.y,
-          width: m.width,
-          rotation: m.rotation,
-        };
-      }),
-      doors: doors.map((m) => {
-        return {
-          x: m.x,
-          y: m.y,
-          width: m.width,
-          rotation: m.rotation,
-        };
-      }),
+      floors: [
+        {
+          tables: tables.map((m) => {
+            return {
+              x: m.x,
+              y: m.y,
+              width: m.width,
+              height: m.height,
+              rotation: m.rotation,
+              tableNum: m.tableNum,
+              minPeople: m.minPeople,
+              maxPeople: m.maxPeople,
+            };
+          }),
+          seats: seats.map((m) => {
+            return {
+              x: m.x,
+              y: m.y,
+            };
+          }),
+          walls: walls.map((m) => {
+            return {
+              x: m.x,
+              y: m.y,
+              width: m.width,
+              rotation: m.rotation,
+            };
+          }),
+          windows: windows.map((m) => {
+            return {
+              x: m.x,
+              y: m.y,
+              width: m.width,
+              rotation: m.rotation,
+            };
+          }),
+          doors: doors.map((m) => {
+            return {
+              x: m.x,
+              y: m.y,
+              width: m.width,
+              rotation: m.rotation,
+            };
+          }),
+        },
+      ],
     });
 
     console.log(data);
@@ -902,7 +884,7 @@ useEffect(()=>{
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -1047,6 +1029,7 @@ useEffect(()=>{
       >
         <Layer>
           {tables.map((table, i) => {
+            console.log("테이블 그림", table, i);
             return (
               <Table
                 key={i}
@@ -1160,11 +1143,7 @@ useEffect(()=>{
         </Layer>
       </Stage>
       {modal ? (
-        <Modal
-          parentCallback={handleCallback}
-          editModal={editModal}
-          editTableObj={editTableObj}
-        />
+        <Modal parentCallback={handleCallback} editModal={editModal} editTableObj={editTableObj} />
       ) : null}
     </Container>
   );
