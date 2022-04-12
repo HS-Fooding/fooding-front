@@ -663,7 +663,7 @@ function Register() {
                   style={{ marginTop: "1px" }}
                 />
               ) : (
-                <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
+                 <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
               )}
             </InputBox>
           </InputContainer>

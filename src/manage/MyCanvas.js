@@ -19,7 +19,6 @@ import {
   faPenToSquare,
   faWindowClose,
 } from "@fortawesome/free-solid-svg-icons";
-import { RGBA } from "konva/lib/filters/RGBA";
 //import { faWindowFrame as FaWindowFrameRegular } from "@fortawesome/free-regular-svg-icons";
 
 const Container = styled.div`
@@ -610,7 +609,7 @@ const MyCanvas = () => {
       y: 100 + tableCnt * 20,
       width: tableWidth,
       height: tableHeight,
-      fill: RGBA(101, 67, 33),
+      fill: "brown",
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
