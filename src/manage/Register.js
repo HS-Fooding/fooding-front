@@ -20,7 +20,7 @@ const Container = styled.div`
   margin: 200px 0px;
 `;
 const InputFormDiv = styled.div`
-  width: 700px;
+  width: 900px;
   height: 500px;
   display: flex;
   flex-direction: column;
@@ -77,7 +77,7 @@ const Button = styled.button`
 
 const InputContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   width: 100%;
   height: 60px;
@@ -89,7 +89,7 @@ const MarketImgDiv = styled.div`
   background-color: white;
   position: relative;
   .MarketImgForm {
-    width: 100px;
+    width: 200px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -161,7 +161,7 @@ const InfoForm = styled.form`
   }
 `;
 const NameBox = styled.div`
-  width: 140px;
+  width: 160px;
   height: 100%;
   background-color: ${(props) => props.theme.fillGrayColor};
   display: flex;
@@ -178,7 +178,7 @@ const SubBox = styled.div`
   align-items: center;
 `;
 const InputBox = styled.div`
-  width: 345px;
+  width: 525px;
   height: 94%;
   margin-left: 3px;
   display: flex;
@@ -579,7 +579,7 @@ function Register() {
               justifyContent: "space-between",
             }}
           >
-            <div style={{ width: "70%" }}>
+            <div style={{ width: "900px" }}>
               <InputContainer className="BorderTop">
                 <NameBox>
                   <p>상호명</p>
@@ -613,7 +613,7 @@ function Register() {
               </InputContainer>
             </div>
 
-            <div style={{ width: "30%", height: "180px" }}>
+            <div style={{ width: "400px", height: "180px" }}>
               <InputContainer style={{ height: "100%" }}>
                 <MarketImgDiv>
                   <form className="MarketImgForm">
@@ -924,8 +924,9 @@ function Register() {
           <Button onClick={submitInfo}>등록</Button>
         </InfoForm>
       </InputFormDiv>
-      <Menu marketId={marketId} />
       <MyCanvas></MyCanvas>
+      <Menu marketId={marketId} />
+     
     </Container>
     // </div>
   );

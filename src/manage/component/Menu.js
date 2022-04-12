@@ -26,7 +26,7 @@ const MenuList = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  width: 700px;
+  width: 900px;
   /* border: ${(props) => props.theme.menuBorderColor}; */
 
   margin-bottom: 20px;

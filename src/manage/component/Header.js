@@ -128,7 +128,7 @@ const Header = () => {
   const handleScroll = () =>{
     const { pageYOffset } = window;
     const deltaY = pageYOffset - pageY;
-    const hide = pageYOffset !== 0 && pageYOffset >= 120; //&& deltaY >= 0 맨위 좌표가 아니면 
+    const hide = pageYOffset !== 0 && pageYOffset >= 100; //&& deltaY >= 0 맨위 좌표가 아니면 
     setHide(hide);
     setPageY(pageYOffset);
   }
@@ -145,7 +145,7 @@ const Header = () => {
   };
   return (
     <HeaderArea>
-      <HeaderWrap className={hide && 'hide'}>
+      <HeaderWrap className={registerMatch ? (hide && 'hide'):null}>
     <Nav style={{ zIndex: 3 }}>
       <TopMenu>
         <Items>
