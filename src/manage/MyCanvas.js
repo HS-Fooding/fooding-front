@@ -19,7 +19,6 @@ import {
   faPenToSquare,
   faWindowClose,
 } from "@fortawesome/free-solid-svg-icons";
-import { RGBA } from "konva/lib/filters/RGBA";
 //import { faWindowFrame as FaWindowFrameRegular } from "@fortawesome/free-regular-svg-icons";
 
 const Container = styled.div`
@@ -27,7 +26,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 5em;
+  margin-top: 15em;
   position: relative;
   border-radius: 10px;
 `;

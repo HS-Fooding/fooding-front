@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Link, useMatch } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
@@ -72,6 +72,36 @@ const Circle = styled(motion.span)`
   margin: 0 auto;
   background-color: ${(props) => props.theme.mainColor};
 `;
+const HeaderArea = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100px;
+`;
+
+const HeaderWrap = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100px;
+    transition: 0.4s ease;
+    background-color: #f00;
+    &.hide {
+        transform: translateY(-100px);
+    }
+`;
+
+const throttle = function (callback, waitTime) {
+  let timerId = null;
+  return (e) => {
+      if (timerId) return;
+      timerId = setTimeout(() => {
+          callback.call(this, e);
+          timerId = null;
+      }, waitTime);
+  };
+};
 
 const Header = () => {
   const reservationMatch = useMatch("/reservation");
@@ -80,6 +110,10 @@ const Header = () => {
 
   let [isToken, setIsToken] = useState(false);
 
+  const [hide, setHide] = useState(false);
+  const [pageY, setPageY] = useState(0);
+  const documentRef = useRef(document);
+  
   useEffect(() => {
     //window.location.reload(); // 새로고침
     const token = localStorage.getItem("token");
@@ -90,12 +124,28 @@ const Header = () => {
     }
     console.log("useEffect");
   }, []);
+ 
+  const handleScroll = () =>{
+    const { pageYOffset } = window;
+    const deltaY = pageYOffset - pageY;
+    const hide = pageYOffset !== 0 && pageYOffset >= 100; //&& deltaY >= 0 맨위 좌표가 아니면 
+    setHide(hide);
+    setPageY(pageYOffset);
+  }
+  const throttleScroll = throttle(handleScroll, 70);
+
+  useEffect(() => {
+    documentRef.current.addEventListener('scroll', throttleScroll);
+    return () => documentRef.current.removeEventListener('scroll', throttleScroll);
+}, [pageY]);
 
   const logOut = () => {
     localStorage.clear();
     setIsToken(false);
   };
   return (
+    <HeaderArea>
+      <HeaderWrap className={registerMatch ? (hide && 'hide'):null}>
     <Nav style={{ zIndex: 3 }}>
       <TopMenu>
         <Items>
@@ -132,6 +182,8 @@ const Header = () => {
         </Items>
       </MainMenu>
     </Nav>
+    </HeaderWrap>
+    </HeaderArea>
   );
 };
 
