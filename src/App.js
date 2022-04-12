@@ -14,6 +14,7 @@ import Reservation from "./manage/Reservation";
 import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
+import maincanvas from "./manage/maincanvas";
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                     ></Route>
                     <Route path="/register" element={<Register />}></Route>
                     <Route path="/manager/login" element={<LoginMg />}></Route>
+                    <Route path="/ex" element={<maincanvas />}></Route>
                     <Route
                         path="/manager/signup"
                         element={<SignUpMg />}
