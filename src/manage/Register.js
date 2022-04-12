@@ -1,5 +1,5 @@
 import Header from "./component/Header";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router";
@@ -337,20 +337,155 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-track {
-    //이건 잘 모르겠음
     width: 100%;
   }
 `;
 
+const Step = styled.div`
+  nav {
+    top: 50%;
+    right: 0;
+    left: 0;
+    width: 800x;
+    display: table;
+    margin: 0 auto;
+    transform: translateY(-50%);
+  }
+
+  nav button {
+    position: relative;
+    width: 33.333%;
+    display: table-cell;
+    text-align: center;
+    color: #949494;
+    text-decoration: none;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: 0.2s ease color;
+    outline: none;
+    background: inherit;
+    border: none;
+    cursor: pointer;
+  }
+
+  nav button:before,
+  nav button:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 0.2s ease transform;
+  }
+
+  nav button:before {
+    top: 0;
+    left: 10px;
+    width: 6px;
+    height: 6px;
+  }
+
+  nav button:after {
+    top: 5px;
+    left: 18px;
+    width: 4px;
+    height: 4px;
+  }
+
+  nav button:nth-child(1):before {
+    background-color: yellow;
+  }
+
+  nav button:nth-child(1):after {
+    background-color: red;
+  }
+
+  nav button:nth-child(2):before {
+    background-color: #00e2ff;
+  }
+
+  nav button:nth-child(2):after {
+    background-color: #89ff00;
+  }
+
+  nav button:nth-child(3):before {
+    background-color: purple;
+  }
+
+  nav button:nth-child(3):after {
+    background-color: palevioletred;
+  }
+
+  #indicator {
+    position: absolute;
+    left: 5%;
+    bottom: 0;
+    width: 30px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 5px;
+    transition: 0.2s ease left;
+  }
+
+  nav button:nth-child(2) {
+    color: ${(props) => (props.status == 2 ? "black" : "gray")};
+  }
+  nav button:nth-child(1) {
+    color: ${(props) => (props.status == 1 ? "black" : "gray")};
+  }
+  nav button:nth-child(3) {
+    color: ${(props) => (props.status == 3 ? "black" : "gray")};
+  }
+
+  nav button:hover {
+    color: black;
+  }
+
+  nav button:hover:before,
+  nav button:hover:after {
+    transform: scale(1);
+  }
+
+  /* nav button:nth-child(1) ~ #indicator {
+    background: ${(props) =>
+    props.status == 1 ? "linear-gradient(130deg, yellow, red)" : "none"};
+  }
+
+  nav button:nth-child(2) ~ #indicator {
+    left: 34%;
+
+    background: ${(props) =>
+    props.status == 2 ? " linear-gradient(130deg, #00e2ff, #89ff00)" : "none"};
+  } */
+
+  nav button:nth-child(1):hover ~ #indicator {
+    background: linear-gradient(130deg, yellow, red);
+  }
+
+  nav button:nth-child(2):hover ~ #indicator {
+    left: 34%;
+    background: linear-gradient(130deg, #00e2ff, #89ff00);
+  }
+
+  nav button:nth-child(3):hover ~ #indicator {
+    left: 70%;
+    background: linear-gradient(130deg, purple, palevioletred);
+  }
+`;
+
 function Register() {
+  const InfoRef = useRef();
+  const menuRef = useRef();
+  const structRef = useRef();
+
   const initValue = {
-    availableMinute : 0,
-    availableHour : 1, 
+    availableMinute: 0,
+    availableHour: 1,
   };
-  const { register, watch, getValues,control } = useForm({
-    defaultValues : initValue
+  const { register, watch, getValues, control } = useForm({
+    defaultValues: initValue,
   });
-  
+
   const [marketImgs, setMarketImgs] = useState([]);
 
   const [streetAddress, setStreetAddress] = useState({});
@@ -440,7 +575,7 @@ function Register() {
   const marketImgChange = (e) => {
     e.preventDefault();
     // setMarketImg(URL.createObjectURL(e.target.files[0]));
-    const img = (e.target.files[0]);
+    const img = e.target.files[0];
 
     const tempArr = [...marketImgs, img];
     setMarketImgs(tempArr);
@@ -491,6 +626,8 @@ function Register() {
   };
 
   const submitInfo = (e) => {
+    structRef.current?.scrollIntoView({ behavior: "smooth" });
+
     var axios = require("axios");
     e.preventDefault();
     const values = getValues();
@@ -541,7 +678,7 @@ function Register() {
         marketImgs.map((img) => {
           data.append("image", img);
         });
-   console.log(data);
+        console.log(data);
         axios
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
@@ -557,7 +694,6 @@ function Register() {
             getMarketInfo();
           })
           .catch((err) => {
-         
             console.log("content 컨텐츠", content);
             console.log("img", marketImgs);
             console.log(err);
@@ -565,367 +701,412 @@ function Register() {
       });
   };
 
+  const [current, setCurrent] = useState(0);
+
+  const onChange1 = (current) => {
+    console.log("onChange:", current);
+    setCurrent({ current });
+  };
+
+  const [nav, setNav] = useState(1);
+
   return (
     <Container>
       <Header />
 
-      <InputFormDiv>
-        <form className="NameForm">
-          <div
-            style={{
-              width: "100%",
-              height: "150px",
-              display: "flex",
-              justifyContent: "space-between",
+      <Step status={nav}>
+        <nav>
+          <button
+            onClick={() => {
+              InfoRef.current?.scrollIntoView({ behavior: "smooth" });
+              setNav(1);
             }}
           >
-            <div style={{ width: "70%" }}>
-              <InputContainer className="BorderTop">
-                <NameBox>
-                  <p>상호명</p>
-                </NameBox>
-                <InputBox>
-                  {marketInfo === null ? (
-                    <input
-                      {...register("businessName")}
-                      placeholder="상호명을 입력하시오."
-                    />
-                  ) : (
-                    <InfoSpan>{marketInfo?.name}</InfoSpan>
-                  )}
-                </InputBox>
-              </InputContainer>
-              <InputContainer style={{ height: "120px" }}>
-                <NameBox>
-                  <p>상세설명</p>
-                </NameBox>
-                <InputBox>
-                  {marketInfo === null ? (
-                    <textarea
-                      {...register("detail")}
-                      style={{ fontFamily: "Roboto" }}
-                      placeholder="상세설명을 입력하시오"
-                    />
-                  ) : (
-                    <InfoSpan>{marketInfo?.intro}</InfoSpan>
-                  )}
-                </InputBox>
-              </InputContainer>
-            </div>
+            INFO
+          </button>
+          <button
+            onClick={() => {
+              menuRef.current?.scrollIntoView({ behavior: "smooth" });
+              setNav(2);
+            }}
+          >
+            MENU
+          </button>
+          <button
+            onClick={() => {
+              structRef.current?.scrollIntoView({ behavior: "smooth" });
+              setNav(3);
+            }}
+          >
+            STRUCTURE
+          </button>
+          <div id="indicator"></div>
+        </nav>
+      </Step>
 
-            <div style={{ width: "30%", height: "180px" }}>
-              <InputContainer style={{ height: "100%" }}>
-                <MarketImgDiv>
-                  <form className="MarketImgForm">
-                   { marketInfo===null ? <input
-                      id="market_img_input"
-                      type="image"
-                      type="file"
-                      accept="image/jpg,image/png,image/jpeg,image/gif"
-                      name="market_img"
-                      onChange={marketImgChange}
-                    />: null}
-                    <label htmlFor="market_img_input">
-                      <SliderDiv>
-                        <StyledSlider {...settings}>
-                          {file?.length !== 0 ? (
-                            file?.map((one, index) => (
-                              <div>
-                                <MarketImg src={one} key={index} />
-                              </div>
-                            ))
-                          ) : (
-                            <FontAwesomeIcon
-                              style={{ color: "rgba(0, 0, 0, 0.1)" }}
-                              icon={faCamera}
-                            />
-                          )}{" "}
-                        </StyledSlider>
-                      </SliderDiv>
-                    </label>
-                  </form>
-                </MarketImgDiv>
-              </InputContainer>
-            </div>
-          </div>
-        </form>
-        <InfoForm>
-          <InputContainer className="AddressContainer BorderTop">
-            <NameBox>
-              <p>주소</p>
-            </NameBox>
-            <InputBox style={{ width: "80%" }}>
-              {marketInfo === null ? (
-                <input
-                  className="NumInputStyle"
-                  {...register("address")}
-                  placeholder="주소를 입력하시오"
-                  style={{ marginTop: "1px" }}
-                />
-              ) : (
-                <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
-              )}
-            </InputBox>
-          </InputContainer>
-          <InputContainer className="ParkContainer">
-            <NameBox>
-              <p>주차 정보</p>
-            </NameBox>
-            <InputBox style={{ width: "80%" }}>
-              {marketInfo === null ? (
-                <>
-                  <label className="parkingLabel" htmlFor="can">
-                    <input
-                      {...register("parking", { required: true })}
-                      type="radio"
-                      name="parking"
-                      value="주차 공간 있음"
-                      className="form-check-input"
-                      id="can"
-                    />
-                    <p>가능</p>
-                  </label>
-                  <label className="parkingLabel" htmlFor="cant">
-                    <input
-                      {...register("parking", { required: true })}
-                      type="radio"
-                      name="parking"
-                      value="주차 공간 없음"
-                      className="form-check-input"
-                      id="cant"
-                    />
-                    <p>불가능</p>
-                  </label>
-                </>
-              ) : (
-                <InfoSpan>{marketInfo?.parkingInfo}</InfoSpan>
-              )}
-            </InputBox>
-          </InputContainer>
-          <InputContainer className="UseTimeContainer">
-            <NameBox>
-              <p>최대 이용 시간</p>
-            </NameBox>
-            <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
-              {marketInfo === null ? (
-                <>
-                  <div className="TimeDiv">
-                
-                    <input
-                      type="number"
-                      min="0"
-                      max="10"
-                      name="availableHour"
-                      className="TimeInputStyle"
-                      {...register("availableHour")}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <p>시간</p>
-                  </div>
-                  <div className="TimeDiv">
-                    <input
-                      type="number"
-                      // step="10"
-                      // min="10"
-                      // max="50"
-                      className="TimeInputStyle"
-                      {...register("availableMinute")}
-                      style={{ marginTop: "1px" }}
-                    />
-                    <p>분</p>
-                  </div>
-                  
-                </>
-              ) : (
-                <span>
-                  {Math.floor(marketInfo?.maximumUsageTime / 60)}시간{" "}
-                  {marketInfo?.maximumUsageTime % 60}분
-                </span>
-              )}
-            </InputBox>
-          </InputContainer>
-          <InputContainer className="CategoryContainer">
-            <NameBox>
-              <p>카테고리</p>
-            </NameBox>
-            <InputBox
+      <div ref={InfoRef}>
+        <InputFormDiv>
+          <form className="NameForm">
+            <div
               style={{
-                width: "80%",
+                width: "100%",
+                height: "150px",
                 display: "flex",
-                justifyContent: "flexStart",
+                justifyContent: "space-between",
               }}
             >
-              {marketInfo === null ? (
-                <div className="SelectCategoryContainer">
-                  <select onChange={handleSelect} value={categorySelected}>
-                    <option></option>
-                    <option value="KOREAN" selected>
-                      한식
-                    </option>
-                    <option value="JAPANESE">일식</option>
-                    <option value="CHINESE">중식</option>
-                    <option value="WESTERN">양식</option>
-                    <option value="TAIWAN">태국</option>
-                    <option value="VIETNAM">베트남</option>
-                    <option value="SNACK">분식</option>
-                    <option value="NOODLE">면요리</option>
-                    <option value="BBQ">바베큐</option>
-                    <option value="PORK">돼지고기</option>
-                    <option value="BEEF">소고기</option>
-                    <option value="CHICKEN">닭고기</option>
-                    <option value="LAMB">양고기</option>
-                    <option value="BAR">바</option>
-                    <option value="PUB">술집</option>
-                    <option value="CAFE">카페</option>
-                    <option value="DESSERT">디저트</option>
-                  </select>
-                </div>
-              ) : (
-                <div
-                  style={{ width: "500px", height: "55px", display: "flex" }}
-                >
+              <div style={{ width: "70%" }}>
+                <InputContainer className="BorderTop">
+                  <NameBox>
+                    <p>상호명</p>
+                  </NameBox>
+                  <InputBox>
+                    {marketInfo === null ? (
+                      <input
+                        {...register("businessName")}
+                        placeholder="상호명을 입력하시오."
+                      />
+                    ) : (
+                      <InfoSpan>{marketInfo?.name}</InfoSpan>
+                    )}
+                  </InputBox>
+                </InputContainer>
+                <InputContainer style={{ height: "120px" }}>
+                  <NameBox>
+                    <p>상세설명</p>
+                  </NameBox>
+                  <InputBox>
+                    {marketInfo === null ? (
+                      <textarea
+                        {...register("detail")}
+                        style={{ fontFamily: "Roboto" }}
+                        placeholder="상세설명을 입력하시오"
+                      />
+                    ) : (
+                      <InfoSpan>{marketInfo?.intro}</InfoSpan>
+                    )}
+                  </InputBox>
+                </InputContainer>
+              </div>
+
+              <div style={{ width: "30%", height: "180px" }}>
+                <InputContainer style={{ height: "100%" }}>
+                  <MarketImgDiv>
+                    <form className="MarketImgForm">
+                      {marketInfo === null ? (
+                        <input
+                          id="market_img_input"
+                          type="image"
+                          type="file"
+                          accept="image/jpg,image/png,image/jpeg,image/gif"
+                          name="market_img"
+                          onChange={marketImgChange}
+                        />
+                      ) : null}
+                      <label htmlFor="market_img_input">
+                        <SliderDiv>
+                          <StyledSlider {...settings}>
+                            {file?.length !== 0 ? (
+                              file?.map((one, index) => (
+                                <div>
+                                  <MarketImg src={one} key={index} />
+                                </div>
+                              ))
+                            ) : (
+                              <FontAwesomeIcon
+                                style={{ color: "rgba(0, 0, 0, 0.1)" }}
+                                icon={faCamera}
+                              />
+                            )}{" "}
+                          </StyledSlider>
+                        </SliderDiv>
+                      </label>
+                    </form>
+                  </MarketImgDiv>
+                </InputContainer>
+              </div>
+            </div>
+          </form>
+          <InfoForm>
+            <InputContainer className="AddressContainer BorderTop">
+              <NameBox>
+                <p>주소</p>
+              </NameBox>
+              <InputBox style={{ width: "80%" }}>
+                {marketInfo === null ? (
+                  <input
+                    className="NumInputStyle"
+                    {...register("address")}
+                    placeholder="주소를 입력하시오"
+                    style={{ marginTop: "1px" }}
+                  />
+                ) : (
+                  <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
+                )}
+              </InputBox>
+            </InputContainer>
+            <InputContainer className="ParkContainer">
+              <NameBox>
+                <p>주차 정보</p>
+              </NameBox>
+              <InputBox style={{ width: "80%" }}>
+                {marketInfo === null ? (
+                  <>
+                    <label className="parkingLabel" htmlFor="can">
+                      <input
+                        {...register("parking", { required: true })}
+                        type="radio"
+                        name="parking"
+                        value="주차 공간 있음"
+                        className="form-check-input"
+                        id="can"
+                      />
+                      <p>가능</p>
+                    </label>
+                    <label className="parkingLabel" htmlFor="cant">
+                      <input
+                        {...register("parking", { required: true })}
+                        type="radio"
+                        name="parking"
+                        value="주차 공간 없음"
+                        className="form-check-input"
+                        id="cant"
+                      />
+                      <p>불가능</p>
+                    </label>
+                  </>
+                ) : (
+                  <InfoSpan>{marketInfo?.parkingInfo}</InfoSpan>
+                )}
+              </InputBox>
+            </InputContainer>
+            <InputContainer className="UseTimeContainer">
+              <NameBox>
+                <p>최대 이용 시간</p>
+              </NameBox>
+              <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
+                {marketInfo === null ? (
+                  <>
+                    <div className="TimeDiv">
+                      <input
+                        type="number"
+                        min="0"
+                        max="10"
+                        name="availableHour"
+                        className="TimeInputStyle"
+                        {...register("availableHour")}
+                        style={{ marginTop: "1px" }}
+                      />
+                      <p>시간</p>
+                    </div>
+                    <div className="TimeDiv">
+                      <input
+                        type="number"
+                        // step="10"
+                        // min="10"
+                        // max="50"
+                        className="TimeInputStyle"
+                        {...register("availableMinute")}
+                        style={{ marginTop: "1px" }}
+                      />
+                      <p>분</p>
+                    </div>
+                  </>
+                ) : (
+                  <span>
+                    {Math.floor(marketInfo?.maximumUsageTime / 60)}시간{" "}
+                    {marketInfo?.maximumUsageTime % 60}분
+                  </span>
+                )}
+              </InputBox>
+            </InputContainer>
+            <InputContainer className="CategoryContainer">
+              <NameBox>
+                <p>카테고리</p>
+              </NameBox>
+              <InputBox
+                style={{
+                  width: "80%",
+                  display: "flex",
+                  justifyContent: "flexStart",
+                }}
+              >
+                {marketInfo === null ? (
+                  <div className="SelectCategoryContainer">
+                    <select onChange={handleSelect} value={categorySelected}>
+                      <option></option>
+                      <option value="KOREAN" selected>
+                        한식
+                      </option>
+                      <option value="JAPANESE">일식</option>
+                      <option value="CHINESE">중식</option>
+                      <option value="WESTERN">양식</option>
+                      <option value="TAIWAN">태국</option>
+                      <option value="VIETNAM">베트남</option>
+                      <option value="SNACK">분식</option>
+                      <option value="NOODLE">면요리</option>
+                      <option value="BBQ">바베큐</option>
+                      <option value="PORK">돼지고기</option>
+                      <option value="BEEF">소고기</option>
+                      <option value="CHICKEN">닭고기</option>
+                      <option value="LAMB">양고기</option>
+                      <option value="BAR">바</option>
+                      <option value="PUB">술집</option>
+                      <option value="CAFE">카페</option>
+                      <option value="DESSERT">디저트</option>
+                    </select>
+                  </div>
+                ) : (
+                  <div
+                    style={{ width: "500px", height: "55px", display: "flex" }}
+                  >
+                    <ul className="CategoryTags">
+                      {marketInfo?.category.map((one, index) => {
+                        return (
+                          <div style={{ display: "inlineBlock" }}>
+                            <li
+                              key={index}
+                              className="EachCategoryTag"
+                              style={{ margin: "0px 5px", padding: "0px 15px" }}
+                            >
+                              {bringCategoryValue(one)}
+                            </li>
+                          </div>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+                {marketInfo === null ? (
                   <ul className="CategoryTags">
-                    {marketInfo?.category.map((one, index) => {
+                    {categorySelected.map((value, index) => {
                       return (
                         <div style={{ display: "inlineBlock" }}>
-                          <li
-                            key={index}
-                            className="EachCategoryTag"
-                            style={{ margin: "0px 5px", padding: "0px 15px" }}
-                          >
-                            {bringCategoryValue(one)}
+                          <li key={index} className="EachCategoryTag">
+                            <div
+                              className="EachCategoryButton"
+                              onClick={() => categoryButtonClick(index)}
+                            >
+                              X
+                            </div>
+                            <p>{value}</p>
                           </li>
                         </div>
                       );
                     })}
                   </ul>
+                ) : null}
+              </InputBox>
+            </InputContainer>
+            <InputContainer className="NumberContainer BorderTop">
+              <NameBox>
+                <p>번호</p>
+              </NameBox>
+              <NumContainer>
+                <div className="InputNTitleContainer">
+                  <SubBox>사업자 번호</SubBox>
+                  {marketInfo === null ? (
+                    <input
+                      className="NumInputStyle"
+                      {...register("businessNum")}
+                      placeholder="번호를 입력하시오"
+                      style={{ marginTop: "1px" }}
+                    />
+                  ) : (
+                    <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
+                  )}
                 </div>
-              )}
-              {marketInfo === null ? (
-                <ul className="CategoryTags">
-                  {categorySelected.map((value, index) => {
-                    return (
-                      <div style={{ display: "inlineBlock" }}>
-                        <li key={index} className="EachCategoryTag">
-                          <div
-                            className="EachCategoryButton"
-                            onClick={() => categoryButtonClick(index)}
-                          >
-                            X
-                          </div>
-                          <p>{value}</p>
-                        </li>
-                      </div>
-                    );
-                  })}
-                </ul>
-              ) : null}
-            </InputBox>
-          </InputContainer>
-          <InputContainer className="NumberContainer BorderTop">
-            <NameBox>
-              <p>번호</p>
-            </NameBox>
-            <NumContainer>
-              <div className="InputNTitleContainer">
-                <SubBox>사업자 번호</SubBox>
-                {marketInfo === null ? (
-                  <input
-                    className="NumInputStyle"
-                    {...register("businessNum")}
-                    placeholder="번호를 입력하시오"
-                    style={{ marginTop: "1px" }}
-                  />
-                ) : (
-                  <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
-                )}
-              </div>
-              <div className="InputNTitleContainer">
-                <SubBox>개인 번호</SubBox>
-                {marketInfo === null ? (
-                  <input
-                    className="NumInputStyle"
-                    {...register("personalNum")}
-                    placeholder="번호를 입력하시오"
-                    style={{ alignItems: "center" }}
-                  />
-                ) : (
-                  <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
-                )}
-              </div>
-            </NumContainer>
-          </InputContainer>
-          {/* </div> */}
-          {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
-          <InputContainer className="Time BorderTop">
-            <NameBox>
-              <p>시간</p>
-            </NameBox>
-            <NumContainer>
-              <div className="InputNTitleContainer">
-                <SubBox>평일 시간대</SubBox>
-                {marketInfo === null ? (
-                  <>
+                <div className="InputNTitleContainer">
+                  <SubBox>개인 번호</SubBox>
+                  {marketInfo === null ? (
                     <input
-                      type="time"
-                      value={weekdayTimeStartState}
-                      className="TimeInput"
-                      onChange={weekdayTimeStartHandleForm}
-                      //  {...register("weekdayTimeStart")}
+                      className="NumInputStyle"
+                      {...register("personalNum")}
+                      placeholder="번호를 입력하시오"
+                      style={{ alignItems: "center" }}
                     />
-                    <p>부터</p>
-                    <input
-                      type="time"
-                      value={weekdayTimeEndState}
-                      onChange={weekdayTimeEndHandleForm}
-                      className="TimeInput"
-                    />
-                    <p>까지</p>
-                  </>
-                ) : (
-                  <InfoSpan>
-                    {marketInfo?.weekdaysWorkHour.open.slice(0,5)} ~ 
-                     {marketInfo?.weekdaysWorkHour.close.slice(0,5)}{" "}
-                  </InfoSpan>
-                )}
-              </div>
-              <div className="InputNTitleContainer">
-                <SubBox>주말 시간대</SubBox>
-                {marketInfo === null ? (
-                  <>
-                    <input
-                      type="time"
-                      className="TimeInput"
-                      onChange={weekendTimeStartHandleForm}
-                      value={weekendTimeStartState}
-                    />
-                    <p>부터</p>
-                    <input
-                      type="time"
-                      className="TimeInput"
-                      onChange={weekendTimeEndHandleForm}
-                      value={weekendTimeEndState}
-                    />
-                    <p>까지</p>
-                  </>
-                ) : (
-                  <InfoSpan>
-                    {" "}
-                    {marketInfo?.weekendsWorkHour.open.slice(0,5)} ~ 
-                     {marketInfo?.weekendsWorkHour.close.slice(0,5)}{" "}
-                  </InfoSpan>
-                )}
-              </div>
-            </NumContainer>
-          </InputContainer>
-          {/* 주차정보 , 최대 이용 시간*/}
-          {/* </div> */}
+                  ) : (
+                    <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
+                  )}
+                </div>
+              </NumContainer>
+            </InputContainer>
+            {/* </div> */}
+            {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
+            <InputContainer className="Time BorderTop">
+              <NameBox>
+                <p>시간</p>
+              </NameBox>
+              <NumContainer>
+                <div className="InputNTitleContainer">
+                  <SubBox>평일 시간대</SubBox>
+                  {marketInfo === null ? (
+                    <>
+                      <input
+                        type="time"
+                        value={weekdayTimeStartState}
+                        className="TimeInput"
+                        onChange={weekdayTimeStartHandleForm}
+                        //  {...register("weekdayTimeStart")}
+                      />
+                      <p>부터</p>
+                      <input
+                        type="time"
+                        value={weekdayTimeEndState}
+                        onChange={weekdayTimeEndHandleForm}
+                        className="TimeInput"
+                      />
+                      <p>까지</p>
+                    </>
+                  ) : (
+                    <InfoSpan>
+                      {marketInfo?.weekdaysWorkHour.open.slice(0, 5)} ~
+                      {marketInfo?.weekdaysWorkHour.close.slice(0, 5)}{" "}
+                    </InfoSpan>
+                  )}
+                </div>
+                <div className="InputNTitleContainer">
+                  <SubBox>주말 시간대</SubBox>
+                  {marketInfo === null ? (
+                    <>
+                      <input
+                        type="time"
+                        className="TimeInput"
+                        onChange={weekendTimeStartHandleForm}
+                        value={weekendTimeStartState}
+                      />
+                      <p>부터</p>
+                      <input
+                        type="time"
+                        className="TimeInput"
+                        onChange={weekendTimeEndHandleForm}
+                        value={weekendTimeEndState}
+                      />
+                      <p>까지</p>
+                    </>
+                  ) : (
+                    <InfoSpan>
+                      {" "}
+                      {marketInfo?.weekendsWorkHour.open.slice(0, 5)} ~
+                      {marketInfo?.weekendsWorkHour.close.slice(0, 5)}{" "}
+                    </InfoSpan>
+                  )}
+                </div>
+              </NumContainer>
+            </InputContainer>
+            {/* 주차정보 , 최대 이용 시간*/}
+            {/* </div> */}
 
-          <Button onClick={submitInfo}>등록</Button>
-        </InfoForm>
-      </InputFormDiv>
-      <Menu marketId={marketId} />
-      <MyCanvas></MyCanvas>
+            <Button onClick={submitInfo}>등록</Button>
+          </InfoForm>
+        </InputFormDiv>
+      </div>
+      <div ref={menuRef}>
+        <Menu marketId={marketId} />
+      </div>
+      <div ref={structRef}>
+        <MyCanvas></MyCanvas>
+      </div>
     </Container>
     // </div>
   );

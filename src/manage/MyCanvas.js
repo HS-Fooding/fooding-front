@@ -136,7 +136,9 @@ const Table = ({
           });
 
           if (isDelete === true) {
-            const tmp = tables.filter((table) => table.id !== e.target.attrs.id);
+            const tmp = tables.filter(
+              (table) => table.id !== e.target.attrs.id
+            );
             setTables([...tmp]);
             setIsDelete(false);
           }
@@ -351,7 +353,9 @@ const Window = ({
             y: e.target.y(),
           });
           if (isDelete === true) {
-            const tmp = windows.filter((window) => window.id !== e.target.attrs.id);
+            const tmp = windows.filter(
+              (window) => window.id !== e.target.attrs.id
+            );
             setWindows([...tmp]);
             setIsDelete(false);
           }
@@ -572,23 +576,16 @@ const MyCanvas = () => {
     submit,
     edit
   ) => {
-<<<<<<< HEAD
     console.log(
       "부모:",
       id,
       tableNum,
-
-      minPeopleNum,
       maxPeopleNum,
+      minPeopleNum,
       tableWidth,
       tableHeight,
-      modal,
-      submit,
-      edit
+      modal
     );
-=======
-    console.log("부모:", id, tableNum, maxPeopleNum, minPeopleNum, tableWidth, tableHeight, modal);
->>>>>>> c1b86a1b208b294547945ef520131a05fd9b113d
     setTableNum(tableNum);
     setMinPeople(minPeopleNum);
     setMaxPeople(maxPeopleNum);
@@ -598,8 +595,6 @@ const MyCanvas = () => {
     modal ? setModal(true) : setModal(false);
 
     if (submit) {
-<<<<<<< HEAD
-      console.log("table 만들자");
       createTable(
         tableNum,
         tableWidth,
@@ -607,15 +602,26 @@ const MyCanvas = () => {
         minPeopleNum,
         maxPeopleNum
       );
-=======
-      createTable(tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
->>>>>>> c1b86a1b208b294547945ef520131a05fd9b113d
     }
     if (edit) {
-      editTable(id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
+      editTable(
+        id,
+        tableNum,
+        tableWidth,
+        tableHeight,
+        minPeopleNum,
+        maxPeopleNum
+      );
     }
   };
-  const editTable = (id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
+  const editTable = (
+    id,
+    tableNum,
+    tableWidth,
+    tableHeight,
+    minPeopleNum,
+    maxPeopleNum
+  ) => {
     console.log("idid", id);
     tables.map((table, index) => {
       if (id === table.id) {
@@ -629,7 +635,6 @@ const MyCanvas = () => {
     console.log(tables);
   };
   // 개체 생성
-<<<<<<< HEAD
   const createTable = (
     tableNum,
     tableWidth,
@@ -637,11 +642,7 @@ const MyCanvas = () => {
     minPeopleNum,
     maxPeopleNum
   ) => {
-    //openModal() ;
-=======
-  const createTable = (tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
     //openModal();
->>>>>>> c1b86a1b208b294547945ef520131a05fd9b113d
 
     console.log("creatTable함수");
     const table = {
@@ -649,7 +650,8 @@ const MyCanvas = () => {
       y: 100 + tableCnt * 20,
       width: tableWidth,
       height: tableHeight,
-      fill: RGBA(101, 67, 33),
+      // fill: RGBA(101, 67, 33),
+      fill: "brown",
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
@@ -1204,7 +1206,11 @@ const MyCanvas = () => {
         </Stage>
       </CanvasContainer>
       {modal ? (
-        <Modal2 parentCallback={handleCallback} editModal={editModal} editTableObj={editTableObj} />
+        <Modal2
+          parentCallback={handleCallback}
+          editModal={editModal}
+          editTableObj={editTableObj}
+        />
       ) : null}
     </Container>
   );
