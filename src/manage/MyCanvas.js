@@ -2,6 +2,7 @@ import React, { isValidElement, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled from "styled-components";
 import Modal from "./component/Modal";
+import Modal2 from "./component/Modal2";
 import axios from "axios";
 
 import { tab } from "@testing-library/user-event/dist/tab";
@@ -1167,8 +1168,15 @@ const MyCanvas = () => {
           })}
         </Layer>
       </Stage>
-      {modal ? (
+      {/* {modal ? (
         <Modal
+          parentCallback={handleCallback}
+          editModal={editModal}
+          editTableObj={editTableObj}
+        />
+      ) : null} */}
+      {modal ? (
+        <Modal2
           parentCallback={handleCallback}
           editModal={editModal}
           editTableObj={editTableObj}
