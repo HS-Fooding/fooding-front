@@ -193,7 +193,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   );
   const [id, setId] = useState(editModal ? editTableObj.id : "");
   const [tableSize, setTableSize] = useState("");
-  const [validation, setValidation] = useState([true, true, true, true]);
+  const [validation, setValidation] = useState([false, false, false]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
@@ -236,6 +236,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
 
   const handleEditNSubmit = async () => {
     if (isPassedValid) {
+      console.log("isPassedValid");
       if (editModal) {
         // 수정
         setModalTrigger(false);
@@ -255,6 +256,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
         );
       } else {
         // 기본 등록
+        console.log("기본 등록");
         setModalTrigger(false);
         const modal = false;
         const submit = true;
@@ -314,18 +316,20 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   const handleValidation = () => {
     let tmp = [...validation];
 
-    tmp[0] = tableNum === null ? false : true;
-    tmp[1] = minPeopleNum === null ? false : true;
-    tmp[2] = maxPeopleNum === null ? false : true;
-    tmp[3] = true;
-    // tmp[4] = true;
+    tmp[0] = tableNum === "" ? false : true;
+    tmp[1] = minPeopleNum === "" ? false : true;
+    tmp[2] = maxPeopleNum === "" ? false : true;
+
+    console.log("tmp:", tmp);
+    console.log(tableNum, minPeopleNum, maxPeopleNum);
+
     setValidation(tmp);
     tmp.includes(false) ? setIsPassedValid(false) : setIsPassedValid(true);
   };
 
   useEffect(() => {
     handleValidation();
-  }, [tableNum, minPeopleNum, maxPeopleNum, figureWidth]);
+  }, [tableNum, minPeopleNum, maxPeopleNum]);
   return (
     <>
       <Background visible={modalTrigger} />

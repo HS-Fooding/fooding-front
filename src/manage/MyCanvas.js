@@ -580,11 +580,14 @@ const MyCanvas = () => {
       "부모:",
       id,
       tableNum,
-      maxPeopleNum,
+
       minPeopleNum,
+      maxPeopleNum,
       tableWidth,
       tableHeight,
-      modal
+      modal,
+      submit,
+      edit
     );
     setTableNum(tableNum);
     setMinPeople(minPeopleNum);
@@ -595,6 +598,7 @@ const MyCanvas = () => {
     modal ? setModal(true) : setModal(false);
 
     if (submit) {
+      console.log("table 만들자");
       createTable(
         tableNum,
         tableWidth,
@@ -642,8 +646,9 @@ const MyCanvas = () => {
     minPeopleNum,
     maxPeopleNum
   ) => {
-    //openModal();
+    //openModal() ;
 
+    console.log("creatTable함수");
     const table = {
       x: 100 + tableCnt * 20,
       y: 100 + tableCnt * 20,
@@ -656,6 +661,8 @@ const MyCanvas = () => {
       minPeople: minPeopleNum,
       maxPeople: maxPeopleNum,
     };
+
+    console.log("만들어진 테이블:", table);
     setId(id);
     setTableCnt(tableCnt + 1);
     setTables([...tables, table]);
