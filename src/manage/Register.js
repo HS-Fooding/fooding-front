@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import { url } from "../Api";
 import Menu from "./component/Menu";
 import axios from "axios";
+import MyCanvas from "./MyCanvas";
 
 const Container = styled.div`
   width: 100%;
@@ -194,7 +195,7 @@ const InputBox = styled.div`
   }
 
   .TimeInputStyle {
-    width: 35px;
+    width: 50px;
   }
   .parkingLabel {
     display: flex;
@@ -342,8 +343,14 @@ const StyledSlider = styled(Slider)`
 `;
 
 function Register() {
-  const { register, watch, getValues } = useForm();
-
+  const initValue = {
+    availableMinute : 0,
+    availableHour : 1, 
+  };
+  const { register, watch, getValues,control } = useForm({
+    defaultValues : initValue
+  });
+  
   const [marketImgs, setMarketImgs] = useState([]);
 
   const [streetAddress, setStreetAddress] = useState({});
@@ -610,14 +617,14 @@ function Register() {
               <InputContainer style={{ height: "100%" }}>
                 <MarketImgDiv>
                   <form className="MarketImgForm">
-                    <input
+                   { marketInfo===null ? <input
                       id="market_img_input"
                       type="image"
                       type="file"
                       accept="image/jpg,image/png,image/jpeg,image/gif"
                       name="market_img"
                       onChange={marketImgChange}
-                    />
+                    />: null}
                     <label htmlFor="market_img_input">
                       <SliderDiv>
                         <StyledSlider {...settings}>
@@ -703,10 +710,12 @@ function Register() {
               {marketInfo === null ? (
                 <>
                   <div className="TimeDiv">
+                
                     <input
                       type="number"
                       min="0"
                       max="10"
+                      name="availableHour"
                       className="TimeInputStyle"
                       {...register("availableHour")}
                       style={{ marginTop: "1px" }}
@@ -716,15 +725,16 @@ function Register() {
                   <div className="TimeDiv">
                     <input
                       type="number"
-                      step="10"
-                      min="10"
-                      max="50"
+                      // step="10"
+                      // min="10"
+                      // max="50"
                       className="TimeInputStyle"
                       {...register("availableMinute")}
                       style={{ marginTop: "1px" }}
                     />
                     <p>분</p>
                   </div>
+                  
                 </>
               ) : (
                 <span>
@@ -874,8 +884,8 @@ function Register() {
                   </>
                 ) : (
                   <InfoSpan>
-                    {marketInfo?.weekdaysWorkHour.open}~
-                    {marketInfo?.weekdaysWorkHour.close}{" "}
+                    {marketInfo?.weekdaysWorkHour.open.slice(0,5)} ~ 
+                     {marketInfo?.weekdaysWorkHour.close.slice(0,5)}{" "}
                   </InfoSpan>
                 )}
               </div>
@@ -901,8 +911,8 @@ function Register() {
                 ) : (
                   <InfoSpan>
                     {" "}
-                    {marketInfo?.weekendsWorkHour.open}~
-                    {marketInfo?.weekendsWorkHour.close}{" "}
+                    {marketInfo?.weekendsWorkHour.open.slice(0,5)} ~ 
+                     {marketInfo?.weekendsWorkHour.close.slice(0,5)}{" "}
                   </InfoSpan>
                 )}
               </div>
@@ -915,6 +925,7 @@ function Register() {
         </InfoForm>
       </InputFormDiv>
       <Menu marketId={marketId} />
+      <MyCanvas></MyCanvas>
     </Container>
     // </div>
   );

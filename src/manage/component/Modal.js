@@ -19,10 +19,10 @@ const Modal = ({ parentCallback ,editModal, editTableObj}) => {
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const [figureWidth, setFigureWidth] = useState(editModal ? editTableObj.width/100: 1);
-  const [figureHeight, setFigureHeight] = useState(editModal ? editTableObj.height/100:1);
-  const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight*100);
-  const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight*100);
+  const [figureWidth, setFigureWidth] = useState(editModal ? editTableObj.width/50: 1);
+  const [figureHeight, setFigureHeight] = useState(editModal ? editTableObj.height/50:1);
+  const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight*50);
+  const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight*50);
   const onChange = (event) => {
     const {
       target: { value, className },

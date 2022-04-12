@@ -9,122 +9,90 @@ import { tab } from "@testing-library/user-event/dist/tab";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { url } from "../Api";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChair,
+  faSquareCheck,
+  faStar,
+  faDoorOpen,
+  faTrashCan,
+  faPenToSquare,
+  faWindowClose,
+} from "@fortawesome/free-solid-svg-icons";
+import { RGBA } from "konva/lib/filters/RGBA";
+//import { faWindowFrame as FaWindowFrameRegular } from "@fortawesome/free-regular-svg-icons";
+
 const Container = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.2);
-  width: 80%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: 5em;
+  position: relative;
+  border-radius: 10px;
 `;
+const ButtonContainer = styled.div`
+  width: 150px;
+  height: 500px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 10px;
+  display: flex;
 
-const Button1 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 10%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
-`;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: rgba(0, 0, 0, 0.1);
+  & button {
+    padding: 0;
+    margin: 0;
+    top: 10%;
+    right: 5%;
+    border: none;
+    width: 135px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* z-index: 1; */
+    p {
+      margin-left: 14px;
+      font-size: 20px;
+      margin-right: 10px;
+    }
+    span {
+      font-size: 13px;
+    }
+    :focus {
+      /* display:flex;
+      align-items: center; */
 
-const Button2 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 20%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
-`;
+      background-color: gray;
+      color: white;
+      border-radius: 8px;
 
-const Button3 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 30%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
+      /* cursor: pointer;
+  
+    padding-left:10px;
+    height: 35px; */
+    }
+  }
 `;
-
-const Button4 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 40%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
-`;
-
-const Button5 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 50%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
-`;
-
-const Button6 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 60%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
-`;
-const Button7 = styled.button`
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 70%;
-  right: 5%;
-  border: none;
-  width: 100px;
-  height: 35px;
-  border-radius: 26px;
-  cursor: pointer;
-  z-index: 2;
+const CanvasContainer = styled.div`
+  width: 850px;
+  height: 500px;
 `;
 const Garbage = styled.div`
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 80%;
-  right: 8%;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  background-color: tomato;
+  font-size: 35px;
   z-index: 2;
 `;
 
@@ -681,7 +649,7 @@ const MyCanvas = () => {
       y: 100 + tableCnt * 20,
       width: tableWidth,
       height: tableHeight,
-      fill: "brown",
+      fill: RGBA(101, 67, 33),
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
@@ -854,7 +822,9 @@ const MyCanvas = () => {
   useEffect(() => {
     getShape();
   }, []);
-
+  useEffect(() => {
+    console.log("렌더링");
+  }, [tables]);
   // submit
   const postData = () => {
     const marketId = localStorage.getItem("marketId");
@@ -909,7 +879,7 @@ const MyCanvas = () => {
     });
 
     console.log(data);
-
+    const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,
@@ -1047,146 +1017,190 @@ const MyCanvas = () => {
     //테이블의 값을 가져와야함. 테이블의
     //테이블이라는걸 알아야함. =>
   };
-
+  const eraseAll = () => {
+    tables.clear();
+    seats.clear();
+    windows.clear();
+    walls.clear();
+    doors.clear();
+  };
   return (
     <Container>
-      <Button1 onClick={openModal}>테이블 생성 </Button1>
-      <Button2 onClick={createSeat}>좌석 생성</Button2>
-      <Button3 onClick={createWall}>벽 생성</Button3>
-      <Button4 onClick={createWindow}>창문 생성</Button4>
-      <Button5 onClick={createDoor}>출입구 생성</Button5>
-      <Button6 onClick={postData}>Submit</Button6>
-      <Button7 onClick={changeInfo}>수정</Button7>
+      <ButtonContainer>
+        {/* 만약에 매장 주인이 처음 만드는 거라면 floor 가 증가되도록 해야함. 
+       층 추가하기 버튼 누르면 캔버스 위에 1 2 3 뜨도록
+       */}
+        <button onClick={openModal}>
+          <p>
+            <FontAwesomeIcon icon={faChair} />
+          </p>
+          <span>테이블 생성</span>{" "}
+        </button>
+        <button onClick={createSeat}>
+          <p>
+            <FontAwesomeIcon icon={faStar} />
+          </p>
+          <span> 좌석 생성</span>
+        </button>
+        <button onClick={createWall}>
+          <p>
+            <FontAwesomeIcon icon={faChair} />
+          </p>
+          <span>벽 생성</span>
+        </button>
+        <button onClick={createWindow}>
+          <p>
+            <FontAwesomeIcon icon={faWindowClose} />
+          </p>
+          <span>창문 생성</span>
+        </button>
+        <button onClick={createDoor}>
+          <p>
+            <FontAwesomeIcon icon={faDoorOpen} />
+          </p>
+          <span>출입구 생성</span>
+        </button>
+        <button onClick={postData}>
+          <p>
+            <FontAwesomeIcon icon={faSquareCheck} />
+          </p>
+          <span>Submit</span>
+        </button>
+        <button onClick={changeInfo}>
+          <p>
+            <FontAwesomeIcon icon={faPenToSquare} />
+          </p>
+          <span>수정</span>
+        </button>
+        {/* <button onClick={eraseAll}><p><FontAwesomeIcon icon={faPenToSquare} /></p><span>모두 지우기</span></button> */}
 
-      <Garbage onMouseUp={handleDelete}></Garbage>
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={checkDeselect}
-        onTouchStart={checkDeselect}
-      >
-        <Layer>
-          {tables.map((table, i) => {
-            console.log("테이블 그림", table, i);
-            return (
-              <Table
-                key={i}
-                onDblClick={handleTableDblClick}
-                shapeProps={table}
-                isSelected={table.id === selectedId}
-                tables={tables}
-                setTables={setTables}
-                isDelete={isDelete}
-                setIsDelete={setIsDelete}
-                validateRotation={validateRotation}
-                onSelect={() => {
-                  selectShape(table.id);
-                }}
-                onChange={(newAttrs) => {
-                  const tmp = tables.slice();
-                  tmp[i] = newAttrs;
-                  setTables(tmp);
-                }}
-              />
-            );
-          })}
-          {seats.map((seat, i) => {
-            return (
-              <Seat
-                key={i}
-                onDblClick={handleSeatDblClick}
-                shapeProps={seat}
-                isSelected={seat.id === selectedId}
-                seats={seats}
-                setSeats={setSeats}
-                isDelete={isDelete}
-                setIsDelete={setIsDelete}
-                onChange={(newAttrs) => {
-                  const tmp = seats.slice();
-                  tmp[i] = newAttrs;
-                  setSeats(tmp);
-                }}
-              />
-            );
-          })}
-          {walls.map((wall, i) => {
-            return (
-              <Wall
-                key={i}
-                onDblClick={handleWallDblClick}
-                shapeProps={wall}
-                isSelected={wall.id === selectedId}
-                walls={walls}
-                setWalls={setWalls}
-                isDelete={isDelete}
-                setIsDelete={setIsDelete}
-                validateRotation={validateRotation}
-                onSelect={() => {
-                  selectShape(wall.id);
-                }}
-                onChange={(newAttrs) => {
-                  const tmp = walls.slice();
-                  tmp[i] = newAttrs;
-                  setWalls(tmp);
-                }}
-              />
-            );
-          })}
-          {windows.map((window, i) => {
-            return (
-              <Window
-                key={i}
-                onDblClick={handleWindowDblClick}
-                shapeProps={window}
-                isSelected={window.id === selectedId}
-                windows={windows}
-                setWindows={setWindows}
-                isDelete={isDelete}
-                setIsDelete={setIsDelete}
-                validateRotation={validateRotation}
-                onSelect={() => {
-                  selectShape(window.id);
-                }}
-                onChange={(newAttrs) => {
-                  const tmp = windows.slice();
-                  tmp[i] = newAttrs;
-                  setWindows(tmp);
-                }}
-              />
-            );
-          })}
-          {doors.map((door, i) => {
-            return (
-              <Door
-                key={i}
-                onDblClick={handleDoorDblClick}
-                shapeProps={door}
-                isSelected={door.id === selectedId}
-                doors={doors}
-                setDoors={setDoors}
-                isDelete={isDelete}
-                setIsDelete={setIsDelete}
-                validateRotation={validateRotation}
-                onSelect={() => {
-                  selectShape(door.id);
-                }}
-                onChange={(newAttrs) => {
-                  const tmp = doors.slice();
-                  tmp[i] = newAttrs;
-                  setDoors(tmp);
-                }}
-              />
-            );
-          })}
-        </Layer>
-      </Stage>
-      {/* {modal ? (
-        <Modal
-          parentCallback={handleCallback}
-          editModal={editModal}
-          editTableObj={editTableObj}
-        />
-      ) : null} */}
+        <Garbage onMouseUp={handleDelete}>
+          <FontAwesomeIcon icon={faTrashCan} />
+        </Garbage>
+      </ButtonContainer>
+      <CanvasContainer>
+        <Stage
+          width={window.innerWidth}
+          height={window.innerHeight}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
+        >
+          <Layer>
+            {tables.map((table, i) => {
+              console.log("테이블 그림", table, i);
+              return (
+                <Table
+                  key={i}
+                  onDblClick={handleTableDblClick}
+                  shapeProps={table}
+                  isSelected={table.id === selectedId}
+                  tables={tables}
+                  setTables={setTables}
+                  isDelete={isDelete}
+                  setIsDelete={setIsDelete}
+                  validateRotation={validateRotation}
+                  onSelect={() => {
+                    selectShape(table.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const tmp = tables.slice();
+                    tmp[i] = newAttrs;
+                    setTables(tmp);
+                  }}
+                />
+              );
+            })}
+            {seats.map((seat, i) => {
+              return (
+                <Seat
+                  key={i}
+                  onDblClick={handleSeatDblClick}
+                  shapeProps={seat}
+                  isSelected={seat.id === selectedId}
+                  seats={seats}
+                  setSeats={setSeats}
+                  isDelete={isDelete}
+                  setIsDelete={setIsDelete}
+                  onChange={(newAttrs) => {
+                    const tmp = seats.slice();
+                    tmp[i] = newAttrs;
+                    setSeats(tmp);
+                  }}
+                />
+              );
+            })}
+            {walls.map((wall, i) => {
+              return (
+                <Wall
+                  key={i}
+                  onDblClick={handleWallDblClick}
+                  shapeProps={wall}
+                  isSelected={wall.id === selectedId}
+                  walls={walls}
+                  setWalls={setWalls}
+                  isDelete={isDelete}
+                  setIsDelete={setIsDelete}
+                  validateRotation={validateRotation}
+                  onSelect={() => {
+                    selectShape(wall.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const tmp = walls.slice();
+                    tmp[i] = newAttrs;
+                    setWalls(tmp);
+                  }}
+                />
+              );
+            })}
+            {windows.map((window, i) => {
+              return (
+                <Window
+                  key={i}
+                  onDblClick={handleWindowDblClick}
+                  shapeProps={window}
+                  isSelected={window.id === selectedId}
+                  windows={windows}
+                  setWindows={setWindows}
+                  isDelete={isDelete}
+                  setIsDelete={setIsDelete}
+                  validateRotation={validateRotation}
+                  onSelect={() => {
+                    selectShape(window.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const tmp = windows.slice();
+                    tmp[i] = newAttrs;
+                    setWindows(tmp);
+                  }}
+                />
+              );
+            })}
+            {doors.map((door, i) => {
+              return (
+                <Door
+                  key={i}
+                  onDblClick={handleDoorDblClick}
+                  shapeProps={door}
+                  isSelected={door.id === selectedId}
+                  doors={doors}
+                  setDoors={setDoors}
+                  isDelete={isDelete}
+                  setIsDelete={setIsDelete}
+                  validateRotation={validateRotation}
+                  onSelect={() => {
+                    selectShape(door.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const tmp = doors.slice();
+                    tmp[i] = newAttrs;
+                    setDoors(tmp);
+                  }}
+                />
+              );
+            })}
+          </Layer>
+        </Stage>
+      </CanvasContainer>
       {modal ? (
         <Modal2
           parentCallback={handleCallback}
