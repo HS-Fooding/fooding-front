@@ -136,9 +136,7 @@ const Table = ({
           });
 
           if (isDelete === true) {
-            const tmp = tables.filter(
-              (table) => table.id !== e.target.attrs.id
-            );
+            const tmp = tables.filter((table) => table.id !== e.target.attrs.id);
             setTables([...tmp]);
             setIsDelete(false);
           }
@@ -353,9 +351,7 @@ const Window = ({
             y: e.target.y(),
           });
           if (isDelete === true) {
-            const tmp = windows.filter(
-              (window) => window.id !== e.target.attrs.id
-            );
+            const tmp = windows.filter((window) => window.id !== e.target.attrs.id);
             setWindows([...tmp]);
             setIsDelete(false);
           }
@@ -576,16 +572,7 @@ const MyCanvas = () => {
     submit,
     edit
   ) => {
-    console.log(
-      "부모:",
-      id,
-      tableNum,
-      maxPeopleNum,
-      minPeopleNum,
-      tableWidth,
-      tableHeight,
-      modal
-    );
+    console.log("부모:", id, tableNum, maxPeopleNum, minPeopleNum, tableWidth, tableHeight, modal);
     setTableNum(tableNum);
     setMinPeople(minPeopleNum);
     setMaxPeople(maxPeopleNum);
@@ -595,33 +582,13 @@ const MyCanvas = () => {
     modal ? setModal(true) : setModal(false);
 
     if (submit) {
-      createTable(
-        tableNum,
-        tableWidth,
-        tableHeight,
-        minPeopleNum,
-        maxPeopleNum
-      );
+      createTable(tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
     }
     if (edit) {
-      editTable(
-        id,
-        tableNum,
-        tableWidth,
-        tableHeight,
-        minPeopleNum,
-        maxPeopleNum
-      );
+      editTable(id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum);
     }
   };
-  const editTable = (
-    id,
-    tableNum,
-    tableWidth,
-    tableHeight,
-    minPeopleNum,
-    maxPeopleNum
-  ) => {
+  const editTable = (id, tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
     console.log("idid", id);
     tables.map((table, index) => {
       if (id === table.id) {
@@ -635,13 +602,7 @@ const MyCanvas = () => {
     console.log(tables);
   };
   // 개체 생성
-  const createTable = (
-    tableNum,
-    tableWidth,
-    tableHeight,
-    minPeopleNum,
-    maxPeopleNum
-  ) => {
+  const createTable = (tableNum, tableWidth, tableHeight, minPeopleNum, maxPeopleNum) => {
     //openModal();
 
     const table = {
@@ -754,19 +715,19 @@ const MyCanvas = () => {
           setTableCnt(tableCnt + 1);
         });
 
-        floor1.seats.map((s) => {
+        floor1.seats.map((s, id) => {
           const seat = {
             x: s.x,
             y: s.y,
             radius: 20,
             fill: "gray",
-            id: "seat" + seatCnt,
+            id: "seat" + id,
           };
           tempSeat.push(seat);
           setSeatCnt(seatCnt + 1);
         });
 
-        floor1.walls.map((w) => {
+        floor1.walls.map((w, id) => {
           const wall = {
             x: w.x,
             y: w.y,
@@ -774,13 +735,13 @@ const MyCanvas = () => {
             height: 5,
             fill: "black",
             rotation: w.rotation,
-            id: "wall" + wallCnt,
+            id: "wall" + id,
           };
           tempWall.push(wall);
           setWallCnt(wallCnt + 1);
         });
 
-        floor1.windows.map((w) => {
+        floor1.windows.map((w, id) => {
           const window = {
             x: w.x,
             y: w.y,
@@ -788,21 +749,21 @@ const MyCanvas = () => {
             height: 5,
             fill: "skyblue",
             rotation: w.rotation,
-            id: "window" + windowCnt,
+            id: "window" + id,
           };
           tempWindow.push(window);
           setWindowCnt(windowCnt + 1);
         });
 
-        floor1.doors.map((d) => {
+        floor1.doors.map((d, id) => {
           const door = {
             x: d.x,
             y: d.y,
             width: d.width,
             height: 15,
             fill: "green",
-            rotation: d.ration,
-            id: "door" + doorCnt,
+            rotation: d.rotation,
+            id: "door" + id,
           };
           tempDoor.push(door);
           setDoorCnt(doorCnt + 1);
@@ -1202,11 +1163,7 @@ const MyCanvas = () => {
         </Stage>
       </CanvasContainer>
       {modal ? (
-        <Modal2
-          parentCallback={handleCallback}
-          editModal={editModal}
-          editTableObj={editTableObj}
-        />
+        <Modal2 parentCallback={handleCallback} editModal={editModal} editTableObj={editTableObj} />
       ) : null}
     </Container>
   );
