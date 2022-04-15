@@ -73,6 +73,8 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
+  background-color: ${(props) => props.theme.blackColor};
+  color: white;
 `;
 
 const InputContainer = styled.div`
@@ -231,6 +233,8 @@ const InputBox = styled.div`
       padding-right: 8px;
       border-radius: 5px;
       background-color: ${(props) => props.theme.fillGrayColor};
+      background-color: ${(props) => props.theme.blackColor};
+      color: white;
       margin-right: 6px;
       margin-bottom: 7px;
       .EachCategoryButton {
@@ -540,9 +544,10 @@ function Register() {
         },
       })
       .then((res) => {
-        console.log("get 됨");
         console.log(res.data);
         setMarketInfo(res.data);
+      })
+      .then(() => {
         setGetSuccess(true);
       })
       .catch((err) => {
@@ -1012,7 +1017,13 @@ function Register() {
                       style={{ marginTop: "1px" }}
                     />
                   ) : (
-                    <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
+                    <InfoSpan>
+                      {marketInfo?.tel[0].slice(0, 3) +
+                        "-" +
+                        marketInfo?.tel[0].slice(3, 7) +
+                        "-" +
+                        marketInfo?.tel[0].slice(7, 11)}
+                    </InfoSpan>
                   )}
                 </div>
                 <div className="InputNTitleContainer">
@@ -1025,7 +1036,14 @@ function Register() {
                       style={{ alignItems: "center" }}
                     />
                   ) : (
-                    <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
+                    <InfoSpan>
+                      {" "}
+                      {marketInfo?.tel[1].slice(0, 3) +
+                        "-" +
+                        marketInfo?.tel[1].slice(3, 7) +
+                        "-" +
+                        marketInfo?.tel[1].slice(7, 11)}
+                    </InfoSpan>
                   )}
                 </div>
               </NumContainer>
@@ -1059,7 +1077,7 @@ function Register() {
                     </>
                   ) : (
                     <InfoSpan>
-                      {marketInfo?.weekdaysWorkHour.open.slice(0, 5)} ~
+                      {marketInfo?.weekdaysWorkHour.open.slice(0, 5)} ~{" "}
                       {marketInfo?.weekdaysWorkHour.close.slice(0, 5)}{" "}
                     </InfoSpan>
                   )}
@@ -1086,7 +1104,7 @@ function Register() {
                   ) : (
                     <InfoSpan>
                       {" "}
-                      {marketInfo?.weekendsWorkHour.open.slice(0, 5)} ~
+                      {marketInfo?.weekendsWorkHour.open.slice(0, 5)} ~{" "}
                       {marketInfo?.weekendsWorkHour.close.slice(0, 5)}{" "}
                     </InfoSpan>
                   )}

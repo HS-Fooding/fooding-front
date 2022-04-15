@@ -13,6 +13,8 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
+  background-color: ${(props) => props.theme.blackColor};
+  color: white;
 
   .submit {
     position: absolute;

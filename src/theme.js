@@ -7,6 +7,7 @@ const theme = {
   fontGrayColor: "rgba(0, 0, 0, 0.3)",
   fillGrayColor: "rgba(222, 222, 222, 0.5)",
   menuBorderColor: "1px solid rgba(222, 222, 222, 0.93)",
+  blackColor: "#21201e",
 };
 
 export default theme;
