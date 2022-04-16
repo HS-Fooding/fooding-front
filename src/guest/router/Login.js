@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Header from "./Header";
+import Header from "../component/Header";
 import { useNavigate, Link } from "react-router-dom";
-import GlobalStyle from "../GlobalStyle";
-import { Cookies } from "react-cookie";
-import { url } from "../Api";
+
+import { url } from "../../Api";
+// src\Api.js
+//src\guest\component\Login.js
 import { motion, AnimatePresence } from "framer-motion";
 // border: 1px solid black;
 

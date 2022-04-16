@@ -3,13 +3,13 @@ import Container from "./Review";
 import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
 import { Navigate } from "react-router";
-import GlobalStyle from "../GlobalStyle";
-import Header from "./Header";
+import GlobalStyle from "../../GlobalStyle";
+import Header from "../component/Header";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as FaStarRegular } from "@fortawesome/free-regular-svg-icons";
-import { url } from "../Api";
+import { url } from "../../Api";
 // border: 1px solid black;
 const token = localStorage.getItem("token");
 const WriteReviewContainer = styled.div`

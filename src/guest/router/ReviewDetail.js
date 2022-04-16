@@ -1,9 +1,9 @@
 import { useParams } from "react-router";
 import React, { useState, useEffect, useRef } from "react";
-import Header from "./Header";
+import Header from "../component/Header";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { url, token } from "../Api";
+
+import { url, token } from "../../Api";
 import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`

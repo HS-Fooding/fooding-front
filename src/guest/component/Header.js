@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import GlobalStyle from "../GlobalStyle";
+import GlobalStyle from "../../../src/GlobalStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";

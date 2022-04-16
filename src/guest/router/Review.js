@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import Header from "./Header";
+import Header from "../component/Header";
 import { Link } from "react-router-dom";
-import { url } from "../Api";
+import { url } from "../../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
   border: 1px solid black;

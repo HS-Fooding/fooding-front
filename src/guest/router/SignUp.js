@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Header from "./Header";
+import Header from "../component/Header";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { url } from "../Api";
+
+import { url } from "../../Api";
 
 const Container = styled.div`
   border: 1px solid black;
