@@ -7,8 +7,10 @@ import { url } from "../Api";
 
 const Container = styled.div`
   border: 1px solid black;
-  width: 350px;
-  height: 600px;
+  /* width: 350px;
+  height: 600px; */
+  width: 410px;
+  height: 770px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -67,7 +69,9 @@ const SubmitBtn = styled.button`
   border-radius: 3px;
   font-size: 15px;
   cursor: pointer;
-  width: 308px;
+  //width: 308px;
+  width: 370px;
+
   position: absolute;
   bottom: 0;
 `;

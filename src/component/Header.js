@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 40px;
+  height: 65px;
   background-color: white;
   color: black;
   padding: 5px 15px;
@@ -18,7 +18,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   font-weight: bold;
-  z-index:3;
+  z-index: 3;
   .icon {
     cursor: pointer;
     &:hover {

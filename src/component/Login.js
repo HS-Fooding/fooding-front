@@ -9,8 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 // border: 1px solid black;
 
 const Container = styled.div`
-  width: 350px;
-  height: 600px;
+  width: 410px;
+  height: 770px;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -246,10 +246,7 @@ const Login = () => {
           <input type="password" onChange={changePs} placeholder="Password" />
           <LoginBut onClick={submitLogin}>LOGIN</LoginBut>
           <br />
-          <span style={{ fontSize: "14px" }}>
-            OR {modal ? "true" : "false"}
-          </span>{" "}
-          <br />
+          <span style={{ fontSize: "14px" }}>OR</span> <br />
           <Link to="/sign">
             <SignUpBut>SIGN IN</SignUpBut>
           </Link>

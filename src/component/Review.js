@@ -6,8 +6,8 @@ import { url } from "../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
   border: 1px solid black;
-  width: 350px;
-  height: 600px;
+  width: 410px;
+  height: 770px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -26,7 +26,7 @@ const WriteReviewBtn = styled.button`
 const Reviews = styled.div`
   padding-top: 90px;
   width: 100%;
-  height: 510px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
