@@ -40,20 +40,6 @@ const Home = () => {
   const logoutFun = () => {
     localStorage.clear();
     setIsToken(false);
-    // var axios = require("axios");
-    // axios
-    //   .post(url + "/sample_project/logout", {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (
