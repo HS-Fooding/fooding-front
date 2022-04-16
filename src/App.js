@@ -15,6 +15,7 @@ import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import maincanvas from "./manage/maincanvas";
+import RestaurantList from "./guest/router/RestaurantList";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/ex" element={<maincanvas />}></Route>
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
           <Route path="/canvas" element={<MyCanvas />}></Route>
+          <Route path="/restaurantList" element={<RestaurantList />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
