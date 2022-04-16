@@ -16,6 +16,7 @@ import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import maincanvas from "./manage/maincanvas";
 import RestaurantList from "./guest/router/RestaurantList";
+import Reservation1 from "./guest/router/Reservation1";
 
 function App() {
   return (
@@ -31,10 +32,11 @@ function App() {
           <Route path="/reservation" element={<Reservation />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/manager/login" element={<LoginMg />}></Route>
-          <Route path="/ex" element={<maincanvas />}></Route>
+
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
           <Route path="/canvas" element={<MyCanvas />}></Route>
           <Route path="/restaurantList" element={<RestaurantList />}></Route>
+          <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
