@@ -25,6 +25,7 @@ const InputFormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+ margin-bottom:200px;
   .NameForm {
     height: 500px;
     .BorderTop {
@@ -75,8 +76,18 @@ const Button = styled.button`
   cursor: pointer;
   background-color: ${(props) => props.theme.blackColor};
   color: white;
+  
 `;
-
+const ButtonContainer = styled.div`
+  width:100%;
+  height:40px;
+ 
+  .button{
+    margin-top:15px;
+   float:right;
+    
+  }
+`;
 const InputContainer = styled.div`
   display: flex;
   /* justify-content: space-between; */
@@ -344,7 +355,45 @@ const StyledSlider = styled(Slider)`
     width: 100%;
   }
 `;
+const AppendFloor = styled.div`
+width:100px;
+height:40px;
+border-radius:10px;
+margin-bottom:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+background-color:rgba(0,0,0,0.1);
+:hover{
+  cursor:pointer;
+}
+`;
+const CanvasContainer = styled.div`
+margin-top:0px;
+width:1000px;
+height:700px;
+display:flex;
+flex-direction:column;
 
+`;
+const CanvasOptionContainer = styled.div`
+  width:1000px;
+  height:40px;
+  display:flex;
+  margin-bottom:20px;
+`;
+const FloorButton = styled.div`
+  width:80px;
+  height:40px;
+  border-radius:10px;
+  margin-left:10px;
+  background-color:rgba(0,0,0,0.1);
+  display:flex;
+  justify-content: center;
+    align-items: center;
+  :hover{
+    cursor:pointer;}
+`;
 const Step = styled.div`
   nav {
     top: 50%;
@@ -477,7 +526,7 @@ const Step = styled.div`
   }
 `;
 
-function Register() {
+function Register(floorCallback) {
   const infoRef = useRef();
   const menuRef = useRef();
   const structRef = useRef();
@@ -506,7 +555,7 @@ function Register() {
   const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
   const [getSuccess, setGetSuccess] = useState(false);
   const [marketInfo, setMarketInfo] = useState();
-
+  const [floor,setFloor] = useState([true]);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
     else if (value === "JAPANESE") return "일식";
@@ -630,7 +679,12 @@ function Register() {
     console.log("list", categorySelected);
     console.log("value list", categoryValueSelected);
   };
-
+  const appendFloor = ()=>{
+    //원래 있는 층에서 추가. 버튼 생성되고 그 버튼 누르면 canvas창 나옴
+    setFloor([...floor,false]);
+    console.log("floor추가",floor);
+    //false로 추가해주고 -> canvas를 생성해야하는데 어덯게 하지
+  }
   const submitInfo = (e) => {
     structRef.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -706,9 +760,60 @@ function Register() {
           });
       });
   };
+  let floors = [];
+  const handleFloorCallback = (
+    index,
+    structureInfo
+  ) =>{
+    
+    floors[index] = structureInfo;
+    console.log("층",index+1);
+    console.log("구조도",structureInfo);
+    console.log("층들",floors);
+  }
+  useEffect(()=>{
+    console.log("gg");
+  },[floors]);
+  const postData = () =>{
+    const marketId = localStorage.getItem("marketId");
+   
+    const data = JSON.stringify({
+      floors:
+        floors
+      
+      });
 
+    console.log("datadatadatadata",data);
+    const getToken = localStorage.getItem("token");
+    const config = {
+      method: "post",
+      url: url + `/fooding/admin/restaurant/${marketId}/structure`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getToken,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   const [current, setCurrent] = useState(0);
-
+  const bringCanvas = (index)=>{
+    //index에 해당하는 state만 true로 바꾸기 
+    //나머지는 false로 바꾸기 
+    let temp = floor;
+    let temptemp = temp.map(bool=>false);
+    console.log("이전temp",temptemp);
+    temptemp[index]=true;
+    setFloor(temptemp);
+    console.log("temptemp",temptemp);
+  }
   const onChange1 = (current) => {
     console.log("onChange:", current);
     setCurrent({ current });
@@ -979,6 +1084,7 @@ function Register() {
                           </div>
                         );
                       })}
+
                     </ul>
                   </div>
                 )}
@@ -1119,11 +1225,29 @@ function Register() {
           </InfoForm>
         </InputFormDiv>
       </div>
-      <div ref={structRef}>
-        <MyCanvas></MyCanvas>
-      </div>
+      <CanvasContainer  ref={structRef}>
+        <CanvasOptionContainer>
+           <AppendFloor onClick={appendFloor}><div>층 추가</div></AppendFloor>
+        {floor.map((bool,index)=>{
+          if(floor.length===(index+1)){
+            return (<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
+       
+          }else{
+            return (<FloorButton onClick={(e)=>{bringCanvas(index)}}><p>{index+1}층</p></FloorButton>)       
+          }
+        })}
+        </CanvasOptionContainer>
+        {floor.map((bool,index)=>{
+          console.log("register index bool ",index,bool);
+       //   if(bool==true){
+         return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
+         // }//생성을 할 때마다 새로 불러오는게 아니라 배열에 저장을 해야하나...?어떻게??
+        })}
+      <ButtonContainer><Button className="button" onClick={postData}>등록</Button></ButtonContainer>
+     
+      </CanvasContainer>
       <div ref={menuRef}>
-        <Menu marketId={marketId} />
+        <Menu marketId={marketId} />      
       </div>
     </Container>
     // </div>
