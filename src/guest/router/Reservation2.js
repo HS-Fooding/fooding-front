@@ -18,7 +18,13 @@ const Container = styled.div`
 `;
 const MapContainer = styled.div`
   width: 400px;
-  height: 500px;
+  height: 300px;
+`;
+
+const SelectedTable = styled.div`
+  width: 400px;
+  height: 200px;
+  background-color: teal;
 `;
 
 const Reservation2 = () => {
@@ -35,6 +41,8 @@ const Reservation2 = () => {
   const [windowCnt, setWindowCnt] = useState(1);
   const [doorCnt, setDoorCnt] = useState(1);
   const [id, setId] = useState();
+
+  const [selectedTable, setSelectedTable] = useState();
 
   const getShape = () => {
     var config = {
@@ -142,8 +150,11 @@ const Reservation2 = () => {
     getShape();
   }, []);
 
-  const onClickTable = (id) => {
-    console.log(id);
+  const onClickTable = (id, maxPeople, minPeople) => {
+    console.log(id, maxPeople, minPeople);
+    const obj = { id, maxPeople, minPeople };
+
+    setSelectedTable(obj);
   };
 
   return (
@@ -169,7 +180,7 @@ const Reservation2 = () => {
                   fill="#764225"
                   rotation={table.rotation}
                   onClick={() => {
-                    onClickTable(table.id);
+                    onClickTable(table.id, table.maxPeople, table.minPeople);
                   }}
                 />
               );
@@ -183,6 +194,9 @@ const Reservation2 = () => {
                   height={wall.height / 2}
                   fill="#2C323E"
                   rotation={wall.rotation}
+                  onClick={() => {
+                    onClickTable(wall.id, wall.maxPeople, wall.minPeople);
+                  }}
                 />
               );
             })}
@@ -224,6 +238,10 @@ const Reservation2 = () => {
           </Layer>
         </Stage>
       </MapContainer>
+      <SelectedTable>
+        <span>{selectedTable?.minPeople}</span>
+        <span>{selectedTable?.maxPeople}</span>
+      </SelectedTable>
     </Container>
   );
 };
