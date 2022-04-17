@@ -516,6 +516,7 @@ const MyCanvas = ({floorCallback,bool,index}) => {
   const [isDelete, setIsDelete] = React.useState(false);
 
   const getToken = localStorage.getItem("token");
+  const marketIdLS = localStorage.getItem("marketId");
 
   const validateRotation = (num) => {
     if (num >= -5 && num <= 5) {
@@ -720,8 +721,6 @@ const MyCanvas = ({floorCallback,bool,index}) => {
     setDoorCnt(doorCnt + 1);
     setDoors([...doors, door]);
   };
-
-  const marketIdLS = localStorage.getItem("marketId");
 
   const getShape = () => {
     var config = {
