@@ -536,6 +536,7 @@ function Register() {
   const getMarketInfo = () => {
     const getToken = localStorage.getItem("token");
     const id = localStorage.getItem("marketId");
+    //.get(url + `/fooding/restaurant/${id}`, {
     axios
       .get(url + `/fooding/restaurant/${id}`, {
         headers: {

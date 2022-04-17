@@ -17,7 +17,7 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 const MapContainer = styled.div`
-  width: 100%;
+  width: 400px;
   height: 500px;
 `;
 
@@ -142,14 +142,18 @@ const Reservation2 = () => {
     getShape();
   }, []);
 
+  const onClickTable = (id) => {
+    console.log(id);
+  };
+
   return (
     <Container>
       <Header back="/guest/reservation1" title={""} />
       <MapContainer>
         <Stage
           style={{ marginTop: "90px" }}
-          width={1000}
-          height={400}
+          width={380}
+          height={250}
           //   fill={"yellow"}
           //   onMouseDown={checkDeselect}
           //   onTouchStart={checkDeselect}
@@ -158,47 +162,62 @@ const Reservation2 = () => {
             {tables.map((table, i) => {
               return (
                 <Rect
-                  x={table.x}
-                  y={table.y}
+                  x={table.x / 2}
+                  y={table.y / 2}
                   width={table.width / 2}
                   height={table.height / 2}
-                  fill="red"
+                  fill="#764225"
+                  rotation={table.rotation}
+                  onClick={() => {
+                    onClickTable(table.id);
+                  }}
                 />
               );
             })}
             {walls.map((wall, i) => {
               return (
                 <Rect
-                  x={wall.x}
-                  y={wall.y}
+                  x={wall.x / 2}
+                  y={wall.y / 2}
                   width={wall.width / 2}
                   height={wall.height / 2}
-                  fill="red"
+                  fill="#2C323E"
+                  rotation={wall.rotation}
                 />
               );
             })}
             {seats.map((seat, i) => {
-              return <Circle x={seat.x} y={seat.y} radius={10} fill="red" />;
+              return (
+                <Circle
+                  x={seat.x / 2}
+                  y={seat.y / 2}
+                  radius={10}
+                  fill="#FF4B00"
+                  rotation={seat.rotation}
+                />
+              );
             })}
             {windows.map((window, i) => {
               return (
                 <Rect
-                  x={window.x}
-                  y={window.y}
+                  x={window.x / 2}
+                  y={window.y / 2}
                   width={window.width / 2}
                   height={window.height / 2}
-                  fill="red"
+                  fill="#93D5FF"
+                  rotation={window.rotation}
                 />
               );
             })}
             {doors.map((door, i) => {
               return (
                 <Rect
-                  x={door.x}
-                  y={door.y}
+                  x={door.x / 2}
+                  y={door.y / 2}
                   width={door.width / 2}
                   height={door.height / 2}
-                  fill="red"
+                  fill="#433320"
+                  rotation={door.rotation}
                 />
               );
             })}

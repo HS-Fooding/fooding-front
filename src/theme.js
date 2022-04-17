@@ -9,6 +9,11 @@ const theme = {
   menuBorderColor: "1px solid rgba(222, 222, 222, 0.93)",
   blackColor: "#21201e",
   purpleColor: "#6f48eb",
+  brownColor: "#764225",
+  windowColor: "#93D5FF",
+  doorColor: "#433320",
+  wallColor: "#2C323E",
+  seatColor: "#8DAAF4",
 };
 
 export default theme;

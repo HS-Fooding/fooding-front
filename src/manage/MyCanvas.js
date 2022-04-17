@@ -79,7 +79,7 @@ const ButtonContainer = styled.div`
   }
 `;
 const CanvasContainer = styled.div`
-  width: 850px;
+  width: 760px;
   height: 500px;
 `;
 const Garbage = styled.div`
@@ -651,7 +651,7 @@ const MyCanvas = () => {
       width: tableWidth,
       height: tableHeight,
       // fill: RGBA(101, 67, 33),
-      fill: "brown",
+      fill: "#E5A884",
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
@@ -722,7 +722,8 @@ const MyCanvas = () => {
   const getShape = () => {
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/${marketIdLS}/structure`,
+      //url: url + `/fooding/restaurant/${marketIdLS}/structure`,
+      url: url + `/fooding/restaurant/2/structure`,
       Authorization: "Bearer " + getToken,
     };
 
@@ -744,7 +745,7 @@ const MyCanvas = () => {
             y: t.y,
             width: t.width,
             height: t.height,
-            fill: "brown",
+            fill: "#E5A884",
             rotation: t.rotation,
             id: "table" + id,
             tableNum: t.tableNum,
@@ -1082,8 +1083,8 @@ const MyCanvas = () => {
       </ButtonContainer>
       <CanvasContainer>
         <Stage
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={760}
+          height={500}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
         >
@@ -1206,6 +1207,7 @@ const MyCanvas = () => {
       {modal ? (
         <Modal2
           parentCallback={handleCallback}
+          
           editModal={editModal}
           editTableObj={editTableObj}
         />
