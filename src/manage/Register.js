@@ -382,18 +382,7 @@ const CanvasOptionContainer = styled.div`
   display:flex;
   margin-bottom:20px;
 `;
-const FloorButton = styled.div`
-  width:80px;
-  height:40px;
-  border-radius:10px;
-  margin-left:10px;
-  background-color:rgba(0,0,0,0.1);
-  display:flex;
-  justify-content: center;
-    align-items: center;
-  :hover{
-    cursor:pointer;}
-`;
+
 const Step = styled.div`
   nav {
     top: 50%;
@@ -540,7 +529,7 @@ function Register(floorCallback) {
   });
 
   const [marketImgs, setMarketImgs] = useState([]);
-
+  
   const [streetAddress, setStreetAddress] = useState({});
   const [categorySelected, setCategorySelected] = useState([]);
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
@@ -556,6 +545,13 @@ function Register(floorCallback) {
   const [getSuccess, setGetSuccess] = useState(false);
   const [marketInfo, setMarketInfo] = useState();
   const [floor,setFloor] = useState([true]);
+  const [floorNum,setFloorNum] = useState(null); 
+  
+  const [selectedFloor,setSelectedFloor] = useState(0);
+  let rendering = 0;
+  useEffect(()=>{
+    
+  },[rendering]);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
     else if (value === "JAPANESE") return "일식";
@@ -599,6 +595,24 @@ function Register(floorCallback) {
       })
       .then(() => {
         setGetSuccess(true);
+        axios
+        .get(url + `/fooding/restaurant/${id}/structure`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + getToken,
+          },
+        })
+        .then((res) => {
+          setFloorNum(res.data.floors.length);
+          //false로 채우기 
+          const savefloorNum = Array(floorNum); 
+          savefloorNum.fill(false)
+          savefloorNum[0] = true;
+          setFloor(savefloorNum); 
+        })
+        .catch((err)=>{
+          console.error(err);
+        })
       })
       .catch((err) => {
         setGetSuccess(false);
@@ -608,8 +622,9 @@ function Register(floorCallback) {
 
   useEffect(() => {
     getMarketInfo();
+    console.log(marketInfo);
   }, []);
-
+ 
   const weekdayTimeEndHandleForm = (e) => {
     const val = e.target.value;
     setWeekdayTimeEndState(val);
@@ -805,15 +820,28 @@ function Register(floorCallback) {
   }
   const [current, setCurrent] = useState(0);
   const bringCanvas = (index)=>{
-    //index에 해당하는 state만 true로 바꾸기 
-    //나머지는 false로 바꾸기 
+    setSelectedFloor(index);
     let temp = floor;
     let temptemp = temp.map(bool=>false);
-    console.log("이전temp",temptemp);
     temptemp[index]=true;
     setFloor(temptemp);
-    console.log("temptemp",temptemp);
   }
+  const FloorButton = styled.div`
+  width:80px;
+  height:40px;
+  border-radius:10px;
+  margin-left:10px;
+  background-color:${(props) =>
+      props.num == selectedFloor ? "black" : "rgba(0,0,0,0.1)"};
+  color:${(props) =>
+      props.num == selectedFloor ? "white" : "black"};
+
+  display:flex;
+  justify-content: center;
+    align-items: center;
+  :hover{
+    cursor:pointer;}
+`;
   const onChange1 = (current) => {
     console.log("onChange:", current);
     setCurrent({ current });
@@ -1227,23 +1255,44 @@ function Register(floorCallback) {
       </div>
       <CanvasContainer  ref={structRef}>
         <CanvasOptionContainer>
-           <AppendFloor onClick={appendFloor}><div>층 추가</div></AppendFloor>
+          { (setFloorNum==null) ?<AppendFloor onClick={appendFloor}><div>층 추가</div></AppendFloor> : null}
         {floor.map((bool,index)=>{
-          if(floor.length===(index+1)){
-            return (<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
+          console.log("button번호", index);
+          //if(floor.length===(index+1)){
+            //(<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
        
-          }else{
-            return (<FloorButton onClick={(e)=>{bringCanvas(index)}}><p>{index+1}층</p></FloorButton>)       
-          }
+          //}else{
+            return (<FloorButton num={index} onClick={(e)=>{bringCanvas(index)}}>{floor.length===(index+1)?<div>X</div>:null}<p>{index+1}층</p></FloorButton>)       
+          //}
         })}
         </CanvasOptionContainer>
-        {floor.map((bool,index)=>{
-          console.log("register index bool ",index,bool);
-       //   if(bool==true){
-         return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
-         // }//생성을 할 때마다 새로 불러오는게 아니라 배열에 저장을 해야하나...?어떻게??
-        })}
-      <ButtonContainer><Button className="button" onClick={postData}>등록</Button></ButtonContainer>
+        
+        
+        {/* {(marketInfo==null) ? : 
+     (    floor.map((bool,index)=>{
+          return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
+      
+         })
+        )
+         } */}
+        {
+          floor.map((bool,index)=>{
+           console.log("register index bool ",index,bool);
+           console.log("층수",floorNum);
+           console.log("플로어",floor);
+           rendering+=1;
+        //   if(bool==true){
+          return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
+          // }
+ 
+           })
+          }
+       
+
+
+      <ButtonContainer>
+        <Button className="button" onClick={postData}>등록</Button>
+      </ButtonContainer>
      
       </CanvasContainer>
       <div ref={menuRef}>

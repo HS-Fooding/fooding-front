@@ -725,15 +725,14 @@ const MyCanvas = ({floorCallback,bool,index}) => {
   const getShape = () => {
     var config = {
       method: "get",
-      //url: url + `/fooding/restaurant/${marketIdLS}/structure`,
-      url: url + `/fooding/restaurant/2/structure`,
+      url: url + `/fooding/restaurant/${marketIdLS}/structure`,      
       Authorization: "Bearer " + getToken,
     };
 
     axios(config)
       .then(function (response) {
         console.log(response.data);
-        const floor1 = response.data.floors[0];
+        const floor1 = response.data.floors[index];
         console.log(floor1);
 
         const tempTable = [];
