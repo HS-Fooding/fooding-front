@@ -3,6 +3,7 @@ import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "../component/Header";
 import { useNavigate, Link } from "react-router-dom";
 import Restaurant from "../component/Restaurant";
+import RestaurantHeader from "../component/RestaurantHeader";
 import { url } from "../../Api";
 // src\Api.js
 //src\guest\component\Login.js
@@ -22,9 +23,9 @@ const Container = styled.div`
 const ListContainer = styled.div`
     width:390px;
     /* 410,770 */
-    height:680px;
+    height:700px;
     /* background-color:red; */
-    margin-top:75px;
+    margin-top:65px;
     /* display:flex; */
    
   overflow: auto;
@@ -51,15 +52,20 @@ const RestaurantList = () => {
   
   return (
     <Container>
-      <Header back={"/"} title={"매장 리스트"} />
+    
     {/* 헤더 따로 만들기 */}
+   <RestaurantHeader></RestaurantHeader>
     <ListContainer>
-    <Restaurant />  <Restaurant />  <Restaurant />
-    <Restaurant /><Restaurant /><Restaurant />
+    <Restaurant />
+    <Restaurant />  
+    <Restaurant />
+    <Restaurant />
+    <Restaurant />
+    <Restaurant /> 
+    <Restaurant />
+
     </ListContainer>
-    <Footer>
-        
-    </Footer>
+    
     </Container>
   );
 };

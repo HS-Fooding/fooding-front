@@ -26,7 +26,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15em;
+ 
   position: relative;
   border-radius: 10px;
 `;
@@ -63,7 +63,7 @@ const ButtonContainer = styled.div`
     span {
       font-size: 13px;
     }
-    :focus {
+    :hover {
       /* display:flex;
       align-items: center; */
 
@@ -485,13 +485,16 @@ const Door = ({
   );
 };
 
-const MyCanvas = () => {
+const MyCanvas = ({floorCallback,bool,index}) => {
   const [tables, setTables] = React.useState([]);
   const [seats, setSeats] = React.useState([]);
   const [walls, setWalls] = React.useState([]);
   const [windows, setWindows] = React.useState([]);
   const [doors, setDoors] = React.useState([]);
-
+  const [show,setShow] = useState(bool);
+  
+  console.log("showshowshowshow",bool);
+  console.log("indexindexindexindexindexindex",index);
   const [selectedId, selectShape] = React.useState(null);
   const [tableCnt, setTableCnt] = React.useState(1);
   const [seatCnt, setSeatCnt] = React.useState(1);
@@ -650,7 +653,7 @@ const MyCanvas = () => {
       width: tableWidth,
       height: tableHeight,
       // fill: RGBA(101, 67, 33),
-      fill: "brown",
+      fill: '#8B4513',
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
@@ -668,7 +671,7 @@ const MyCanvas = () => {
     const seat = {
       x: 200 + seatCnt * 20,
       y: 200 + seatCnt * 20,
-      radius: 20,
+      radius: 11,
       fill: "gray",
       id: "seat" + seatCnt,
     };
@@ -829,6 +832,56 @@ const MyCanvas = () => {
     console.log("렌더링");
   }, [tables]);
   // submit
+  let floor = 
+ 
+    {
+      tables: tables.map((m) => {
+        return {
+          x: m.x,
+          y: m.y,
+          width: m.width,
+          height: m.height,
+          rotation: m.rotation,
+          tableNum: m.tableNum,
+          minPeople: m.minPeople,
+          maxPeople: m.maxPeople,
+        };
+      }),
+      seats: seats.map((m) => {
+        return {
+          x: m.x,
+          y: m.y,
+        };
+      }),
+      walls: walls.map((m) => {
+        return {
+          x: m.x,
+          y: m.y,
+          width: m.width,
+          rotation: m.rotation,
+        };
+      }),
+      windows: windows.map((m) => {
+        return {
+          x: m.x,
+          y: m.y,
+          width: m.width,
+          rotation: m.rotation,
+        };
+      }),
+      doors: doors.map((m) => {
+        return {
+          x: m.x,
+          y: m.y,
+          width: m.width,
+          rotation: m.rotation,
+        };
+      }),
+    };
+  
+    useEffect(()=>{
+    floorCallback(index,floor);
+  },[floor]);
   const postData = () => {
     const marketId = localStorage.getItem("marketId");
 
@@ -1027,8 +1080,9 @@ const MyCanvas = () => {
     walls.clear();
     doors.clear();
   };
+  if(bool==true){ 
   return (
-    <Container>
+     <Container>
       <ButtonContainer>
         {/* 만약에 매장 주인이 처음 만드는 거라면 floor 가 증가되도록 해야함. 
        층 추가하기 버튼 누르면 캔버스 위에 1 2 3 뜨도록
@@ -1063,12 +1117,12 @@ const MyCanvas = () => {
           </p>
           <span>출입구 생성</span>
         </button>
-        <button onClick={postData}>
+        {/* <button onClick={postData}>
           <p>
             <FontAwesomeIcon icon={faSquareCheck} />
           </p>
-          <span>Submit</span>
-        </button>
+          <span>저장하기</span>
+        </button> */}
         <button onClick={changeInfo}>
           <p>
             <FontAwesomeIcon icon={faPenToSquare} />
@@ -1083,8 +1137,8 @@ const MyCanvas = () => {
       </ButtonContainer>
       <CanvasContainer>
         <Stage
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={760}
+          height={500}
           onMouseDown={checkDeselect}
           onTouchStart={checkDeselect}
         >
@@ -1212,7 +1266,11 @@ const MyCanvas = () => {
         />
       ) : null}
     </Container>
-  );
+  );}
+  else{
+     return (<div></div>);
+  }
+  
 };
 
 export default MyCanvas;

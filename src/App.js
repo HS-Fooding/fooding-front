@@ -35,7 +35,7 @@ function App() {
 
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
           <Route path="/canvas" element={<MyCanvas />}></Route>
-          <Route path="/restaurantList" element={<RestaurantList />}></Route>
+          <Route path="/guest/restaurantList" element={<RestaurantList />}></Route>
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
         </Routes>
       </BrowserRouter>

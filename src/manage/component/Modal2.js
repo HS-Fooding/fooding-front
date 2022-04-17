@@ -204,8 +204,8 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   const [figureHeight, setFigureHeight] = useState(
     editModal ? editTableObj.height / 100 : 1
   );
-  const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight * 100);
-  const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight * 100);
+  const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight * 50);
+  const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight * 50);
   const onChange = (event) => {
     const {
       target: { value, className },
