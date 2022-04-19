@@ -33,7 +33,7 @@ const CalendarContainer = styled.div`
 
   .react-calendar {
     width: 380px;
-    height: 320px;
+    height: 300px;
     max-width: 100%;
     background-color: #fff;
     color: #222;
@@ -136,7 +136,7 @@ const CalendarContainer = styled.div`
 
 const ScollContainer = styled.div`
   width: 100%;
-  height: 100px;
+  height: 80px;
   //background-color: teal;
   display: flex;
   overflow-y: hidden;
@@ -157,13 +157,13 @@ const InnerContainer = styled.div`
 `;
 
 const PeopleContainer = styled(ScollContainer)`
-  margin-top: 50px;
+  margin-top: 20px;
 `;
 
 const PeopleInnerCon = styled(InnerContainer)``;
 
 const TimeContainer = styled(ScollContainer)`
-  margin: 20px;
+  /* margin: 20px; */
 `;
 
 const TimeInnerCon = styled(InnerContainer)``;
@@ -187,29 +187,98 @@ const NextBtn = styled.button`
   width: 95%;
   height: 50px;
   background: white;
-  margin: 10px;
+  margin-top: 50px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
 `;
 
+const CheckBox = styled.div`
+  width: 100%;
+
+  span {
+    margin-right: 20px;
+    font-size: 14px;
+    /* font-weight: bold; */
+    color: gray;
+  }
+  .wrap_box {
+    width: 100%;
+    height: 30px;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+  }
+  input {
+    position: absolute;
+    left: -1000%;
+  }
+  label {
+    position: relative;
+    display: block;
+    width: 60px;
+    height: 30px;
+    background: ${(props) => props.theme.borderGrayColor};
+    border-radius: 30px;
+    transition: background 0.4s;
+    cursor: pointer;
+  }
+  label:after {
+    content: "";
+    position: absolute;
+    left: 8.5px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: #fff;
+    transform: translateY(-50%);
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.2);
+  }
+  input:checked + label {
+    background: #6f48eb;
+    transition: all 0.4s;
+  }
+  /* input:checked + label:after {left:inherit; right:7.5px; } */
+  input:checked + label:after {
+    left: calc(100% - 27.5px);
+  }
+  label span {
+    display: none;
+  }
+  /* body,
+  html {
+    background: #efefef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    z-index: -1;
+  } */
+`;
+
 const Reservation1 = () => {
   const [peopleNum, setPeopleNum] = useState(2);
   const [time, setTime] = useState();
+  const [isCar, setIsCar] = useState(false);
 
   //   const [value, onChange] = useState([
   //     new Date(2022, 4, 10),
   //     new Date(2022, 4, 20),
   //   ]);
 
-  const [value, onChange] = useState();
+  const [calendarValue, onChange] = useState();
 
-  console.log(value);
+  console.log(calendarValue);
 
   const peopleArr = Array(30)
     .fill()
     .map((V, i) => i + 1);
+
+  useEffect(() => {
+    console.log(isCar, peopleNum, calendarValue);
+  }, [isCar, peopleNum, calendarValue]);
 
   const peopleClick = (num) => {
     setPeopleNum(num);
@@ -222,7 +291,7 @@ const Reservation1 = () => {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin: 3px;
+    margin: 2.5px;
     border: none;
     border: ${(props) =>
       props.num == peopleNum ? "none" : "1px solid rgba(0,0,0,0.3)"};
@@ -233,13 +302,13 @@ const Reservation1 = () => {
   const timeClick = () => {};
   return (
     <Container>
-      <Header back="/" title={""} />
+      <Header back="/guest/market" title={""} />
       <MainBox>
         <CalendarContainer>
           <Calendar
             minDate={new Date()}
             onChange={onChange}
-            value={value}
+            value={calendarValue}
             formatDay={(locale, date) => moment(date).format("DD")} // 날'일' 제외하고 숫자만 보이도록 설정
             //minDetail="month" // 상단 네비게이션에서 '월' 단위만 보이게 설정
             //maxDetail="month" // 상단 네비게이션에서 '월' 단위만 보이게 설정
@@ -273,7 +342,24 @@ const Reservation1 = () => {
             <TimeBtn>오후 12:00</TimeBtn>
           </TimeInnerCon>
         </TimeContainer>
+        <CheckBox>
+          <div className="wrap_box">
+            <span>차를 가져오셨습니까?</span>
+            <input
+              type="checkbox"
+              id="chk1"
+              onChange={() => {
+                setIsCar((current) => !current);
+                console.log(isCar);
+              }}
+            />
+            <label htmlFor="chk1">
+              <span>선택</span>
+            </label>
+          </div>
+        </CheckBox>
         <NextBtn>다음</NextBtn>
+        <span>{isCar}</span>
       </MainBox>
     </Container>
   );

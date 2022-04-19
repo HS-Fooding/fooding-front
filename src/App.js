@@ -18,6 +18,7 @@ import maincanvas from "./manage/maincanvas";
 import RestaurantList from "./guest/router/RestaurantList";
 import Reservation1 from "./guest/router/Reservation1";
 import Reservation2 from "./guest/router/Reservation2";
+import MarketDetail from "./guest/router/MarketDetail";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           ></Route>
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
+          <Route path="/guest/market" element={<MarketDetail />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

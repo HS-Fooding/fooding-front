@@ -15,16 +15,51 @@ const Container = styled.div`
   height: 770px;
   position: relative;
   box-sizing: border-box;
+  margin-bottom: 30px;
 `;
 const MapContainer = styled.div`
   width: 400px;
   height: 300px;
 `;
 
-const SelectedTable = styled.div`
-  width: 400px;
-  height: 200px;
-  background-color: teal;
+const SelectedTableBox = styled.div`
+  padding: 20px;
+  width: 100%;
+  height: 50px;
+  /* background-color: teal; */
+`;
+const InnerTableBox = styled.div`
+  div {
+    height: 80%;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:first-child {
+      border-right: 1px solid ${(props) => props.theme.borderGrayColor};
+    }
+  }
+
+  width: 370px;
+  height: 80px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 20px;
+`;
+
+const NextBtn = styled.button`
+  width: 95%;
+  height: 50px;
+  background: white;
+  margin-top: 255px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 255px 10px 0px 10px;
 `;
 
 const Reservation2 = () => {
@@ -173,15 +208,16 @@ const Reservation2 = () => {
             {tables.map((table, i) => {
               return (
                 <Rect
+                  id={table.id}
                   x={table.x / 2}
                   y={table.y / 2}
                   width={table.width / 2}
                   height={table.height / 2}
-                  fill="#764225"
                   rotation={table.rotation}
                   onClick={() => {
                     onClickTable(table.id, table.maxPeople, table.minPeople);
                   }}
+                  fill={selectedTable.id === table.id ? "#764225" : "brown"}
                 />
               );
             })}
@@ -238,10 +274,17 @@ const Reservation2 = () => {
           </Layer>
         </Stage>
       </MapContainer>
-      <SelectedTable>
-        <span>{selectedTable?.minPeople}</span>
-        <span>{selectedTable?.maxPeople}</span>
-      </SelectedTable>
+      <SelectedTableBox>
+        <InnerTableBox>
+          <div>
+            <span>최소 인원 {selectedTable?.minPeople}명</span>
+          </div>
+          <div>
+            <span>최대 인원 {selectedTable?.maxPeople}명</span>
+          </div>
+        </InnerTableBox>
+      </SelectedTableBox>
+      <NextBtn>완료</NextBtn>
     </Container>
   );
 };
