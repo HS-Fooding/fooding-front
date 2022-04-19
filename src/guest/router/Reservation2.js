@@ -205,10 +205,10 @@ const Reservation2 = () => {
           //   onTouchStart={checkDeselect}
         >
           <Layer>
-            {tables.map((table, i) => {
+            {tables?.map((table, i) => {
               return (
                 <Rect
-                  id={table.id}
+                  id={table?.id}
                   x={table.x / 2}
                   y={table.y / 2}
                   width={table.width / 2}
@@ -217,7 +217,7 @@ const Reservation2 = () => {
                   onClick={() => {
                     onClickTable(table.id, table.maxPeople, table.minPeople);
                   }}
-                  fill={selectedTable.id === table.id ? "#764225" : "brown"}
+                  fill={selectedTable?.id === table.id ? "#764225" : "brown"}
                 />
               );
             })}

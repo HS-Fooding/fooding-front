@@ -4,6 +4,8 @@ import Header from "../component/Header";
 import { url } from "../../Api";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -23,16 +25,37 @@ const MarketImgsBox = styled.div`
 const MarketTitleBox = styled.div`
   width: 100%;
   height: 100px;
-  background-color: teal;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  align-items: center;
+
+  span {
+    margin: 10px 5px;
+  }
+  .leftInfos {
+    display: flex;
+    flex-direction: column;
+    .marketName {
+      font-size: 20px;
+    }
+  }
+  .avgScore {
+    font-size: 25px;
+    font-weight: bold;
+  }
 `;
 
-const MaketMenuBox = styled.div`
+const MarketMenuBox = styled.div`
   width: 100%;
   height: 80px;
   background-color: skyblue;
 `;
 
 const MarketDetail = () => {
+  const [market, setMarket] = useState();
+
   useEffect(() => {
     var config = {
       method: "get",
@@ -41,7 +64,8 @@ const MarketDetail = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
+        setMarket(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -51,13 +75,30 @@ const MarketDetail = () => {
   return (
     <Container>
       <Header back="/guest/restaurantList" title={""} />
-      {/* <Link to="/guest/reservation1">
-        <button style={{ marginTop: " 100px" }}>예약</button>
-      </Link> */}
 
       <MarketImgsBox></MarketImgsBox>
-      <MarketTitleBox></MarketTitleBox>
-      <MaketMenuBox></MaketMenuBox>
+      <MarketTitleBox>
+        <div className="leftInfos">
+          <span className="marketName">{market?.name}</span>
+          <div>
+            <span>
+              {" "}
+              <FontAwesomeIcon icon={faEye} /> 343
+            </span>
+            <span>
+              {" "}
+              <FontAwesomeIcon icon={faPencil} style={{ marginRight: "6px" }} />
+              23
+            </span>
+          </div>
+        </div>
+        <div className="avgScore">4.1</div>
+      </MarketTitleBox>
+      <MarketMenuBox>
+        <Link to="/guest/reservation1">
+          <button>예약</button>
+        </Link>
+      </MarketMenuBox>
     </Container>
   );
 };
