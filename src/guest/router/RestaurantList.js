@@ -83,7 +83,15 @@ const RestaurantList = () => {
     <ListContainer>
       {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
       {restaurantArr?.map((content,index)=>{
-       return <Restaurant content={content}  />
+       return <Link  
+       to={`/guest/${content.id}`}
+          state={{
+            avgScore:content.avgScore,
+            reviewCount:content.reviewCount,
+            viewCount:content.viewCount,
+          }}        
+       style={{ textDecoration: "none", color: "inherit" }}
+      ><Restaurant content={content} /></Link>
     
     })}
 

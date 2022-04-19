@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import {useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../component/Header";
 import { url } from "../../Api";
@@ -33,10 +35,14 @@ const MaketMenuBox = styled.div`
 `;
 
 const MarketDetail = () => {
+   const { marketId } = useParams();
+   let location = useLocation();
+   const {avgScore,viewCount,reviewCount} = location.state;
+   console.log("avgScore,viewCount,reviewCount",avgScore,viewCount,reviewCount);
   useEffect(() => {
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/2`,
+      url: url + `/fooding/restaurant/${marketId}`,
     };
 
     axios(config)
