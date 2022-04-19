@@ -25,7 +25,7 @@ const InputFormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
- margin-bottom:200px;
+  margin-bottom: 200px;
   .NameForm {
     height: 500px;
     .BorderTop {
@@ -76,16 +76,14 @@ const Button = styled.button`
   cursor: pointer;
   background-color: ${(props) => props.theme.blackColor};
   color: white;
-  
 `;
 const ButtonContainer = styled.div`
-  width:100%;
-  height:40px;
- 
-  .button{
-    margin-top:15px;
-   float:right;
-    
+  width: 100%;
+  height: 40px;
+
+  .button {
+    margin-top: 15px;
+    float: right;
   }
 `;
 const InputContainer = styled.div`
@@ -356,33 +354,31 @@ const StyledSlider = styled(Slider)`
   }
 `;
 const AppendFloor = styled.div`
-width:100px;
-height:40px;
-border-radius:10px;
-margin-bottom:20px;
-display:flex;
-justify-content:center;
-align-items:center;
-background-color:rgba(0,0,0,0.1);
-:hover{
-  cursor:pointer;
-}
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  :hover {
+    cursor: pointer;
+  }
 `;
 const CanvasContainer = styled.div`
-margin-top:0px;
-width:1000px;
-height:700px;
-display:flex;
-flex-direction:column;
-
+  margin-top: 0px;
+  width: 1000px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
 `;
 const CanvasOptionContainer = styled.div`
-  width:1000px;
-  height:40px;
-  display:flex;
-  margin-bottom:20px;
+  width: 1000px;
+  height: 40px;
+  display: flex;
+  margin-bottom: 20px;
 `;
-
 const Step = styled.div`
   nav {
     top: 50%;
@@ -694,12 +690,12 @@ function Register(floorCallback) {
     console.log("list", categorySelected);
     console.log("value list", categoryValueSelected);
   };
-  const appendFloor = ()=>{
+  const appendFloor = () => {
     //원래 있는 층에서 추가. 버튼 생성되고 그 버튼 누르면 canvas창 나옴
-    setFloor([...floor,false]);
-    console.log("floor추가",floor);
+    setFloor([...floor, false]);
+    console.log("floor추가", floor);
     //false로 추가해주고 -> canvas를 생성해야하는데 어덯게 하지
-  }
+  };
   const submitInfo = (e) => {
     structRef.current?.scrollIntoView({ behavior: "smooth" });
 
@@ -776,29 +772,23 @@ function Register(floorCallback) {
       });
   };
   let floors = [];
-  const handleFloorCallback = (
-    index,
-    structureInfo
-  ) =>{
-    
+  const handleFloorCallback = (index, structureInfo) => {
     floors[index] = structureInfo;
-    console.log("층",index+1);
-    console.log("구조도",structureInfo);
-    console.log("층들",floors);
-  }
-  useEffect(()=>{
+    console.log("층", index + 1);
+    console.log("구조도", structureInfo);
+    console.log("층들", floors);
+  };
+  useEffect(() => {
     console.log("gg");
-  },[floors]);
-  const postData = () =>{
+  }, [floors]);
+  const postData = () => {
     const marketId = localStorage.getItem("marketId");
-   
-    const data = JSON.stringify({
-      floors:
-        floors
-      
-      });
 
-    console.log("datadatadatadata",data);
+    const data = JSON.stringify({
+      floors: floors,
+    });
+
+    console.log("datadatadatadata", data);
     const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
@@ -817,7 +807,7 @@ function Register(floorCallback) {
       .catch(function (error) {
         console.log(error);
       });
-  }
+  };
   const [current, setCurrent] = useState(0);
   const bringCanvas = (index)=>{
     setSelectedFloor(index);
@@ -1112,7 +1102,6 @@ function Register(floorCallback) {
                           </div>
                         );
                       })}
-
                     </ul>
                   </div>
                 )}
@@ -1253,7 +1242,7 @@ function Register(floorCallback) {
           </InfoForm>
         </InputFormDiv>
       </div>
-      <CanvasContainer  ref={structRef}>
+      <CanvasContainer ref={structRef}>
         <CanvasOptionContainer>
           { (setFloorNum==null) ?<AppendFloor onClick={appendFloor}><div>층 추가</div></AppendFloor> : null}
         {floor.map((bool,index)=>{
@@ -1296,7 +1285,7 @@ function Register(floorCallback) {
      
       </CanvasContainer>
       <div ref={menuRef}>
-        <Menu marketId={marketId} />      
+        <Menu marketId={marketId} />
       </div>
     </Container>
     // </div>

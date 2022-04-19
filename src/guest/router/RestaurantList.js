@@ -49,21 +49,45 @@ const Footer = styled.div`
 `;
 
 const RestaurantList = () => {
+  const [restaurantArr,setRestaurantArr] = useState();
+  const bringMarketInfo = () =>{
+    var axios = require("axios");
   
+   const data = new FormData();
+    const getToken = localStorage.getItem("token");
+    axios
+      .get(url + "/fooding/restaurant", {
+        headers: {
+          //"Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setRestaurantArr(res.data.content);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(()=>{
+    bringMarketInfo();
+   
+  },[]);
   return (
     <Container>
     
     {/* 헤더 따로 만들기 */}
    <RestaurantHeader></RestaurantHeader>
     <ListContainer>
-    <Restaurant />
-    <Restaurant />  
-    <Restaurant />
-    <Restaurant />
-    <Restaurant />
-    <Restaurant /> 
-    <Restaurant />
+      {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+      {restaurantArr?.map((content,index)=>{
+       return <Restaurant content={content}  />
+    
+    })}
 
+    
     </ListContainer>
     
     </Container>
