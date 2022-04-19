@@ -215,7 +215,14 @@ const MarketDetail = () => {
         <div className="avgScore">4.1</div>
       </MarketTitleBox>
       <MarketMenuBox>
-        <Link to="/guest/reservation1">
+        <Link
+          to="/guest/reservation1"
+          state={{
+            maximumUsageTime: market?.maximumUsageTime,
+            weekdaysWorkHour: market?.weekdaysWorkHour,
+            weekendsWorkHour: market?.weekendsWorkHour,
+          }}
+        >
           <button>예약</button>
         </Link>
       </MarketMenuBox>

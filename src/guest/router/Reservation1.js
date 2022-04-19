@@ -4,6 +4,7 @@ import Header from "../component/Header";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -260,17 +261,113 @@ const CheckBox = styled.div`
 
 const Reservation1 = () => {
   const [peopleNum, setPeopleNum] = useState(2);
-  const [time, setTime] = useState();
+  const [time, setTime] = useState([]);
   const [isCar, setIsCar] = useState(false);
+  const [weekOpen, setWeekOpen] = useState();
+  const [weekendsOpen, setWeekendsOpen] = useState();
+  const [weekClose, setWeekClose] = useState();
+  const [weekendsClose, setWeekendsClose] = useState();
+  let timesArr = [];
 
   //   const [value, onChange] = useState([
   //     new Date(2022, 4, 10),
   //     new Date(2022, 4, 20),
   //   ]);
+  let location = useLocation();
 
-  const [calendarValue, onChange] = useState();
+  const [calendarValue, onChange] = useState(new Date());
+  const [isWeek, setIsWeek] = useState();
 
-  console.log(calendarValue);
+  //console.log("calendarValue", calendarValue);
+
+  const { maximumUsageTime, weekdaysWorkHour, weekendsWorkHour } =
+    location.state;
+
+  console.log("maximumUsageTime:", maximumUsageTime);
+  // 40분이라 치면?
+
+  //console.log("현재 시간:", new Date());
+
+  const calcTime = () => {
+    console.log(calendarValue);
+    if (
+      calendarValue.toString().includes("Sat") ||
+      calendarValue.toString().includes("Sun")
+    ) {
+      setIsWeek(false);
+      setWeekendsOpen(weekendsWorkHour.open);
+      setWeekendsClose(weekendsWorkHour.close);
+
+      timesArr.push(weekendsWorkHour.open.substring(0, 5));
+    } else {
+      setIsWeek(true);
+      setWeekOpen(weekdaysWorkHour.open);
+      setWeekClose(weekdaysWorkHour.close);
+      timesArr.push(weekdaysWorkHour.open.substring(0, 5));
+    }
+
+    if (isWeek) {
+      var hours = weekOpen?.slice(0, 2);
+      var minutes = weekOpen?.slice(3, 5);
+    } else {
+      var hours = weekendsOpen?.slice(0, 2);
+      var minutes = weekendsOpen?.slice(3, 5);
+    }
+
+    let resultMin = Number(hours) * 60 + Number(minutes);
+    for (let i = 0; i < 50; i++) {
+      resultMin += maximumUsageTime;
+
+      let resultHour = resultMin / 60;
+      let resultMinute = resultMin % 60;
+
+      if (resultMinute === 0) resultMinute = "00";
+      else resultMinute = resultMinute.toString();
+
+      let result = resultHour.toString() + ":" + resultMinute;
+
+      console.log("result:", result);
+
+      if (result.substring(0, 2) < 12) {
+        result = "오전 " + result;
+      } else {
+        if (result.substring(0, 2) == 12) {
+          result = "오후 " + result;
+        } else {
+          result =
+            "오후 " +
+            (Number(result.substring(0, 2)) - 12).toString() +
+            result.substring(2, 5);
+        }
+      }
+      timesArr.push(result);
+
+      if (isWeek === true) {
+        // 평일이면
+        if (weekClose?.substring(0, 5) == result.substring(3, result.length)) {
+          break;
+        }
+      } else {
+        if (
+          weekendsClose?.substring(0, 5) == result.substring(3, result.length)
+        ) {
+          break;
+        }
+      }
+    }
+
+    if (timesArr[0].substring(0, 2) > 11) {
+      timesArr[0] = "오후 " + timesArr[0];
+    } else {
+      timesArr[0] = "오전 " + timesArr[0];
+    }
+
+    console.log(timesArr);
+    setTime(timesArr);
+  };
+  useEffect(() => {
+    calcTime();
+  }, [calendarValue, weekOpen, weekendsOpen]);
 
   const peopleArr = Array(30)
     .fill()
@@ -279,6 +376,10 @@ const Reservation1 = () => {
   useEffect(() => {
     console.log(isCar, peopleNum, calendarValue);
   }, [isCar, peopleNum, calendarValue]);
+
+  useEffect(() => {
+    calcTime();
+  }, []);
 
   const peopleClick = (num) => {
     setPeopleNum(num);
@@ -330,16 +431,9 @@ const Reservation1 = () => {
         </PeopleContainer>
         <TimeContainer>
           <TimeInnerCon>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
-            <TimeBtn>오후 12:00</TimeBtn>
+            {time?.map((time, index) => (
+              <TimeBtn key={index}>{time}</TimeBtn>
+            ))}
           </TimeInnerCon>
         </TimeContainer>
         <CheckBox>
