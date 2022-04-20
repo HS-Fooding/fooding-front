@@ -112,6 +112,7 @@ const MarketDetail = () => {
             maximumUsageTime: market?.maximumUsageTime,
             weekdaysWorkHour: market?.weekdaysWorkHour,
             weekendsWorkHour: market?.weekendsWorkHour,
+            marketId: marketId,
           }}
         >
           <button>예약</button>

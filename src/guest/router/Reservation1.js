@@ -277,20 +277,102 @@ const Reservation1 = () => {
 
   const [calendarValue, onChange] = useState(new Date());
   const [isWeek, setIsWeek] = useState();
+  const [open, setOpen] = useState();
+  const [close, setClose] = useState();
 
   //console.log("calendarValue", calendarValue);
 
-  const { maximumUsageTime, weekdaysWorkHour, weekendsWorkHour } =
+  const { maximumUsageTime, weekdaysWorkHour, weekendsWorkHour, marketId } =
     location.state;
 
   console.log("maximumUsageTime:", maximumUsageTime);
-  // 40분이라 치면?
 
   //console.log("현재 시간:", new Date());
 
   const calcTime = () => {
+    if (
+      // 주말일 경우
+      calendarValue.toString().includes("Sat") ||
+      calendarValue.toString().includes("Sun")
+    ) {
+      setIsWeek(false);
+      setOpen(weekendsWorkHour.open);
+      setClose(weekendsWorkHour.close);
+    } else {
+      // 주말 아닐 경우
+      setIsWeek(true);
+      setOpen(weekdaysWorkHour.open);
+      setClose(weekdaysWorkHour.close);
+    }
+
+    let openHours = open?.slice(0, 2);
+    let openMin = open?.slice(3, 5);
+
+    console.log(openHours, openMin);
+
+    let totalMin = Number(openHours) * 60 + Number(openMin);
+    let resultTime;
+
+    for (let i = 0; i < 50; i++) {
+      let resultHour = Math.floor(totalMin / 60);
+      let resultMinute = totalMin % 60;
+
+      if (resultMinute === 0) resultMinute = "00";
+      else resultMinute = resultMinute;
+
+      if (resultHour < 12) {
+        resultTime = "오전 " + resultHour + ":" + resultMinute;
+      } else if (resultHour == 12) {
+        resultTime = "오후 " + resultHour + ":" + resultMinute;
+      } else {
+        resultTime = "오후 " + Number(resultHour - 12) + ":" + resultMinute;
+      }
+
+      // let result = resultHour.toString() + ":" + resultMinute; // 12: 30 형식
+
+      //console.log("result:", result);
+
+      // if (result.substring(0, 2) < 12) {
+      //   result = "오전 " + result;
+      // } else {
+      //   if (result.substring(0, 2) == 12) {
+      //     result = "오후 " + result;
+      //   } else {
+      //     result =
+      //       "오후 " +
+      //       (Number(result.substring(0, 2)) - 12).toString() +
+      //       result.substring(2, 5);
+      //   }
+      // }
+      timesArr.push(resultTime);
+      setTime(timesArr);
+      console.log(timesArr);
+
+      totalMin += 30;
+
+      if (isWeek === true) {
+        // 평일이면
+        if (
+          weekClose?.substring(0, 5) ==
+          resultTime.substring(3, resultTime.length)
+        ) {
+          break;
+        }
+      } else {
+        // 주말이면
+        if (
+          weekendsClose?.substring(0, 5) ==
+          resultTime.substring(3, resultTime.length)
+        ) {
+          break;
+        }
+      }
+    }
+  };
+  const calcTime1 = () => {
     console.log(calendarValue);
     if (
+      // 주말일 경우
       calendarValue.toString().includes("Sat") ||
       calendarValue.toString().includes("Sun")
     ) {
@@ -300,6 +382,7 @@ const Reservation1 = () => {
 
       timesArr.push(weekendsWorkHour.open.substring(0, 5));
     } else {
+      // 주말 아닐 경우
       setIsWeek(true);
       setWeekOpen(weekdaysWorkHour.open);
       setWeekClose(weekdaysWorkHour.close);
@@ -316,15 +399,15 @@ const Reservation1 = () => {
 
     let resultMin = Number(hours) * 60 + Number(minutes);
     for (let i = 0; i < 50; i++) {
-      resultMin += maximumUsageTime;
+      resultMin += 30;
 
-      let resultHour = resultMin / 60;
+      let resultHour = Math.floor(resultMin / 60);
       let resultMinute = resultMin % 60;
 
       if (resultMinute === 0) resultMinute = "00";
       else resultMinute = resultMinute.toString();
 
-      let result = resultHour.toString() + ":" + resultMinute;
+      let result = resultHour.toString() + ":" + resultMinute; // 12: 30 형식
 
       console.log("result:", result);
 
@@ -348,6 +431,7 @@ const Reservation1 = () => {
           break;
         }
       } else {
+        // 주말이면
         if (
           weekendsClose?.substring(0, 5) == result.substring(3, result.length)
         ) {
@@ -365,9 +449,13 @@ const Reservation1 = () => {
     console.log(timesArr);
     setTime(timesArr);
   };
+  // useEffect(() => {
+  //   calcTime();
+  // }, [calendarValue, weekOpen, weekendsOpen]);
+
   useEffect(() => {
     calcTime();
-  }, [calendarValue, weekOpen, weekendsOpen]);
+  }, [calendarValue, open, close]);
 
   const peopleArr = Array(30)
     .fill()
@@ -403,7 +491,7 @@ const Reservation1 = () => {
   const timeClick = () => {};
   return (
     <Container>
-      <Header back="/guest/market" title={""} />
+      <Header back={`/guest/${marketId}`} title={""} />
       <MainBox>
         <CalendarContainer>
           <Calendar
