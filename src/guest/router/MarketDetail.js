@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -8,6 +8,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPencil, faStar } from "@fortawesome/free-solid-svg-icons";
+
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+import MultipleSlider from "../component/MultipleSlider";
+import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -24,28 +30,30 @@ const Container = styled.div`
 
 const MarketImgsBox = styled.div`
   width: 100%;
-  height: 160px;
-  background-color: orange;
+  height: 150px;
+
   margin-top: 60px;
 `;
 
 const MarketTitleBox = styled.div`
   width: 100%;
-  height: 100px;
+  height: 110px;
   border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px 20px;
   align-items: center;
 
   span {
     margin: 10px 5px;
+    font-size: 13px;
   }
   .leftInfos {
     display: flex;
     flex-direction: column;
     .marketName {
-      font-size: 20px;
+      font-size: 23px;
+      margin-bottom: 20px;
     }
   }
   .avgScore {
@@ -57,16 +65,41 @@ const MarketTitleBox = styled.div`
 const MarketMenuBox = styled.div`
   width: 100%;
   height: 80px;
-  background-color: skyblue;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
+
+const MenuBtnBox = styled.div`
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  list-style: none;
+
+  a {
+    text-decoration: none;
+  }
+
+  svg {
+    font-size: 30px;
+  }
+  span {
+    font-size: 13px;
+    margin: 0 auto;
+  }
+`;
+
 const MarketDetailInfo = styled.div`
   width: 100%;
   height: 300px;
-  background-color: purple;
+  background-color: skyblue;
 `;
 const MarketMenuInfo = styled.div`
   width: 100%;
-  height: 300px;
+  height: 700px;
 `;
 const EachMenu = styled.div`
   width: 100%;
@@ -125,6 +158,31 @@ const MenuImg = styled.div`
     }
   }
 `;
+
+const TempBox = styled.div`
+  width: 100%;
+  height: 100%;
+  background: teal;
+`;
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    slidesToSlide: 3, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
+
 const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
@@ -196,7 +254,21 @@ const MarketDetail = () => {
     <Container>
       <Header back="/guest/restaurantList" title={""} />
 
-      <MarketImgsBox></MarketImgsBox>
+      <MarketImgsBox>
+        {/* <ReactSlidy numOfSlides={3}>
+       
+          <Number num={1} />
+          <Number num={2} />
+          <Number num={3} />
+          <Number num={4} />
+          <Number num={5} />
+          <Number num={6} />
+          <Number num={7} />
+          <Number num={8} />
+        </ReactSlidy> */}
+
+        <MultipleSlider images={market?.images} />
+      </MarketImgsBox>
       <MarketTitleBox>
         <div className="leftInfos">
           <span className="marketName">{market?.name}</span>
@@ -215,7 +287,12 @@ const MarketDetail = () => {
         <div className="avgScore">{market?.avgScore}</div>
       </MarketTitleBox>
       <MarketMenuBox>
+        <MenuBtnBox>
+          <i class="fa-solid fa-star"></i>
+          <span>즐겨찾기</span>
+        </MenuBtnBox>
         <Link
+          style={{ textDecoration: "none", color: "inherit" }}
           to="/guest/reservation1"
           state={{
             maximumUsageTime: market?.maximumUsageTime,
@@ -224,10 +301,20 @@ const MarketDetail = () => {
             marketId: marketId,
           }}
         >
-          <button>예약</button>
+          <MenuBtnBox>
+            <i className="fa-solid fa-calendar-days reservation"></i>
+
+            <span>예약하기</span>
+          </MenuBtnBox>
         </Link>
+        <MenuBtnBox>
+          <i class="fa-solid fa-pen"></i>
+          <span>리뷰쓰기</span>
+        </MenuBtnBox>
       </MarketMenuBox>
-      <MarketDetailInfo>representativeNNormal</MarketDetailInfo>
+      <MarketDetailInfo>
+        {/* 매장소개, 운영시간,주소,전화번호(매장,개인),주차공간,최대이용가능시간,카테고리, */}
+      </MarketDetailInfo>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게
   만약에 대표메뉴가 있다면 그 메뉴를 우선 띄어줌 그리고 나머지 메뉴를 띄워줌.

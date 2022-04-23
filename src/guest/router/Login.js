@@ -150,27 +150,7 @@ const Login = () => {
     // console.log("modal",modal);
     //modal이 true로 바뀌면
   }, [modal]);
-  // const getCookie=(name)=>{
-  //   return cookies.get(name);
-  // }
-  // useEffect(()=>{
-  //   //setCookie("JSESSIONID","");
-  //   document.cookie="SameSite=None;Secure";
-  // },[]);
 
-  var getCookie = function (name) {
-    var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-    console.log("value", value);
-    return value ? value[2] : null;
-  };
-  let setCookie = (cookie_name, value, exdays) => {
-    let exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    let c_value =
-      escape(value) +
-      (exdays == null ? "" : ";expires=" + exdate.toUTCString());
-    document.cookie = cookie_name + "=" + value;
-  };
   const check = () => {
     console.log("checkModal", modal);
   };
@@ -180,20 +160,26 @@ const Login = () => {
     // loginUser();
     var axios = require("axios");
 
-    let content = {
-      userId: id,
-      userPassword: ps,
-    };
+    // let content = {
+    //   id: id,
+    //   password: ps,
+    // };
+
+    var data = JSON.stringify({
+      id: id,
+      password: ps,
+    });
+
     var config = {
       method: "post",
-      url: url + "/login",
+      url: url + "/fooding/login",
       headers: {
-        crossDomain: true,
+        //crossDomain: true,
         "Content-Type": "application/json",
       },
-      data: content,
+      data: data,
 
-      withCredentials: true,
+      //ithCredentials: true,
     };
     axios(config)
       .then(function (response) {

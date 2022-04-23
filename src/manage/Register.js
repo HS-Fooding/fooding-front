@@ -525,7 +525,7 @@ function Register(floorCallback) {
   });
 
   const [marketImgs, setMarketImgs] = useState([]);
-  
+
   const [streetAddress, setStreetAddress] = useState({});
   const [categorySelected, setCategorySelected] = useState([]);
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
@@ -540,14 +540,12 @@ function Register(floorCallback) {
   const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
   const [getSuccess, setGetSuccess] = useState(false);
   const [marketInfo, setMarketInfo] = useState();
-  const [floor,setFloor] = useState([true]);
-  const [floorNum,setFloorNum] = useState(null); 
-  
-  const [selectedFloor,setSelectedFloor] = useState(0);
+  const [floor, setFloor] = useState([true]);
+  const [floorNum, setFloorNum] = useState(null);
+
+  const [selectedFloor, setSelectedFloor] = useState(0);
   let rendering = 0;
-  useEffect(()=>{
-    
-  },[rendering]);
+  useEffect(() => {}, [rendering]);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
     else if (value === "JAPANESE") return "일식";
@@ -592,23 +590,23 @@ function Register(floorCallback) {
       .then(() => {
         setGetSuccess(true);
         axios
-        .get(url + `/fooding/restaurant/${id}/structure`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + getToken,
-          },
-        })
-        .then((res) => {
-          setFloorNum(res.data.floors.length);
-          //false로 채우기 
-          const savefloorNum = Array(floorNum); 
-          savefloorNum.fill(false)
-          savefloorNum[0] = true;
-          setFloor(savefloorNum); 
-        })
-        .catch((err)=>{
-          console.error(err);
-        })
+          .get(url + `/fooding/restaurant/${id}/structure`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + getToken,
+            },
+          })
+          .then((res) => {
+            setFloorNum(res.data.floors.length);
+            //false로 채우기
+            const savefloorNum = Array(floorNum);
+            savefloorNum.fill(false);
+            savefloorNum[0] = true;
+            setFloor(savefloorNum);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       })
       .catch((err) => {
         setGetSuccess(false);
@@ -620,7 +618,7 @@ function Register(floorCallback) {
     getMarketInfo();
     console.log(marketInfo);
   }, []);
- 
+
   const weekdayTimeEndHandleForm = (e) => {
     const val = e.target.value;
     setWeekdayTimeEndState(val);
@@ -809,29 +807,29 @@ function Register(floorCallback) {
       });
   };
   const [current, setCurrent] = useState(0);
-  const bringCanvas = (index)=>{
+  const bringCanvas = (index) => {
     setSelectedFloor(index);
     let temp = floor;
-    let temptemp = temp.map(bool=>false);
-    temptemp[index]=true;
+    let temptemp = temp.map((bool) => false);
+    temptemp[index] = true;
     setFloor(temptemp);
-  }
+  };
   const FloorButton = styled.div`
-  width:80px;
-  height:40px;
-  border-radius:10px;
-  margin-left:10px;
-  background-color:${(props) =>
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    margin-left: 10px;
+    background-color: ${(props) =>
       props.num == selectedFloor ? "black" : "rgba(0,0,0,0.1)"};
-  color:${(props) =>
-      props.num == selectedFloor ? "white" : "black"};
+    color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
 
-  display:flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
-  :hover{
-    cursor:pointer;}
-`;
+    :hover {
+      cursor: pointer;
+    }
+  `;
   const onChange1 = (current) => {
     console.log("onChange:", current);
     setCurrent({ current });
@@ -1244,19 +1242,32 @@ function Register(floorCallback) {
       </div>
       <CanvasContainer ref={structRef}>
         <CanvasOptionContainer>
-          { (setFloorNum==null) ?<AppendFloor onClick={appendFloor}><div>층 추가</div></AppendFloor> : null}
-        {floor.map((bool,index)=>{
-          console.log("button번호", index);
-          //if(floor.length===(index+1)){
+          {setFloorNum == null ? (
+            <AppendFloor onClick={appendFloor}>
+              <div>층 추가</div>
+            </AppendFloor>
+          ) : null}
+          {floor.map((bool, index) => {
+            console.log("button번호", index);
+            //if(floor.length===(index+1)){
             //(<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
-       
-          //}else{
-            return (<FloorButton num={index} onClick={(e)=>{bringCanvas(index)}}>{floor.length===(index+1)?<div>X</div>:null}<p>{index+1}층</p></FloorButton>)       
-          //}
-        })}
+
+            //}else{
+            return (
+              <FloorButton
+                num={index}
+                onClick={(e) => {
+                  bringCanvas(index);
+                }}
+              >
+                {floor.length === index + 1 ? <div>X</div> : null}
+                <p>{index + 1}층</p>
+              </FloorButton>
+            );
+            //}
+          })}
         </CanvasOptionContainer>
-        
-        
+
         {/* {(marketInfo==null) ? : 
      (    floor.map((bool,index)=>{
           return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
@@ -1264,25 +1275,27 @@ function Register(floorCallback) {
          })
         )
          } */}
-        {
-          floor.map((bool,index)=>{
-           console.log("register index bool ",index,bool);
-           console.log("층수",floorNum);
-           console.log("플로어",floor);
-           rendering+=1;
-        //   if(bool==true){
-          return (<MyCanvas floorCallback={handleFloorCallback} bool={bool} index={index}></MyCanvas>)       
+        {floor.map((bool, index) => {
+          console.log("register index bool ", index, bool);
+          console.log("층수", floorNum);
+          console.log("플로어", floor);
+          rendering += 1;
+          //   if(bool==true){
+          return (
+            <MyCanvas
+              floorCallback={handleFloorCallback}
+              bool={bool}
+              index={index}
+            ></MyCanvas>
+          );
           // }
- 
-           })
-          }
-       
+        })}
 
-
-      <ButtonContainer>
-        <Button className="button" onClick={postData}>등록</Button>
-      </ButtonContainer>
-     
+        <ButtonContainer>
+          <Button className="button" onClick={postData}>
+            등록
+          </Button>
+        </ButtonContainer>
       </CanvasContainer>
       <div ref={menuRef}>
         <Menu marketId={marketId} />

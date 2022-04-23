@@ -101,10 +101,10 @@ const LoginMg = () => {
     axios(config)
       .then(function (response) {
         console.log(response);
-        navigate("/register");
-        console.log(response.data.restaurants[0]);
         localStorage.setItem("token", response.data.token.accessToken);
         localStorage.setItem("marketId", response.data.restaurants[0]);
+        navigate("/register");
+        console.log(response.data.restaurants[0]);
       })
       .catch(function (error) {
         console.log(error);
