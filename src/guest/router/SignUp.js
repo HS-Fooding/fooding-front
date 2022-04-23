@@ -78,6 +78,9 @@ const SubmitBtn = styled.button`
 `;
 
 function SignUp() {
+  const [categoryValueSelected, setCategoryValueSelected] = useState([]);
+  const [categorySelected, setCategorySelected] = useState([]);
+
   let navigate = useNavigate();
 
   const {
@@ -91,6 +94,27 @@ function SignUp() {
       sex: "female",
     },
   });
+
+  const handleSelect = (e) => {
+    if (!categoryValueSelected.includes(e.target.value)) {
+      setCategoryValueSelected((currentArray) => [
+        // 영어
+        ...currentArray,
+        e.target.value,
+      ]);
+      console.log("valueList", categoryValueSelected);
+    }
+    if (
+      !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
+    ) {
+      setCategorySelected((currentArray) => [
+        // 한글
+        ...currentArray,
+        e.target.options[e.target.selectedIndex].text,
+      ]);
+      console.log("list", categorySelected);
+    }
+  };
 
   const signUpPost = (data) => {
     console.log(data);
@@ -110,13 +134,15 @@ function SignUp() {
 
     var axios = require("axios");
     var data = JSON.stringify({
-      userId: data.Id,
-      userPassword: data.password,
+      id: data.Id,
+      password: data.password,
       sex: data.sex == "male" ? true : false,
-      userName: data.userName,
+      name: data.userName,
       nickName: data.nickName,
       age: userAge,
       role: ["ROLE_USER"],
+      job: data.job,
+      favor: categoryValueSelected,
     });
 
     var config = {
@@ -259,7 +285,11 @@ function SignUp() {
           </RadioBox>
         </div>
         <Message>{errors?.age?.message}</Message>
-        <select {...register("favor")}>
+        <select
+          onChange={handleSelect}
+          value={categorySelected}
+          // {...register("favor")}
+        >
           <option>KOREAN</option>
           <option>JAPANESE</option>
           <option>CHINESE</option>

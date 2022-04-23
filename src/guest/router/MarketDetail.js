@@ -131,10 +131,11 @@ const MarketDetail = () => {
   const [representativeNNormal, setRepresentativeNNormal] = useState();
 
   const { marketId } = useParams();
-  let location = useLocation();
   //const { avgScore, viewCount, reviewCount } = location.state;
 
   useEffect(() => {
+    console.log("marketId", marketId);
+    localStorage.setItem("marketId", marketId);
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}`,
@@ -144,6 +145,15 @@ const MarketDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setMarket(response.data);
+
+        localStorage.setItem(
+          "weekdaysWorkHour",
+          JSON.stringify(market.weekdaysWorkHour)
+        );
+        localStorage.setItem(
+          "weekendsWorkHour",
+          JSON.stringify(market.weekendsWorkHour)
+        );
       })
       .catch(function (error) {
         console.log(error);
@@ -160,7 +170,7 @@ const MarketDetail = () => {
         setMarketMenu(response.data);
         bringRepresentativeMenu(response.data);
       })
-      .then(function (response) {})
+      .then(function () {})
       .catch(function (error) {
         console.log(error);
       });
@@ -168,7 +178,7 @@ const MarketDetail = () => {
   const bringRepresentativeMenu = (menuss) => {
     let representativeMenu = [];
     let normalMenu = [];
-    menuss?.map((menu, index) => {
+    menuss?.map((menu) => {
       if (menu.representative === true) {
         representativeMenu.push(menu);
       } else {
@@ -193,16 +203,16 @@ const MarketDetail = () => {
           <div>
             <span>
               {" "}
-              <FontAwesomeIcon icon={faEye} /> 343
+              <FontAwesomeIcon icon={faEye} /> {market?.viewCount}
             </span>
             <span>
               {" "}
               <FontAwesomeIcon icon={faPencil} style={{ marginRight: "6px" }} />
-              23
+              {market?.reviewCount}
             </span>
           </div>
         </div>
-        <div className="avgScore">4.1</div>
+        <div className="avgScore">{market?.avgScore}</div>
       </MarketTitleBox>
       <MarketMenuBox>
         <Link

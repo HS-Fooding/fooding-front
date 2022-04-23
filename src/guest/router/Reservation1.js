@@ -4,7 +4,9 @@ import Header from "../component/Header";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { url } from "../../Api";
+import axios from "axios";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -169,23 +171,8 @@ const TimeContainer = styled(ScollContainer)`
 
 const TimeInnerCon = styled(InnerContainer)``;
 
-const TimeBtn = styled.button`
-  height: 40px;
-  width: 80px;
-  border: none;
-  margin: 4px;
-  font-size: 12px;
-  border-radius: 3px;
-  color: white;
-  background: ${(props) => props.theme.purpleColor};
-  &:active {
-    background: white;
-    color: ${(props) => props.theme.purpleColor};
-  }
-`;
-
 const NextBtn = styled.button`
-  width: 95%;
+  width: 380px;
   height: 50px;
   background: white;
   margin-top: 50px;
@@ -263,10 +250,8 @@ const Reservation1 = () => {
   const [peopleNum, setPeopleNum] = useState(2);
   const [time, setTime] = useState([]);
   const [isCar, setIsCar] = useState(false);
-  const [weekOpen, setWeekOpen] = useState();
-  const [weekendsOpen, setWeekendsOpen] = useState();
-  const [weekClose, setWeekClose] = useState();
-  const [weekendsClose, setWeekendsClose] = useState();
+  const [clickedTime, setClickedTime] = useState();
+
   let timesArr = [];
 
   //   const [value, onChange] = useState([
@@ -282,11 +267,19 @@ const Reservation1 = () => {
 
   //console.log("calendarValue", calendarValue);
 
-  const { weekdaysWorkHour, weekendsWorkHour, marketId } = location.state;
+  // const { marketId } = location.state;
+  const marketId = localStorage.getItem("marketId");
 
   //console.log("현재 시간:", new Date());
 
   const calcTime = () => {
+    const weekdaysWorkHour = JSON.parse(
+      localStorage.getItem("weekdaysWorkHour")
+    );
+    const weekendsWorkHour = JSON.parse(
+      localStorage.getItem("weekendsWorkHour")
+    );
+
     if (
       // 주말일 경우
       calendarValue.toString().includes("Sat") ||
@@ -325,15 +318,14 @@ const Reservation1 = () => {
 
       timesArr.push(resultTime);
       setTime(timesArr);
-      console.log("timesArr:", timesArr);
 
       totalMin += 30;
-      console.log(
-        "close:",
-        close?.substring(0, 2) - 12 + close?.substring(2, 5)
-      );
-      console.log("result:", resultTime.substring(3, resultTime.length));
-      console.log("오후", resultTime.substring(0, 2) == "오후");
+      // console.log(
+      //   "close:",
+      //   close?.substring(0, 2) - 12 + close?.substring(2, 5)
+      // );
+      // console.log("result:", resultTime.substring(3, resultTime.length));
+      // console.log("오후", resultTime.substring(0, 2) == "오후");
 
       if (
         close?.substring(0, 2) - 12 + close?.substring(2, 5) ==
@@ -362,8 +354,26 @@ const Reservation1 = () => {
     .map((V, i) => i + 1);
 
   useEffect(() => {
-    console.log(isCar, peopleNum, calendarValue);
-  }, [isCar, peopleNum, calendarValue]);
+    console.log(isCar, peopleNum, calendarValue, clickedTime);
+
+    const getToken = localStorage.getItem("token");
+
+    var config = {
+      method: "get",
+      url: url + `/fooding/restaurant/10/reservation`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [isCar, peopleNum, calendarValue, clickedTime]);
 
   const peopleClick = (num) => {
     setPeopleNum(num);
@@ -384,7 +394,33 @@ const Reservation1 = () => {
     cursor: pointer;
   `;
 
-  const timeClick = () => {};
+  const timeClick = (time) => {
+    console.log("timeClick");
+    setClickedTime(time);
+  };
+
+  const TimeBtn = styled.button`
+    height: 40px;
+    width: 80px;
+    border: none;
+    margin: 4px;
+    font-size: 12px;
+    border-radius: 3px;
+    color: white;
+    /* background: ${(props) =>
+      props.time == time
+        ? "black"
+        : "${(props) => props.theme.purpleColor}"}; */
+
+    background: ${(props) => props.theme.purpleColor};
+    &:active {
+      background: white;
+      color: ${(props) => props.theme.purpleColor};
+    }
+  `;
+
+  const nextBtnClick = () => {};
+
   return (
     <Container>
       <Header back={`/guest/${marketId}`} title={""} />
@@ -416,7 +452,9 @@ const Reservation1 = () => {
         <TimeContainer>
           <TimeInnerCon>
             {time?.map((time, index) => (
-              <TimeBtn key={index}>{time}</TimeBtn>
+              <TimeBtn time={time} key={index} onClick={() => timeClick(time)}>
+                {time}
+              </TimeBtn>
             ))}
           </TimeInnerCon>
         </TimeContainer>
@@ -436,7 +474,17 @@ const Reservation1 = () => {
             </label>
           </div>
         </CheckBox>
-        <NextBtn>다음</NextBtn>
+        <Link
+          to="/guest/reservation2"
+          state={{
+            isCar: isCar,
+            peopleNum: peopleNum,
+            time: clickedTime,
+            calendarValue: calendarValue,
+          }}
+        >
+          <NextBtn onClick={nextBtnClick}>다음</NextBtn>
+        </Link>
         <span>{isCar}</span>
       </MainBox>
     </Container>
