@@ -282,10 +282,7 @@ const Reservation1 = () => {
 
   //console.log("calendarValue", calendarValue);
 
-  const { maximumUsageTime, weekdaysWorkHour, weekendsWorkHour, marketId } =
-    location.state;
-
-  console.log("maximumUsageTime:", maximumUsageTime);
+  const { weekdaysWorkHour, weekendsWorkHour, marketId } = location.state;
 
   //console.log("현재 시간:", new Date());
 
@@ -308,8 +305,6 @@ const Reservation1 = () => {
     let openHours = open?.slice(0, 2);
     let openMin = open?.slice(3, 5);
 
-    console.log(openHours, openMin);
-
     let totalMin = Number(openHours) * 60 + Number(openMin);
     let resultTime;
 
@@ -328,130 +323,35 @@ const Reservation1 = () => {
         resultTime = "오후 " + Number(resultHour - 12) + ":" + resultMinute;
       }
 
-      // let result = resultHour.toString() + ":" + resultMinute; // 12: 30 형식
-
-      //console.log("result:", result);
-
-      // if (result.substring(0, 2) < 12) {
-      //   result = "오전 " + result;
-      // } else {
-      //   if (result.substring(0, 2) == 12) {
-      //     result = "오후 " + result;
-      //   } else {
-      //     result =
-      //       "오후 " +
-      //       (Number(result.substring(0, 2)) - 12).toString() +
-      //       result.substring(2, 5);
-      //   }
-      // }
       timesArr.push(resultTime);
       setTime(timesArr);
-      console.log(timesArr);
+      console.log("timesArr:", timesArr);
 
       totalMin += 30;
+      console.log(
+        "close:",
+        close?.substring(0, 2) - 12 + close?.substring(2, 5)
+      );
+      console.log("result:", resultTime.substring(3, resultTime.length));
+      console.log("오후", resultTime.substring(0, 2) == "오후");
 
-      if (isWeek === true) {
-        // 평일이면
-        if (
-          weekClose?.substring(0, 5) ==
-          resultTime.substring(3, resultTime.length)
-        ) {
-          break;
-        }
-      } else {
-        // 주말이면
-        if (
-          weekendsClose?.substring(0, 5) ==
-          resultTime.substring(3, resultTime.length)
-        ) {
-          break;
-        }
+      if (
+        close?.substring(0, 2) - 12 + close?.substring(2, 5) ==
+          resultTime.substring(3, resultTime.length) &&
+        resultTime.substring(0, 2) == "오후"
+      ) {
+        break;
       }
     }
   };
-  const calcTime1 = () => {
-    console.log(calendarValue);
-    if (
-      // 주말일 경우
-      calendarValue.toString().includes("Sat") ||
-      calendarValue.toString().includes("Sun")
-    ) {
-      setIsWeek(false);
-      setWeekendsOpen(weekendsWorkHour.open);
-      setWeekendsClose(weekendsWorkHour.close);
 
-      timesArr.push(weekendsWorkHour.open.substring(0, 5));
-    } else {
-      // 주말 아닐 경우
-      setIsWeek(true);
-      setWeekOpen(weekdaysWorkHour.open);
-      setWeekClose(weekdaysWorkHour.close);
-      timesArr.push(weekdaysWorkHour.open.substring(0, 5));
-    }
-
-    if (isWeek) {
-      var hours = weekOpen?.slice(0, 2);
-      var minutes = weekOpen?.slice(3, 5);
-    } else {
-      var hours = weekendsOpen?.slice(0, 2);
-      var minutes = weekendsOpen?.slice(3, 5);
-    }
-
-    let resultMin = Number(hours) * 60 + Number(minutes);
-    for (let i = 0; i < 50; i++) {
-      resultMin += 30;
-
-      let resultHour = Math.floor(resultMin / 60);
-      let resultMinute = resultMin % 60;
-
-      if (resultMinute === 0) resultMinute = "00";
-      else resultMinute = resultMinute.toString();
-
-      let result = resultHour.toString() + ":" + resultMinute; // 12: 30 형식
-
-      console.log("result:", result);
-
-      if (result.substring(0, 2) < 12) {
-        result = "오전 " + result;
-      } else {
-        if (result.substring(0, 2) == 12) {
-          result = "오후 " + result;
-        } else {
-          result =
-            "오후 " +
-            (Number(result.substring(0, 2)) - 12).toString() +
-            result.substring(2, 5);
-        }
-      }
-      timesArr.push(result);
-
-      if (isWeek === true) {
-        // 평일이면
-        if (weekClose?.substring(0, 5) == result.substring(3, result.length)) {
-          break;
-        }
-      } else {
-        // 주말이면
-        if (
-          weekendsClose?.substring(0, 5) == result.substring(3, result.length)
-        ) {
-          break;
-        }
-      }
-    }
-
-    if (timesArr[0].substring(0, 2) > 11) {
-      timesArr[0] = "오후 " + timesArr[0];
-    } else {
-      timesArr[0] = "오전 " + timesArr[0];
-    }
-
-    console.log(timesArr);
-    setTime(timesArr);
-  };
   // useEffect(() => {
   //   calcTime();
   // }, [calendarValue, weekOpen, weekendsOpen]);
+
+  useEffect(() => {
+    calcTime();
+  }, []);
 
   useEffect(() => {
     calcTime();
@@ -464,10 +364,6 @@ const Reservation1 = () => {
   useEffect(() => {
     console.log(isCar, peopleNum, calendarValue);
   }, [isCar, peopleNum, calendarValue]);
-
-  useEffect(() => {
-    calcTime();
-  }, []);
 
   const peopleClick = (num) => {
     setPeopleNum(num);
