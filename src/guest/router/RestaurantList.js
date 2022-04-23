@@ -56,7 +56,7 @@ const RestaurantList = () => {
    const data = new FormData();
     const getToken = localStorage.getItem("token");
     axios
-      .get(url + "/fooding/restaurant", {
+      .get(url + "/fooding/restaurant?size=100", {
         headers: {
           //"Content-Type": "multipart/form-data",
           "Content-Type": "application/json",

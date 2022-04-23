@@ -243,7 +243,14 @@ const Menu = ({ marketId }) => {
 
     e.target.value = "";
   };
-
+  function len_chk(){
+    var frm=document.inserFrm.detail;
+    if(frm.value.length>30){
+      alert("글자수는 30자로 제한됩니다.");
+      frm.value=frm.value.sbustring(0,30);
+      frm.focus(); 
+    }
+  }
   const menuPost = (postData) => {
     const content = {
       name: postData.menuName,
@@ -397,8 +404,10 @@ const Menu = ({ marketId }) => {
                 <input {...register("menuPrice", {})} placeholder="가격" />
               </MenuProp>
               <MenuProp className="menuDesc">
+             
                 <textarea
                   {...register("menuDesc", {})}
+                
                   placeholder="상세설명"
                 />
               </MenuProp>
