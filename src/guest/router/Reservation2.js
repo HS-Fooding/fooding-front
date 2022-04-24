@@ -5,6 +5,7 @@ import MyCanvas from "../../../src/manage/MyCanvas";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import { url } from "../../Api";
 import axios from "axios";
+import { useLocation, Link } from "react-router-dom";
 
 const getToken = localStorage.getItem("token");
 const marketIdLS = localStorage.getItem("marketId");
@@ -79,10 +80,15 @@ const Reservation2 = () => {
 
   const [selectedTable, setSelectedTable] = useState();
 
+  let location = useLocation();
+  const { isCar, peopleNum, time, calendarValue } = location.state;
+
   const getShape = () => {
+    const marketId = localStorage.getItem("marketId");
+
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/2/structure`,
+      url: url + `/fooding/restaurant/${marketId}/structure`,
       Authorization: "Bearer " + getToken,
     };
 
@@ -90,7 +96,7 @@ const Reservation2 = () => {
       .then(function (response) {
         console.log(response.data);
         const floor1 = response.data.floors[0];
-        console.log(floor1);
+        //console.log(floor1);
 
         const tempTable = [];
         const tempSeat = [];
@@ -185,11 +191,58 @@ const Reservation2 = () => {
     getShape();
   }, []);
 
-  const onClickTable = (id, maxPeople, minPeople) => {
-    console.log(id, maxPeople, minPeople);
-    const obj = { id, maxPeople, minPeople };
+  const onClickTable = (id, maxPeople, minPeople, tableNum) => {
+    console.log(id, maxPeople, minPeople, tableNum);
+    const obj = { id, maxPeople, minPeople, tableNum };
 
     setSelectedTable(obj);
+  };
+
+  const submit = () => {
+    // {
+    //   "car": true,
+    //   "reserveDate": "string",
+    //   "reserveNum": 0,
+    //   "reserveTime": "string",
+    //   "tableNum": "string"
+    // }
+    console.log(
+      "받아옴:",
+      isCar,
+      peopleNum,
+      time,
+      calendarValue,
+      selectedTable.tableNum
+    );
+
+    const getToken = localStorage.getItem("token");
+    const marketId = localStorage.getItem("marketId");
+
+    var data = JSON.stringify({
+      car: isCar,
+      reserveDate: calendarValue,
+      reserveNum: peopleNum,
+      reserveTime: time,
+      tableNum: selectedTable.tableNum,
+    });
+
+    var config = {
+      method: "post",
+      url: url + `/fooding/restaurant/${marketId}/reservation`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -215,7 +268,12 @@ const Reservation2 = () => {
                   height={table.height / 2}
                   rotation={table.rotation}
                   onClick={() => {
-                    onClickTable(table.id, table.maxPeople, table.minPeople);
+                    onClickTable(
+                      table.id,
+                      table.maxPeople,
+                      table.minPeople,
+                      table.tableNum
+                    );
                   }}
                   fill={selectedTable?.id === table.id ? "#764225" : "brown"}
                 />
@@ -284,7 +342,7 @@ const Reservation2 = () => {
           </div>
         </InnerTableBox>
       </SelectedTableBox>
-      <NextBtn>완료</NextBtn>
+      <NextBtn onClick={submit}>완료</NextBtn>
     </Container>
   );
 };

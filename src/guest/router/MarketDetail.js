@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { useParams } from "react-router";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -7,7 +7,8 @@ import { url } from "../../Api";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import MultipleSlider from "../component/MultipleSlider";
+import "@fortawesome/fontawesome-free/js/all.js";
 import {
  faCaretRight,
  faCaretDown,
@@ -30,28 +31,31 @@ const Container = styled.div`
 
 const MarketImgsBox = styled.div`
   width: 100%;
-  height: 160px;
+  height: 150px;
   background-color: orange;
   margin-top: 60px;
+  
 `;
 
 const MarketTitleBox = styled.div`
   width: 100%;
-  height: 100px;
+  height: 110px;
   border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px 20px;
   align-items: center;
 
   span {
     margin: 10px 5px;
+    font-size: 13px;
   }
   .leftInfos {
     display: flex;
     flex-direction: column;
     .marketName {
-      font-size: 20px;
+      font-size: 23px;
+      margin-bottom: 20px;
     }
   }
   .avgScore {
@@ -63,16 +67,38 @@ const MarketTitleBox = styled.div`
 const MarketMenuBox = styled.div`
   width: 100%;
   height: 80px;
-  background-color: skyblue;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 `;
+
+const MenuBtnBox = styled.div`
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  list-style: none;
+  a {
+    text-decoration: none;
+  }
+  svg {
+    font-size: 30px;
+  }
+  span {
+    font-size: 13px;
+    margin: 0 auto;
+  }
+`;
+
 const MarketDetailInfo = styled.div`
   width:100%;
   height: 300px;
-  background-color:purple;
+  background-color: skyblue;
 `;
 const MarketMenuInfo = styled.div`
   width:100%;
-  height:300px;
+  height: 700px;
 `;
 const EachMenu = styled.div`
   width:100%;
@@ -129,12 +155,16 @@ const MenuImg = styled.div`
     height:90%;
     img{
       width:100%;
-      height:100%;
-     
-    border-radius:12px;
+      height:100%;     
+      border-radius:12px;
       
     }
   }
+`;
+const TempBox = styled.div`
+  width: 100%;
+  height: 100%;
+  background: teal;
 `;
 const MoreMenu = styled.div`
   width:100%;
@@ -156,10 +186,10 @@ const MarketDetail = () => {
   const [representativeNNormal,setRepresentativeNNormal] = useState();
   const [toggle,setToggle] = useState(false);
   const { marketId } = useParams();
-  let location = useLocation();
-  const { avgScore, viewCount, reviewCount } = location.state;
- 
+  
   useEffect(() => {
+    console.log("marketId", marketId);
+    localStorage.setItem("marketId", marketId);
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}`,
@@ -169,29 +199,35 @@ const MarketDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setMarket(response.data);
+
+        localStorage.setItem(
+          "weekdaysWorkHour",
+          JSON.stringify(response.data.weekdaysWorkHour)
+        );
+        localStorage.setItem(
+          "weekendsWorkHour",
+          JSON.stringify(response.data.weekendsWorkHour)
+        );
       })
       .catch(function (error) {
         console.log(error);
       });
 
-      var config2 = {
-        method: "get",
-        url: url + `/fooding/restaurant/${marketId}/menu`,
-      };
-  
-      axios(config2)
-        .then(function (response) {
-          console.log(response.data);
-          setMarketMenu(response.data);
-          bringRepresentativeMenu(response.data);      
-        })
-        .then(function (response){
-           
-        })        
-        .catch(function (error) {
-          console.log(error);
-        });
-      
+    var config2 = {
+      method: "get",
+      url: url + `/fooding/restaurant/${marketId}/menu`,
+    };
+
+    axios(config2)
+      .then(function (response) {
+        console.log(response.data);
+        setMarketMenu(response.data);
+        bringRepresentativeMenu(response.data);
+      })
+      .then(function () {})
+      .catch(function (error) {
+        console.log(error);
+      });
   }, []);
   const bringRepresentativeMenu = (menuss) =>{
     let representativeMenu = [];
@@ -219,35 +255,51 @@ const MarketDetail = () => {
     <Container>
       <Header back="/guest/restaurantList" title={""} />
 
-      <MarketImgsBox></MarketImgsBox>
+      <MarketImgsBox>
+        <MultipleSlider images={market?.images} />
+      </MarketImgsBox>
       <MarketTitleBox>
         <div className="leftInfos">
           <span className="marketName">{market?.name}</span>
           <div>
             <span>
               {" "}
-              <FontAwesomeIcon icon={faEye} /> 343
+              <FontAwesomeIcon icon={faEye} /> {market?.viewCount}
             </span>
             <span>
               {" "}
               <FontAwesomeIcon icon={faPencil} style={{ marginRight: "6px" }} />
-              23
+              {market?.reviewCount}
             </span>
           </div>
         </div>
-        <div className="avgScore">4.1</div>
+        <div className="avgScore">{market?.avgScore}</div>
       </MarketTitleBox>
       <MarketMenuBox>
+        <MenuBtnBox>
+          <i class="fa-solid fa-star"></i>
+          <span>즐겨찾기</span>
+        </MenuBtnBox>
         <Link
+          style={{ textDecoration: "none", color: "inherit" }}
           to="/guest/reservation1"
           state={{
             maximumUsageTime: market?.maximumUsageTime,
             weekdaysWorkHour: market?.weekdaysWorkHour,
             weekendsWorkHour: market?.weekendsWorkHour,
+            marketId: marketId,
           }}
         >
-          <button>예약</button>
+          <MenuBtnBox>
+            <i className="fa-solid fa-calendar-days reservation"></i>
+
+            <span>예약하기</span>
+          </MenuBtnBox>
         </Link>
+        <MenuBtnBox>
+          <i class="fa-solid fa-pen"></i>
+          <span>리뷰쓰기</span>
+        </MenuBtnBox>
       </MarketMenuBox>
       <MarketDetailInfo>
 representativeNNormal
