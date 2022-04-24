@@ -66,7 +66,6 @@ const LoginBut = styled.button`
   color: white;
   background-color: ${(props) => props.theme.mainColor};
   font-weight: bold;
-
   &:focus,
   :hover {
     cursor: pointer;
@@ -81,7 +80,6 @@ const SignUpBut = styled.button`
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
   background-color: ${(props) => props.theme.subColor};
-
   &:focus,
   :hover {
     cursor: pointer;
@@ -98,7 +96,6 @@ const appearDisappear = keyframes`
       opacity:0;
       
     }
-
 `;
 const Modal = styled.div`
   z-index: 1;

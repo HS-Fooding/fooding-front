@@ -7,11 +7,15 @@ import { url } from "../../Api";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil, faStar } from "@fortawesome/free-solid-svg-icons";
-
 import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
-
+import {
+  faCaretRight,
+  faCaretDown,
+  faEye,
+  faPencil,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   border: 1px solid black;
   width: 410px;
@@ -28,7 +32,7 @@ const Container = styled.div`
 const MarketImgsBox = styled.div`
   width: 100%;
   height: 150px;
-
+  background-color: orange;
   margin-top: 60px;
 `;
 
@@ -62,7 +66,6 @@ const MarketTitleBox = styled.div`
 const MarketMenuBox = styled.div`
   width: 100%;
   height: 80px;
-
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -75,11 +78,9 @@ const MenuBtnBox = styled.div`
   flex-direction: column;
   justify-content: space-around;
   list-style: none;
-
   a {
     text-decoration: none;
   }
-
   svg {
     font-size: 30px;
   }
@@ -150,43 +151,34 @@ const MenuImg = styled.div`
     img {
       width: 100%;
       height: 100%;
-      border: 1px gray solid;
       border-radius: 12px;
     }
   }
 `;
-
 const TempBox = styled.div`
   width: 100%;
   height: 100%;
   background: teal;
 `;
-
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    slidesToSlide: 2, // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    slidesToSlide: 1, // optional, default to 1.
-  },
-};
-
+const MoreMenu = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  p {
+    margin-left: 20px;
+  }
+  .iconContainer {
+    margin-left: 5px;
+    font-size: 20px;
+  }
+`;
 const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
   const [representativeNNormal, setRepresentativeNNormal] = useState();
-
+  const [toggle, setToggle] = useState(false);
   const { marketId } = useParams();
-  //const { avgScore, viewCount, reviewCount } = location.state;
 
   useEffect(() => {
     console.log("marketId", marketId);
@@ -203,11 +195,11 @@ const MarketDetail = () => {
 
         localStorage.setItem(
           "weekdaysWorkHour",
-          JSON.stringify(market.weekdaysWorkHour)
+          JSON.stringify(response.data.weekdaysWorkHour)
         );
         localStorage.setItem(
           "weekendsWorkHour",
-          JSON.stringify(market.weekendsWorkHour)
+          JSON.stringify(response.data.weekendsWorkHour)
         );
       })
       .catch(function (error) {
@@ -247,23 +239,14 @@ const MarketDetail = () => {
   // useEffect(()=>{
 
   // },[representativeNNormal,market,marketMenu]);
+  const seeMoreMenu = () => {
+    setToggle((toggle) => !toggle);
+  };
   return (
     <Container>
       <Header back="/guest/restaurantList" title={""} />
 
       <MarketImgsBox>
-        {/* <ReactSlidy numOfSlides={3}>
-       
-          <Number num={1} />
-          <Number num={2} />
-          <Number num={3} />
-          <Number num={4} />
-          <Number num={5} />
-          <Number num={6} />
-          <Number num={7} />
-          <Number num={8} />
-        </ReactSlidy> */}
-
         <MultipleSlider images={market?.images} />
       </MarketImgsBox>
       <MarketTitleBox>
@@ -354,7 +337,51 @@ const MarketDetail = () => {
             }
           })
         }
-        {/* 메뉴 더보기 */}
+        <MoreMenu onClick={seeMoreMenu}>
+          <p>메뉴 더보기</p>
+          <div className="iconContainer">
+            {toggle ? (
+              <FontAwesomeIcon icon={faCaretDown} />
+            ) : (
+              <FontAwesomeIcon icon={faCaretRight} />
+            )}
+          </div>
+        </MoreMenu>
+        {/* 메뉴 더보기 div 전체를 누르면  펼쳐진 상태가 되고 그옆에 아이콘도 아래로 바뀜*/}
+        {toggle
+          ? representativeNNormal?.map((menu, index) => {
+              if (index >= 3) {
+                return (
+                  <EachMenu>
+                    <MenuContainer>
+                      <MenuInfo>
+                        <div className="MenuName">
+                          {menu.representative == true ? (
+                            <FontAwesomeIcon icon={faStar} />
+                          ) : null}
+                          {menu.name}
+                        </div>
+                        <div className="MenuDescription">
+                          {menu.description.length > 32
+                            ? menu.description.slice(0, 32) + "..."
+                            : menu.description}
+                        </div>
+                        <div className="MenuPrice">
+                          {menu.price}
+                          <p>원</p>
+                        </div>
+                      </MenuInfo>
+                      <MenuImg>
+                        <div className="imgContainer">
+                          <img src={menu.image}></img>
+                        </div>
+                      </MenuImg>
+                    </MenuContainer>
+                  </EachMenu>
+                );
+              }
+            })
+          : null}
       </MarketMenuInfo>
     </Container>
   );

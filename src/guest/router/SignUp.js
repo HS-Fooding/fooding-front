@@ -49,7 +49,6 @@ const RadioButton = styled.input`
   border-radius: 100%;
   background-color: white;
   border: 1px solid ${(props) => props.theme.mainColor};
-
   &:checked {
     background-color: ${(props) => props.theme.mainColor};
   }
@@ -72,7 +71,6 @@ const SubmitBtn = styled.button`
   cursor: pointer;
   //width: 308px;
   width: 370px;
-
   position: absolute;
   bottom: 0;
 `;
@@ -241,7 +239,6 @@ function SignUp() {
             validate: {
               /*noNico: (value) =>
                 value.includes("nico") ? "no nicos allowed" : true,
-
               noNick: (value) =>
                 value.includes("nick") ? "no nick allowed" : true,
                 */
