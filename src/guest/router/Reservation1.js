@@ -24,6 +24,7 @@ const MainBox = styled.div`
   align-items: center;
   margin-top: 90px;
   flex-direction: column;
+  position: relative;
 `;
 
 const CalendarContainer = styled.div`
@@ -171,11 +172,13 @@ const NextBtn = styled.button`
   width: 380px;
   height: 50px;
   background: white;
-  margin-top: 50px;
+  margin-top: 24px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
+  /* position: absolute;
+  bottom: 0; */
 `;
 
 const CheckBox = styled.div`
@@ -241,6 +244,17 @@ const CheckBox = styled.div`
   } */
 `;
 
+const NoticeBox = styled.div`
+  width: 384px;
+  height: 37px;
+  background-color: rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  color: rgba(0, 0, 0, 0.5);
+`;
+
 const Reservation1 = () => {
   const [peopleNum, setPeopleNum] = useState(2);
   const [time, setTime] = useState([]);
@@ -259,13 +273,9 @@ const Reservation1 = () => {
   const [isWeek, setIsWeek] = useState();
   const [open, setOpen] = useState();
   const [close, setClose] = useState();
+  const [availableTable, setAvailableTable] = useState([]);
 
-  //console.log("calendarValue", calendarValue);
-
-  // const { marketId } = location.state;
   const marketId = localStorage.getItem("marketId");
-
-  //console.log("현재 시간:", new Date());
 
   const calcTime = () => {
     const weekdaysWorkHour = JSON.parse(
@@ -315,12 +325,6 @@ const Reservation1 = () => {
       setTime(timesArr);
 
       totalMin += 30;
-      // console.log(
-      //   "close:",
-      //   close?.substring(0, 2) - 12 + close?.substring(2, 5)
-      // );
-      // console.log("result:", resultTime.substring(3, resultTime.length));
-      // console.log("오후", resultTime.substring(0, 2) == "오후");
 
       if (
         close?.substring(0, 2) - 12 + close?.substring(2, 5) ==
@@ -331,10 +335,6 @@ const Reservation1 = () => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   calcTime();
-  // }, [calendarValue, weekOpen, weekendsOpen]);
 
   useEffect(() => {
     calcTime();
@@ -348,14 +348,45 @@ const Reservation1 = () => {
     .fill()
     .map((V, i) => i + 1);
 
+  let sendHour;
+  let sendMin;
+  let sendTotalTime;
+  let dateString;
+  const makeSendingTime = async () => {
+    let month = calendarValue.getMonth() + 1;
+    dateString =
+      calendarValue.getFullYear() + "-" + month + "-" + calendarValue.getDate();
+
+    let splited = clickedTime?.split(" ");
+
+    let splitedTime = splited[1]?.split(":");
+
+    if (splited[0] === "오후") {
+      if (splitedTime[0] !== "12") {
+        sendHour = Number(splitedTime[0]) + 12;
+      } else {
+        sendHour = 12;
+      }
+      sendMin = splitedTime[1];
+
+      sendTotalTime = sendHour + ":" + sendMin;
+    } else {
+      sendTotalTime = clickedTime.substring(3, 8);
+    }
+
+    console.log("sendTotalTime:", sendTotalTime);
+  };
   useEffect(() => {
     console.log(isCar, peopleNum, calendarValue, clickedTime);
+    makeSendingTime();
 
     const getToken = localStorage.getItem("token");
 
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/10/reservation`,
+      url:
+        url +
+        `/fooding/restaurant/3/reservation?date=${dateString}&num=${peopleNum}&time=${sendTotalTime}`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
@@ -363,7 +394,8 @@ const Reservation1 = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data.tables);
+        setAvailableTable(response.data.tables);
       })
       .catch(function (error) {
         console.log(error);
@@ -467,6 +499,12 @@ const Reservation1 = () => {
             </label>
           </div>
         </CheckBox>
+        {availableTable.length === 0 ? (
+          <NoticeBox>
+            <span>예약 가능한 좌석이 없습니다.</span>
+          </NoticeBox>
+        ) : null}
+
         <Link
           to="/guest/reservation2"
           state={{
