@@ -20,6 +20,7 @@ import Reservation1 from "./guest/router/Reservation1";
 import Reservation2 from "./guest/router/Reservation2";
 import MarketDetail from "./guest/router/MarketDetail";
 
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -45,6 +46,7 @@ function App() {
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
          
+          
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

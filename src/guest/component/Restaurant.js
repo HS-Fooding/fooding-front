@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "../component/Header";
 import { useNavigate, Link } from "react-router-dom";
@@ -76,9 +76,9 @@ const CategoryContainer = styled.div`
  
 `;
 const Restaurant = ({content}) => {
-  console.log("restaurant",content);
-  console.log("restaurant.image.path",content.image?.path);
-  console.log("restaurant.category",content.category);
+  // console.log("restaurant",content);
+  // console.log("restaurant.image.path",content.image?.path);
+  // console.log("restaurant.category",content.category);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
     else if (value === "JAPANESE") return "일식";
@@ -138,4 +138,4 @@ const Restaurant = ({content}) => {
     </Container>
   );
 };
-export default Restaurant;
+export default memo(Restaurant);

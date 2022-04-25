@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { memo,useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "../component/Header";
 import { useNavigate, Link } from "react-router-dom";
 import Restaurant from "../component/Restaurant";
 import RestaurantHeader from "../component/RestaurantHeader";
+import Loader from "../component/Loader";
 import { url } from "../../Api";
 // src\Api.js
 //src\guest\component\Login.js
@@ -39,6 +40,14 @@ const ListContainer = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
+  .Target-Element{
+    width: 100vw;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
 `;
 const Footer = styled.div`
     width:410px;
@@ -49,32 +58,79 @@ const Footer = styled.div`
 `;
 
 const RestaurantList = () => {
-  const [restaurantArr,setRestaurantArr] = useState();
-  const bringMarketInfo = () =>{
-    var axios = require("axios");
-  
+  const [restaurantArr,setRestaurantArr] = useState([]);
+  const [target, setTarget] = useState(null);
+  const [numOfElements,setNumOfElements] = useState()
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [presentPage,setPresentPage] = useState(0);
+  //const [last,setLast] = useState(false);
+let last = false
+  let currentPage=0;
+  const setIsIsLoaded = () =>{
+    setIsLoaded(true);
+  }
+  const bringMarketInfo = async () =>{
+    
+
+  if(last==false){  
+    setIsLoaded(true);
+    var axios = require("axios"); 
+   //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음 
    const data = new FormData();
     const getToken = localStorage.getItem("token");
-    axios
-      .get(url + "/fooding/restaurant?size=100", {
+    await new Promise((resolve)=>setTimeout(resolve,1000));
+    await axios
+      .get(url + "/fooding/restaurant?page="+currentPage+"&size=6", { 
         headers: {
           //"Content-Type": "multipart/form-data",
           "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
-        },
+        }, 
       })
       .then((res) => {
+        
         console.log(res.data);
-        setRestaurantArr(res.data.content);
+        setPresentPage(presentPage+1);
+        console.log("last true / false ::",res.data.last ); 
+        const lastresult = res.data.last;
+        if(lastresult){
+         
+          last = true;
+        }    console.log("isLoaded",isLoaded);
+        console.log("currentPage",currentPage);
+        setRestaurantArr((restaurantArr)=>restaurantArr.concat(res.data.content));
       })
       .catch((err) => {
         console.log(err);
-      });
+      }); 
+      currentPage+=1;
+      setIsLoaded(false);
+    }
+ 
   }
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting && !isLoaded && !last) {
+      console.log("onIntersect last ????" ,last)
+      observer.unobserve(entry.target);
+    await bringMarketInfo();
+      observer.observe(entry.target);
+    }
+  }; 
+ 
   useEffect(()=>{
-    bringMarketInfo();
-   
-  },[]);
+    
+  },[last]);
+  useEffect(()=>{},[restaurantArr]);
+  useEffect(()=>{
+    let observer;
+    if(target && !last){
+      observer = new IntersectionObserver(onIntersect,{
+        threshold:0.4,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  },[target]);
   return (
     <Container>
     
@@ -92,13 +148,18 @@ const RestaurantList = () => {
           }}        
        style={{ textDecoration: "none", color: "inherit" }}
       ><Restaurant content={content} /></Link>
-    
+         
     })}
+ <div ref={setTarget} className="Target-Element">
+      {isLoaded && !last &&
+        <Loader />
+         }            
 
+          </div>
     
     </ListContainer>
     
     </Container>
   );
 };
-export default RestaurantList;
+export default memo(RestaurantList);

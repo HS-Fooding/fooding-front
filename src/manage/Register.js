@@ -619,7 +619,7 @@ function Register(floorCallback) {
           },
         })
         .then((res) => {
-          setFloorNum("setFloorNum",res.data.floors.length);
+          setFloorNum(res.data.floors.length);
           //false로 채우기 
           const savefloorNum = Array(floorNum); 
           savefloorNum.fill(false)
