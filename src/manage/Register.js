@@ -1349,8 +1349,8 @@ function Register(floorCallback) {
             );
             //}
           })}
-          {floorNum === null ? (
-            <FloorButton onClick={eraseFloor}>X</FloorButton>
+          {(floorNum === null && floor.length!==1) ? (
+            <FloorButton style={{"width":"45px"}} onClick={eraseFloor}>X</FloorButton>
           ) : null}
         </CanvasOptionContainer>
 
