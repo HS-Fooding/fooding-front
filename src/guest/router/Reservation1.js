@@ -177,8 +177,6 @@ const NextBtn = styled.button`
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  /* position: absolute;
-  bottom: 0; */
 `;
 
 const CheckBox = styled.div`
@@ -512,6 +510,7 @@ const Reservation1 = () => {
             peopleNum: peopleNum,
             time: clickedTime,
             calendarValue: calendarValue,
+            availableTable: availableTable,
           }}
         >
           <NextBtn onClick={nextBtnClick}>다음</NextBtn>
