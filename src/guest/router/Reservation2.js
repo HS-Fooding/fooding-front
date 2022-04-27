@@ -79,9 +79,11 @@ const Reservation2 = () => {
   const [id, setId] = useState();
 
   const [selectedTable, setSelectedTable] = useState();
+  const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
   let location = useLocation();
-  const { isCar, peopleNum, time, calendarValue } = location.state;
+  const { isCar, peopleNum, time, calendarValue, availableTable } =
+    location.state;
 
   const getShape = () => {
     const marketId = localStorage.getItem("marketId");
@@ -95,7 +97,7 @@ const Reservation2 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
-        const floor1 = response.data.floors[0];
+        const floor1 = response.data.floors[1];
         //console.log(floor1);
 
         const tempTable = [];
@@ -189,6 +191,20 @@ const Reservation2 = () => {
 
   useEffect(() => {
     getShape();
+    // setPossibleTableArr(...availableTable.tableNum);
+    console.log(
+      "받아옴:",
+
+      availableTable
+    );
+
+    const availableTableNumArr = availableTable.map((table) => {
+      return table.tableNum;
+    });
+
+    setAvailableTableNumArr(availableTableNumArr);
+
+    console.log(availableTableNumArr);
   }, []);
 
   const onClickTable = (id, maxPeople, minPeople, tableNum) => {
@@ -212,7 +228,8 @@ const Reservation2 = () => {
       peopleNum,
       time,
       calendarValue,
-      selectedTable.tableNum
+      selectedTable.tableNum,
+      availableTable
     );
 
     const getToken = localStorage.getItem("token");
@@ -275,7 +292,20 @@ const Reservation2 = () => {
                       table.tableNum
                     );
                   }}
-                  fill={selectedTable?.id === table.id ? "#764225" : "brown"}
+                  fill={
+                    selectedTable?.id === table.id
+                      ? "#764225"
+                      : availableTableNumArr.includes(table.tableNum)
+                      ? "brown"
+                      : "black"
+                    // () => {
+                    //   if (selectedTable?.id == table.id) {
+                    //     return "#764225";
+                    //   } else {
+                    //     return "brown";
+                    //   }
+                    // }
+                  }
                 />
               );
             })}

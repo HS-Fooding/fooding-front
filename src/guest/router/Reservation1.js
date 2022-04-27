@@ -510,6 +510,7 @@ const Reservation1 = () => {
             peopleNum: peopleNum,
             time: clickedTime,
             calendarValue: calendarValue,
+            availableTable: availableTable,
           }}
         >
           <NextBtn onClick={nextBtnClick}>다음</NextBtn>
