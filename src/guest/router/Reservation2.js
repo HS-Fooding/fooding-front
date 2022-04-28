@@ -18,6 +18,19 @@ const Container = styled.div`
   box-sizing: border-box;
   margin-bottom: 30px;
 `;
+const ButtonContainer = styled.div`
+  width:400px;
+  height:30px;
+  display:flex;
+  margin-top:70px;
+  background-color:red;
+`;
+const FloorButton = styled.div`
+  width:80px;
+  height:30px;
+  border-radius:10px;
+  border:solid black 1px;
+`;
 const MapContainer = styled.div`
   width: 400px;
   height: 300px;
@@ -55,7 +68,7 @@ const NextBtn = styled.button`
   width: 95%;
   height: 50px;
   background: white;
-  margin-top: 255px;
+  margin-top: 200px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
@@ -69,15 +82,16 @@ const Reservation2 = () => {
   const [walls, setWalls] = useState([]);
   const [windows, setWindows] = useState([]);
   const [doors, setDoors] = useState([]);
-
+  const [wholeFloorsLength,setWholeFloorsLength] = useState();
+  const [wholeFloor,setWholeFloor] = useState();
   const [selectedId, selectShape] = useState(null);
-  const [tableCnt, setTableCnt] = useState(1);
-  const [seatCnt, setSeatCnt] = useState(1);
-  const [wallCnt, setWallCnt] = useState(1);
-  const [windowCnt, setWindowCnt] = useState(1);
-  const [doorCnt, setDoorCnt] = useState(1);
+  const [tableCnt, setTableCnt] = useState([]);
+  const [seatCnt, setSeatCnt] = useState([]);
+  const [wallCnt, setWallCnt] = useState([]);
+  const [windowCnt, setWindowCnt] = useState([]);
+  const [doorCnt, setDoorCnt] = useState([]);
   const [id, setId] = useState();
-
+  const [currentIndex,setCurrentIndex] = useState(0);
   const [selectedTable, setSelectedTable] = useState();
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
@@ -97,16 +111,32 @@ const Reservation2 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
-        const floor1 = response.data.floors[1];
-        //console.log(floor1);
-
+        const floors = response.data.floors;
+        setWholeFloorsLength(floors.length);
+        setWholeFloor(floors);
+        console.log("floors length",wholeFloorsLength);
+       let tempTableCntArr=[]; 
+       let tempSeatCntArr=[];
+       let tempWallCntArr=[];
+       let tempWindowCntArr=[];
+       let tempDoorCntArr=[];
+       
+       let tempTablesArr=[]; 
+       let tempSeatsArr=[];
+       let tempWallsArr=[];
+       let tempWindowsArr=[];
+       let tempDoorsArr=[];
+       
+       for(var i=0;i<response.data.floors.length;i++){
+          
         const tempTable = [];
         const tempSeat = [];
         const tempWall = [];
         const tempWindow = [];
         const tempDoor = [];
 
-        floor1.tables.forEach((t, id) => {
+       
+         floors[i].tables.forEach((t, id) => {
           const table = {
             x: t.x,
             y: t.y,
@@ -121,10 +151,13 @@ const Reservation2 = () => {
           };
           tempTable.push(table);
           setId(id);
-          setTableCnt(tableCnt + 1);
-        });
-
-        floor1.seats.map((s, id) => {
+      
+      
+        });    
+        tempTableCntArr.push(floors[i].tables.length);  
+        console.log("tempTableCntArr",tempTableCntArr);       
+       
+        floors[i].seats.map((s, id) => {
           const seat = {
             x: s.x,
             y: s.y,
@@ -133,10 +166,12 @@ const Reservation2 = () => {
             id: "seat" + id,
           };
           tempSeat.push(seat);
-          setSeatCnt(seatCnt + 1);
+         
         });
-
-        floor1.walls.map((w, id) => {
+        tempSeatCntArr.push(floors[i].seats.length);
+            
+       
+        floors[i].walls.map((w, id) => {
           const wall = {
             x: w.x,
             y: w.y,
@@ -147,10 +182,12 @@ const Reservation2 = () => {
             id: "wall" + id,
           };
           tempWall.push(wall);
-          setWallCnt(wallCnt + 1);
+      
         });
+        tempWallCntArr.push(floors[i].walls.length);
+       
 
-        floor1.windows.map((w, id) => {
+        floors[i].windows.map((w, id) => {
           const window = {
             x: w.x,
             y: w.y,
@@ -161,10 +198,12 @@ const Reservation2 = () => {
             id: "window" + id,
           };
           tempWindow.push(window);
-          setWindowCnt(windowCnt + 1);
+        
         });
-
-        floor1.doors.map((d, id) => {
+        tempWindowCntArr.push(floors[i].windows.length);
+       
+        
+        floors[i].doors.map((d, id) => {
           const door = {
             x: d.x,
             y: d.y,
@@ -175,36 +214,66 @@ const Reservation2 = () => {
             id: "door" + id,
           };
           tempDoor.push(door);
-          setDoorCnt(doorCnt + 1);
+         
         });
+        tempDoorCntArr.push(floors[i].doors.length);
+       
+        tempTablesArr.push(tempTable);
+        tempSeatsArr.push(tempSeat);
+        tempWallsArr.push(tempWall);
+        tempWindowsArr.push(tempWindow);
+        tempDoorsArr.push(tempDoor);
+        
+        
+     
+       
+    
+      }//for문을 돌면서 floor에 있는 요소를 다 저장을 해줘야함 
 
-        setTables([...tempTable]);
-        setSeats([...tempSeat]);
-        setWalls([...tempWall]);
-        setWindows([...tempWindow]);
-        setDoors([...tempDoor]);
+      setTableCnt(tempTableCntArr);      
+      setSeatCnt(tempSeatCntArr);
+      setWallCnt(tempWallCntArr);
+      setWindowCnt(tempWindowCntArr);
+      setDoorCnt(tempDoorCntArr);
+
+      setTables(tempTablesArr);
+      setSeats(tempSeatsArr);
+      setWalls(tempWallsArr);
+      setWindows(tempWindowsArr);
+      setDoors(tempDoorsArr);
+
+      
+      // console.log("real tableCnts",tableCnt);
+      // console.log("real setSeatCnt",seatCnt);
+      // console.log("real setWallCnt",wallCnt);
+      // console.log("real setWindowCnt",windowCnt);
+      // console.log("real setDoorCnt",doorCnt);
+
+      // console.log("tablestables",tempTablesArr);
+     console.log("wholeFloor",wholeFloor);
+      
       })
       .catch(function (error) {
         console.log(error);
       });
   };
-
   useEffect(() => {
     getShape();
+    
     // setPossibleTableArr(...availableTable.tableNum);
     console.log(
       "받아옴:",
 
       availableTable
     );
-
+      
     const availableTableNumArr = availableTable.map((table) => {
       return table.tableNum;
     });
 
     setAvailableTableNumArr(availableTableNumArr);
 
-    console.log(availableTableNumArr);
+    // console.log(availableTableNumArr);
   }, []);
 
   const onClickTable = (id, maxPeople, minPeople, tableNum) => {
@@ -213,7 +282,10 @@ const Reservation2 = () => {
 
     setSelectedTable(obj);
   };
-
+  const changeFloor = (index)=>{ 
+    console.log("indexindexindex",index);
+    setCurrentIndex(index);
+  }
   const submit = () => {
     // {
     //   "car": true,
@@ -265,17 +337,25 @@ const Reservation2 = () => {
   return (
     <Container>
       <Header back="/guest/reservation1" title={""} />
+     <ButtonContainer>
+      {wholeFloor?.map((one,index)=>{
+            return <FloorButton onClick={()=>{changeFloor(index)}}><p>{index+1}층</p></FloorButton>
+          })}
+     </ButtonContainer>
       <MapContainer>
+    
         <Stage
-          style={{ marginTop: "90px" }}
+          style={{ marginTop: "10px" }}
           width={380}
           height={250}
           //   fill={"yellow"}
           //   onMouseDown={checkDeselect}
           //   onTouchStart={checkDeselect}
         >
+        
           <Layer>
-            {tables?.map((table, i) => {
+            {
+              tables[currentIndex]?.map((table, i) => {
               return (
                 <Rect
                   id={table?.id}
@@ -298,18 +378,12 @@ const Reservation2 = () => {
                       : availableTableNumArr.includes(table.tableNum)
                       ? "brown"
                       : "black"
-                    // () => {
-                    //   if (selectedTable?.id == table.id) {
-                    //     return "#764225";
-                    //   } else {
-                    //     return "brown";
-                    //   }
-                    // }
+                 
                   }
                 />
               );
-            })}
-            {walls.map((wall, i) => {
+            }) }
+            {walls[currentIndex]?.map((wall, i) => {
               return (
                 <Rect
                   x={wall.x / 2}
@@ -324,7 +398,7 @@ const Reservation2 = () => {
                 />
               );
             })}
-            {seats.map((seat, i) => {
+            {seats[currentIndex]?.map((seat, i) => {
               return (
                 <Circle
                   x={seat.x / 2}
@@ -335,7 +409,7 @@ const Reservation2 = () => {
                 />
               );
             })}
-            {windows.map((window, i) => {
+            {windows[currentIndex]?.map((window, i) => {
               return (
                 <Rect
                   x={window.x / 2}
@@ -347,7 +421,7 @@ const Reservation2 = () => {
                 />
               );
             })}
-            {doors.map((door, i) => {
+            {doors[currentIndex]?.map((door, i) => {
               return (
                 <Rect
                   x={door.x / 2}
@@ -358,14 +432,15 @@ const Reservation2 = () => {
                   rotation={door.rotation}
                 />
               );
-            })}
+            })
+          }
           </Layer>
         </Stage>
       </MapContainer>
       <SelectedTableBox>
         <InnerTableBox>
           <div>
-            <span>최소 인원 {selectedTable?.minPeople}명</span>
+            <span>최소{currentIndex} 인원 {selectedTable?.minPeople}명</span>
           </div>
           <div>
             <span>최대 인원 {selectedTable?.maxPeople}명</span>
