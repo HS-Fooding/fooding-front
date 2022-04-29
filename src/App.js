@@ -36,7 +36,7 @@ function App() {
                     <Route path="/register" element={<Register />}></Route>
                     <Route path="/manager/login" element={<LoginMg />}></Route>
 
-                    <Route path="/manager/signup" element={<SignUpMg />}></Route>
+                    {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
                     <Route path="/manager/manageReserv" element={<ManageReserv />}></Route>
                     <Route path="/canvas" element={<MyCanvas />}></Route>
                     <Route path="/guest/restaurantList" element={<RestaurantList />}></Route>

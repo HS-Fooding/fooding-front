@@ -2,8 +2,6 @@ import React from "react";
 import _ from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 
-const ReactGridLayout = WidthProvider(RGL);
-
 const dummy = {
     tableInfo: {
         open: "09:00",
@@ -44,7 +42,7 @@ const dummy = {
     ],
 };
 
-const dateTransform = (date, time) => {
+const parseDate = (date, time) => {
     const _date = date.split("-");
     const _time = time.split(":");
 
@@ -59,15 +57,15 @@ const dateTransform = (date, time) => {
     );
 };
 
-const getWorkingHour = (tableLength, open, close) => {
-    return tableLength * ((close - open) / (18 * 100000));
-};
+// const getWorkingHour = (tableLength, open, close) => {
+//     return tableLength * ((close - open) / (18 * 100000));
+// };
 
 const transformData = (dummy) => {
     return {
         date: dummy.tableInfo.date,
-        open: dateTransform(dummy.tableInfo.date, dummy.tableInfo.open),
-        close: dateTransform(dummy.tableInfo.date, dummy.tableInfo.close),
+        open: parseDate(dummy.tableInfo.date, dummy.tableInfo.open),
+        close: parseDate(dummy.tableInfo.date, dummy.tableInfo.close),
         maxUsageTime: dummy.tableInfo.maxUsageTime,
         reservations: dummy.reservations.map((m) => {
             return {
@@ -75,10 +73,10 @@ const transformData = (dummy) => {
                 tableNum: m.tableNum,
                 reservCount: m.reservCount,
                 isCar: m.isCar,
-                reservAt: dateTransform(dummy.tableInfo.date, m.reservAt),
+                reservAt: parseDate(dummy.tableInfo.date, m.reservAt),
                 x: dummy.tableInfo.tableNums.findIndex((t) => t === m.tableNum), // 테이블 번호
                 // prettier-ignore
-                y: (dateTransform(dummy.tableInfo.date, m.reservAt) - dateTransform(dummy.tableInfo.date, dummy.tableInfo.open)) / 30, // 예약 시간
+                y: (parseDate(dummy.tableInfo.date, m.reservAt) - parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) / 30, // 예약 시간
                 w: 1,
                 h: dummy.tableInfo.maxUsageTime / 30,
             };
@@ -86,20 +84,21 @@ const transformData = (dummy) => {
     };
 };
 
+const ReactGridLayout = WidthProvider(RGL);
 const transformed = transformData(dummy);
 const reservations = transformed.reservations;
 
-export default class ManageReserv extends React.PureComponent {
+export default class NoCollisionLayout extends React.PureComponent {
     static defaultProps = {
         className: "layout",
         // items: 50,
+        // cols: 12,
         items: reservations.length,
         cols: dummy.tableInfo.tableNums.length,
-        rowHeight: 10,
+        rowHeight: 30,
         onLayoutChange: function () {},
         // This turns off compaction so you can place items wherever.
-        // verticalCompact: false,
-        compactType: "vertical",
+        verticalCompact: false,
         // This turns off rearrangement so items will not be pushed arround.
         preventCollision: false,
     };
@@ -112,7 +111,7 @@ export default class ManageReserv extends React.PureComponent {
     }
 
     generateDOM() {
-        return _.map(_.range(this.props.items), (i) => {
+        return _.map(_.range(this.props.items), function (i) {
             return (
                 <div key={i}>
                     <span className="text">{i + 1}</span>
@@ -122,14 +121,19 @@ export default class ManageReserv extends React.PureComponent {
     }
 
     generateLayout() {
-        return _.map(reservations, (item, i) => {
-            console.log(item);
-            // const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
+        const p = this.props;
+        console.log("reservations", reservations);
+        return _.map(new Array(p.items), function (item, i) {
+            // const y = Math.ceil(Math.random() * 4) + 1;
+            const y = (reservations[i].y / 1000000) * 4;
+            console.log("y!!!", _.result(p, "y"));
             return {
-                x: parseInt(item.x),
-                y: parseInt(item.y),
-                w: parseInt(item.w),
-                h: parseInt(item.h),
+                x: reservations[i].x,
+                y: Math.floor(i) * y,
+                // y: reservations[i].y,
+                w: reservations[i].w,
+                // h: y,
+                h: reservations[i].h,
                 i: i.toString(),
             };
         });
@@ -141,15 +145,13 @@ export default class ManageReserv extends React.PureComponent {
 
     render() {
         return (
-            <div>
-                <ReactGridLayout
-                    layout={this.state.layout}
-                    onLayoutChange={this.onLayoutChange}
-                    {...this.props}
-                >
-                    {this.generateDOM()}
-                </ReactGridLayout>
-            </div>
+            <ReactGridLayout
+                layout={this.state.layout}
+                onLayoutChange={this.onLayoutChange}
+                {...this.props}
+            >
+                {this.generateDOM()}
+            </ReactGridLayout>
         );
     }
 }
