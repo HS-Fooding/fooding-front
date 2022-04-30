@@ -19,8 +19,7 @@ import RestaurantList from "./guest/router/RestaurantList";
 import Reservation1 from "./guest/router/Reservation1";
 import Reservation2 from "./guest/router/Reservation2";
 import MarketDetail from "./guest/router/MarketDetail";
-
-
+import Location from "./guest/router/Location";
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -45,8 +44,7 @@ function App() {
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
-         
-          
+          <Route path="/guest/location" element={<Location />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

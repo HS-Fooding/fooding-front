@@ -55,12 +55,12 @@ const NextBtn = styled.button`
   width: 95%;
   height: 50px;
   background: white;
-  margin-top: 255px;
+
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  margin: 255px 10px 0px 10px;
+  margin: 190px 10px 0px 10px;
 `;
 
 const Reservation2 = () => {

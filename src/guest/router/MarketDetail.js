@@ -32,8 +32,8 @@ const Container = styled.div`
 const MarketImgsBox = styled.div`
   width: 100%;
   height: 150px;
-  background-color: orange;
-  margin-top: 60px;
+  //background-color: orange;
+  margin-top: 16px;
 `;
 
 const MarketTitleBox = styled.div`
@@ -60,6 +60,7 @@ const MarketTitleBox = styled.div`
   .avgScore {
     font-size: 25px;
     font-weight: bold;
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
@@ -69,6 +70,7 @@ const MarketMenuBox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
 `;
 
 const MenuBtnBox = styled.div`
@@ -83,18 +85,56 @@ const MenuBtnBox = styled.div`
   }
   svg {
     font-size: 30px;
+    color: ${(props) => props.theme.mainColor};
   }
   span {
     font-size: 13px;
     margin: 0 auto;
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
 const MarketDetailInfo = styled.div`
   width: 100%;
-  height: 300px;
-  background-color: skyblue;
+  /* height: 300px; */
+  height: auto;
+  /* margin: 20px 0px; */
+  //background-color: skyblue;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-size: 14px;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
+  .InfosBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    /* padding: 10px; */
+    //background-color: teal;
+    padding: 14px 0px;
+  }
+
+  .marketDesc {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 15px 0px;
+  }
+
+  p {
+    /* letter-spacing: 0.1em; */
+    line-height: 1.5;
+  }
+  .marketIntro {
+  }
 `;
+
+const EachInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0px;
+`;
+
 const MarketMenuInfo = styled.div`
   width: 100%;
   height: 700px;
@@ -155,11 +195,7 @@ const MenuImg = styled.div`
     }
   }
 `;
-const TempBox = styled.div`
-  width: 100%;
-  height: 100%;
-  background: teal;
-`;
+
 const MoreMenu = styled.div`
   width: 100%;
   height: 30px;
@@ -179,6 +215,7 @@ const MarketDetail = () => {
   const [representativeNNormal, setRepresentativeNNormal] = useState();
   const [toggle, setToggle] = useState(false);
   const { marketId } = useParams();
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     console.log("marketId", marketId);
@@ -192,6 +229,28 @@ const MarketDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setMarket(response.data);
+        const korCategory = response.data.category.map((category) => {
+          if (category === "KOREAN") return "한식";
+          else if (category === "JAPANESE") return "일식";
+          else if (category === "CHINESE") return "중식";
+          else if (category === "WESTERN") return "양식";
+          else if (category === "VIETNAM") return "베트남";
+          else if (category === "TAIWAN") return "태국";
+          else if (category === "SNACK") return "분식";
+          else if (category === "NOODLE") return "면요리";
+          else if (category === "BBQ") return "바베큐";
+          else if (category === "PORK") return "돼지고기";
+          else if (category === "BEEF") return "소고기";
+          else if (category === "CHICKEN") return "닭고기";
+          else if (category === "LAMB") return "양고기";
+          else if (category === "CAFE") return "카페";
+          else if (category === "DESSERT") return "디저트";
+          else if (category === "BAR") return "바";
+          else if (category === "PUB") return "술집";
+        });
+
+        console.log(korCategory);
+        setCategory(korCategory);
 
         localStorage.setItem(
           "weekdaysWorkHour",
@@ -253,11 +312,11 @@ const MarketDetail = () => {
         <div className="leftInfos">
           <span className="marketName">{market?.name}</span>
           <div>
-            <span>
+            <span style={{ color: "gray" }}>
               {" "}
               <FontAwesomeIcon icon={faEye} /> {market?.viewCount}
             </span>
-            <span>
+            <span style={{ color: "gray" }}>
               {" "}
               <FontAwesomeIcon icon={faPencil} style={{ marginRight: "6px" }} />
               {market?.reviewCount}
@@ -294,6 +353,48 @@ const MarketDetail = () => {
       </MarketMenuBox>
       <MarketDetailInfo>
         {/* 매장소개, 운영시간,주소,전화번호(매장,개인),주차공간,최대이용가능시간,카테고리, */}
+        <span className="marketDesc">매장 소개</span>
+        <p clasName="marketIntro">{market?.intro}</p>
+        <div className="InfosBox">
+          <span className="marketDesc">편의정보</span>
+          <EachInfo>
+            <span>카테고리</span>
+            <div>
+              {category?.map((c, index) =>
+                category.length == index + 1 ? (
+                  <span style={{ marginLeft: "4px" }}>{c} </span>
+                ) : (
+                  <span style={{ marginLeft: "4px" }}>{c} /</span>
+                )
+              )}
+            </div>
+          </EachInfo>
+          <EachInfo>
+            <span>영업시간</span>
+            <span>
+              주중 {market?.weekdaysWorkHour.open.substring(0, 5)}-
+              {market?.weekdaysWorkHour.close.substring(0, 5)} 주말{" "}
+              {market?.weekendsWorkHour.open.substring(0, 5)}-
+              {market?.weekendsWorkHour.close.substring(0, 5)}
+            </span>
+          </EachInfo>
+          <EachInfo>
+            <span>주소</span>
+            <span>{market?.location.addressName}</span>
+          </EachInfo>
+          <EachInfo>
+            <span>주차정보</span>
+            <span>{market?.parkingInfo}</span>
+          </EachInfo>
+          <EachInfo>
+            <span>개인번호</span>
+            <span>{market?.tel[0]}</span>
+          </EachInfo>
+          <EachInfo>
+            <span>사업자번호</span>
+            <span>{market?.tel[1]}</span>
+          </EachInfo>
+        </div>
       </MarketDetailInfo>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게

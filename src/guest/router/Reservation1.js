@@ -22,7 +22,8 @@ const MainBox = styled.div`
   height: 100%;
   //justify-content: center;
   align-items: center;
-  margin-top: 90px;
+  /* margin-top: 90px; */
+  margin-top: 30px;
   flex-direction: column;
   position: relative;
 `;

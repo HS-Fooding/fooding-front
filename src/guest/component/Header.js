@@ -5,6 +5,7 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
+  /* position: absolute; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +16,8 @@ const Container = styled.div`
   padding: 5px 15px;
   font-size: 15px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
-  position: absolute;
+  /* /* position: absolute; */
+  position: sticky;
   top: 0;
   font-weight: bold;
   z-index: 3;
