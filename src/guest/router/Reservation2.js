@@ -23,13 +23,21 @@ const ButtonContainer = styled.div`
   height:30px;
   display:flex;
   margin-top:70px;
-  background-color:red;
 `;
 const FloorButton = styled.div`
-  width:80px;
-  height:30px;
+  margin-left:10px;
+  width:40px;
+  height:25px;
+  font-size:15px;
   border-radius:10px;
   border:solid black 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  :hover{
+    cursor:pointer;
+  }
+ 
 `;
 const MapContainer = styled.div`
   width: 400px;

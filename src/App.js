@@ -19,6 +19,8 @@ import RestaurantList from "./guest/router/RestaurantList";
 import Reservation1 from "./guest/router/Reservation1";
 import Reservation2 from "./guest/router/Reservation2";
 import MarketDetail from "./guest/router/MarketDetail";
+import RestaurantSearch from "./guest/router/RestaurantSearch";
+import RestaurantInput from "./guest/component/RestaurantInput";
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
             path="/guest/restaurantList"
             element={<RestaurantList />}
           ></Route>
+          <Route path="/guest/restaurantSearch" element={<RestaurantSearch/>}></Route>
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>

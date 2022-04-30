@@ -52,9 +52,10 @@ const RestaurantHeader = () => {
       </AreaContainer>
       <MapSearchContainer>
         {" "}
+        {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}
         <div>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </div>{" "}
+          <Link  to={`/guest/restaurantSearch`}><FontAwesomeIcon icon={faMagnifyingGlass} />
+          </Link></div>{" "}
         <p> | </p>{" "}
         <div>
           <FontAwesomeIcon icon={faMap} />
