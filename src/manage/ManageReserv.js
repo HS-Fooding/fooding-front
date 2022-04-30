@@ -88,7 +88,9 @@ const ReactGridLayout = WidthProvider(RGL);
 const transformed = transformData(dummy);
 const reservations = transformed.reservations;
 
-export default class NoCollisionLayout extends React.PureComponent {
+export default class ManageReserv extends React.Component {
+    state = { layout: [] };
+
     static defaultProps = {
         className: "layout",
         // items: 50,
@@ -98,7 +100,8 @@ export default class NoCollisionLayout extends React.PureComponent {
         rowHeight: 30,
         onLayoutChange: function () {},
         // This turns off compaction so you can place items wherever.
-        verticalCompact: false,
+        // verticalCompact: false,
+        compactType: null,
         // This turns off rearrangement so items will not be pushed arround.
         preventCollision: false,
     };
@@ -110,10 +113,24 @@ export default class NoCollisionLayout extends React.PureComponent {
         this.state = { layout };
     }
 
+    onLayoutChange = (layout) => {
+        console.log("!!");
+        this.setState({ layout: layout });
+        this.props.onLayoutChange(layout);
+    };
+
     generateDOM() {
-        return _.map(_.range(this.props.items), function (i) {
+        return _.map(this.state.layout, function (l, i) {
+            console.log(l);
             return (
-                <div key={i}>
+                <div
+                    key={i}
+                    // onClick={function (event) {
+                    // this.props.onLayoutChange(layout);
+                    // console.log(l);
+                    // this.onLayoutChange(l);
+                    // }}
+                >
                     <span className="text">{i + 1}</span>
                 </div>
             );
@@ -122,11 +139,9 @@ export default class NoCollisionLayout extends React.PureComponent {
 
     generateLayout() {
         const p = this.props;
-        console.log("reservations", reservations);
         return _.map(new Array(p.items), function (item, i) {
             // const y = Math.ceil(Math.random() * 4) + 1;
             const y = (reservations[i].y / 1000000) * 4;
-            console.log("y!!!", _.result(p, "y"));
             return {
                 x: reservations[i].x,
                 y: Math.floor(i) * y,
@@ -134,24 +149,50 @@ export default class NoCollisionLayout extends React.PureComponent {
                 w: reservations[i].w,
                 // h: y,
                 h: reservations[i].h,
+                nickname: reservations[i].nickname,
+                tableNum: reservations[i].tableNum,
+                reservCount: reservations[i].reservCount,
+                isCar: reservations[i].isCar,
+                reservAt: reservations[i].reservAt,
                 i: i.toString(),
             };
         });
     }
 
-    onLayoutChange(layout) {
-        this.props.onLayoutChange(layout);
+    stringifyLayout() {
+        return this.state.layout.map(function (l) {
+            const name = l.i === "__dropping-elem__" ? "drop" : l.i;
+            return (
+                <div className="layoutItem" key={l.i}>
+                    <b>{name}</b>
+                    {`: [${l.x}, ${l.y}, ${l.w}, ${l.h}]`}
+                </div>
+            );
+        });
     }
 
     render() {
         return (
-            <ReactGridLayout
-                layout={this.state.layout}
-                onLayoutChange={this.onLayoutChange}
-                {...this.props}
-            >
-                {this.generateDOM()}
-            </ReactGridLayout>
+            <div>
+                <ReactGridLayout
+                    layout={this.state.layout}
+                    onDragStop={this.onLayoutChange}
+                    {...this.props}
+                >
+                    {this.generateDOM()}
+                </ReactGridLayout>
+                <div>
+                    <div className="layoutJSON">
+                        Displayed as <code>[x, y, w, h]</code>
+                        <br />
+                        <br />
+                        <div className="columns">{this.stringifyLayout()}</div>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
+
+// import("./test-hook.jsx").then((fn) => fn.default(ManageReserv));
+// console.log("asdf");

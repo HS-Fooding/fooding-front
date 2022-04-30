@@ -15,6 +15,8 @@ import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import ManageReserv from "./manage/ManageReserv";
+// import ManageReserv from "./manage/ManageReserv2";
+
 import maincanvas from "./manage/maincanvas";
 import RestaurantList from "./guest/router/RestaurantList";
 import Reservation1 from "./guest/router/Reservation1";
