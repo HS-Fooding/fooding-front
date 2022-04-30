@@ -133,6 +133,10 @@ const EachInfo = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 0px;
+
+  .marketDescTitle {
+    font-weight: bold;
+  }
 `;
 
 const MarketMenuInfo = styled.div`
@@ -358,7 +362,7 @@ const MarketDetail = () => {
         <div className="InfosBox">
           <span className="marketDesc">편의정보</span>
           <EachInfo>
-            <span>카테고리</span>
+            <span className="marketDescTitle">카테고리</span>
             <div>
               {category?.map((c, index) =>
                 category.length == index + 1 ? (
@@ -370,28 +374,28 @@ const MarketDetail = () => {
             </div>
           </EachInfo>
           <EachInfo>
-            <span>영업시간</span>
+            <span className="marketDescTitle">영업시간</span>
             <span>
               주중 {market?.weekdaysWorkHour.open.substring(0, 5)}-
-              {market?.weekdaysWorkHour.close.substring(0, 5)} 주말{" "}
+              {market?.weekdaysWorkHour.close.substring(0, 5)} / 주말{" "}
               {market?.weekendsWorkHour.open.substring(0, 5)}-
               {market?.weekendsWorkHour.close.substring(0, 5)}
             </span>
           </EachInfo>
           <EachInfo>
-            <span>주소</span>
+            <span className="marketDescTitle">주소</span>
             <span>{market?.location.addressName}</span>
           </EachInfo>
           <EachInfo>
-            <span>주차정보</span>
+            <span className="marketDescTitle">주차정보</span>
             <span>{market?.parkingInfo}</span>
           </EachInfo>
           <EachInfo>
-            <span>개인번호</span>
+            <span className="marketDescTitle">개인번호</span>
             <span>{market?.tel[0]}</span>
           </EachInfo>
           <EachInfo>
-            <span>사업자번호</span>
+            <span className="marketDescTitle">사업자번호</span>
             <span>{market?.tel[1]}</span>
           </EachInfo>
         </div>
