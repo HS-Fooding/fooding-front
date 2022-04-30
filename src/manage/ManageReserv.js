@@ -16,7 +16,7 @@ const dummy = {
             tableNum: "1",
             nickname: "leo",
             reservCount: 4,
-            isCar: true,
+            isCar: false,
         },
         {
             reservAt: "11:30",
@@ -28,14 +28,14 @@ const dummy = {
         {
             reservAt: "15:00",
             tableNum: "3",
-            nickname: "leo",
+            nickname: "tom",
             reservCount: 3,
-            isCar: true,
+            isCar: false,
         },
         {
             reservAt: "17:00",
             tableNum: "3",
-            nickname: "leo",
+            nickname: "sam",
             reservCount: 3,
             isCar: true,
         },
@@ -89,7 +89,7 @@ const transformed = transformData(dummy);
 const reservations = transformed.reservations;
 
 export default class ManageReserv extends React.Component {
-    state = { layout: [] };
+    state = { layout: [], data: [...reservations] };
 
     static defaultProps = {
         className: "layout",
@@ -114,24 +114,34 @@ export default class ManageReserv extends React.Component {
     }
 
     onLayoutChange = (layout) => {
-        console.log("!!");
-        this.setState({ layout: layout });
+        // console.log("layout!!", layout);
+        const tmp = { ...this.state.layout };
+        // console.log("???", tmp);
+
+        for (var i = 0; i < Object.keys(tmp).length; i++) {
+            // console.log(tmp[i]);
+            tmp[i].x = parseInt(layout[i].x);
+            tmp[i].y = parseInt(layout[i].y);
+            tmp[i].w = parseInt(layout[i].w);
+            tmp[i].h = parseInt(layout[i].h);
+        }
+
+        this.setState({ layout: Object.keys(tmp).map((m, i) => tmp[i]) });
         this.props.onLayoutChange(layout);
     };
 
     generateDOM() {
+        // console.log(this.state.layout);
         return _.map(this.state.layout, function (l, i) {
-            console.log(l);
+            // console.log(l);
             return (
-                <div
-                    key={i}
-                    // onClick={function (event) {
-                    // this.props.onLayoutChange(layout);
-                    // console.log(l);
-                    // this.onLayoutChange(l);
-                    // }}
-                >
-                    <span className="text">{i + 1}</span>
+                <div key={i}>
+                    {/* <div className="text">{i + 1}</div> */}
+                    <div>nickname : {l.nickname}</div>
+                    <div>tableNum : {l.tableNum}</div>
+                    <div>reservAt : {l.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div>
+                    <div>reservCount : {l.reservCount}</div>
+                    <div>isCar : {l.isCar ? "yes" : "no"}</div>
                 </div>
             );
         });
@@ -177,6 +187,7 @@ export default class ManageReserv extends React.Component {
                 <ReactGridLayout
                     layout={this.state.layout}
                     onDragStop={this.onLayoutChange}
+                    onResize={this.onLayoutChange}
                     {...this.props}
                 >
                     {this.generateDOM()}
