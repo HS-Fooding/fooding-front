@@ -126,6 +126,7 @@ const Location = () => {
       <Header back="/guest/restaurantList" title={""} />
       <div>
         <div id="map" style={{ width: "410px", height: "710px" }}></div>
+        {/* <div id="map" style={{ width: "120px", height: "120px" }}></div> */}
       </div>
       <MarketBox>
         <ImgBox></ImgBox>
