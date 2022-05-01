@@ -46,13 +46,10 @@ const dummy = {
 
 const parseDate = (date, time) => {
     const _date = date.split("-");
-    // _date.forEach((m) => console.log(m));
     const _time = time.split(":");
 
     const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 
-    // const utc = open.getTime() + open.getTimezoneOffset() * 60 * 1000;
-    // const kr_time = new Date(utc + KR_TIME_DIFF);
     const result = new Date(_date[0], _date[1] - 1, _date[2]);
 
     result.setHours(_time[0]);
@@ -75,11 +72,6 @@ const transformData = (dummy) => {
                 (parseDate(dummy.tableInfo.date, m.reservAt) -
                     parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
                 (60 * 1000 * BLOCK_OF_TIME);
-
-            console.log("diff", diff);
-            // console.log("reservAt", parseDate(dummy.tableInfo.date, m.reservAt));
-            // const y = (diff.getHours() * 60 + diff.getMinutes()) / 30;
-            // console.log(y);
 
             return {
                 nickname: m.nickname,
@@ -106,8 +98,6 @@ export default class ManageReserv extends React.Component {
 
     static defaultProps = {
         className: "layout",
-        // items: 50,
-        // cols: 12,
         items: reservations.length,
         cols: dummy.tableInfo.tableNums.length,
         rowHeight: 30,
@@ -127,15 +117,9 @@ export default class ManageReserv extends React.Component {
     }
 
     onLayoutChange = (layout) => {
-        // console.log("layout!!", layout);
         const tmp = { ...this.state.layout };
-        // console.log("???", tmp);
-
         const restInfo = { ...this.state.restInfo };
         const open = restInfo.open;
-
-        // console.log(open.getHours(), "//", open.getMinutes());
-        // console.log(open.toLocaleString());
 
         for (var i = 0; i < Object.keys(tmp).length; i++) {
             tmp[i].x = parseInt(layout[i].x);
@@ -178,19 +162,10 @@ export default class ManageReserv extends React.Component {
     generateLayout() {
         const p = this.props;
         return _.map(new Array(p.items), function (item, i) {
-            // const y = Math.ceil(Math.random() * 4) + 1;
-            // const open_hours = open.getHours();
-            // const open_minutes = open.getMinutes();
-            // const reserv_hour = tmp[i].y / 2 + open_hours + open_minutes / 30;
-            // const reserv_minute = (((tmp[i].y / 2 + open_hours + open_minutes) % 30) % 1) * 60;
-            // console.log("reservations", reservations);
-            // const y = (reservations[i].y / 1000000) * 4;
             return {
                 x: reservations[i].x,
-                // y: Math.floor(i) * y, //
                 y: reservations[i].y,
                 w: reservations[i].w,
-                // h: y,
                 h: reservations[i].h,
                 nickname: reservations[i].nickname,
                 tableNum: reservations[i].tableNum,
@@ -237,6 +212,3 @@ export default class ManageReserv extends React.Component {
         );
     }
 }
-
-// import("./test-hook.jsx").then((fn) => fn.default(ManageReserv));
-// console.log("asdf");
