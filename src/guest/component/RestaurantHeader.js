@@ -58,7 +58,12 @@ const RestaurantHeader = () => {
           </Link></div>{" "}
         <p> | </p>{" "}
         <div>
-          <FontAwesomeIcon icon={faMap} />
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to="/guest/location"
+          >
+            <FontAwesomeIcon icon={faMap} />
+          </Link>
         </div>{" "}
       </MapSearchContainer>
     </Container>

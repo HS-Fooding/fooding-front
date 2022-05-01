@@ -98,16 +98,14 @@ const getSearch = (e) =>{
   return (
     <Container>
       <AreaContainer>
-      <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
-      </AreaContainer>
-      <MapSearchContainer>
-    
-        {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}
-        
-        <InputContainer><form onSubmit={getSearch} ><input onChange={bringSearchWord} value={searchWord} type="text"></input></form></InputContainer>
-        {/* <div>
-          <FontAwesomeIcon icon={faMap} />
-        </div> */}
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+          </AreaContainer>
+          <MapSearchContainer>        
+            {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}            
+          <InputContainer><form onSubmit={getSearch} ><input onChange={bringSearchWord} value={searchWord} type="text"></input></form></InputContainer>
+            {/* <div>
+              <FontAwesomeIcon icon={faMap} />
+            </div> */}
         </MapSearchContainer>
 
     </Container>

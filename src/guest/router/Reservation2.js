@@ -76,12 +76,11 @@ const NextBtn = styled.button`
   width: 95%;
   height: 50px;
   background: white;
-  margin-top: 200px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  margin: 255px 10px 0px 10px;
+  margin: 190px 10px 0px 10px;
 `;
 
 const Reservation2 = () => {
@@ -90,8 +89,8 @@ const Reservation2 = () => {
   const [walls, setWalls] = useState([]);
   const [windows, setWindows] = useState([]);
   const [doors, setDoors] = useState([]);
-  const [wholeFloorsLength,setWholeFloorsLength] = useState();
-  const [wholeFloor,setWholeFloor] = useState();
+  const [wholeFloorsLength, setWholeFloorsLength] = useState();
+  const [wholeFloor, setWholeFloor] = useState();
   const [selectedId, selectShape] = useState(null);
   const [tableCnt, setTableCnt] = useState([]);
   const [seatCnt, setSeatCnt] = useState([]);
@@ -99,7 +98,7 @@ const Reservation2 = () => {
   const [windowCnt, setWindowCnt] = useState([]);
   const [doorCnt, setDoorCnt] = useState([]);
   const [id, setId] = useState();
-  const [currentIndex,setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedTable, setSelectedTable] = useState();
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
@@ -122,144 +121,126 @@ const Reservation2 = () => {
         const floors = response.data.floors;
         setWholeFloorsLength(floors.length);
         setWholeFloor(floors);
-        console.log("floors length",wholeFloorsLength);
-       let tempTableCntArr=[]; 
-       let tempSeatCntArr=[];
-       let tempWallCntArr=[];
-       let tempWindowCntArr=[];
-       let tempDoorCntArr=[];
-       
-       let tempTablesArr=[]; 
-       let tempSeatsArr=[];
-       let tempWallsArr=[];
-       let tempWindowsArr=[];
-       let tempDoorsArr=[];
-       
-       for(var i=0;i<response.data.floors.length;i++){
-          
-        const tempTable = [];
-        const tempSeat = [];
-        const tempWall = [];
-        const tempWindow = [];
-        const tempDoor = [];
+        console.log("floors length", wholeFloorsLength);
+        let tempTableCntArr = [];
+        let tempSeatCntArr = [];
+        let tempWallCntArr = [];
+        let tempWindowCntArr = [];
+        let tempDoorCntArr = [];
 
-       
-         floors[i].tables.forEach((t, id) => {
-          const table = {
-            x: t.x,
-            y: t.y,
-            width: t.width,
-            height: t.height,
-            fill: "brown",
-            rotation: t.rotation,
-            id: "table" + id,
-            tableNum: t.tableNum,
-            minPeople: t.minPeople,
-            maxPeople: t.maxPeople,
-          };
-          tempTable.push(table);
-          setId(id);
-      
-      
-        });    
-        tempTableCntArr.push(floors[i].tables.length);  
-        console.log("tempTableCntArr",tempTableCntArr);       
-       
-        floors[i].seats.map((s, id) => {
-          const seat = {
-            x: s.x,
-            y: s.y,
-            radius: 20,
-            fill: "gray",
-            id: "seat" + id,
-          };
-          tempSeat.push(seat);
-         
-        });
-        tempSeatCntArr.push(floors[i].seats.length);
-            
-       
-        floors[i].walls.map((w, id) => {
-          const wall = {
-            x: w.x,
-            y: w.y,
-            width: w.width,
-            height: 5,
-            fill: "black",
-            rotation: w.rotation,
-            id: "wall" + id,
-          };
-          tempWall.push(wall);
-      
-        });
-        tempWallCntArr.push(floors[i].walls.length);
-       
+        let tempTablesArr = [];
+        let tempSeatsArr = [];
+        let tempWallsArr = [];
+        let tempWindowsArr = [];
+        let tempDoorsArr = [];
 
-        floors[i].windows.map((w, id) => {
-          const window = {
-            x: w.x,
-            y: w.y,
-            width: w.width,
-            height: 5,
-            fill: "skyblue",
-            rotation: w.rotation,
-            id: "window" + id,
-          };
-          tempWindow.push(window);
-        
-        });
-        tempWindowCntArr.push(floors[i].windows.length);
-       
-        
-        floors[i].doors.map((d, id) => {
-          const door = {
-            x: d.x,
-            y: d.y,
-            width: d.width,
-            height: 15,
-            fill: "green",
-            rotation: d.rotation,
-            id: "door" + id,
-          };
-          tempDoor.push(door);
-         
-        });
-        tempDoorCntArr.push(floors[i].doors.length);
-       
-        tempTablesArr.push(tempTable);
-        tempSeatsArr.push(tempSeat);
-        tempWallsArr.push(tempWall);
-        tempWindowsArr.push(tempWindow);
-        tempDoorsArr.push(tempDoor);
-        
-        
-     
-       
-    
-      }//for문을 돌면서 floor에 있는 요소를 다 저장을 해줘야함 
+        for (var i = 0; i < response.data.floors.length; i++) {
+          const tempTable = [];
+          const tempSeat = [];
+          const tempWall = [];
+          const tempWindow = [];
+          const tempDoor = [];
 
-      setTableCnt(tempTableCntArr);      
-      setSeatCnt(tempSeatCntArr);
-      setWallCnt(tempWallCntArr);
-      setWindowCnt(tempWindowCntArr);
-      setDoorCnt(tempDoorCntArr);
+          floors[i].tables.forEach((t, id) => {
+            const table = {
+              x: t.x,
+              y: t.y,
+              width: t.width,
+              height: t.height,
+              fill: "brown",
+              rotation: t.rotation,
+              id: "table" + id,
+              tableNum: t.tableNum,
+              minPeople: t.minPeople,
+              maxPeople: t.maxPeople,
+            };
+            tempTable.push(table);
+            setId(id);
+          });
+          tempTableCntArr.push(floors[i].tables.length);
+          console.log("tempTableCntArr", tempTableCntArr);
 
-      setTables(tempTablesArr);
-      setSeats(tempSeatsArr);
-      setWalls(tempWallsArr);
-      setWindows(tempWindowsArr);
-      setDoors(tempDoorsArr);
+          floors[i].seats.map((s, id) => {
+            const seat = {
+              x: s.x,
+              y: s.y,
+              radius: 20,
+              fill: "gray",
+              id: "seat" + id,
+            };
+            tempSeat.push(seat);
+          });
+          tempSeatCntArr.push(floors[i].seats.length);
 
-      
-      // console.log("real tableCnts",tableCnt);
-      // console.log("real setSeatCnt",seatCnt);
-      // console.log("real setWallCnt",wallCnt);
-      // console.log("real setWindowCnt",windowCnt);
-      // console.log("real setDoorCnt",doorCnt);
+          floors[i].walls.map((w, id) => {
+            const wall = {
+              x: w.x,
+              y: w.y,
+              width: w.width,
+              height: 5,
+              fill: "black",
+              rotation: w.rotation,
+              id: "wall" + id,
+            };
+            tempWall.push(wall);
+          });
+          tempWallCntArr.push(floors[i].walls.length);
 
-      // console.log("tablestables",tempTablesArr);
-     console.log("wholeFloor",wholeFloor);
-      
+          floors[i].windows.map((w, id) => {
+            const window = {
+              x: w.x,
+              y: w.y,
+              width: w.width,
+              height: 5,
+              fill: "skyblue",
+              rotation: w.rotation,
+              id: "window" + id,
+            };
+            tempWindow.push(window);
+          });
+          tempWindowCntArr.push(floors[i].windows.length);
+
+          floors[i].doors.map((d, id) => {
+            const door = {
+              x: d.x,
+              y: d.y,
+              width: d.width,
+              height: 15,
+              fill: "green",
+              rotation: d.rotation,
+              id: "door" + id,
+            };
+            tempDoor.push(door);
+          });
+          tempDoorCntArr.push(floors[i].doors.length);
+
+          tempTablesArr.push(tempTable);
+          tempSeatsArr.push(tempSeat);
+          tempWallsArr.push(tempWall);
+          tempWindowsArr.push(tempWindow);
+          tempDoorsArr.push(tempDoor);
+        } //for문을 돌면서 floor에 있는 요소를 다 저장을 해줘야함
+
+        setTableCnt(tempTableCntArr);
+        setSeatCnt(tempSeatCntArr);
+        setWallCnt(tempWallCntArr);
+        setWindowCnt(tempWindowCntArr);
+        setDoorCnt(tempDoorCntArr);
+
+        setTables(tempTablesArr);
+        setSeats(tempSeatsArr);
+        setWalls(tempWallsArr);
+        setWindows(tempWindowsArr);
+        setDoors(tempDoorsArr);
+
+        // console.log("real tableCnts",tableCnt);
+        // console.log("real setSeatCnt",seatCnt);
+        // console.log("real setWallCnt",wallCnt);
+        // console.log("real setWindowCnt",windowCnt);
+        // console.log("real setDoorCnt",doorCnt);
+
+        // console.log("tablestables",tempTablesArr);
+        console.log("wholeFloor", wholeFloor);
       })
       .catch(function (error) {
         console.log(error);
@@ -267,14 +248,14 @@ const Reservation2 = () => {
   };
   useEffect(() => {
     getShape();
-    
+
     // setPossibleTableArr(...availableTable.tableNum);
     console.log(
       "받아옴:",
 
       availableTable
     );
-      
+
     const availableTableNumArr = availableTable.map((table) => {
       return table.tableNum;
     });
@@ -290,10 +271,10 @@ const Reservation2 = () => {
 
     setSelectedTable(obj);
   };
-  const changeFloor = (index)=>{ 
-    console.log("indexindexindex",index);
+  const changeFloor = (index) => {
+    console.log("indexindexindex", index);
     setCurrentIndex(index);
-  }
+  };
   const submit = () => {
     // {
     //   "car": true,
@@ -345,13 +326,20 @@ const Reservation2 = () => {
   return (
     <Container>
       <Header back="/guest/reservation1" title={""} />
-     <ButtonContainer>
-      {wholeFloor?.map((one,index)=>{
-            return <FloorButton onClick={()=>{changeFloor(index)}}><p>{index+1}층</p></FloorButton>
-          })}
-     </ButtonContainer>
+      <ButtonContainer>
+        {wholeFloor?.map((one, index) => {
+          return (
+            <FloorButton
+              onClick={() => {
+                changeFloor(index);
+              }}
+            >
+              <p>{index + 1}층</p>
+            </FloorButton>
+          );
+        })}
+      </ButtonContainer>
       <MapContainer>
-    
         <Stage
           style={{ marginTop: "10px" }}
           width={380}
@@ -360,10 +348,8 @@ const Reservation2 = () => {
           //   onMouseDown={checkDeselect}
           //   onTouchStart={checkDeselect}
         >
-        
           <Layer>
-            {
-              tables[currentIndex]?.map((table, i) => {
+            {tables[currentIndex]?.map((table, i) => {
               return (
                 <Rect
                   id={table?.id}
@@ -386,11 +372,10 @@ const Reservation2 = () => {
                       : availableTableNumArr.includes(table.tableNum)
                       ? "brown"
                       : "black"
-                 
                   }
                 />
               );
-            }) }
+            })}
             {walls[currentIndex]?.map((wall, i) => {
               return (
                 <Rect
@@ -440,15 +425,16 @@ const Reservation2 = () => {
                   rotation={door.rotation}
                 />
               );
-            })
-          }
+            })}
           </Layer>
         </Stage>
       </MapContainer>
       <SelectedTableBox>
         <InnerTableBox>
           <div>
-            <span>최소{currentIndex} 인원 {selectedTable?.minPeople}명</span>
+            <span>
+              최소 인원 {selectedTable?.minPeople}명
+            </span>
           </div>
           <div>
             <span>최대 인원 {selectedTable?.maxPeople}명</span>

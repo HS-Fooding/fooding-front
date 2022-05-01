@@ -15,6 +15,16 @@ const ImgContainer = styled.div`
     object-fit: cover;
     margin-right: 10px;
   }
+
+  /* .slick-list {
+    display: flex;
+    width: 100%;
+  }
+
+  .slick-track {
+    display: flex;
+    width: 100%;
+  } */
 `;
 
 function MultipleSlider({ images }) {

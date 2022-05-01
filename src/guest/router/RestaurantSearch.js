@@ -16,14 +16,41 @@ import { faMap, faMagnifyingGlass,faAngleLeft } from "@fortawesome/free-solid-sv
 // border: 1px solid black;
 
 const Container = styled.div`
-  width: 410px;
+   width: 410px;
   height: 770px;
   position: relative;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
+`;
+const HeaderContainer = styled.div`
+display: flex;
   
+  align-items: center;
+  width: 410px;
+  height: 60px;
+  background-color: white;
+  color: black;
+  padding: 5px 15px;
+  font-size: 15px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  position: absolute;
+  
+  top: 0;
+  font-weight: bold;
+  z-index: 3;
+  .icon {
+    cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.manColor};
+    }
+    color: ${(props) => props.theme.mainColor};
+  }
+  .map{
+    
+  }
 
 `;
 const ListContainer = styled.div`
@@ -65,8 +92,6 @@ const AreaContainer = styled.div`
   width: 50px;
   height: 30px;
   font-size: 11px;
-  margin-left:20px;
-  background-color:orange;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +105,7 @@ const AreaContainer = styled.div`
   }
 `;
 const MapSearchContainer = styled.div`
-  width: 200px;
+  width: 340px;
   background-color:blue;
   margin-right: 10px;
  
@@ -89,16 +114,23 @@ const MapSearchContainer = styled.div`
   color: gray;
   display: flex;
   justify-content: space-between;
-  input {
-    width:300px;
-  }
+  
 `;
 const InputContainer = styled.div`
-  width:100px;
+  width:300px;
   height:30px;
+  margin-left:15px;
   input{
+    width:300px;
     height:30px;
-
+    border:0;
+    outline:0;
+    font-size:15px;
+    color:transparent;
+    text-shadow:0 0 0 #000000;
+   &:focus{
+      outline:none;
+   }
   }
 `;
 const ResearchContainer = styled.div`
@@ -122,18 +154,19 @@ const RestaurantSearch = () => {
   
   const [searchWord,setSearchWord] = useState();
   const [searchResult,setSearchResult] = useState([]);
+
+  const [post,setPost] = useState(false);
   //const [last,setLast] = useState(false);
   let searchResultLet;
   let last = false
-  let currentPage=0;
-
   const bringSearchWord=(e)=>{
     setSearchWord(e.target.value);
     console.log(e.target.value);
   }
 const getSearch = (e) =>{
   e.preventDefault();
-  setSearchWord("");
+ // setSearchWord("");
+ setPost(true);
   const getToken = localStorage.getItem("token");
   const id = localStorage.getItem("marketId");
   //.get(url + `/fooding/restaurant/${id}`, {
@@ -160,21 +193,16 @@ const getSearch = (e) =>{
   return (
     <>    
    <Container>
-     <ResearchContainer>
-       <AreaContainer>
-         <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
-      </AreaContainer>
-      <MapSearchContainer>
-    
-        {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}
-        
+     <HeaderContainer>
+       <Link to={`/guest/restaurantList`}>
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        </Link>  
         <InputContainer><form onSubmit={getSearch} ><input onChange={bringSearchWord} value={searchWord} type="text"></input></form></InputContainer>
-        {/* <div>
-          <FontAwesomeIcon icon={faMap} />
-        </div> */}
-        </MapSearchContainer>
-        </ResearchContainer>
-<ListContainer>
+       {post ? <div className="map">
+          <FontAwesomeIcon icon={faMap} className="icon" size="lg"/>
+        </div> : null}
+    </HeaderContainer>
+    <ListContainer>
       {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
      
       {searchResult?.map((content,index)=>{
@@ -188,7 +216,9 @@ const getSearch = (e) =>{
           }}        
        style={{ textDecoration: "none", color: "inherit" }}
       ><Restaurant content={content} /></Link>
-     
+     //focus가 되기 전에는 걍 지도 아이콘 없는 input 창인데
+     //focus가 되면 input창이 생기고 검색하면 
+     //검색한 결과와 지도 아이콘이 오른쪽에 뜸 
          
     })}
     </ListContainer> 

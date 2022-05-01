@@ -15,6 +15,10 @@ import {
   faEye,
   faPencil,
   faStar,
+  faChevronRight,
+  faChevronDown,
+  faAngleDown,
+  faAngleRight
 } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   border: 1px solid black;
@@ -32,8 +36,8 @@ const Container = styled.div`
 const MarketImgsBox = styled.div`
   width: 100%;
   height: 150px;
-  background-color: orange;
-  margin-top: 60px;
+  //background-color: orange;
+  margin-top: 16px;
 `;
 
 const MarketTitleBox = styled.div`
@@ -60,6 +64,7 @@ const MarketTitleBox = styled.div`
   .avgScore {
     font-size: 25px;
     font-weight: bold;
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
@@ -69,6 +74,7 @@ const MarketMenuBox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
 `;
 
 const MenuBtnBox = styled.div`
@@ -83,21 +89,73 @@ const MenuBtnBox = styled.div`
   }
   svg {
     font-size: 30px;
+    color: ${(props) => props.theme.mainColor};
   }
   span {
     font-size: 13px;
     margin: 0 auto;
+    color: ${(props) => props.theme.mainColor};
   }
 `;
 
 const MarketDetailInfo = styled.div`
   width: 100%;
-  height: 300px;
-  background-color: skyblue;
+  /* height: 300px; */
+  height: auto;
+  /* margin: 20px 0px; */
+  //background-color: skyblue;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-size: 14px;
+  border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
+  .InfosBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    /* padding: 10px; */
+    //background-color: teal;
+    padding: 14px 0px;
+  }
+
+  .marketDesc {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 15px 0px;
+  }
+
+  p {
+    /* letter-spacing: 0.1em; */
+    line-height: 1.5;
+  }
+  .marketIntro {
+  }
 `;
+
+const EachInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0px;
+
+  .marketDescTitle {
+    font-weight: bold;
+  }
+`;
+
 const MarketMenuInfo = styled.div`
   width: 100%;
   height: 700px;
+  .RepresentatitiveTitle{
+    width:100%;
+    height:25px;
+    display:flex;
+    margin-left:20px;
+    margin-top:10px;
+    font-size: 17px;
+    font-weight: bold;
+    align-items: center;
+  }
 `;
 const EachMenu = styled.div`
   width: 100%;
@@ -105,7 +163,7 @@ const EachMenu = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px black solid;
+  border-bottom: 1px rgba(0,0,0,0.05) solid;
 `;
 const MenuContainer = styled.div`
   width: 90%;
@@ -119,18 +177,24 @@ const MenuContainer = styled.div`
 const MenuInfo = styled.div`
   width: 63%;
   height: 80%;
+  
   .MenuName {
     width: 80%;
     height: 20px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
+    display:flex;
+    p{
+      margin-right:4px;
+    }
   }
   .MenuDescription {
     width: 80%;
-    height: 20px;
+    height: 40px;
     font-size: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    line-height:1.5;
   }
   .MenuPrice {
     width: 80%;
@@ -155,21 +219,21 @@ const MenuImg = styled.div`
     }
   }
 `;
-const TempBox = styled.div`
-  width: 100%;
-  height: 100%;
-  background: teal;
-`;
+
 const MoreMenu = styled.div`
   width: 100%;
   height: 30px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  :hover{
+    cursor:pointer;
+  }
   p {
     margin-left: 20px;
   }
   .iconContainer {
-    margin-left: 5px;
+    margin-right:10px;
     font-size: 20px;
   }
 `;
@@ -179,6 +243,7 @@ const MarketDetail = () => {
   const [representativeNNormal, setRepresentativeNNormal] = useState();
   const [toggle, setToggle] = useState(false);
   const { marketId } = useParams();
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
     console.log("marketId", marketId);
@@ -192,6 +257,28 @@ const MarketDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setMarket(response.data);
+        const korCategory = response.data.category.map((category) => {
+          if (category === "KOREAN") return "한식";
+          else if (category === "JAPANESE") return "일식";
+          else if (category === "CHINESE") return "중식";
+          else if (category === "WESTERN") return "양식";
+          else if (category === "VIETNAM") return "베트남";
+          else if (category === "TAIWAN") return "태국";
+          else if (category === "SNACK") return "분식";
+          else if (category === "NOODLE") return "면요리";
+          else if (category === "BBQ") return "바베큐";
+          else if (category === "PORK") return "돼지고기";
+          else if (category === "BEEF") return "소고기";
+          else if (category === "CHICKEN") return "닭고기";
+          else if (category === "LAMB") return "양고기";
+          else if (category === "CAFE") return "카페";
+          else if (category === "DESSERT") return "디저트";
+          else if (category === "BAR") return "바";
+          else if (category === "PUB") return "술집";
+        });
+
+        console.log(korCategory);
+        setCategory(korCategory);
 
         localStorage.setItem(
           "weekdaysWorkHour",
@@ -225,7 +312,9 @@ const MarketDetail = () => {
   const bringRepresentativeMenu = (menuss) => {
     let representativeMenu = [];
     let normalMenu = [];
+
     menuss?.map((menu) => {
+    
       if (menu.representative === true) {
         representativeMenu.push(menu);
       } else {
@@ -253,11 +342,11 @@ const MarketDetail = () => {
         <div className="leftInfos">
           <span className="marketName">{market?.name}</span>
           <div>
-            <span>
+            <span style={{ color: "gray" }}>
               {" "}
               <FontAwesomeIcon icon={faEye} /> {market?.viewCount}
             </span>
-            <span>
+            <span style={{ color: "gray" }}>
               {" "}
               <FontAwesomeIcon icon={faPencil} style={{ marginRight: "6px" }} />
               {market?.reviewCount}
@@ -294,6 +383,48 @@ const MarketDetail = () => {
       </MarketMenuBox>
       <MarketDetailInfo>
         {/* 매장소개, 운영시간,주소,전화번호(매장,개인),주차공간,최대이용가능시간,카테고리, */}
+        <span className="marketDesc">매장 소개</span>
+        <p clasName="marketIntro">{market?.intro}</p>
+        <div className="InfosBox">
+          <span className="marketDesc">편의정보</span>
+          <EachInfo>
+            <span className="marketDescTitle">카테고리</span>
+            <div>
+              {category?.map((c, index) =>
+                category.length == index + 1 ? (
+                  <span style={{ marginLeft: "4px" }}>{c} </span>
+                ) : (
+                  <span style={{ marginLeft: "4px" }}>{c} /</span>
+                )
+              )}
+            </div>
+          </EachInfo>
+          <EachInfo>
+            <span className="marketDescTitle">영업시간</span>
+            <span>
+              주중 {market?.weekdaysWorkHour.open.substring(0, 5)}-
+              {market?.weekdaysWorkHour.close.substring(0, 5)} / 주말{" "}
+              {market?.weekendsWorkHour.open.substring(0, 5)}-
+              {market?.weekendsWorkHour.close.substring(0, 5)}
+            </span>
+          </EachInfo>
+          <EachInfo>
+            <span className="marketDescTitle">주소</span>
+            <span>{market?.location.addressName}</span>
+          </EachInfo>
+          <EachInfo>
+            <span className="marketDescTitle">주차정보</span>
+            <span>{market?.parkingInfo}</span>
+          </EachInfo>
+          <EachInfo>
+            <span className="marketDescTitle">개인번호</span>
+            <span>{market?.tel[0]}</span>
+          </EachInfo>
+          <EachInfo>
+            <span className="marketDescTitle">사업자번호</span>
+            <span>{market?.tel[1]}</span>
+          </EachInfo>
+        </div>
       </MarketDetailInfo>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게
@@ -301,7 +432,8 @@ const MarketDetail = () => {
   만약 대표메뉴가 없다면 문자열 순서대로 일반메뉴들 띄워줌.
 
 */}
-
+  <div className="RepresentatitiveTitle"><p>대표메뉴</p></div>
+                
         {
           //세개만 만들어놓음.
           representativeNNormal?.map((menu, index) => {
@@ -309,16 +441,14 @@ const MarketDetail = () => {
               return (
                 <EachMenu>
                   <MenuContainer>
+                  
                     <MenuInfo>
-                      <div className="MenuName">
-                        {menu.representative == true ? (
-                          <FontAwesomeIcon icon={faStar} />
-                        ) : null}
+                       <div className="MenuName">                       
                         {menu.name}
                       </div>
                       <div className="MenuDescription">
-                        {menu.description.length > 32
-                          ? menu.description.slice(0, 32) + "..."
+                        {menu.description.length > 50
+                          ? menu.description.slice(0, 50) + "..."
                           : menu.description}
                       </div>
                       <div className="MenuPrice">
@@ -341,16 +471,15 @@ const MarketDetail = () => {
           <p>메뉴 더보기</p>
           <div className="iconContainer">
             {toggle ? (
-              <FontAwesomeIcon icon={faCaretDown} />
+              <FontAwesomeIcon icon={faAngleDown} />
             ) : (
-              <FontAwesomeIcon icon={faCaretRight} />
+              <FontAwesomeIcon icon={faAngleRight} />
             )}
           </div>
         </MoreMenu>
         {/* 메뉴 더보기 div 전체를 누르면  펼쳐진 상태가 되고 그옆에 아이콘도 아래로 바뀜*/}
         {toggle
           ? representativeNNormal?.map((menu, index) => {
-              if (index >= 3) {
                 return (
                   <EachMenu>
                     <MenuContainer>
@@ -358,12 +487,12 @@ const MarketDetail = () => {
                         <div className="MenuName">
                           {menu.representative == true ? (
                             <FontAwesomeIcon icon={faStar} />
-                          ) : null}
+                          ) : null}{""}
                           {menu.name}
                         </div>
                         <div className="MenuDescription">
-                          {menu.description.length > 32
-                            ? menu.description.slice(0, 32) + "..."
+                          {menu.description.length > 50
+                            ? menu.description.slice(0, 50) + "..."
                             : menu.description}
                         </div>
                         <div className="MenuPrice">
@@ -379,7 +508,7 @@ const MarketDetail = () => {
                     </MenuContainer>
                   </EachMenu>
                 );
-              }
+              
             })
           : null}
       </MarketMenuInfo>
