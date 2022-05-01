@@ -60,10 +60,25 @@ const InfosBox = styled.div`
   }
 `;
 
+const HeaderSearch = styled.input`
+  width: 300px;
+  height: 50px;
+  position: fixed;
+  top: 5px;
+  left: 45px;
+  z-index: 3;
+  border: none;
+  color: transparent;
+  text-shadow: 0 0 0 #000000;
+  &:focus {
+    outline: none;
+  }
+`;
 const clickFunc = (title) => {
   console.log("title:", title);
 };
 const Location = () => {
+  const [searchedWord, setSearchedWord] = useState();
   useEffect(() => {
     let container = document.getElementById("map");
     let options = {
@@ -121,9 +136,27 @@ const Location = () => {
     // marker.setMap(map);
   }, []);
 
+  const bringSearchedWord = (e) => {
+    setSearchedWord(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    console.log("submit!");
+  };
+
   return (
     <Container>
       <Header back="/guest/restaurantList" title={""} />
+      <form onSubmit={submit}>
+        <HeaderSearch
+          type="text"
+          onChange={bringSearchedWord}
+          value={searchedWord}
+        ></HeaderSearch>
+      </form>
       <div>
         <div id="map" style={{ width: "410px", height: "710px" }}></div>
         {/* <div id="map" style={{ width: "120px", height: "120px" }}></div> */}
