@@ -250,12 +250,7 @@ const Reservation2 = () => {
     getShape();
 
     // setPossibleTableArr(...availableTable.tableNum);
-    console.log(
-      "받아옴:",
-
-      availableTable
-    );
-
+    console.log("받아옴:", isCar, peopleNum, time, calendarValue);
     const availableTableNumArr = availableTable.map((table) => {
       return table.tableNum;
     });

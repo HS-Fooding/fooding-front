@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Header from "../component/Header";
 import { url } from "../../Api";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@fortawesome/fontawesome-free/js/all.js";
+import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -12,6 +15,49 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const MarketBox = styled.div`
+  width: 380px;
+  height: 126px;
+  background-color: white;
+  position: absolute;
+  bottom: 12px;
+  z-index: 1;
+  display: flex;
+`;
+
+const ImgBox = styled.div`
+  width: 126px;
+  height: 126px;
+  background-color: orange;
+`;
+
+const InfosBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+
+  .title {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 4px 0px 9px 0px;
+  }
+
+  .location {
+    margin: 8px 0px;
+    font-size: 12px;
+    color: gray;
+  }
+
+  .icons {
+    margin-top: 10px;
+    color: gray;
+    font-size: 12px;
+  }
 `;
 
 const clickFunc = (title) => {
@@ -81,6 +127,17 @@ const Location = () => {
       <div>
         <div id="map" style={{ width: "410px", height: "710px" }}></div>
       </div>
+      <MarketBox>
+        <ImgBox></ImgBox>
+        <InfosBox>
+          <span className="title">상계짜장</span>
+          <span className="location">노원구</span>
+          <span className="icons">
+            <FontAwesomeIcon icon={faEye} /> 560{" "}
+            <FontAwesomeIcon icon={faPencil} style={{ marginLeft: "5px" }} /> 12{" "}
+          </span>
+        </InfosBox>
+      </MarketBox>
     </Container>
   );
 };

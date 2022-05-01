@@ -273,6 +273,8 @@ const Reservation1 = () => {
   const [open, setOpen] = useState();
   const [close, setClose] = useState();
   const [availableTable, setAvailableTable] = useState([]);
+  const [totalTime, setTotalTime] = useState();
+  const [totalDate, setTotalDate] = useState();
 
   const marketId = localStorage.getItem("marketId");
 
@@ -356,6 +358,7 @@ const Reservation1 = () => {
     dateString =
       calendarValue.getFullYear() + "-" + month + "-" + calendarValue.getDate();
 
+    setTotalDate(dateString);
     let splited = clickedTime?.split(" ");
 
     let splitedTime = splited[1]?.split(":");
@@ -374,6 +377,7 @@ const Reservation1 = () => {
     }
 
     console.log("sendTotalTime:", sendTotalTime);
+    setTotalTime(sendTotalTime);
   };
   useEffect(() => {
     console.log(isCar, peopleNum, calendarValue, clickedTime);
@@ -509,8 +513,10 @@ const Reservation1 = () => {
           state={{
             isCar: isCar,
             peopleNum: peopleNum,
-            time: clickedTime,
-            calendarValue: calendarValue,
+            // time: clickedTime,
+            time: totalTime,
+            // calendarValue: calendarValue,
+            calendarValue: totalDate,
             availableTable: availableTable,
           }}
         >
