@@ -15,7 +15,7 @@ import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import ManageReserv from "./manage/ManageReserv";
-import TestManageReserv2 from "./manage/ManageReserv2";
+// import TestManageReserv2 from "./manage/ManageReserv2";
 import Chart from "./manage/Chart";
 
 import maincanvas from "./manage/maincanvas";
@@ -47,8 +47,8 @@ function App() {
                     <Route path="/guest/location" element={<Location />}></Route>
 
                     {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
-                    <Route path="/manager/manageReserv2" element={<TestManageReserv2 />}></Route>
-                    {/* <Route path="/manager/manageReserv" element={<ManageReserv />}></Route> */}
+                    {/* <Route path="/manager/manageReserv2" element={<TestManageReserv2 />}></Route> */}
+                    <Route path="/manager/manageReserv" element={<ManageReserv />}></Route>
                     <Route path="/manager/chart" element={<Chart />}></Route>
                     <Route path="/canvas" element={<MyCanvas />}></Route>
                     <Route path="/guest/restaurantList" element={<RestaurantList />}></Route>
