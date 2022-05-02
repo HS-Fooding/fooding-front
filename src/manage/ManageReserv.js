@@ -147,19 +147,34 @@ export default class ManageReserv extends React.Component {
     };
 
     onAddItem() {
-        console.log("adding", "n" + this.state.newCounter);
-        // this.setState({ newCounter: this.state.newCounter + 1 });
+        // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
+        const nickname = prompt("nickname");
+        const reservAt = prompt("reservAt");
+        const tableNum = prompt("tableNum");
+        const reservCount = prompt("reservCount");
+        const isCar = prompt("isCar");
+
+        const diff =
+            (parseDate(dummy.tableInfo.date, reservAt) -
+                parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
+            (60 * 1000 * BLOCK_OF_TIME);
+
+        // console.log("adding", "n" + this.state.newCounter);
+
         this.setState({
             // Add a new item. It must have a unique key!
             layout: this.state.layout.concat({
                 i: "n" + this.state.newCounter,
-                x: 2, // (this.state.layout.length * 2) % (this.state.cols || 12),
-                y: 10, // puts it at the bottom
-                w: 2,
-                h: 2,
+                x: dummy.tableInfo.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+                y: diff, // puts it at the bottom
+                w: 1,
+                h: dummy.tableInfo.maxUsageTime / 30,
                 //
-                tableNum: 1,
-                reservAt: new Date(),
+                nickname,
+                reservAt,
+                tableNum,
+                reservCount,
+                isCar,
             }),
             // Increment the counter to ensure key is always unique.
             newCounter: this.state.newCounter + 1,
@@ -197,7 +212,7 @@ export default class ManageReserv extends React.Component {
                     <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div>
                     <div>reservCount : {el.reservCount}</div>
                     <div>isCar : {el.isCar ? "yes" : "no"}</div>
-                    {el.add ? (
+                    {/* {el.add ? (
                         <span
                             className="add text"
                             onClick={this.onAddItem}
@@ -207,7 +222,7 @@ export default class ManageReserv extends React.Component {
                         </span>
                     ) : (
                         <span className="text">{t}</span>
-                    )}
+                    )} */}
                     <span
                         className="remove"
                         style={removeStyle}
