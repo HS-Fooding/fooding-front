@@ -94,7 +94,7 @@ const transformed = transformData(dummy);
 const reservations = transformed.reservations;
 
 export default class ManageReserv extends React.Component {
-    state = { layout: [], restInfo: {} };
+    // state = { layout: [], restInfo: {} };
 
     static defaultProps = {
         className: "layout",
@@ -114,7 +114,10 @@ export default class ManageReserv extends React.Component {
         super(props);
 
         const layout = this.generateLayout();
-        this.state = { layout: layout, restInfo: { ...transformed } };
+        this.state = { layout: layout, restInfo: { ...transformed }, newCounter: 0 };
+
+        this.onAddItem = this.onAddItem.bind(this);
+        this.onBreakpointChange = this.onBreakpointChange.bind(this);
     }
 
     onLayoutChange = (layout) => {
@@ -144,16 +147,19 @@ export default class ManageReserv extends React.Component {
     };
 
     onAddItem() {
-        /*eslint no-console: 0*/
         console.log("adding", "n" + this.state.newCounter);
+        // this.setState({ newCounter: this.state.newCounter + 1 });
         this.setState({
             // Add a new item. It must have a unique key!
-            items: this.state.items.concat({
+            layout: this.state.layout.concat({
                 i: "n" + this.state.newCounter,
-                x: (this.state.items.length * 2) % (this.state.cols || 12),
-                y: Infinity, // puts it at the bottom
+                x: 2, // (this.state.layout.length * 2) % (this.state.cols || 12),
+                y: 10, // puts it at the bottom
                 w: 2,
                 h: 2,
+                //
+                tableNum: 1,
+                reservAt: new Date(),
             }),
             // Increment the counter to ensure key is always unique.
             newCounter: this.state.newCounter + 1,
@@ -170,39 +176,7 @@ export default class ManageReserv extends React.Component {
 
     onRemoveItem(i) {
         console.log("removing", i);
-        this.setState({ items: _.reject(this.state.items, { i: i }) });
-    }
-
-    createElement(el) {
-        const removeStyle = {
-            position: "absolute",
-            right: "2px",
-            top: 0,
-            cursor: "pointer",
-        };
-        const i = el.add ? "+" : el.i;
-        return (
-            <div key={i} data-grid={el}>
-                {el.add ? (
-                    <span
-                        className="add text"
-                        onClick={this.onAddItem}
-                        title="You can add an item by clicking here, too."
-                    >
-                        Add +
-                    </span>
-                ) : (
-                    <span className="text">{i}</span>
-                )}
-                <span
-                    className="remove"
-                    style={removeStyle}
-                    onClick={this.onRemoveItem.bind(this, i)}
-                >
-                    x
-                </span>
-            </div>
-        );
+        this.setState({ layout: _.reject(this.state.layout, { i: i }) });
     }
 
     generateDOM() {
@@ -213,7 +187,7 @@ export default class ManageReserv extends React.Component {
             cursor: "pointer",
         };
 
-        return _.map(this.state.layout, function (el, i) {
+        return _.map(this.state.layout, (el, i) => {
             const t = el.add ? "+" : el.i;
             return (
                 <div key={t} data-grid={el}>
@@ -226,7 +200,7 @@ export default class ManageReserv extends React.Component {
                     {el.add ? (
                         <span
                             className="add text"
-                            // onClick={this.onAddItem}
+                            onClick={this.onAddItem}
                             title="You can add an item by clicking here, too."
                         >
                             Add +
@@ -237,7 +211,7 @@ export default class ManageReserv extends React.Component {
                     <span
                         className="remove"
                         style={removeStyle}
-                        // onClick={this.onRemoveItem.bind(this, t)}
+                        onClick={this.onRemoveItem.bind(this, t)}
                     >
                         x
                     </span>
@@ -281,10 +255,12 @@ export default class ManageReserv extends React.Component {
     render() {
         return (
             <div>
+                <button onClick={this.onAddItem}>Add Item</button>
                 <ReactGridLayout
                     layout={this.state.layout}
                     onDragStop={this.onLayoutChange}
                     onResize={this.onLayoutChange}
+                    onBreakpointChange={this.onBreakpointChange}
                     {...this.props}
                 >
                     {this.generateDOM()}
