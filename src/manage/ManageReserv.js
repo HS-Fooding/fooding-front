@@ -1,10 +1,13 @@
 import React from "react";
 import _ from "lodash";
+import axios from "axios";
+import { url } from "../Api";
+
 import RGL, { WidthProvider, Responsive } from "react-grid-layout";
 
 const BLOCK_OF_TIME = 30;
 
-const dummy = {
+const dummy2 = {
     tableInfo: {
         open: "9:00",
         close: "11:00",
@@ -67,6 +70,7 @@ const transformData = (dummy) => {
         open: parseDate(dummy.tableInfo.date, dummy.tableInfo.open),
         close: parseDate(dummy.tableInfo.date, dummy.tableInfo.close),
         maxUsageTime: dummy.tableInfo.maxUsageTime,
+        tableNums: Object.assign({}, dummy.tableInfo.tableNums),
         reservations: dummy.reservations.map((m) => {
             const diff =
                 (parseDate(dummy.tableInfo.date, m.reservAt) -
@@ -90,17 +94,52 @@ const transformData = (dummy) => {
 };
 
 const ReactGridLayout = WidthProvider(Responsive);
-const transformed = transformData(dummy);
-const reservations = transformed.reservations;
+// const transformed = transformData(dummy);
+// const reservations = transformed.reservations;
 
+var data = "hello";
 export default class ManageReserv extends React.Component {
     // state = { layout: [], restInfo: {} };
 
+    transformed = {};
+    reservations = [];
+
+    async componentDidMount() {
+        const getToken = localStorage.getItem("token");
+
+        const config = {
+            method: "get",
+            // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
+            url: url + `/fooding/admin/restaurant/${2}/reservation`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
+            params: {
+                date: "2022-05-01",
+            },
+        };
+
+        await axios(config)
+            .then((response) => {
+                // console.log(response.data);
+                this.transformed = transformData(response.data);
+                data = this.transformed;
+                // console.log("!!!", this.transformed);
+                console.log("data!!", data);
+                this.reservations = this.transformed.reservations;
+                // console.log("???", this.reservations);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     static defaultProps = {
         className: "layout",
-        items: reservations.length,
+        // items: this.reservations.length,
         // cols: dummy.tableInfo.tableNums.length,
-        cols: dummy.tableNums,
+        cols: data.tableNums,
         rowHeight: 30,
         onLayoutChange: function () {},
         // This turns off compaction so you can place items wherever.
@@ -114,7 +153,7 @@ export default class ManageReserv extends React.Component {
         super(props);
 
         const layout = this.generateLayout();
-        this.state = { layout: layout, restInfo: { ...transformed }, newCounter: 0 };
+        this.state = { layout: layout, restInfo: { ...this.transformed }, newCounter: 0 };
 
         this.onAddItem = this.onAddItem.bind(this);
         this.onBreakpointChange = this.onBreakpointChange.bind(this);
@@ -155,8 +194,8 @@ export default class ManageReserv extends React.Component {
         const isCar = prompt("isCar");
 
         const diff =
-            (parseDate(dummy.tableInfo.date, reservAt) -
-                parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
+            (parseDate(this.transformed.date, reservAt) -
+                parseDate(this.transformed.date, this.transformed.open)) /
             (60 * 1000 * BLOCK_OF_TIME);
 
         // console.log("adding", "n" + this.state.newCounter);
@@ -165,10 +204,10 @@ export default class ManageReserv extends React.Component {
             // Add a new item. It must have a unique key!
             layout: this.state.layout.concat({
                 i: "n" + this.state.newCounter,
-                x: dummy.tableInfo.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+                x: this.transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
                 y: diff, // puts it at the bottom
                 w: 1,
-                h: dummy.tableInfo.maxUsageTime / 30,
+                h: this.transformed.maxUsageTime / 30,
                 //
                 nickname,
                 reservAt,
@@ -212,17 +251,7 @@ export default class ManageReserv extends React.Component {
                     <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div>
                     <div>reservCount : {el.reservCount}</div>
                     <div>isCar : {el.isCar ? "yes" : "no"}</div>
-                    {/* {el.add ? (
-                        <span
-                            className="add text"
-                            onClick={this.onAddItem}
-                            title="You can add an item by clicking here, too."
-                        >
-                            Add +
-                        </span>
-                    ) : (
-                        <span className="text">{t}</span>
-                    )} */}
+
                     <span
                         className="remove"
                         style={removeStyle}
@@ -236,21 +265,21 @@ export default class ManageReserv extends React.Component {
     }
 
     generateLayout() {
-        const p = this.props;
+        // const p = this.props;
 
-        return _.map(new Array(p.items), function (item, i, list) {
+        return _.map(this.reservations.length, (item, i, list) => {
             return {
                 i: i.toString(),
-                x: reservations[i].x,
-                y: reservations[i].y,
-                w: reservations[i].w,
-                h: reservations[i].h,
+                x: this.reservations[i].x,
+                y: this.reservations[i].y,
+                w: this.reservations[i].w,
+                h: this.reservations[i].h,
                 add: i === list.length - 1,
-                nickname: reservations[i].nickname,
-                tableNum: reservations[i].tableNum,
-                reservCount: reservations[i].reservCount,
-                isCar: reservations[i].isCar,
-                reservAt: reservations[i].reservAt,
+                nickname: this.reservations[i].nickname,
+                tableNum: this.reservations[i].tableNum,
+                reservCount: this.reservations[i].reservCount,
+                isCar: this.reservations[i].isCar,
+                reservAt: this.reservations[i].reservAt,
             };
         });
     }
