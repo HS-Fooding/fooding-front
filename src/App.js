@@ -15,6 +15,7 @@ import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import ManageReserv from "./manage/ManageReserv";
+// import TestManageReserv2 from "./manage/ManageReserv2";
 import Chart from "./manage/Chart";
 
 import maincanvas from "./manage/maincanvas";
@@ -27,43 +28,38 @@ import RestaurantInput from "./guest/component/RestaurantInput";
 
 import Location from "./guest/router/Location";
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/review" element={<Review />}></Route>
-          <Route path="/writeReview" element={<WriteReview />}></Route>
-          <Route path="/sign" element={<SignUp />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/:reviewId" element={<ReviewDetail />}></Route>
-          <Route path="/reservation" element={<Reservation />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/manager/login" element={<LoginMg />}></Route>
+    return (
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />}></Route>
+                    <Route path="/review" element={<Review />}></Route>
+                    <Route path="/writeReview" element={<WriteReview />}></Route>
+                    <Route path="/sign" element={<SignUp />}></Route>
+                    <Route path="/login" element={<Login />}></Route>
+                    <Route path="/:reviewId" element={<ReviewDetail />}></Route>
+                    <Route path="/reservation" element={<Reservation />}></Route>
+                    <Route path="/register" element={<Register />}></Route>
+                    <Route path="/manager/login" element={<LoginMg />}></Route>
 
-          <Route path="/manager/signup" element={<SignUpMg />}></Route>
+                    <Route path="/manager/signup" element={<SignUpMg />}></Route>
 
-          <Route path="/guest/location" element={<Location />}></Route>
+                    <Route path="/guest/location" element={<Location />}></Route>
 
-          {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
-          <Route
-            path="/manager/manageReserv"
-            element={<ManageReserv />}
-          ></Route>
-          <Route path="/manager/chart" element={<Chart />}></Route>
-          <Route path="/canvas" element={<MyCanvas />}></Route>
-          <Route
-            path="/guest/restaurantList"
-            element={<RestaurantList />}
-          ></Route>
-          <Route path="/guest/restaurantSearch" element={<RestaurantSearch/>}></Route>
-          <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
-          <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
-          <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
-  );
+                    {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
+                    {/* <Route path="/manager/manageReserv2" element={<TestManageReserv2 />}></Route> */}
+                    <Route path="/manager/manageReserv" element={<ManageReserv />}></Route>
+                    <Route path="/manager/chart" element={<Chart />}></Route>
+                    <Route path="/canvas" element={<MyCanvas />}></Route>
+                    <Route path="/guest/restaurantList" element={<RestaurantList />}></Route>
+                    <Route path="/guest/restaurantSearch" element={<RestaurantSearch />}></Route>
+                    <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
+                    <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
+                    <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
+    );
 }
 
 export default App;

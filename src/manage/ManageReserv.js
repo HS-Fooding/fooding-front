@@ -1,6 +1,6 @@
 import React from "react";
 import _ from "lodash";
-import RGL, { WidthProvider } from "react-grid-layout";
+import RGL, { WidthProvider, Responsive } from "react-grid-layout";
 
 const BLOCK_OF_TIME = 30;
 
@@ -46,13 +46,10 @@ const dummy = {
 
 const parseDate = (date, time) => {
     const _date = date.split("-");
-    // _date.forEach((m) => console.log(m));
     const _time = time.split(":");
 
     const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 
-    // const utc = open.getTime() + open.getTimezoneOffset() * 60 * 1000;
-    // const kr_time = new Date(utc + KR_TIME_DIFF);
     const result = new Date(_date[0], _date[1] - 1, _date[2]);
 
     result.setHours(_time[0]);
@@ -76,11 +73,6 @@ const transformData = (dummy) => {
                     parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
                 (60 * 1000 * BLOCK_OF_TIME);
 
-            console.log("diff", diff);
-            // console.log("reservAt", parseDate(dummy.tableInfo.date, m.reservAt));
-            // const y = (diff.getHours() * 60 + diff.getMinutes()) / 30;
-            // console.log(y);
-
             return {
                 nickname: m.nickname,
                 tableNum: m.tableNum,
@@ -97,19 +89,18 @@ const transformData = (dummy) => {
     };
 };
 
-const ReactGridLayout = WidthProvider(RGL);
+const ReactGridLayout = WidthProvider(Responsive);
 const transformed = transformData(dummy);
 const reservations = transformed.reservations;
 
 export default class ManageReserv extends React.Component {
-    state = { layout: [], restInfo: {} };
+    // state = { layout: [], restInfo: {} };
 
     static defaultProps = {
         className: "layout",
-        // items: 50,
-        // cols: 12,
         items: reservations.length,
-        cols: dummy.tableInfo.tableNums.length,
+        // cols: dummy.tableInfo.tableNums.length,
+        cols: dummy.tableNums,
         rowHeight: 30,
         onLayoutChange: function () {},
         // This turns off compaction so you can place items wherever.
@@ -123,19 +114,16 @@ export default class ManageReserv extends React.Component {
         super(props);
 
         const layout = this.generateLayout();
-        this.state = { layout: layout, restInfo: { ...transformed } };
+        this.state = { layout: layout, restInfo: { ...transformed }, newCounter: 0 };
+
+        this.onAddItem = this.onAddItem.bind(this);
+        this.onBreakpointChange = this.onBreakpointChange.bind(this);
     }
 
     onLayoutChange = (layout) => {
-        // console.log("layout!!", layout);
         const tmp = { ...this.state.layout };
-        // console.log("???", tmp);
-
         const restInfo = { ...this.state.restInfo };
         const open = restInfo.open;
-
-        // console.log(open.getHours(), "//", open.getMinutes());
-        // console.log(open.toLocaleString());
 
         for (var i = 0; i < Object.keys(tmp).length; i++) {
             tmp[i].x = parseInt(layout[i].x);
@@ -158,18 +146,90 @@ export default class ManageReserv extends React.Component {
         this.props.onLayoutChange(layout);
     };
 
+    onAddItem() {
+        // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
+        const nickname = prompt("nickname");
+        const reservAt = prompt("reservAt");
+        const tableNum = prompt("tableNum");
+        const reservCount = prompt("reservCount");
+        const isCar = prompt("isCar");
+
+        const diff =
+            (parseDate(dummy.tableInfo.date, reservAt) -
+                parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
+            (60 * 1000 * BLOCK_OF_TIME);
+
+        // console.log("adding", "n" + this.state.newCounter);
+
+        this.setState({
+            // Add a new item. It must have a unique key!
+            layout: this.state.layout.concat({
+                i: "n" + this.state.newCounter,
+                x: dummy.tableInfo.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+                y: diff, // puts it at the bottom
+                w: 1,
+                h: dummy.tableInfo.maxUsageTime / 30,
+                //
+                nickname,
+                reservAt,
+                tableNum,
+                reservCount,
+                isCar,
+            }),
+            // Increment the counter to ensure key is always unique.
+            newCounter: this.state.newCounter + 1,
+        });
+    }
+
+    // We're using the cols coming back from this to calculate where to add new items.
+    onBreakpointChange(breakpoint, cols) {
+        this.setState({
+            breakpoint: breakpoint,
+            cols: cols,
+        });
+    }
+
+    onRemoveItem(i) {
+        console.log("removing", i);
+        this.setState({ layout: _.reject(this.state.layout, { i: i }) });
+    }
+
     generateDOM() {
-        // console.log(this.state.layout);
-        return _.map(this.state.layout, function (l, i) {
-            // console.log(l);
+        const removeStyle = {
+            position: "absolute",
+            right: "2px",
+            top: 0,
+            cursor: "pointer",
+        };
+
+        return _.map(this.state.layout, (el, i) => {
+            const t = el.add ? "+" : el.i;
             return (
-                <div key={i}>
+                <div key={t} data-grid={el}>
                     {/* <div className="text">{i + 1}</div> */}
-                    <div>nickname : {l.nickname}</div>
-                    <div>tableNum : {l.tableNum}</div>
-                    <div>reservAt : {l.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div>
-                    <div>reservCount : {l.reservCount}</div>
-                    <div>isCar : {l.isCar ? "yes" : "no"}</div>
+                    <div>nickname : {el.nickname}</div>
+                    <div>tableNum : {el.tableNum}</div>
+                    <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div>
+                    <div>reservCount : {el.reservCount}</div>
+                    <div>isCar : {el.isCar ? "yes" : "no"}</div>
+                    {/* {el.add ? (
+                        <span
+                            className="add text"
+                            onClick={this.onAddItem}
+                            title="You can add an item by clicking here, too."
+                        >
+                            Add +
+                        </span>
+                    ) : (
+                        <span className="text">{t}</span>
+                    )} */}
+                    <span
+                        className="remove"
+                        style={removeStyle}
+                        onClick={this.onRemoveItem.bind(this, t)}
+                    >
+                        x
+                    </span>
                 </div>
             );
         });
@@ -177,27 +237,20 @@ export default class ManageReserv extends React.Component {
 
     generateLayout() {
         const p = this.props;
-        return _.map(new Array(p.items), function (item, i) {
-            // const y = Math.ceil(Math.random() * 4) + 1;
-            // const open_hours = open.getHours();
-            // const open_minutes = open.getMinutes();
-            // const reserv_hour = tmp[i].y / 2 + open_hours + open_minutes / 30;
-            // const reserv_minute = (((tmp[i].y / 2 + open_hours + open_minutes) % 30) % 1) * 60;
-            // console.log("reservations", reservations);
-            // const y = (reservations[i].y / 1000000) * 4;
+
+        return _.map(new Array(p.items), function (item, i, list) {
             return {
+                i: i.toString(),
                 x: reservations[i].x,
-                // y: Math.floor(i) * y, //
                 y: reservations[i].y,
                 w: reservations[i].w,
-                // h: y,
                 h: reservations[i].h,
+                add: i === list.length - 1,
                 nickname: reservations[i].nickname,
                 tableNum: reservations[i].tableNum,
                 reservCount: reservations[i].reservCount,
                 isCar: reservations[i].isCar,
                 reservAt: reservations[i].reservAt,
-                i: i.toString(),
             };
         });
     }
@@ -217,10 +270,12 @@ export default class ManageReserv extends React.Component {
     render() {
         return (
             <div>
+                <button onClick={this.onAddItem}>Add Item</button>
                 <ReactGridLayout
                     layout={this.state.layout}
                     onDragStop={this.onLayoutChange}
                     onResize={this.onLayoutChange}
+                    onBreakpointChange={this.onBreakpointChange}
                     {...this.props}
                 >
                     {this.generateDOM()}
@@ -237,6 +292,3 @@ export default class ManageReserv extends React.Component {
         );
     }
 }
-
-// import("./test-hook.jsx").then((fn) => fn.default(ManageReserv));
-// console.log("asdf");
