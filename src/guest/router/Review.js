@@ -145,7 +145,7 @@ const Review = () => {
         <InnerReviews>
           {reviews.map((review, index) => (
             <Link
-              to={`${review.id}`}
+              to={`/review/${location.state.marketId}/${review.id}`}
               state={{
                 marketId:location.state.marketId,
               }}

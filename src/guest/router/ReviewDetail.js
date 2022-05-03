@@ -282,7 +282,7 @@ const location = useLocation();
   return (
     <Container>
       <Header back={`/review`}
-      
+        state={{marketId:location.state.marketId,}}
       />
 
       <MainBox>

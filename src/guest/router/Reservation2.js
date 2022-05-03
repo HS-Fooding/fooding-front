@@ -6,6 +6,7 @@ import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import { url } from "../../Api";
 import axios from "axios";
 import { useLocation, Link } from "react-router-dom";
+import "@fortawesome/fontawesome-free/js/all.js";
 
 const getToken = localStorage.getItem("token");
 const marketIdLS = localStorage.getItem("marketId");
@@ -19,25 +20,24 @@ const Container = styled.div`
   margin-bottom: 30px;
 `;
 const ButtonContainer = styled.div`
-  width:400px;
-  height:30px;
-  display:flex;
-  margin-top:70px;
+  width: 400px;
+  height: 30px;
+  display: flex;
+  margin-top: 70px;
 `;
 const FloorButton = styled.div`
-  margin-left:10px;
-  width:40px;
-  height:25px;
-  font-size:15px;
-  border-radius:10px;
-  border:solid black 1px;
+  margin-left: 10px;
+  width: 40px;
+  height: 25px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: solid black 1px;
   display: flex;
   justify-content: center;
   align-items: center;
-  :hover{
-    cursor:pointer;
+  :hover {
+    cursor: pointer;
   }
- 
 `;
 const MapContainer = styled.div`
   width: 400px;
@@ -83,6 +83,30 @@ const NextBtn = styled.button`
   margin: 190px 10px 0px 10px;
 `;
 
+const FinishModal = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: orange;
+  padding-top: 100px;
+  padding-right: 14px;
+  padding-left: 14px;
+  color: white;
+  z-index: 3;
+  .bold {
+    font-size: 28px;
+    margin: 60px 0px 80px 0px;
+    font-weight: bold;
+    color: white;
+  }
+
+  svg {
+    font-size: 78px;
+    color: white;
+  }
+`;
+
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
@@ -101,6 +125,7 @@ const Reservation2 = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedTable, setSelectedTable] = useState();
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
+  const [reservationDone, setReservationDone] = useState(false);
 
   let location = useLocation();
   const { isCar, peopleNum, time, calendarValue, availableTable } =
@@ -312,6 +337,7 @@ const Reservation2 = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        setReservationDone(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -427,9 +453,7 @@ const Reservation2 = () => {
       <SelectedTableBox>
         <InnerTableBox>
           <div>
-            <span>
-              최소 인원 {selectedTable?.minPeople}명
-            </span>
+            <span>최소 인원 {selectedTable?.minPeople}명</span>
           </div>
           <div>
             <span>최대 인원 {selectedTable?.maxPeople}명</span>
@@ -437,6 +461,27 @@ const Reservation2 = () => {
         </InnerTableBox>
       </SelectedTableBox>
       <NextBtn onClick={submit}>완료</NextBtn>
+
+      {reservationDone == true ? (
+        <FinishModal>
+          <i class="fa-solid fa-circle-check"></i>
+          <div className="bold">예약 완료</div>
+          <div className="light">예약이 성공적으로 완료되었습니다.</div>
+
+          <Link to="/guest/restaurantList">
+            <NextBtn
+              style={{
+                marginTop: "320px",
+                border: "3px solid white",
+                backgroundColor: "transparent",
+                color: "white",
+              }}
+            >
+              닫기
+            </NextBtn>
+          </Link>
+        </FinishModal>
+      ) : null}
     </Container>
   );
 };

@@ -30,12 +30,14 @@ const Container = styled.div`
   }
 `;
 
-const Header = ({ title, back }) => {
+const Header = ({ title, back,marketId }) => {
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Link to={back}>
+        <Link to={back} state={{
+          marketId:marketId,
+        }}>
           <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
         </Link>
         <span>{title}</span>

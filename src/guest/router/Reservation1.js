@@ -431,20 +431,21 @@ const Reservation1 = () => {
   const TimeBtn = styled.button`
     height: 40px;
     width: 80px;
-    border: none;
+
     margin: 4px;
     font-size: 12px;
     border-radius: 3px;
     color: white;
-    /* background: ${(props) =>
-      props.time == time
-        ? "black"
-        : "${(props) => props.theme.purpleColor}"}; */
-    background: ${(props) => props.theme.purpleColor};
+    background: ${(props) => (props.time == clickedTime ? "white" : "#6f48eb")};
+    // background: ${(props) => props.theme.purpleColor};
+
+    color: ${(props) => (props.time == clickedTime ? "#6f48eb" : "white")};
     &:active {
       background: white;
       color: ${(props) => props.theme.purpleColor};
     }
+
+    border: 1px solid #6f48eb;
   `;
 
   const nextBtnClick = () => {};
@@ -502,11 +503,22 @@ const Reservation1 = () => {
             </label>
           </div>
         </CheckBox>
-        {availableTable.length === 0 ? (
+
+        {clickedTime === undefined ? (
+          <NoticeBox>
+            <span>시간을 선택하세요.</span>
+          </NoticeBox>
+        ) : availableTable.length === 0 ? (
           <NoticeBox>
             <span>예약 가능한 좌석이 없습니다.</span>
           </NoticeBox>
         ) : null}
+
+        {/* // {availableTable.length === 0 ? (
+        //   <NoticeBox>
+        //     <span>예약 가능한 좌석이 없습니다.</span>
+        //   </NoticeBox>
+        // ) : null} */}
 
         <Link
           to="/guest/reservation2"

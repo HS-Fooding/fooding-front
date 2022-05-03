@@ -380,7 +380,7 @@ const MarketDetail = () => {
         </Link> 
          <Link 
           style={{ textDecoration: "none", color: "inherit" }}
-          to="/review"
+          to={`/review/${marketId}`}
           state={{
             marketId:marketId
           }}
