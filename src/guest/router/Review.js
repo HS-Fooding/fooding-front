@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "../component/Header";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import { url } from "../../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
@@ -104,30 +104,33 @@ const ReviewImg = styled.div`
 
 const Review = () => {
   const [reviews, setReviews] = useState([]);
+  const location = useLocation();
   //   const cookies = new Cookies();
   //   const getCookie=(name)=>{
   //     return cookies.get(name);
   //  }
+  console.log("location.restId",location.state);
   let token = localStorage.getItem("token");
   useEffect(() => {
     // console.log("cookie",getCookie("JSESSION"));
-
+    
     var axios = require("axios");
-
+    const getToken = localStorage.getItem("token");
+  
     var config = {
-      method: "get",
-      url: url + "/sample_project/review",
+      method: "get",//url + `/fooding/restaurant?name=${searchWord}`
+      url: url + `/fooding/restaurant/${location.state.marketId}/review`,
       headers: {
         "Content-Type": "application/json",
-        Cookie: "cookie1=value; cookie2=value; cookie3=value;",
+        Authorization: "Bearer " + getToken,
       },
     };
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
+        console.log(response.data.content);
 
-        setReviews(response.data.reverse());
+        setReviews(response.data.content.reverse());
       })
       .catch(function (error) {
         console.log(error);
@@ -136,20 +139,23 @@ const Review = () => {
 
   return (
     <Container>
-      <Header back={"/"} title={"리뷰 목록"} />
+      <Header back={`/guest/${location.state.marketId}`} title={"리뷰 목록"} />
 
       <Reviews>
         <InnerReviews>
           {reviews.map((review, index) => (
             <Link
-              to={`/${review.id}`}
+              to={`${review.id}`}
+              state={{
+                marketId:location.state.marketId,
+              }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <ReviewBox key={index}>
                 <ReviewContent>
-                  {review.author.length > 17
-                    ? review.author.slice(0, 17) + ".."
-                    : review.author}
+                  {review.nickName.length > 17
+                    ? review.nickName.slice(0, 17) + ".."
+                    : review.nickName}
                 </ReviewContent>
                 <ReviewContent>
                   <span>
@@ -168,7 +174,7 @@ const Review = () => {
                   {review.star}
                 </ReviewContent>
                 <ReviewImg>
-                  {review.images.map((img, index) => (
+                  {review.image.map((img, index) => (
                     <>
                       <img
                         src={img}

@@ -93,10 +93,9 @@ let last = false
         setPresentPage(presentPage+1);
         console.log("last true / false ::",res.data.last ); 
         const lastresult = res.data.last;
-        if(lastresult){
-         
-          last = true;
-        }    console.log("isLoaded",isLoaded);
+        if(lastresult){     
+          last = true;  
+        }    console.log("  isLoaded",isLoaded);
         console.log("currentPage",currentPage);
         setRestaurantArr((restaurantArr)=>restaurantArr.concat(res.data.content));
       })
@@ -112,9 +111,9 @@ let last = false
     if (entry.isIntersecting && !isLoaded && !last) {
       console.log("onIntersect last ????" ,last)
       observer.unobserve(entry.target);
-    await bringMarketInfo();
+      await bringMarketInfo();
       observer.observe(entry.target);
-    }
+      }
   }; 
  
   useEffect(()=>{
@@ -133,7 +132,6 @@ let last = false
   },[target]);
   return (
     <Container>
-    
     {/* 헤더 따로 만들기 */}
    <RestaurantHeader></RestaurantHeader>
     <ListContainer>
@@ -154,9 +152,7 @@ let last = false
       {isLoaded && !last &&
         <Loader />
          }            
-
           </div>
-    
     </ListContainer>
     
     </Container>

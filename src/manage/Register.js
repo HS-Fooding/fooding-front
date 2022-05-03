@@ -1224,11 +1224,12 @@ function Register(floorCallback) {
                     />
                   ) : (
                     <InfoSpan>
-                      {marketInfo?.tel[0].slice(0, 3) +
+                      {/* {marketInfo?.tel[0].slice(0, 3) +
                         "-" +
                         marketInfo?.tel[0].slice(3, 7) +
                         "-" +
-                        marketInfo?.tel[0].slice(7, 11)}
+                        marketInfo?.tel[0].slice(7, 11)} */}
+                        {marketInfo?.tel[0]}
                     </InfoSpan>
                   )}
                 </div>
@@ -1243,12 +1244,14 @@ function Register(floorCallback) {
                     />
                   ) : (
                     <InfoSpan>
-                      {" "}
-                      {marketInfo?.tel[1].slice(0, 3) +
+                      {/* {" "}
+                      {marketInfo?.tel[1]?.slice(0, 3) +
                         "-" +
-                        marketInfo?.tel[1].slice(3, 7) +
+                        marketInfo?.tel[1]?.slice(3, 7) +
                         "-" +
-                        marketInfo?.tel[1].slice(7, 11)}
+                        marketInfo?.tel[1]?.slice(7, 11)} */}
+
+                      {marketInfo?.tel[1]}
                     </InfoSpan>
                   )}
                 </div>

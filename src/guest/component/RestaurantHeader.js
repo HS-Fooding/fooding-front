@@ -18,11 +18,11 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 `;
 const AreaContainer = styled.div`
-  width: 188px;
+  width: 290px;
   height: 30px;
   margin-left: 15px;
   font-size: 11px;
@@ -54,7 +54,7 @@ const RestaurantHeader = () => {
         {" "}
         {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}
         <div>
-          <Link  to={`/guest/restaurantSearch`}><FontAwesomeIcon icon={faMagnifyingGlass} />
+          <Link  style={{ textDecoration: "none", color: "inherit" }} to={`/guest/restaurantSearch`}><FontAwesomeIcon icon={faMagnifyingGlass} />
           </Link></div>{" "}
         <p> | </p>{" "}
         <div>

@@ -241,6 +241,7 @@ const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
   const [representativeNNormal, setRepresentativeNNormal] = useState();
+  const [representative,setRepresentative] = useState();
   const [toggle, setToggle] = useState(false);
   const { marketId } = useParams();
   const [category, setCategory] = useState([]);
@@ -324,6 +325,7 @@ const MarketDetail = () => {
     let representNnormal = representativeMenu.concat(normalMenu);
     console.log("representNnormal", representNnormal);
     setRepresentativeNNormal(representNnormal);
+    setRepresentative(representativeMenu);
   };
   // useEffect(()=>{
 
@@ -375,11 +377,20 @@ const MarketDetail = () => {
 
             <span>예약하기</span>
           </MenuBtnBox>
-        </Link>
+        </Link> 
+         <Link 
+          style={{ textDecoration: "none", color: "inherit" }}
+          to="/review"
+          state={{
+            marketId:marketId
+          }}
+          > 
         <MenuBtnBox>
-          <i class="fa-solid fa-pen"></i>
-          <span>리뷰쓰기</span>
+       <i class="fa-solid fa-pen"></i>
+          <span>리뷰</span>
+        
         </MenuBtnBox>
+          </Link>
       </MarketMenuBox>
       <MarketDetailInfo>
         {/* 매장소개, 운영시간,주소,전화번호(매장,개인),주차공간,최대이용가능시간,카테고리, */}

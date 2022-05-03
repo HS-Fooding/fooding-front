@@ -16,6 +16,8 @@ import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
 import ManageReserv from "./manage/ManageReserv";
 import Chart from "./manage/Chart";
+import UserData from "./manage/UserData";
+import CurrentTableState from "./manage/CurrentTableState";
 
 import maincanvas from "./manage/maincanvas";
 import RestaurantList from "./guest/router/RestaurantList";
@@ -36,9 +38,12 @@ function App() {
           <Route path="/writeReview" element={<WriteReview />}></Route>
           <Route path="/sign" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/:reviewId" element={<ReviewDetail />}></Route>
+          <Route path="/review/:reviewId" element={<ReviewDetail />}></Route>
           <Route path="/reservation" element={<Reservation />}></Route>
           <Route path="/register" element={<Register />}></Route>
+          <Route path="/userData" element={<UserData />}></Route>
+          <Route path="/currentTableState" element={<CurrentTableState />}></Route>
+          
           <Route path="/manager/login" element={<LoginMg />}></Route>
 
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
@@ -60,6 +65,7 @@ function App() {
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
+
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

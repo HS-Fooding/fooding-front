@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import React, { useState, useEffect, useRef } from "react";
 import Header from "../component/Header";
 import styled from "styled-components";
-
+import { Link,useLocation } from "react-router-dom";
 import { url, token } from "../../Api";
 import "@fortawesome/fontawesome-free/js/all.js";
 
@@ -209,7 +209,7 @@ const ReviewDetail = () => {
   const [bigImg, setBigImg] = useState(false);
   const [comments, setComments] = useState([]);
   const [clickImg, setClickImg] = useState();
-
+const location = useLocation();
   var axios = require("axios");
 
   const commentSubmit = () => {
@@ -225,7 +225,7 @@ const ReviewDetail = () => {
 
     var config = {
       method: "post",
-      url: url + `/sample_project/review/${reviewId}/comment`,
+      url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}/comment`,
       headers: {
         Authorization: "Bearer " + getToken,
         "Content-Type": "application/json",
@@ -259,7 +259,7 @@ const ReviewDetail = () => {
   useEffect(() => {
     var config = {
       method: "get",
-      url: url + `/sample_project/review/${reviewId}`,
+      url: url + `/fooding/review/${reviewId}`,
       headers: {
         //'Cookie': 'Cookie_1=31B130A5F9F3D2ED1CFB0B94AB5FCBD8',
         //...data.getHeaders()
@@ -281,7 +281,9 @@ const ReviewDetail = () => {
 
   return (
     <Container>
-      <Header back={"/Review"} />
+      <Header back={`/review`}
+      
+      />
 
       <MainBox>
         <ReviewContent>
