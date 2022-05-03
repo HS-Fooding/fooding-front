@@ -35,9 +35,7 @@ const Header = ({ title, back,marketId }) => {
     <>
       <GlobalStyle />
       <Container>
-        <Link to={back} state={{
-          marketId:marketId,
-        }}>
+        <Link to={back}>
           <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
         </Link>
         <span>{title}</span>
