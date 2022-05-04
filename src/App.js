@@ -30,26 +30,26 @@ import RestaurantInput from "./guest/component/RestaurantInput";
 
 import Location from "./guest/router/Location";
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/review/:marketId" element={<Review />}></Route>
-          <Route path="/writeReview" element={<WriteReview />}></Route>
-          <Route path="/sign" element={<SignUp />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/review/:marketId/:reviewId" element={<ReviewDetail />}></Route>
-          <Route path="/reservation" element={<Reservation />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/userData" element={<UserData />}></Route>
-          <Route path="/currentTableState" element={<CurrentTableState />}></Route>
-          <Route path="/guest/location" element={<Location />}></Route>
-          <Route path="/manager/login" element={<LoginMg />}></Route>       
-          <Route path="/manager/signup" element={<SignUpMg />}></Route>             
-          {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
+    return (
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />}></Route>
+                    <Route path="/review/:marketId" element={<Review />}></Route>
+                    <Route path="/writeReview" element={<WriteReview />}></Route>
+                    <Route path="/sign" element={<SignUp />}></Route>
+                    <Route path="/login" element={<Login />}></Route>
+                    <Route path="/review/:marketId/:reviewId" element={<ReviewDetail />}></Route>
+                    <Route path="/reservation" element={<Reservation />}></Route>
+                    <Route path="/register" element={<Register />}></Route>
+                    <Route path="/userData" element={<UserData />}></Route>
+                    <Route path="/currentTableState" element={<CurrentTableState />}></Route>
+                    <Route path="/guest/location" element={<Location />}></Route>
+                    <Route path="/manager/login" element={<LoginMg />}></Route>
+                    <Route path="/manager/signup" element={<SignUpMg />}></Route>
+                    {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
 
-          <Route path="/manager/manageReserv" element={<ManageReserv />}></Route>
+                    <Route path="/manager/manageReserv" element={<ManageReserv />}></Route>
                     <Route path="/manager/chart" element={<Chart />}></Route>
                     <Route path="/canvas" element={<MyCanvas />}></Route>
                     <Route path="/guest/restaurantList" element={<RestaurantList />}></Route>

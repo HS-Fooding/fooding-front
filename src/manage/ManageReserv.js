@@ -37,7 +37,6 @@ const transformData = (dummy) => {
                 (parseDate(dummy.tableInfo.date, m.reservAt) -
                     parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
                 (60 * 1000 * BLOCK_OF_TIME);
-
             return {
                 nickname: m.nickname,
                 tableNum: m.tableNum,
@@ -65,46 +64,34 @@ const ManageReserv = () => {
     const [restInfo, setRestInfo] = React.useState({});
     const [newCounter, setNewCounter] = React.useState(0);
 
-    ManageReserv.defaultProps = {
-        className: "layout",
-        cols: transformed.tableNums,
-        rowHeight: 30,
-        onLayoutChange: function () {},
-        // This turns off compaction so you can place items wherever.
-        // verticalCompact: false,
-        compactType: null,
-        // This turns off rearrangement so items will not be pushed arround.
-        preventCollision: true,
-    };
-
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
 
-        // this.onAddItem = this.onAddItem.bind(this);
-        // this.onBreakpointChange = this.onBreakpointChange.bind(this);
         const config = {
             method: "get",
             // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-            url: url + `/fooding/admin/restaurant/${2}/reservation`,
+            url: url + `/fooding/admin/restaurant/${1}/reservation`,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + getToken,
             },
             params: {
-                date: "2022-05-01",
+                // date: "2022-05-01",
+                date: "1997-06-05",
             },
         };
 
         await axios(config)
             .then((response) => {
                 setTransformed(transformData(response.data));
-                // console.log(transformData(response.data));
+                console.log(transformData(response.data));
                 setReservations(transformed.reservations);
 
                 return transformData(response.data).reservations;
             })
             .then((response) => {
                 // generate layout
+                // console.log("response!!", response);
                 const layout = response.map((item, i, list) => {
                     return {
                         i: i.toString(),
@@ -121,33 +108,43 @@ const ManageReserv = () => {
                         reservAt: response[i].reservAt,
                     };
                 });
-                // console.log("layout!!", layout);
                 setLayout(layout);
-                // setRestInfo(transformed);
+                // onAddItem = onAddItem.bind(this);
+                // onBreakpointChange = onBreakpointChange.bind(this);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
 
-    function onLayoutChange(layout) {
-        const tmp = { ...layout };
-        // const restInfo = { ...restInfo };
-        console.log("tmp", tmp);
-        console.log("layout changed", layout);
-        const open = transformed.open;
-        console.log("open at", open);
+    ManageReserv.defaultProps = {
+        className: "layout",
+        cols: transformed.tableNums,
+        rowHeight: 30,
+        onLayoutChange: function () {},
+        // This turns off compaction so you can place items wherever.
+        // verticalCompact: false,
+        compactType: null,
+        // This turns off rearrangement so items will not be pushed arround.
+        preventCollision: true,
+    };
 
-        for (var i = 0; i < Object.keys(tmp).length; i++) {
-            tmp[i].x = parseInt(layout[i].x);
-            tmp[i].y = parseInt(layout[i].y);
-            tmp[i].w = parseInt(layout[i].w);
-            tmp[i].h = parseInt(layout[i].h);
-            tmp[i].tableNum = parseInt(tmp[i].x) + 1;
+    function onLayoutChange(data) {
+        const tmp = { ...data };
+        // const restInfo = { ...restInfo };
+        const open = transformed.open;
+
+        // for (var i = 0; i < Object.keys(tmp).length; i++) {
+        for (var i = 0; i < data.length; i++) {
+            tmp[i].x = parseInt(data[i].x);
+            tmp[i].y = parseInt(data[i].y);
+            tmp[i].w = parseInt(data[i].w);
+            tmp[i].h = parseInt(data[i].h);
+            tmp[i].tableNum = parseInt(data[i].x) + 1;
             const open_hours = open.getHours();
             const open_minutes = open.getMinutes();
-            const reserv_hour = tmp[i].y / 2 + open_hours + open_minutes / 30;
-            const reserv_minute = (((tmp[i].y / 2 + open_hours + open_minutes) % 30) % 1) * 60;
+            const reserv_hour = data[i].y / 2 + open_hours + open_minutes / 30;
+            const reserv_minute = (((data[i].y / 2 + open_hours + open_minutes) % 30) % 1) * 60;
             tmp[i].reservAt = `${
                 parseInt(reserv_hour) / 10 >= 1
                     ? parseInt(reserv_hour)
@@ -155,11 +152,12 @@ const ManageReserv = () => {
             }:${reserv_minute === 30 ? reserv_minute : "00"}`;
         }
 
-        setLayout({ layout: Object.keys(tmp).map((m, i) => layout[i]) });
+        const result = layout.map((m, i) => tmp[i]);
+        setLayout(result);
         // this.setState({ layout: Object.keys(tmp).map((m, i) => tmp[i]) });
-        console.log("this", this);
-        this.onLayoutChange = this.onLayoutChange.bind(this);
-        console.log("this2", this);
+        // console.log("this", this);
+        // this.onLayoutChange = this.onLayoutChange.bind(this);
+        // console.log("this2", this);
     }
 
     const onAddItem = () => {
@@ -177,22 +175,19 @@ const ManageReserv = () => {
 
         // console.log("adding", "n" + this.state.newCounter);
         setNewCounter(newCounter + 1);
-
-        setLayout(
-            layout.concat({
-                i: "n" + newCounter,
-                x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-                y: diff, // puts it at the bottom
-                w: 1,
-                h: transformed.maxUsageTime / 30,
-                //
-                nickname,
-                reservAt,
-                tableNum,
-                reservCount,
-                isCar,
-            })
-        );
+        setLayout(...layout, {
+            i: "n" + newCounter,
+            x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+            y: diff, // puts it at the bottom
+            w: 1,
+            h: transformed.maxUsageTime / 30,
+            //
+            nickname,
+            reservAt,
+            tableNum,
+            reservCount,
+            isCar,
+        });
     };
 
     // We're using the cols coming back from this to calculate where to add new items.
@@ -240,7 +235,8 @@ const ManageReserv = () => {
     };
 
     const stringifyLayout = () => {
-        return Object.keys(layout).map((l) => {
+        // console.log("layout here", layout);
+        return layout.map((l) => {
             const name = l.i === "__dropping-elem__" ? "drop" : l.i;
             return (
                 <div className="layoutItem" key={l.i}>
@@ -253,13 +249,14 @@ const ManageReserv = () => {
 
     return (
         <div>
+            {console.log(ManageReserv.defaultProps)}
             <button onClick={onAddItem}>Add Item</button>
             <ReactGridLayout
                 layout={layout}
                 onDragStop={onLayoutChange}
                 onResize={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}
-                // {...this.props}
+                // {...ManageReserv.defaultProps}
             >
                 {generateDOM()}
             </ReactGridLayout>
