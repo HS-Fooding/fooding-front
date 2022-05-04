@@ -41,7 +41,7 @@ const transformData = (dummy) => {
                 nickname: m.nickname,
                 tableNum: m.tableNum,
                 reservCount: m.reservCount,
-                isCar: m.isCar,
+                isCar: m.car,
                 // reservAt: parseDate(dummy.tableInfo.date, m.reservAt),
                 reservAt: m.reservAt,
                 x: dummy.tableInfo.tableNums.findIndex((t) => t === m.tableNum), // 테이블 번호
@@ -53,8 +53,8 @@ const transformData = (dummy) => {
     };
 };
 
-const ReactGridLayout = WidthProvider(Responsive);
-
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
+var data = "hello";
 const ManageReserv = () => {
     const [transformed, setTransformed] = React.useState({});
     const [reservations, setReservations] = React.useState([]);
@@ -84,23 +84,24 @@ const ManageReserv = () => {
         await axios(config)
             .then((response) => {
                 setTransformed(transformData(response.data));
-                console.log(transformData(response.data));
+                // console.log(transformData(response.data));
                 setReservations(transformed.reservations);
+
+                data = transformData(response.data);
 
                 return transformData(response.data).reservations;
             })
             .then((response) => {
                 // generate layout
-                // console.log("response!!", response);
+                console.log(response);
                 const layout = response.map((item, i, list) => {
+                    // console.log("res!!", item);
                     return {
                         i: i.toString(),
                         x: response[i].x,
                         y: response[i].y,
                         w: response[i].w,
-                        // h: parseInt(response[i].h),
-                        h: 2,
-                        // h: 1,
+                        h: parseInt(response[i].h),
                         nickname: response[i].nickname,
                         tableNum: response[i].tableNum,
                         reservCount: response[i].reservCount,
@@ -109,8 +110,10 @@ const ManageReserv = () => {
                     };
                 });
                 setLayout(layout);
-                // onAddItem = onAddItem.bind(this);
-                // onBreakpointChange = onBreakpointChange.bind(this);
+                // setRestInfo(...transformed);
+                // setNewCounter(0);
+                // onAddItem = onAddItem.bind(ManageReserv.defaultProps);
+                // onBreakpointChange = onBreakpointChange.bind(ManageReserv.defaultProps);
             })
             .catch((error) => {
                 console.log(error);
@@ -119,11 +122,11 @@ const ManageReserv = () => {
 
     ManageReserv.defaultProps = {
         className: "layout",
-        cols: transformed.tableNums,
+        // cols: transformed.tableNums,
+        cols: data.tablenums, // TODO : Need to check
         rowHeight: 30,
         onLayoutChange: function () {},
         // This turns off compaction so you can place items wherever.
-        // verticalCompact: false,
         compactType: null,
         // This turns off rearrangement so items will not be pushed arround.
         preventCollision: true,
@@ -249,17 +252,16 @@ const ManageReserv = () => {
 
     return (
         <div>
-            {console.log(ManageReserv.defaultProps)}
             <button onClick={onAddItem}>Add Item</button>
-            <ReactGridLayout
+            <ResponsiveReactGridLayout
                 layout={layout}
                 onDragStop={onLayoutChange}
                 onResize={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}
-                // {...ManageReserv.defaultProps}
+                {...ManageReserv.defaultProps}
             >
                 {generateDOM()}
-            </ReactGridLayout>
+            </ResponsiveReactGridLayout>
             <div>
                 <div className="layoutJSON">
                     Displayed as <code>[x, y, w, h]</code>
