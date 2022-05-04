@@ -9,7 +9,12 @@ const BLOCK_OF_TIME = 30;
 
 const parseDate = (date, time) => {
     const _date = date.split("-");
-    const _time = time.split(":");
+    var _time;
+    if (typeof time === "object") {
+        _time = [time.getHours(), time.getMinutes()];
+    } else {
+        _time = time.split(":");
+    }
 
     // const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 
@@ -157,13 +162,13 @@ const ManageReserv = () => {
             }:${reserv_minute === 30 ? reserv_minute : "00"}`;
         }
 
-        console.log("tmp", tmp);
         const result = layout.map((m, i) => tmp[i]);
         setLayout([...result]);
     };
 
     const onAddItem = () => {
         // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
+        console.log("transformed", transformed);
         const nickname = prompt("nickname");
         const reservAt = prompt("reservAt");
         const tableNum = prompt("tableNum");
@@ -175,12 +180,11 @@ const ManageReserv = () => {
                 parseDate(transformed.date, transformed.open)) /
             (60 * 1000 * BLOCK_OF_TIME);
 
-        // console.log("adding", "n" + this.state.newCounter);
-        setNewCounter(newCounter + 1);
-        setLayout(...layout, {
+        const tmp = {
             i: "n" + newCounter,
-            x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-            y: diff, // puts it at the bottom
+            // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+            x: parseInt(tableNum - 1),
+            y: diff,
             w: 1,
             h: transformed.maxUsageTime / 30,
             //
@@ -188,8 +192,11 @@ const ManageReserv = () => {
             reservAt,
             tableNum,
             reservCount,
-            isCar,
-        });
+            isCar: isCar === "true" ? true : false,
+        };
+        setNewCounter(newCounter + 1);
+
+        setLayout([...layout, tmp]);
     };
 
     // We're using the cols coming back from this to calculate where to add new items.
@@ -237,7 +244,6 @@ const ManageReserv = () => {
     };
 
     const stringifyLayout = () => {
-        // console.log("layout here", layout);
         return layout.map((l) => {
             const name = l.i === "__dropping-elem__" ? "drop" : l.i;
             return (
@@ -255,7 +261,6 @@ const ManageReserv = () => {
             <ResponsiveReactGridLayout
                 layout={layout}
                 onDragStop={onLayoutChange}
-                // onDrop={onLayoutChange}
                 onResize={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}
                 {...ManageReserv.defaultProps}
