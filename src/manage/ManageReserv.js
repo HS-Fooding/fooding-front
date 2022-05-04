@@ -132,13 +132,15 @@ const ManageReserv = () => {
         preventCollision: true,
     };
 
-    function onLayoutChange(data) {
-        const tmp = { ...data };
-        // const restInfo = { ...restInfo };
+    const onLayoutChange = (data, from, to, index) => {
+        const tmp = layout;
         const open = transformed.open;
+        // console.log("data", data);
+        // console.log("from", from);
+        // console.log("to", to);
+        // console.log("index", index);
 
-        // for (var i = 0; i < Object.keys(tmp).length; i++) {
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < tmp.length; i++) {
             tmp[i].x = parseInt(data[i].x);
             tmp[i].y = parseInt(data[i].y);
             tmp[i].w = parseInt(data[i].w);
@@ -155,13 +157,10 @@ const ManageReserv = () => {
             }:${reserv_minute === 30 ? reserv_minute : "00"}`;
         }
 
+        console.log("tmp", tmp);
         const result = layout.map((m, i) => tmp[i]);
-        setLayout(result);
-        // this.setState({ layout: Object.keys(tmp).map((m, i) => tmp[i]) });
-        // console.log("this", this);
-        // this.onLayoutChange = this.onLayoutChange.bind(this);
-        // console.log("this2", this);
-    }
+        setLayout([...result]);
+    };
 
     const onAddItem = () => {
         // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
@@ -256,6 +255,7 @@ const ManageReserv = () => {
             <ResponsiveReactGridLayout
                 layout={layout}
                 onDragStop={onLayoutChange}
+                // onDrop={onLayoutChange}
                 onResize={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}
                 {...ManageReserv.defaultProps}
