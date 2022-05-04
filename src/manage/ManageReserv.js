@@ -115,10 +115,6 @@ const ManageReserv = () => {
                     };
                 });
                 setLayout(layout);
-                // setRestInfo(...transformed);
-                // setNewCounter(0);
-                // onAddItem = onAddItem.bind(ManageReserv.defaultProps);
-                // onBreakpointChange = onBreakpointChange.bind(ManageReserv.defaultProps);
             })
             .catch((error) => {
                 console.log(error);
@@ -207,7 +203,10 @@ const ManageReserv = () => {
 
     const onRemoveItem = (i) => {
         console.log("removing", i);
-        setLayout({ layout: _.reject(layout, { i: i }) });
+
+        const result = layout.filter((m) => m.i !== i);
+        console.log("result", result);
+        setLayout(result);
     };
 
     const generateDOM = () => {
@@ -219,7 +218,6 @@ const ManageReserv = () => {
         };
 
         return _.map(layout, (el, i) => {
-            // console.log("!!", i, el);
             const t = el.i;
             return (
                 <div key={t} data-grid={el}>
@@ -233,8 +231,7 @@ const ManageReserv = () => {
                     <span
                         className="remove"
                         style={removeStyle}
-                        // onClick={onRemoveItem.bind(this, t)}
-                        onClick={onRemoveItem}
+                        onClick={onRemoveItem.bind(this, t)}
                     >
                         x
                     </span>
@@ -263,6 +260,7 @@ const ManageReserv = () => {
                 onDragStop={onLayoutChange}
                 onResize={onLayoutChange}
                 onBreakpointChange={onBreakpointChange}
+                onRemoveItem={onRemoveItem}
                 {...ManageReserv.defaultProps}
             >
                 {generateDOM()}
