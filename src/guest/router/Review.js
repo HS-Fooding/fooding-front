@@ -29,7 +29,7 @@ const Reviews = styled.div`
   height: 700px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: white;
   overflow: auto;
@@ -43,6 +43,8 @@ const Reviews = styled.div`
 const InnerReviews = styled.div`
   height: 500px;
   padding-top: 10px;
+  
+  background-color:red;
 `;
 
 const ReviewBox = styled.div`

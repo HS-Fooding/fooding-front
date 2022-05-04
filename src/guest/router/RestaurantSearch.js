@@ -133,6 +133,7 @@ const RestaurantList = () => {
   const [searchWord,setSearchWord] = useState();
   const [result,setResult] = useState([]);
   const [firstInput, setfirstInput] = useState(false);
+  const [researchCount,setResearchCount] = useState(0);
   //const [last,setLast] = useState(false);
 let last = false
   let currentPage=0;
@@ -154,9 +155,10 @@ let last = false
    const data = new FormData();
     const getToken = localStorage.getItem("token");
     await new Promise((resolve)=>setTimeout(resolve,1000));
+    console.log("searchWordsearchWordsearchWordsearchWord",searchWord);
     await axios //${searchWord} 
-      .get(url + `/fooding/restaurant?search?keyword=${searchWord}&page=${currentPage}&size=6`, { 
-        headers: {
+      .get(url + `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`, { 
+        headers: {  
           //"Content-Type": "multipart/form-data",
           "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
@@ -168,11 +170,17 @@ let last = false
         setPresentPage(presentPage+1);
         console.log("last true / false ::",res.data.last ); 
         const lastresult = res.data.last;
-        if(lastresult){     
+        if(lastresult){      
           last = true;  
         }    console.log("  isLoaded",isLoaded);
-        console.log("currentPage",currentPage);
-        setRestaurantArr((restaurantArr)=>restaurantArr.concat(res.data.content));
+        console.log("currentPage",currentPage); 
+        console.log("researchCount",researchCount);
+        if(researchCount>=1){
+          setRestaurantArr(res.data.content);
+        }else{
+          setRestaurantArr((restaurantArr)=>restaurantArr.concat(res.data.content));
+        }
+        
       })
       .catch((err) => {
         console.log(err);
@@ -187,6 +195,7 @@ let last = false
    // setSearchWord("");
    setResult([]);
    setBring(true);
+   setResearchCount(researchCount+1);
    bringMarketInfo();
    
   }

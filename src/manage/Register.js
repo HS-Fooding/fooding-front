@@ -1107,7 +1107,7 @@ function Register(floorCallback) {
                                                 }}
                                                 min={0}
                                                 max={50}
-                                                step={10}
+                                                step={30}
                                                 value={availableMinute}
                                                 onChange={onChangeAvailableMinute}
                                             />
