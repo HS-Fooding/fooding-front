@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { url } from "../Api";
 import { useNavigate, Link } from "react-router-dom";
+import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +17,7 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-  height: 400px;
+  height: auto;
   width: 800px;
   /* border: 1px solid gray; */
   display: flex;
@@ -36,6 +37,8 @@ const Input = styled.input.attrs({ required: true })`
   &:first-child {
     border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   }
+  margin-left: 20px;
+  font-size: 16px;
 `;
 
 const InputBox = styled.div`
@@ -43,6 +46,10 @@ const InputBox = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.45);
   margin-bottom: 50px;
   margin-top: 70px;
+
+  svg {
+    position: absolute;
+  }
 `;
 
 const SubmitBtn = styled.button`
@@ -123,21 +130,40 @@ const LoginMg = () => {
       <Header />
 
       <Form onSubmit={handleSubmit(onValid)}>
-        <Span>LOGIN</Span>
+        <Span>LOGIN </Span>
+
         <InputBox>
-          <Input
-            {...register("Id", {
-              required: "아이디를 입력하세요.",
-            })}
-            placeholder="아이디를 입력해주세요."
-          />
-          <Input
-            {...register("password", {
-              required: "비밀번호를 입력하세요.",
-            })}
-            placeholder="비밀번호를 입력해주세요."
-            type="password"
-          />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              margin: "0px 20px",
+            }}
+          >
+            <i class="fa-regular fa-user"></i>
+            <Input
+              {...register("Id", {
+                required: "아이디를 입력하세요.",
+              })}
+              placeholder="아이디를 입력해주세요."
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              margin: "0px 20px",
+            }}
+          >
+            <i class="fa-solid fa-lock"></i>
+            <Input
+              {...register("password", {
+                required: "비밀번호를 입력하세요.",
+              })}
+              placeholder="비밀번호를 입력해주세요."
+              type="password"
+            />
+          </div>
         </InputBox>
         <LoginBtn>로그인</LoginBtn>
         <SignupBtn>회원가입</SignupBtn>
