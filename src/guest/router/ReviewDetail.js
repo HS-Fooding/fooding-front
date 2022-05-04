@@ -1,11 +1,12 @@
 import { useParams } from "react-router";
 import React, { useState, useEffect, useRef } from "react";
-import Header from "../component/Header";
-import styled from "styled-components";
 
+import styled from "styled-components";
+import { Link,useLocation,useNavigate  } from "react-router-dom";
 import { url, token } from "../../Api";
 import "@fortawesome/fontawesome-free/js/all.js";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   width: 350px;
   height: 600px;
@@ -201,7 +202,30 @@ const DateReply = styled.div`
     font-weight: bold;
   }
 `;
-
+const Header = styled.div`
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  color: black;
+  padding: 5px 15px;
+  font-size: 15px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  /* /* position: absolute; */
+  position: sticky;
+  top: 0;
+  font-weight: bold;
+  z-index: 3;
+  .icon {
+    cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.manColor};
+    }
+    color: ${(props) => props.theme.mainColor};
+  }
+`;
 const ReviewDetail = () => {
   const { reviewId } = useParams();
   const [review, setReview] = useState([]);
@@ -209,7 +233,8 @@ const ReviewDetail = () => {
   const [bigImg, setBigImg] = useState(false);
   const [comments, setComments] = useState([]);
   const [clickImg, setClickImg] = useState();
-
+const location = useLocation();
+let navigate = useNavigate();
   var axios = require("axios");
 
   const commentSubmit = () => {
@@ -225,7 +250,7 @@ const ReviewDetail = () => {
 
     var config = {
       method: "post",
-      url: url + `/sample_project/review/${reviewId}/comment`,
+      url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}/comment`,
       headers: {
         Authorization: "Bearer " + getToken,
         "Content-Type": "application/json",
@@ -259,7 +284,7 @@ const ReviewDetail = () => {
   useEffect(() => {
     var config = {
       method: "get",
-      url: url + `/sample_project/review/${reviewId}`,
+      url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}`,
       headers: {
         //'Cookie': 'Cookie_1=31B130A5F9F3D2ED1CFB0B94AB5FCBD8',
         //...data.getHeaders()
@@ -270,26 +295,28 @@ const ReviewDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setReview(response.data);
-        setComments(response.data.comments);
+        setComments(response.data.comments.content);
       })
       .catch(function (error) {
         console.log(error);
       });
+      console.log("location.state.marketId",location.state.marketId);
   }, []);
 
   console.log(reviewId);
 
   return (
     <Container>
-      <Header back={"/Review"} />
-
+      <Header>
+      <div onClick={()=>{navigate(-1)}}><FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /></div>
+      </Header>
       <MainBox>
         <ReviewContent>
-          <div className="userName">{review.author}</div>
+          <div className="userName">{review.nickName}</div>
           <div className="dateStar">
             <span>
               {" "}
-              {review.registerDate?.replaceAll("-", ".").slice(0, 10)}
+              {review.createDate?.replaceAll("-", ".").slice(0, 10)}
             </span>
             <span>★</span>
             <span>{review.star}</span>
@@ -326,7 +353,7 @@ const ReviewDetail = () => {
             <CommentsLi key={index}>
               <div style={{ display: "inline-block" }}>
                 <CommentBox>
-                  <span className="replyName">{reply.author}</span>
+                  <span className="replyName">{reply.nickName}</span>
 
                   {reply.content.includes("@") == true ? (
                     <div style={{ display: "flex" }}>
@@ -339,10 +366,10 @@ const ReviewDetail = () => {
                 </CommentBox>
               </div>
               <DateReply>
-                <span>{reply.modifiedDate.slice(0, 10)}</span>
+                <span>{reply.modifiedAt.slice(0, 10)}</span>
                 <button
                   onClick={() => {
-                    postReply(reply.id, reply.author);
+                    postReply(reply.id, reply.nickName);
                   }}
                   style={{ cursor: "pointer" }}
                 >

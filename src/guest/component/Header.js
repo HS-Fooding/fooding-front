@@ -30,7 +30,7 @@ const Container = styled.div`
   }
 `;
 
-const Header = ({ title, back }) => {
+const Header = ({ title, back,marketId }) => {
   return (
     <>
       <GlobalStyle />

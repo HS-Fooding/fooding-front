@@ -106,6 +106,8 @@ const throttle = function (callback, waitTime) {
 const Header = () => {
   const reservationMatch = useMatch("/reservation");
   const registerMatch = useMatch("/register");
+  const currentTableMatch = useMatch("/currentTableState");
+  const userDataMatch = useMatch("/userData");
   let location = useLocation();
 
   let [isToken, setIsToken] = useState(false);
@@ -177,8 +179,10 @@ const Header = () => {
               매장 등록{registerMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
-          <Item>테이블 현황</Item>
-          <Item>사용자 데이터</Item>
+          <Item><Link to="/currentTableState">
+            테이블 현황{currentTableMatch && <Circle layoutId="circle" />}
+            </Link></Item>
+          <Item><Link to="/userData">사용자 데이터{userDataMatch && <Circle layoutId="circle" />}</Link></Item>
         </Items>
       </MainMenu>
     </Nav>
