@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Review";
 import styled, { createGlobalStyle } from "styled-components";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link,useLocation } from "react-router-dom";
 import { Navigate } from "react-router";
 import GlobalStyle from "../../GlobalStyle";
-import Header from "../component/Header";
 
+import "@fortawesome/fontawesome-free/js/all.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+
 import { faCamera, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as FaStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { url } from "../../Api";
 // border: 1px solid black;
 const token = localStorage.getItem("token");
 const WriteReviewContainer = styled.div`
-  width: 350px;
-  height: 600px;
+  width: 410px;
+  height: 770px;
   position: relative;
   display: flex;
+  flex-direction: column;
 `;
 const SubmitButton = styled.button`
   border: none;
-  width: 350px;
+  width: 410px;
   height: 80px;
   font-size: 15px;
   position: absolute;
@@ -148,7 +151,32 @@ const ContentForm = styled.form`
   height: 300px;
   color: ${(props) => props.theme.fontGrayColor};
 `;
+const Header = styled.div`
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  color: black;
+  padding: 5px 15px;
+  font-size: 15px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  /* /* position: absolute; */
+  position: sticky;
+  top: 0;
+  font-weight: bold;
+  z-index: 3;
+  .icon {
+    cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.manColor};
+    }
+    color: ${(props) => props.theme.mainColor};
+  }
+`;
 const WriteReview = () => {
+  const location = useLocation();
   const [reviewName, setReviewName] = useState("");
   const [reviewStar, setReviewStar] = useState("");
   const [reviewPw, setReviewPw] = useState("");
@@ -161,7 +189,7 @@ const WriteReview = () => {
   const [files, setFiles] = useState([]);
 
   const [star, setStar] = useState(0);
-
+  console.log("location.state.marketId",location.state.marketId);
   // const [first,setFirst]= useState("☆");
   // const [second,setSecond]= useState("☆");
   // const [third,setThird]= useState("☆");
@@ -238,6 +266,7 @@ const WriteReview = () => {
     //console.log("token", token);
     const getToken = localStorage.getItem("token");
     console.log(getToken);
+    
   }, []);
   const countStar = () => {
     let temp = star + 1;
@@ -288,7 +317,7 @@ const WriteReview = () => {
       data.append("image", img);
     });
     axios
-      .post(url + "/sample_project/review", data, {
+      .post(url + `/fooding/restaurant/${location.state.marketId}/review`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           //"Content-Type": "application/json",
@@ -297,18 +326,21 @@ const WriteReview = () => {
       })
       .then((res) => {
         console.log(res);
-        navigate("/Review");
+        navigate(-1);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
+    
     setUseFile(file);
   }, [file]);
   return (
     <WriteReviewContainer>
-      <Header back={"/Review"} title={"리뷰 쓰기"} />
+       <Header>
+      <div onClick={()=>{navigate(-1)}}><FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /></div>
+      </Header>
 
       <FormContainer>
         {/* <TypeInput

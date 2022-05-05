@@ -355,7 +355,7 @@ const MarketDetail = () => {
             </span>
           </div>
         </div>
-        <div className="avgScore">{market?.avgScore}</div>
+        <div className="avgScore">{Number(market?.avgScore).toFixed(1)}</div>
       </MarketTitleBox>
       <MarketMenuBox>
         <MenuBtnBox>

@@ -122,12 +122,12 @@ const InputContainer = styled.div`
    }
   }
 `;
-const RestaurantList = () => {
+const RestaurantSearch = () => {
   const [restaurantArr,setRestaurantArr] = useState([]);
   const [target, setTarget] = useState(null);
   const [numOfElements, setNumOfElements] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [presentPage,setPresentPage] = useState(0);
+  const [presentPage,setPresentPage]  = useState(0);
   const [bring,setBring] = useState(false);
   const [post,setPost] = useState(false);
   const [searchWord,setSearchWord] = useState();
@@ -162,7 +162,7 @@ let last = false
           //"Content-Type": "multipart/form-data",
           "Content-Type": "application/json",
           Authorization: "Bearer " + getToken,
-        }, 
+        },  
       })
       .then((res) => {
         
@@ -172,7 +172,9 @@ let last = false
         const lastresult = res.data.last;
         if(lastresult){      
           last = true;  
-        }    console.log("  isLoaded",isLoaded);
+
+        } console.log("last가 true로 바뀜!!?",last);
+           console.log("  isLoaded",isLoaded);
         console.log("currentPage",currentPage); 
         console.log("researchCount",researchCount);
         if(researchCount>=1){
@@ -182,11 +184,14 @@ let last = false
         }
         
       })
+      .then(()=>{
+        currentPage+=1;
+        setIsLoaded(false);
+      })
       .catch((err) => {
         console.log(err);
       }); 
-      currentPage+=1;
-      setIsLoaded(false);
+    
     }
  
   }
@@ -200,17 +205,24 @@ let last = false
    
   }
   const onIntersect = async ([entry], observer) => {
+    console.log(" onInterect !isLoaded",!isLoaded);
+    console.log(" onInterect !last",!last);
+    console.log(" isIntersecting",entry.isIntersecting);
+
     if (entry.isIntersecting && !isLoaded && !last) {
       console.log("onIntersect last ????" ,last)
-      observer.unobserve(entry.target);
+      observer.unobserve(entry.target); 
       await bringMarketInfo();
       observer.observe(entry.target);
       }
   }; 
  
   useEffect(()=>{
-    
-  },[last]);
+    console.log("change isLoaded",isLoaded);
+  },[last,isLoaded]);
+  useEffect(()=>{
+    console.log("TargetTargetTargetTargetTarget");
+  },[target])
   useEffect(()=>{},[restaurantArr]);
   useEffect(()=>{
     let observer;
@@ -219,7 +231,7 @@ let last = false
         threshold:0.4,
       });
       observer.observe(target);
-    }
+    } 
     return () => observer && observer.disconnect();
   },[target]);
   return (
@@ -228,13 +240,13 @@ let last = false
     <HeaderContainer>
        <Link to={`/guest/restaurantList`}>
           <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
-        </Link>  
+        </Link>   
         <InputContainer><form onSubmit={getSearch} ><input onChange={bringSearchWord} value={searchWord} type="text"></input></form></InputContainer>
        {post ? <div className="map">
           <FontAwesomeIcon icon={faMap} className="icon" size="1x" />
         </div> : null}
     </HeaderContainer>
-    <ListContainer>
+  {searchWord ? <ListContainer>
       {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
       {restaurantArr?.map((content,index)=>{
        return <Link  
@@ -245,17 +257,14 @@ let last = false
             viewCount:content.viewCount,
           }}        
        style={{ textDecoration: "none", color: "inherit" }}
-      ><Restaurant content={content} /></Link>
-         
+      ><Restaurant content={content} /></Link>  
     })}
- <div ref={setTarget} className="Target-Element">
-      {isLoaded && !last &&
-        <Loader />
+      <div ref={setTarget} className="Target-Element">
+      {isLoaded && !last && <Loader />
          }            
           </div>
-    </ListContainer>
-    
+    </ListContainer> : null }
     </Container>
   );
 };
-export default memo(RestaurantList);
+export default memo(RestaurantSearch);

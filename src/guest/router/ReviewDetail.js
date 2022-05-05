@@ -8,8 +8,8 @@ import "@fortawesome/fontawesome-free/js/all.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
-  width: 350px;
-  height: 600px;
+  width: 410px;
+  height: 770px;
   position: relative;
   box-sizing: border-box;
 `;

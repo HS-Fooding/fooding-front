@@ -37,15 +37,17 @@ const NameNStarsContainer = styled.div`
   .NameOfRestaurant {
     font-size: 16px;
     font-weight: bold;
+    height:21px;
   }
   .Stars {
     font-size: 18px;
     color: orange;
     font-weight: bold;
+    height:21px;
   }
 `;
 const Category = styled.div`
-  margin-right:8px;
+  margin-right:3px;
   font-size: 12px;
   color: gray;
   margin-top: 5px;
@@ -81,7 +83,7 @@ const Restaurant = ({content}) => {
   // console.log("restaurant.category",content.category);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
-    else if (value === "JAPANESE") return "일식";
+    else if (value === "JAPAN") return "일식";
     else if (value === "CHINESE") return "중식";
     else if (value === "WESTERN") return "양식";
     else if (value === "VIETNAM") return "베트남";
@@ -113,8 +115,8 @@ const Restaurant = ({content}) => {
       </BestMenuContainer>
 
       <NameNStarsContainer>
-        <div className="NameOfRestaurant">{content.name}</div>
-        <div className="Stars">{content.avgScore}</div>
+        <div className="NameOfRestaurant">{content.name.length>10 ? content.name.slice(0, 9) + "..." : content.name}</div>
+        <div className="Stars">{(content.avgScore).toFixed(1)}</div>
       </NameNStarsContainer>
       <CategoryContainer>
        {content.category?.map((cate,index)=>{
@@ -122,7 +124,7 @@ const Restaurant = ({content}) => {
            return <Category>{bringCategoryValue(cate)}</Category> 
          }
          else{
-         return <Category>{bringCategoryValue(cate)} /</Category>
+         return <Category>{bringCategoryValue(cate)}/</Category>
          }
         })}
         

@@ -24,9 +24,10 @@ const WriteReviewBtn = styled.button`
 `;
 
 const Reviews = styled.div`
-  padding-top: 90px;
+  
   width: 100%;
-  height: 700px;
+  height: 625px;
+  margin-bottom:5px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -44,7 +45,6 @@ const InnerReviews = styled.div`
   height: 500px;
   padding-top: 10px;
   
-  background-color:red;
 `;
 
 const ReviewBox = styled.div`
@@ -153,7 +153,7 @@ const Review = () => {
               }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ReviewBox key={index}>
+              <ReviewBox key={index}  style={(reviews.length-1==index) ? {"marginBottom":"520px"}: null} >
                 <ReviewContent>
                   {review.nickName.length > 17
                     ? review.nickName.slice(0, 17) + ".."
@@ -211,8 +211,14 @@ const Review = () => {
           <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
         </Link>
       ) : (
-        <Link to={"/WriteReview"}>
+        <Link to={"/WriteReview"}
+            state={{
+              marketId:location.state.marketId,
+            }}
+            style={{ textDecoration: "none", color: "inherit" }}
+        >
           <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
+          
         </Link>
       )}
     </Container>
