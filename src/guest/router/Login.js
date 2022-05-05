@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Header from "../component/Header";
+
 import { useNavigate, Link } from "react-router-dom";
 
 import { url } from "../../Api";
@@ -8,15 +8,17 @@ import { url } from "../../Api";
 //src\guest\component\Login.js
 import { motion, AnimatePresence } from "framer-motion";
 // border: 1px solid black;
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   width: 410px;
   height: 770px;
   position: relative;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
+
 `;
 
 const FormContainer = styled.div`
@@ -134,6 +136,32 @@ const Modal = styled.div`
 //     scale:0,
 //   },
 // }
+const Header = styled.div`
+ display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  color: black;
+  padding: 5px 15px;
+  font-size: 15px;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
+  /* /* position: absolute; */
+  position: sticky;
+  top: 0;
+  font-weight: bold;
+  z-index: 3;
+  .icon {
+    display:flex;
+    width:20px;
+   margin-right:150px;
+    cursor: pointer;
+    &:hover {
+      color: ${(props) => props.theme.manColor};
+    }
+    color: ${(props) => props.theme.mainColor};
+  }
+`;
 const Login = () => {
   const [id, setId] = useState();
   const [ps, setPs] = useState();
@@ -211,7 +239,10 @@ const Login = () => {
   }
   return (
     <Container>
-      <Header back={"/"} title={"로그인"} />
+     <Header>
+      <div onClick={()=>{navigate(-1)}}><FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /></div>
+      <p>로그인</p>
+      </Header>
       {/* 2초뒤에 없애기 */}
       <>
         <AnimatePresence>

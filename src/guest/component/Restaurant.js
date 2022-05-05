@@ -109,13 +109,13 @@ const Restaurant = ({content}) => {
     <Container>
       <BestMenuContainer>
         <img
-          style={{ width: "188px", height: "180px" }}
+          style={{ width: "188px", height: "180px","objectFit": "cover" }}
           src={content.image?.path}
           ></img>
       </BestMenuContainer>
 
       <NameNStarsContainer>
-        <div className="NameOfRestaurant">{content.name.length>10 ? content.name.slice(0, 9) + "..." : content.name}</div>
+        <div className="NameOfRestaurant">{content.name.length>9 ? content.name.slice(0, 8) + "..." : content.name}</div>
         <div className="Stars">{(content.avgScore).toFixed(1)}</div>
       </NameNStarsContainer>
       <CategoryContainer>

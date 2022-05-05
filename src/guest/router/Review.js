@@ -75,6 +75,7 @@ const ReviewContent = styled.div`
   }
   &:nth-child(2) {
     /* star */
+    display:flex;
     font-size: 13px;
     color: rgba(0, 0, 0, 0.3);
   }
@@ -166,20 +167,21 @@ const Review = () => {
                   <span
                     style={{
                       color: "#fbc531",
-                      alignItems: "center",
                       marginLeft: "8px",
+                      display:"flex",
+                      aligntItems:"center"
+                    
                     }}
-                  >
-                    ★
+                  ><p>
+                    ★</p>
                   </span>
-
-                  {review.star}
+                    <span><p>{review.star}</p></span>
                 </ReviewContent>
                 <ReviewImg>
                   {review.image.map((img, index) => (
                     <>
                       <img
-                        src={img}
+                        src={img.path}
                         key={index}
                         style={{
                           width: "100px",

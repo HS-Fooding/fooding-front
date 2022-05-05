@@ -326,8 +326,9 @@ let navigate = useNavigate();
             {review.images?.map((img, index) => (
               <div key={index}>
                 <img
-                  style={{ cursor: "pointer" }}
-                  src={img}
+                key={img.id}
+                  style={{ cursor: "pointer", "objectFit": "cover" }}
+                  src={img.path}
                   onClick={() => {
                     makeImgBig(index);
                   }}
