@@ -90,81 +90,94 @@ const Location = () => {
   const [click, setClick] = useState(false);
   const [center, setCenter] = useState([37.58265617070882, 127.01017798663574]);
 
+  const [isSearch, setIsSearch] = useState(false);
+  const [markerData, setMarkerData] = useState([]);
   const getToken = localStorage.getItem("token");
 
-  useEffect(() => {
-    let markerdata = [];
+  let markerdata = [];
 
-    var config = {
-      method: "get",
-      url: url + `/fooding/restaurant?coord=true`,
-      headers: {
-        Authorization: "Bearer " + getToken,
-      },
+  const makeMarker = (markderdata) => {
+    // var markerPosition = new kakao.maps.LatLng(
+    //   37.365264512305174,
+    //   127.10676860117488
+    // );
+    // var marker = new kakao.maps.Marker({
+    //   position: markerPosition,
+    // });
+
+    let container = document.getElementById("map");
+    let options = {
+      center: new kakao.maps.LatLng(center[0], center[1]),
+      level: 5,
     };
 
-    axios(config)
-      .then(function (response) {
-        //console.log(response.data.content);
+    var map = new kakao.maps.Map(container, options);
 
-        response.data.content.map((market) => {
-          const obj = {
-            id: market.id,
-            lat: market.location.coordinate.y, // 위도
-            lng: market.location.coordinate.x, // 경도
-          };
-          markerdata.push(obj);
-        });
+    markerdata.forEach((el) => {
+      // 마커를 생성합니다
 
-        console.log("markderdata:", markerdata);
-
-        return markerdata;
-      })
-      .then((markerdata) => {
-        let container = document.getElementById("map");
-        let options = {
-          center: new kakao.maps.LatLng(center[0], center[1]),
-          level: 5,
-        };
-
-        var map = new kakao.maps.Map(container, options);
-        // var markerPosition = new kakao.maps.LatLng(
-        //   37.365264512305174,
-        //   127.10676860117488
-        // );
-        // var marker = new kakao.maps.Marker({
-        //   position: markerPosition,
-        // });
-
-        markerdata.forEach((el) => {
-          // 마커를 생성합니다
-
-          const marker = new kakao.maps.Marker({
-            //마커가 표시 될 지도
-            map: map,
-            //마커가 표시 될 위치
-            position: new kakao.maps.LatLng(el.lat, el.lng),
-            //마커에 hover시 나타날 title
-            id: el.id,
-          });
-
-          kakao.maps.event.addListener(marker, "click", () =>
-            getClickedMarket(el.id, el.lat, el.lng)
-          );
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
+      const marker = new kakao.maps.Marker({
+        //마커가 표시 될 지도
+        map: map,
+        //마커가 표시 될 위치
+        position: new kakao.maps.LatLng(el.lat, el.lng),
+        //마커에 hover시 나타날 title
+        id: el.id,
       });
 
+      kakao.maps.event.addListener(marker, "click", () => {
+        getClickedMarket(el.id, el.lat, el.lng);
+        var pos = marker.getPosition();
+        console.log(pos);
+        map.panTo(pos);
+      });
+    });
+  };
+  useEffect(() => {
+    if (!isSearch) {
+      var config = {
+        method: "get",
+        url: url + `/fooding/restaurant?coord=true`,
+        headers: {
+          Authorization: "Bearer " + getToken,
+        },
+      };
+
+      axios(config)
+        .then(function (response) {
+          //console.log(response.data.content);
+
+          response.data.content.map((market) => {
+            const obj = {
+              id: market.id,
+              lat: market.location.coordinate.y, // 위도
+              lng: market.location.coordinate.x, // 경도
+            };
+            markerdata.push(obj);
+          });
+
+          console.log("markderdata:", markerdata);
+
+          setMarkerData(markerdata);
+          return markerData;
+        })
+        .then((markerData) => {
+          makeMarker(markerData);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+    }
+
     // marker.setMap(map);
-  }, [center]);
+  }, [center, clickedMarket]);
 
   const getClickedMarket = (id, lat, lng) => {
     console.log("id:", id);
     setClick(true);
 
-    setCenter([lat, lng]);
+    //setCenter([lat, lng]);
 
     var config = {
       method: "get",
@@ -188,6 +201,43 @@ const Location = () => {
 
   const submit = (e) => {
     e.preventDefault();
+    setIsSearch(true);
+
+    //searchedWord
+    var config = {
+      method: "get",
+      url: url + `/fooding/restaurant/search?keyword=${searchedWord}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data.content);
+
+        markerdata = [];
+
+        response.data.content.map((market) => {
+          const obj = {
+            id: market.id,
+            lat: market.location.coordinate.y, // 위도
+            lng: market.location.coordinate.x, // 경도
+          };
+          markerdata.push(obj);
+        });
+
+        console.log("markderdata:", markerdata);
+        setMarkerData(markerdata);
+
+        return markerData;
+      })
+      .then((markerdata) => {
+        makeMarker(markerdata);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     console.log("submit!");
   };
