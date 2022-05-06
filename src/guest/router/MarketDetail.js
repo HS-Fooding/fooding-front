@@ -69,6 +69,7 @@ const MarketTitleBox = styled.div`
 `;
 
 const MarketMenuBox = styled.div`
+  position: sticky;
   width: 100%;
   height: 80px;
   display: flex;
@@ -116,13 +117,13 @@ const MarketDetailInfo = styled.div`
     height: 100%;
     /* padding: 10px; */
     //background-color: teal;
-    padding: 14px 0px;
+    padding: 34px 0px;
   }
 
   .marketDesc {
     font-size: 17px;
     font-weight: bold;
-    margin: 15px 0px;
+    margin: 23px 0px;
   }
 
   p {
@@ -140,6 +141,7 @@ const EachInfo = styled.div`
 
   .marketDescTitle {
     font-weight: bold;
+    color: #555655;
   }
 `;
 
