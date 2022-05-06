@@ -7,6 +7,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -21,19 +22,27 @@ const Container = styled.div`
 `;
 
 const MarketBox = styled.div`
-  width: 380px;
+  width: 390px;
   height: 126px;
   background-color: white;
   position: absolute;
   bottom: 12px;
   z-index: 1;
   display: flex;
+  left: 0px;
+  margin: 0px 10px;
 `;
 
 const ImgBox = styled.div`
   width: 126px;
   height: 126px;
-  background-color: orange;
+  background-color: inherit;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const InfosBox = styled.div`
@@ -74,24 +83,12 @@ const HeaderSearch = styled.input`
     outline: none;
   }
 `;
-const getClickedMarket = (id) => {
-  console.log("id:", id);
 
-  var config = {
-    method: "get",
-    url: url + `/fooding/restaurant/${id}`,
-  };
-
-  axios(config)
-    .then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-};
 const Location = () => {
   const [searchedWord, setSearchedWord] = useState();
+  const [clickedMarket, setClickedMarket] = useState();
+  const [click, setClick] = useState(false);
+  const [center, setCenter] = useState([37.58265617070882, 127.01017798663574]);
 
   const getToken = localStorage.getItem("token");
 
@@ -126,7 +123,7 @@ const Location = () => {
       .then((markerdata) => {
         let container = document.getElementById("map");
         let options = {
-          center: new kakao.maps.LatLng(37.58265617070882, 127.01017798663574),
+          center: new kakao.maps.LatLng(center[0], center[1]),
           level: 5,
         };
 
@@ -152,7 +149,7 @@ const Location = () => {
           });
 
           kakao.maps.event.addListener(marker, "click", () =>
-            getClickedMarket(el.id)
+            getClickedMarket(el.id, el.lat, el.lng)
           );
         });
       })
@@ -161,30 +158,28 @@ const Location = () => {
       });
 
     // marker.setMap(map);
-  }, []);
+  }, [center]);
 
-  // const markerdata = [
-  //   {
-  //     title: "콜드스퀘어",
-  //     lat: 37.62197524055062,
-  //     lng: 127.16017523675508,
-  //   },
-  //   {
-  //     title: "하남돼지집",
-  //     lat: 37.620842424005616,
-  //     lng: 127.1583774403176,
-  //   },
-  //   {
-  //     title: "수유리우동",
-  //     lat: 37.624915253753194,
-  //     lng: 127.15122688059974,
-  //   },
-  //   {
-  //     title: "맛닭꼬",
-  //     lat: 37.62456273069659,
-  //     lng: 127.15211256646381,
-  //   },
-  // ];
+  const getClickedMarket = (id, lat, lng) => {
+    console.log("id:", id);
+    setClick(true);
+
+    setCenter([lat, lng]);
+
+    var config = {
+      method: "get",
+      url: url + `/fooding/restaurant/${id}`,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setClickedMarket(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const bringSearchedWord = (e) => {
     setSearchedWord(e.target.value);
@@ -211,17 +206,35 @@ const Location = () => {
         <div id="map" style={{ width: "410px", height: "710px" }}></div>
         {/* <div id="map" style={{ width: "120px", height: "120px" }}></div> */}
       </div>
-      <MarketBox>
-        <ImgBox></ImgBox>
-        <InfosBox>
-          <span className="title">상계짜장</span>
-          <span className="location">노원구</span>
-          <span className="icons">
-            <FontAwesomeIcon icon={faEye} /> 560{" "}
-            <FontAwesomeIcon icon={faPencil} style={{ marginLeft: "5px" }} /> 12{" "}
-          </span>
-        </InfosBox>
-      </MarketBox>
+      {click ? (
+        <Link
+          to={`/guest/${clickedMarket?.id}`}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <MarketBox>
+            <ImgBox>
+              <img src={clickedMarket?.images[0]} />
+            </ImgBox>
+            <InfosBox>
+              <span className="title">{clickedMarket?.name}</span>
+              <span className="location">
+                {clickedMarket?.location.region2Depth}
+              </span>
+              <span className="icons">
+                <FontAwesomeIcon icon={faEye} /> {clickedMarket?.viewCount}{" "}
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  style={{ marginLeft: "5px" }}
+                />{" "}
+                {clickedMarket?.reviewCount}{" "}
+              </span>
+            </InfosBox>
+          </MarketBox>
+        </Link>
+      ) : null}
     </Container>
   );
 };
