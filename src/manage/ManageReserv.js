@@ -4,6 +4,7 @@ import axios from "axios";
 import { url } from "../Api";
 
 import RGL, { WidthProvider, Responsive } from "react-grid-layout";
+import { m } from "framer-motion";
 
 const BLOCK_OF_TIME = 30;
 
@@ -53,7 +54,7 @@ const transformData = (dummy) => {
                 y: diff,
                 w: 1,
                 h: dummy.tableInfo.maxUsageTime / 30,
-                status: "none",
+                status: "NONE",
             };
         }),
     };
@@ -65,6 +66,7 @@ const ManageReserv = () => {
     const [transformed, setTransformed] = React.useState({});
     const [reservations, setReservations] = React.useState([]);
     const [layout, setLayout] = React.useState([]);
+    const [removedLayout, setRemovedLayout] = React.useState([]);
     const [breakpoint, setBreakpoint] = React.useState([]);
     const [cols, setCols] = React.useState([]);
     const [restInfo, setRestInfo] = React.useState({});
@@ -138,13 +140,9 @@ const ManageReserv = () => {
     const onLayoutChange = (data, from, to, index) => {
         const tmp = layout;
         const open = transformed.open;
-        // console.log("data", data);
-        // console.log("from", from);
-        console.log("to", to);
-        // console.log("index", index);
 
         for (var i = 0; i < tmp.length; i++) {
-            if (tmp[i].i === to.i) tmp[i].status = "updated";
+            if (tmp[i].i === to.i) tmp[i].status = "EDIT";
             tmp[i].x = parseInt(data[i].x);
             tmp[i].y = parseInt(data[i].y);
             tmp[i].w = parseInt(data[i].w);
@@ -173,6 +171,7 @@ const ManageReserv = () => {
         const tableNum = prompt("tableNum");
         const reservCount = prompt("reservCount");
         const isCar = prompt("isCar");
+        const phoneNum = prompt("phoneNum");
 
         const diff =
             (parseDate(transformed.date, reservAt) -
@@ -192,7 +191,8 @@ const ManageReserv = () => {
             tableNum,
             reservCount,
             isCar: isCar === "true" ? true : false,
-            status: "created",
+            phoneNum,
+            status: "NEW",
         };
         setNewCounter(newCounter + 1);
 
@@ -208,9 +208,18 @@ const ManageReserv = () => {
     const onRemoveItem = (i) => {
         console.log("removing", i);
 
-        const result = layout.filter((m) => m.i !== i);
-        console.log("result", result);
-        setLayout(result);
+        layout.forEach((m) => {
+            if (m.i === i) {
+                m.status = "DELTE";
+                // setRemovedLayout(removedLayout.push(m));
+                setRemovedLayout([...removedLayout, m]);
+            }
+        });
+        const result = layout.filter((m) => {
+            return m.i !== i;
+        });
+
+        setLayout([...result]);
     };
 
     const generateDOM = () => {
@@ -257,9 +266,50 @@ const ManageReserv = () => {
         });
     };
 
-    const handleSubmit = () => {
-        console.log(layout);
+    const handleSubmit = async () => {
+        const data = JSON.stringify(
+            [...layout, ...removedLayout].map((m) => {
+                return {
+                    flag: m.status,
+                    adminReservPostDTO: {
+                        reserv_id: 2,
+                        tableNum: m.tableNum,
+                        reserveDate: "2022-05-01",
+                        reserveTime: m.reservAt,
+                        reserveNum: m.reservCount,
+                        booker: {
+                            member_id: null,
+                            phoneNum: m.status === "NEW" ? m.phoneNum : null,
+                            name: null,
+                            nickName: m.nickname,
+                        },
+                        isCar: m.isCar,
+                    },
+                };
+            })
+        );
+
+        console.log("data!!!", data);
+        const getToken = localStorage.getItem("token");
+        const config = {
+            method: "post",
+            url: url + `/fooding/admin/restaurant/${1}/reservation`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
+            data: data,
+        };
+
+        // axios(config)
+        //     .then(function (response) {
+        //         console.log(response);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     };
+
     return (
         <div>
             <button onClick={onAddItem}>Add Item</button>
