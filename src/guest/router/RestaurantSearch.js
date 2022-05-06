@@ -100,186 +100,170 @@ const AreaContainer = styled.div`
   p {
     margin-bottom: 5px;
   }
-  .map {
-    font-size: 24px;
+  .map{
+    font-size:24px;
   }
+
 `;
 const InputContainer = styled.div`
-  width: 322px;
-  height: 30px;
-  margin-left: 15px;
-  input {
-    width: 322px;
-    height: 30px;
-    border: 0;
-    outline: 0;
-    font-size: 15px;
-    color: transparent;
-    text-shadow: 0 0 0 #000000;
-    &:focus {
-      outline: none;
-    }
+  width:322px;
+  height:30px;
+  margin-left:15px;
+  input{
+    width:322px;
+    height:30px;
+    border:0;
+    outline:0;
+    font-size:15px;
+    color:transparent;
+    text-shadow:0 0 0 #000000;
+   &:focus{
+      outline:none;
+   }
   }
 `;
 const RestaurantSearch = () => {
-  const [restaurantArr, setRestaurantArr] = useState([]);
+  const [restaurantArr,setRestaurantArr] = useState([]);
   const [target, setTarget] = useState(null);
   const [numOfElements, setNumOfElements] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [presentPage, setPresentPage] = useState(0);
-  const [bring, setBring] = useState(false);
-  const [post, setPost] = useState(false);
-  const [searchWord, setSearchWord] = useState();
-  const [result, setResult] = useState([]);
+  const [presentPage,setPresentPage]  = useState(0);
+  const [bring,setBring] = useState(false);
+  const [post,setPost] = useState(false);
+  const [searchWord,setSearchWord] = useState();
+  const [result,setResult] = useState([]);
   const [firstInput, setfirstInput] = useState(false);
-  const [researchCount, setResearchCount] = useState(0);
+  const [researchCount,setResearchCount] = useState(0);
   //const [last,setLast] = useState(false);
-  let last = false;
-  let currentPage = 0;
-  const setIsIsLoaded = () => {
+let last = false
+  let currentPage=0;
+  const setIsIsLoaded = () =>{
     setIsLoaded(true);
-  };
-  const bringSearchWord = (e) => {
+  }
+  const bringSearchWord=(e)=>{
     e.preventDefault();
     setSearchWord(e.target.value);
-    // setfirstInput(true);
+    setfirstInput(true);
     console.log(e.target.value);
-  };
-  const bringMarketInfo = async () => {
-    if (last == false && firstInput) {
-      setIsLoaded(true);
+  }
+  const bringMarketInfo = async () =>{
+  if(last==false && firstInput){  
+    setIsLoaded(true);
+    
+    var axios = require("axios"); 
+   //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음 
+   const data = new FormData();
+    const getToken = localStorage.getItem("token");
+    await new Promise((resolve)=>setTimeout(resolve,1000));
+    console.log("searchWordsearchWordsearchWordsearchWord",searchWord);
+    await axios //${searchWord} 
+      .get(url + `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`, { 
+        headers: {  
+          //"Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + getToken,
+        },  
+      })
+      .then((res) => {
+        
+        console.log(res.data);
+        setPresentPage(presentPage+1);
+        console.log("last true / false ::",res.data.last ); 
+        const lastresult = res.data.last;
+        if(lastresult){      
+          last = true;  
 
-      var axios = require("axios");
-      //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
-      const data = new FormData();
-      const getToken = localStorage.getItem("token");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
-      await axios //${searchWord}
-        .get(
-          url +
-            `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`,
-          {
-            headers: {
-              //"Content-Type": "multipart/form-data",
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + getToken,
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-          setPresentPage(presentPage + 1);
-          console.log("last true / false ::", res.data.last);
-          const lastresult = res.data.last;
-          if (lastresult) {
-            last = true;
-          }
-          console.log("last가 true로 바뀜!!?", last);
-          console.log("  isLoaded", isLoaded);
-          console.log("currentPage", currentPage);
-          console.log("researchCount", researchCount);
-          if (researchCount >= 1) {
-            setRestaurantArr(res.data.content);
-          } else {
-            setRestaurantArr((restaurantArr) =>
-              restaurantArr.concat(res.data.content)
-            );
-          }
-        })
-        .then(() => {
-          currentPage += 1;
-          setIsLoaded(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        } console.log("last가 true로 바뀜!!?",last);
+           console.log("  isLoaded",isLoaded);
+        console.log("currentPage",currentPage); 
+        console.log("researchCount",researchCount);
+        if(researchCount>=1){
+          setRestaurantArr(res.data.content);
+        }else{
+          setRestaurantArr((restaurantArr)=>restaurantArr.concat(res.data.content));
+        }
+        
+      })
+      .then(()=>{
+        currentPage+=1;
+        setIsLoaded(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+    
     }
-  };
-  const getSearch = (e) => {
+ 
+  }
+  const getSearch = (e) =>{
     e.preventDefault();
-    // setSearchWord("");
-    setResult([]);
-    setBring(true);
-    setResearchCount(researchCount + 1);
-    bringMarketInfo();
-  };
+   // setSearchWord("");
+   setResult([]);
+   setBring(true);
+   setResearchCount(researchCount+1);
+   bringMarketInfo();
+   
+  }
   const onIntersect = async ([entry], observer) => {
-    console.log(" onInterect !isLoaded", !isLoaded);
-    console.log(" onInterect !last", !last);
-    console.log(" isIntersecting", entry.isIntersecting);
+    console.log(" onInterect !isLoaded",!isLoaded);
+    console.log(" onInterect !last",!last);
+    console.log(" isIntersecting",entry.isIntersecting);
 
     if (entry.isIntersecting && !isLoaded && !last) {
-      console.log("onIntersect last ????", last);
-      observer.unobserve(entry.target);
+      console.log("onIntersect last ????" ,last)
+      observer.unobserve(entry.target); 
       await bringMarketInfo();
       observer.observe(entry.target);
-    }
-  };
-
-  useEffect(() => {
-    console.log("change isLoaded", isLoaded);
-  }, [last, isLoaded]);
-  useEffect(() => {
+      }
+  }; 
+ 
+  useEffect(()=>{
+    console.log("change isLoaded",isLoaded);
+  },[last,isLoaded]);
+  useEffect(()=>{
     console.log("TargetTargetTargetTargetTarget");
-  }, [target]);
-  useEffect(() => {}, [restaurantArr]);
-  useEffect(() => {
+  },[target])
+  useEffect(()=>{},[restaurantArr]);
+  useEffect(()=>{
     let observer;
-    // if (target && !last && firstInput) {
-    if (target && !last) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
+    if(target && !last && firstInput){
+      observer = new IntersectionObserver(onIntersect,{
+        threshold:0.4,
       });
       observer.observe(target);
-    }
+    } 
     return () => observer && observer.disconnect();
-  }, [target]);
+  },[target]);
   return (
     <Container>
-      {/* 헤더 따로 만들기 */}
-      <HeaderContainer>
-        <Link to={`/guest/restaurantList`}>
+    {/* 헤더 따로 만들기 */}
+    <HeaderContainer>
+       <Link to={`/guest/restaurantList`}>
           <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
-        </Link>
-        <InputContainer>
-          <form onSubmit={getSearch}>
-            <input
-              onChange={bringSearchWord}
-              value={searchWord}
-              type="text"
-            ></input>
-          </form>
-        </InputContainer>
-        {post ? (
-          <div className="map">
-            <FontAwesomeIcon icon={faMap} className="icon" size="1x" />
+        </Link>   
+        <InputContainer><form onSubmit={getSearch} ><input onChange={bringSearchWord} value={searchWord} type="text"></input></form></InputContainer>
+       {post ? <div className="map">
+          <FontAwesomeIcon icon={faMap} className="icon" size="1x" />
+        </div> : null}
+    </HeaderContainer>
+  {searchWord ? <ListContainer>
+      {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+      {restaurantArr?.map((content,index)=>{
+       return <Link  
+       to={`/guest/${content.id}`}
+          state={{
+            avgScore:content.avgScore,
+            reviewCount:content.reviewCount,
+            viewCount:content.viewCount,
+          }}        
+       style={{ textDecoration: "none", color: "inherit" }}
+      ><Restaurant content={content} /></Link>  
+    })}
+      <div ref={setTarget} className="Target-Element">
+      {isLoaded && !last && <Loader />
+         }            
           </div>
-        ) : null}
-      </HeaderContainer>
-      {searchWord ? (
-        <ListContainer>
-          {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
-          {restaurantArr?.map((content, index) => {
-            return (
-              <Link
-                to={`/guest/${content.id}`}
-                state={{
-                  avgScore: content.avgScore,
-                  reviewCount: content.reviewCount,
-                  viewCount: content.viewCount,
-                }}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <Restaurant content={content} />
-              </Link>
-            );
-          })}
-          <div ref={setTarget} className="Target-Element">
-            {isLoaded && !last && <Loader />}
-          </div>
-        </ListContainer>
-      ) : null}
+    </ListContainer> : null }
     </Container>
   );
 };
