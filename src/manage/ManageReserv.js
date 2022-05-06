@@ -53,6 +53,7 @@ const transformData = (dummy) => {
                 y: diff,
                 w: 1,
                 h: dummy.tableInfo.maxUsageTime / 30,
+                status: "none",
             };
         }),
     };
@@ -98,7 +99,7 @@ const ManageReserv = () => {
             })
             .then((response) => {
                 // generate layout
-                console.log(response);
+                console.log("response", response);
                 const layout = response.map((item, i, list) => {
                     // console.log("res!!", item);
                     return {
@@ -112,6 +113,7 @@ const ManageReserv = () => {
                         reservCount: response[i].reservCount,
                         isCar: response[i].isCar,
                         reservAt: response[i].reservAt,
+                        status: response[i].status,
                     };
                 });
                 setLayout(layout);
@@ -138,10 +140,11 @@ const ManageReserv = () => {
         const open = transformed.open;
         // console.log("data", data);
         // console.log("from", from);
-        // console.log("to", to);
+        console.log("to", to);
         // console.log("index", index);
 
         for (var i = 0; i < tmp.length; i++) {
+            if (tmp[i].i === to.i) tmp[i].status = "updated";
             tmp[i].x = parseInt(data[i].x);
             tmp[i].y = parseInt(data[i].y);
             tmp[i].w = parseInt(data[i].w);
@@ -189,6 +192,7 @@ const ManageReserv = () => {
             tableNum,
             reservCount,
             isCar: isCar === "true" ? true : false,
+            status: "created",
         };
         setNewCounter(newCounter + 1);
 
@@ -227,7 +231,8 @@ const ManageReserv = () => {
                     {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
                     <div>reservAt : {el.reservAt}</div>
                     <div>reservCount : {el.reservCount}</div>
-                    <div>isCar : {el.isCar ? "yes" : "no"}</div> {/*TODO*/}
+                    <div>isCar : {el.isCar ? "yes" : "no"}</div>
+                    <div>status : {el.status}</div>
                     <span
                         className="remove"
                         style={removeStyle}
@@ -252,9 +257,13 @@ const ManageReserv = () => {
         });
     };
 
+    const handleSubmit = () => {
+        console.log(layout);
+    };
     return (
         <div>
             <button onClick={onAddItem}>Add Item</button>
+            <button onClick={handleSubmit}>Submit</button>
             <ResponsiveReactGridLayout
                 layout={layout}
                 onDragStop={onLayoutChange}

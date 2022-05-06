@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "../component/Header";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { url } from "../../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
@@ -24,12 +24,12 @@ const WriteReviewBtn = styled.button`
 `;
 
 const Reviews = styled.div`
-  padding-top: 90px;
   width: 100%;
-  height: 700px;
+  height: 625px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: white;
   overflow: auto;
@@ -47,7 +47,7 @@ const InnerReviews = styled.div`
 
 const ReviewBox = styled.div`
   width: 300px;
-  height: 350px;
+  height: auto;
   padding: 10px;
   margin: 10px;
   background-color: white;
@@ -73,6 +73,7 @@ const ReviewContent = styled.div`
   }
   &:nth-child(2) {
     /* star */
+    display: flex;
     font-size: 13px;
     color: rgba(0, 0, 0, 0.3);
   }
@@ -109,16 +110,16 @@ const Review = () => {
   //   const getCookie=(name)=>{
   //     return cookies.get(name);
   //  }
-  console.log("location.restId",location.state);
+  console.log("location.restId", location.state);
   let token = localStorage.getItem("token");
   useEffect(() => {
     // console.log("cookie",getCookie("JSESSION"));
-    
+
     var axios = require("axios");
     const getToken = localStorage.getItem("token");
-  
+
     var config = {
-      method: "get",//url + `/fooding/restaurant?name=${searchWord}`
+      method: "get", //url + `/fooding/restaurant?name=${searchWord}`
       url: url + `/fooding/restaurant/${location.state.marketId}/review`,
       headers: {
         "Content-Type": "application/json",
@@ -147,11 +148,16 @@ const Review = () => {
             <Link
               to={`/review/${location.state.marketId}/${review.id}`}
               state={{
-                marketId:location.state.marketId,
+                marketId: location.state.marketId,
               }}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ReviewBox key={index}>
+              <ReviewBox
+                key={index}
+                style={
+                  reviews.length - 1 == index ? { marginBottom: "520px" } : null
+                }
+              >
                 <ReviewContent>
                   {review.nickName.length > 17
                     ? review.nickName.slice(0, 17) + ".."
@@ -164,20 +170,22 @@ const Review = () => {
                   <span
                     style={{
                       color: "#fbc531",
-                      alignItems: "center",
                       marginLeft: "8px",
+                      display: "flex",
+                      aligntItems: "center",
                     }}
                   >
-                    ★
+                    <p>★</p>
                   </span>
-
-                  {review.star}
+                  <span>
+                    <p>{review.star}</p>
+                  </span>
                 </ReviewContent>
                 <ReviewImg>
                   {review.image.map((img, index) => (
                     <>
                       <img
-                        src={img}
+                        src={img.path}
                         key={index}
                         style={{
                           width: "100px",
@@ -209,7 +217,13 @@ const Review = () => {
           <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
         </Link>
       ) : (
-        <Link to={"/WriteReview"}>
+        <Link
+          to={"/WriteReview"}
+          state={{
+            marketId: location.state.marketId,
+          }}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
           <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
         </Link>
       )}

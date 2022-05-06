@@ -11,15 +11,23 @@ import {
 import styled, { createGlobalStyle } from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import { url } from "./Api";
-const Container = styled.div``;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 const Button = styled.button`
-  margin-top: 10px;
   border: none;
   background-color: ${(props) => props.theme.mainColor};
-  width: 100%;
+
+  margin: 20px;
   &:hover {
     cursor: pointer;
   }
+  width: 200px;
+  height: 160px;
 `;
 const token = localStorage.getItem("token");
 
@@ -47,21 +55,27 @@ const Home = () => {
       <GlobalStyle />
 
       <Container>
-        {token == null ? navigate("/login") : null}
+        {/* {token == null ? navigate("/login") : null}
         <Link to={"/review"}>
           <Button>리뷰</Button>
         </Link>
         {isToken == false ? (
-          <Link to={"/login"}>
+          <Link to={"/guest/login"}>
             <Button>로그인하기</Button>
           </Link>
         ) : (
           <Button onClick={logoutFun}>로그아웃하기</Button>
         )}
-        <Link to={"/sign"}>
+        <Link to={"/guest/sign"}>
           <Button>회원가입 </Button>
-        </Link>
+        </Link> */}
 
+        <Link to={"/manager/register"}>
+          <Button>관리자</Button>
+        </Link>
+        <Link to={"/guest/restaurantList"}>
+          <Button>손님</Button>
+        </Link>
       </Container>
     </>
   );

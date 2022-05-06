@@ -73,41 +73,41 @@ const Circle = styled(motion.span)`
   background-color: ${(props) => props.theme.mainColor};
 `;
 const HeaderArea = styled.div`
-    position: relative;
-    width: 100%;
-    height: 100px;
+  position: relative;
+  width: 100%;
+  height: 100px;
 `;
 
 const HeaderWrap = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100px;
-    transition: 0.4s ease;
-    background-color: #f00;
-    &.hide {
-        transform: translateY(-100px);
-    }
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  transition: 0.4s ease;
+  background-color: #f00;
+  &.hide {
+    transform: translateY(-100px);
+  }
 `;
 
 const throttle = function (callback, waitTime) {
   let timerId = null;
   return (e) => {
-      if (timerId) return;
-      timerId = setTimeout(() => {
-          callback.call(this, e);
-          timerId = null;
-      }, waitTime);
+    if (timerId) return;
+    timerId = setTimeout(() => {
+      callback.call(this, e);
+      timerId = null;
+    }, waitTime);
   };
 };
 
 const Header = () => {
-  const reservationMatch = useMatch("/reservation");
-  const registerMatch = useMatch("/register");
-  const currentTableMatch = useMatch("/currentTableState");
-  const userDataMatch = useMatch("/userData");
+  const reservationMatch = useMatch("/manager/reservation");
+  const registerMatch = useMatch("/manager/register");
+  const currentTableMatch = useMatch("/manager/currentTableState");
+  const userDataMatch = useMatch("/manager/userData");
   let location = useLocation();
 
   let [isToken, setIsToken] = useState(false);
@@ -115,7 +115,7 @@ const Header = () => {
   const [hide, setHide] = useState(false);
   const [pageY, setPageY] = useState(0);
   const documentRef = useRef(document);
-  
+
   useEffect(() => {
     //window.location.reload(); // 새로고침
     const token = localStorage.getItem("token");
@@ -126,20 +126,21 @@ const Header = () => {
     }
     console.log("useEffect");
   }, []);
- 
-  const handleScroll = () =>{
+
+  const handleScroll = () => {
     const { pageYOffset } = window;
     const deltaY = pageYOffset - pageY;
-    const hide = pageYOffset !== 0 && pageYOffset >= 100; //&& deltaY >= 0 맨위 좌표가 아니면 
+    const hide = pageYOffset !== 0 && pageYOffset >= 100; //&& deltaY >= 0 맨위 좌표가 아니면
     setHide(hide);
     setPageY(pageYOffset);
-  }
+  };
   const throttleScroll = throttle(handleScroll, 70);
 
   useEffect(() => {
-    documentRef.current.addEventListener('scroll', throttleScroll);
-    return () => documentRef.current.removeEventListener('scroll', throttleScroll);
-}, [pageY]);
+    documentRef.current.addEventListener("scroll", throttleScroll);
+    return () =>
+      documentRef.current.removeEventListener("scroll", throttleScroll);
+  }, [pageY]);
 
   const logOut = () => {
     localStorage.clear();
@@ -147,46 +148,55 @@ const Header = () => {
   };
   return (
     <HeaderArea>
-      <HeaderWrap className={registerMatch ? (hide && 'hide'):null}>
-    <Nav style={{ zIndex: 3 }}>
-      <TopMenu>
-        <Items>
-          {isToken == false ? (
-            <Item className="small">
-              <Link to="/manager/login">로그인</Link>
-            </Item>
-          ) : (
-            <Item onClick={logOut} className="small">
-              로그아웃
-            </Item>
-          )}
-          <Item className="small">
-            <Link to="/manager/signup">회원가입</Link>
-          </Item>
-        </Items>
-      </TopMenu>
-      <MainMenu>
-        <Items>
-          <Logo>FOODING</Logo>
-          <Item>
-            <Link to="/reservation">
-              예약 관리{reservationMatch && <Circle layoutId="circle" />}
-            </Link>
-          </Item>
+      <HeaderWrap className={registerMatch ? hide && "hide" : null}>
+        <Nav style={{ zIndex: 3 }}>
+          <TopMenu>
+            <Items>
+              {isToken == false ? (
+                <Item className="small">
+                  <Link to="/manager/login">로그인</Link>
+                </Item>
+              ) : (
+                <Item onClick={logOut} className="small">
+                  로그아웃
+                </Item>
+              )}
 
-          <Item>
-            <Link to="/register">
-              매장 등록{registerMatch && <Circle layoutId="circle" />}
-            </Link>
-          </Item>
-          <Item><Link to="/currentTableState">
-            테이블 현황{currentTableMatch && <Circle layoutId="circle" />}
-            </Link></Item>
-          <Item><Link to="/userData">사용자 데이터{userDataMatch && <Circle layoutId="circle" />}</Link></Item>
-        </Items>
-      </MainMenu>
-    </Nav>
-    </HeaderWrap>
+              {isToken == false ? (
+                <Item className="small">
+                  <Link to="/manager/signup">회원가입</Link>
+                </Item>
+              ) : null}
+            </Items>
+          </TopMenu>
+          <MainMenu>
+            <Items>
+              <Logo>FOODING</Logo>
+              <Item>
+                <Link to="/reservation">
+                  예약 관리{reservationMatch && <Circle layoutId="circle" />}
+                </Link>
+              </Item>
+
+              <Item>
+                <Link to="/manager/register">
+                  매장 등록{registerMatch && <Circle layoutId="circle" />}
+                </Link>
+              </Item>
+              <Item>
+                <Link to="/manager/currentTableState">
+                  테이블 현황{currentTableMatch && <Circle layoutId="circle" />}
+                </Link>
+              </Item>
+              <Item>
+                <Link to="/manager/userData">
+                  사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
+                </Link>
+              </Item>
+            </Items>
+          </MainMenu>
+        </Nav>
+      </HeaderWrap>
     </HeaderArea>
   );
 };

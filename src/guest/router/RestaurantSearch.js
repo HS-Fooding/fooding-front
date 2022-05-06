@@ -121,7 +121,7 @@ const InputContainer = styled.div`
     }
   }
 `;
-const RestaurantList = () => {
+const RestaurantSearch = () => {
   const [restaurantArr, setRestaurantArr] = useState([]);
   const [target, setTarget] = useState(null);
   const [numOfElements, setNumOfElements] = useState();
@@ -132,6 +132,7 @@ const RestaurantList = () => {
   const [searchWord, setSearchWord] = useState();
   const [result, setResult] = useState([]);
   const [firstInput, setfirstInput] = useState(false);
+  const [researchCount, setResearchCount] = useState(0);
   //const [last,setLast] = useState(false);
   let last = false;
   let currentPage = 0;
@@ -145,9 +146,7 @@ const RestaurantList = () => {
     console.log(e.target.value);
   };
   const bringMarketInfo = async () => {
-    console.log("bringMarketInfo");
-    // if (last == false && firstInput) {
-    if (last == false) {
+    if (last == false && firstInput) {
       setIsLoaded(true);
 
       var axios = require("axios");
@@ -155,6 +154,7 @@ const RestaurantList = () => {
       const data = new FormData();
       const getToken = localStorage.getItem("token");
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
       await axios //${searchWord}
         .get(
           url +
@@ -167,7 +167,6 @@ const RestaurantList = () => {
             },
           }
         )
-
         .then((res) => {
           console.log(res.data);
           setPresentPage(presentPage + 1);
@@ -176,38 +175,55 @@ const RestaurantList = () => {
           if (lastresult) {
             last = true;
           }
+          console.log("last가 true로 바뀜!!?", last);
           console.log("  isLoaded", isLoaded);
           console.log("currentPage", currentPage);
-          setRestaurantArr((restaurantArr) =>
-            restaurantArr.concat(res.data.content)
-          );
+          console.log("researchCount", researchCount);
+          if (researchCount >= 1) {
+            setRestaurantArr(res.data.content);
+          } else {
+            setRestaurantArr((restaurantArr) =>
+              restaurantArr.concat(res.data.content)
+            );
+          }
+        })
+        .then(() => {
+          currentPage += 1;
+          setIsLoaded(false);
         })
         .catch((err) => {
           console.log(err);
         });
-      currentPage += 1;
-      setIsLoaded(false);
     }
   };
   const getSearch = (e) => {
     e.preventDefault();
     // setSearchWord("");
-
+    setResult([]);
+    setBring(true);
+    setResearchCount(researchCount + 1);
     bringMarketInfo();
   };
   const onIntersect = async ([entry], observer) => {
+    console.log(" onInterect !isLoaded", !isLoaded);
+    console.log(" onInterect !last", !last);
+    console.log(" isIntersecting", entry.isIntersecting);
+
     if (entry.isIntersecting && !isLoaded && !last) {
       console.log("onIntersect last ????", last);
       observer.unobserve(entry.target);
       await bringMarketInfo();
-      observer.observe(entry.target); //
+      observer.observe(entry.target);
     }
   };
 
-  useEffect(() => {}, [last]);
+  useEffect(() => {
+    console.log("change isLoaded", isLoaded);
+  }, [last, isLoaded]);
+  useEffect(() => {
+    console.log("TargetTargetTargetTargetTarget");
+  }, [target]);
   useEffect(() => {}, [restaurantArr]);
-  useEffect(() => {}, [currentPage]);
-
   useEffect(() => {
     let observer;
     // if (target && !last && firstInput) {
@@ -241,28 +257,30 @@ const RestaurantList = () => {
           </div>
         ) : null}
       </HeaderContainer>
-      <ListContainer>
-        {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
-        {restaurantArr?.map((content, index) => {
-          return (
-            <Link
-              to={`/guest/${content.id}`}
-              state={{
-                avgScore: content.avgScore,
-                reviewCount: content.reviewCount,
-                viewCount: content.viewCount,
-              }}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <Restaurant content={content} />
-            </Link>
-          );
-        })}
-        <div ref={setTarget} className="Target-Element">
-          {isLoaded && !last && <Loader />}
-        </div>
-      </ListContainer>
+      {searchWord ? (
+        <ListContainer>
+          {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+          {restaurantArr?.map((content, index) => {
+            return (
+              <Link
+                to={`/guest/${content.id}`}
+                state={{
+                  avgScore: content.avgScore,
+                  reviewCount: content.reviewCount,
+                  viewCount: content.viewCount,
+                }}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Restaurant content={content} />
+              </Link>
+            );
+          })}
+          <div ref={setTarget} className="Target-Element">
+            {isLoaded && !last && <Loader />}
+          </div>
+        </ListContainer>
+      ) : null}
     </Container>
   );
 };
-export default memo(RestaurantList);
+export default memo(RestaurantSearch);

@@ -18,7 +18,7 @@ import {
   faChevronRight,
   faChevronDown,
   faAngleDown,
-  faAngleRight
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   border: 1px solid black;
@@ -146,12 +146,12 @@ const EachInfo = styled.div`
 const MarketMenuInfo = styled.div`
   width: 100%;
   height: 700px;
-  .RepresentatitiveTitle{
-    width:100%;
-    height:25px;
-    display:flex;
-    margin-left:20px;
-    margin-top:10px;
+  .RepresentatitiveTitle {
+    width: 100%;
+    height: 25px;
+    display: flex;
+    margin-left: 20px;
+    margin-top: 10px;
     font-size: 17px;
     font-weight: bold;
     align-items: center;
@@ -163,7 +163,7 @@ const EachMenu = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: 1px rgba(0,0,0,0.05) solid;
+  border-bottom: 1px rgba(0, 0, 0, 0.05) solid;
 `;
 const MenuContainer = styled.div`
   width: 90%;
@@ -177,16 +177,16 @@ const MenuContainer = styled.div`
 const MenuInfo = styled.div`
   width: 63%;
   height: 80%;
-  
+
   .MenuName {
     width: 80%;
     height: 20px;
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 7px;
-    display:flex;
-    p{
-      margin-right:4px;
+    display: flex;
+    p {
+      margin-right: 4px;
     }
   }
   .MenuDescription {
@@ -194,7 +194,7 @@ const MenuInfo = styled.div`
     height: 40px;
     font-size: 12px;
     margin-bottom: 20px;
-    line-height:1.5;
+    line-height: 1.5;
   }
   .MenuPrice {
     width: 80%;
@@ -226,14 +226,14 @@ const MoreMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  :hover{
-    cursor:pointer;
+  :hover {
+    cursor: pointer;
   }
   p {
     margin-left: 20px;
   }
   .iconContainer {
-    margin-right:10px;
+    margin-right: 10px;
     font-size: 20px;
   }
 `;
@@ -241,7 +241,7 @@ const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
   const [representativeNNormal, setRepresentativeNNormal] = useState();
-  const [representative,setRepresentative] = useState();
+  const [representative, setRepresentative] = useState();
   const [toggle, setToggle] = useState(false);
   const { marketId } = useParams();
   const [category, setCategory] = useState([]);
@@ -315,7 +315,6 @@ const MarketDetail = () => {
     let normalMenu = [];
 
     menuss?.map((menu) => {
-    
       if (menu.representative === true) {
         representativeMenu.push(menu);
       } else {
@@ -355,7 +354,7 @@ const MarketDetail = () => {
             </span>
           </div>
         </div>
-        <div className="avgScore">{market?.avgScore}</div>
+        <div className="avgScore">{Number(market?.avgScore).toFixed(1)}</div>
       </MarketTitleBox>
       <MarketMenuBox>
         <MenuBtnBox>
@@ -377,20 +376,19 @@ const MarketDetail = () => {
 
             <span>예약하기</span>
           </MenuBtnBox>
-        </Link> 
-         <Link 
+        </Link>
+        <Link
           style={{ textDecoration: "none", color: "inherit" }}
-          to={`/review/${marketId}`}
+          to={`/guest/review/${marketId}`}
           state={{
-            marketId:marketId
+            marketId: marketId,
           }}
-          > 
-        <MenuBtnBox>
-       <i class="fa-solid fa-pen"></i>
-          <span>리뷰</span>
-        
-        </MenuBtnBox>
-          </Link>
+        >
+          <MenuBtnBox>
+            <i class="fa-solid fa-pen"></i>
+            <span>리뷰</span>
+          </MenuBtnBox>
+        </Link>
       </MarketMenuBox>
       <MarketDetailInfo>
         {/* 매장소개, 운영시간,주소,전화번호(매장,개인),주차공간,최대이용가능시간,카테고리, */}
@@ -443,8 +441,10 @@ const MarketDetail = () => {
   만약 대표메뉴가 없다면 문자열 순서대로 일반메뉴들 띄워줌.
 
 */}
-  <div className="RepresentatitiveTitle"><p>대표메뉴</p></div>
-                
+        <div className="RepresentatitiveTitle">
+          <p>대표메뉴</p>
+        </div>
+
         {
           //세개만 만들어놓음.
           representativeNNormal?.map((menu, index) => {
@@ -452,11 +452,8 @@ const MarketDetail = () => {
               return (
                 <EachMenu>
                   <MenuContainer>
-                  
                     <MenuInfo>
-                       <div className="MenuName">                       
-                        {menu.name}
-                      </div>
+                      <div className="MenuName">{menu.name}</div>
                       <div className="MenuDescription">
                         {menu.description.length > 50
                           ? menu.description.slice(0, 50) + "..."
@@ -491,35 +488,35 @@ const MarketDetail = () => {
         {/* 메뉴 더보기 div 전체를 누르면  펼쳐진 상태가 되고 그옆에 아이콘도 아래로 바뀜*/}
         {toggle
           ? representativeNNormal?.map((menu, index) => {
-                return (
-                  <EachMenu>
-                    <MenuContainer>
-                      <MenuInfo>
-                        <div className="MenuName">
-                          {menu.representative == true ? (
-                            <FontAwesomeIcon icon={faStar} />
-                          ) : null}{""}
-                          {menu.name}
-                        </div>
-                        <div className="MenuDescription">
-                          {menu.description.length > 50
-                            ? menu.description.slice(0, 50) + "..."
-                            : menu.description}
-                        </div>
-                        <div className="MenuPrice">
-                          {menu.price}
-                          <p>원</p>
-                        </div>
-                      </MenuInfo>
-                      <MenuImg>
-                        <div className="imgContainer">
-                          <img src={menu.image}></img>
-                        </div>
-                      </MenuImg>
-                    </MenuContainer>
-                  </EachMenu>
-                );
-              
+              return (
+                <EachMenu>
+                  <MenuContainer>
+                    <MenuInfo>
+                      <div className="MenuName">
+                        {menu.representative == true ? (
+                          <FontAwesomeIcon icon={faStar} />
+                        ) : null}
+                        {""}
+                        {menu.name}
+                      </div>
+                      <div className="MenuDescription">
+                        {menu.description.length > 50
+                          ? menu.description.slice(0, 50) + "..."
+                          : menu.description}
+                      </div>
+                      <div className="MenuPrice">
+                        {menu.price}
+                        <p>원</p>
+                      </div>
+                    </MenuInfo>
+                    <MenuImg>
+                      <div className="imgContainer">
+                        <img src={menu.image}></img>
+                      </div>
+                    </MenuImg>
+                  </MenuContainer>
+                </EachMenu>
+              );
             })
           : null}
       </MarketMenuInfo>
