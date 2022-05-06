@@ -18,7 +18,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
 `;
 
 const FormContainer = styled.div`
@@ -137,7 +136,7 @@ const Modal = styled.div`
 //   },
 // }
 const Header = styled.div`
- display: flex;
+  display: flex;
   align-items: center;
   width: 100%;
   height: 60px;
@@ -152,9 +151,9 @@ const Header = styled.div`
   font-weight: bold;
   z-index: 3;
   .icon {
-    display:flex;
-    width:20px;
-   margin-right:150px;
+    display: flex;
+    width: 20px;
+    margin-right: 150px;
     cursor: pointer;
     &:hover {
       color: ${(props) => props.theme.manColor};
@@ -208,7 +207,7 @@ const Login = () => {
     };
     axios(config)
       .then(function (response) {
-        navigate("/");
+        navigate("/guest/restaurantList");
         console.log("response ", response);
 
         console.log("token", response.data.token.accessToken);
@@ -239,9 +238,15 @@ const Login = () => {
   }
   return (
     <Container>
-     <Header>
-      <div onClick={()=>{navigate(-1)}}><FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /></div>
-      <p>로그인</p>
+      <Header>
+        <div
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        </div>
+        <p>로그인</p>
       </Header>
       {/* 2초뒤에 없애기 */}
       <>
@@ -262,7 +267,7 @@ const Login = () => {
           <LoginBut onClick={submitLogin}>LOGIN</LoginBut>
           <br />
           <span style={{ fontSize: "14px" }}>OR</span> <br />
-          <Link to="/sign">
+          <Link to="/guest/sign">
             <SignUpBut>SIGN IN</SignUpBut>
           </Link>
         </form>

@@ -173,7 +173,7 @@ const Header = () => {
             <Items>
               <Logo>FOODING</Logo>
               <Item>
-                <Link to="/reservation">
+                <Link to="/manager/manageReserv">
                   예약 관리{reservationMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>

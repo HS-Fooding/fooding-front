@@ -60,9 +60,7 @@ const Home = () => {
           <Button>리뷰</Button>
         </Link>
         {isToken == false ? (
-          <Link to={"/guest/login"}>
-            <Button>로그인하기</Button>
-          </Link>
+        
         ) : (
           <Button onClick={logoutFun}>로그아웃하기</Button>
         )}
@@ -73,9 +71,16 @@ const Home = () => {
         <Link to={"/manager/register"}>
           <Button>관리자</Button>
         </Link>
-        <Link to={"/guest/restaurantList"}>
-          <Button>손님</Button>
-        </Link>
+
+        {isToken == false ? (
+          <Link to={"/guest/login"}>
+            <Button>손님</Button>
+          </Link>
+        ) : (
+          <Link to={"/guest/restaurantList"}>
+            <Button>손님</Button>
+          </Link>
+        )}
       </Container>
     </>
   );
