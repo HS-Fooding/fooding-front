@@ -129,7 +129,7 @@ const Review = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data.content);
+        console.log("response.data결과",response.data.content);
 
         setReviews(response.data.content.reverse());
       })

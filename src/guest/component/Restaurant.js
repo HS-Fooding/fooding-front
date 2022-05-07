@@ -83,7 +83,7 @@ const Restaurant = ({content}) => {
   // console.log("restaurant.category",content.category);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
-    else if (value === "JAPAN") return "일식";
+    else if (value === "JAPANESE") return "일식";
     else if (value === "CHINESE") return "중식";
     else if (value === "WESTERN") return "양식";
     else if (value === "VIETNAM") return "베트남";

@@ -108,18 +108,18 @@ const LoginMg = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response);
+        console.log("responseresponse",response);
         localStorage.setItem("token", response.data.token.accessToken);
-
         if (response.data.restaurant) {
           localStorage.setItem("marketId", response.data.restaurant[0]);
         }
-
-        navigate("/manager/register");
+        
+         navigate("/manager/register");
         console.log(response.data.restaurants[0]);
       })
       .catch(function (error) {
         console.log(error);
+        
       });
   };
 
