@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   border: 1px solid black;
@@ -96,6 +97,8 @@ const Location = () => {
 
   let markerdata = [];
 
+  let searching = false;
+
   const makeMarker = (markderdata) => {
     // var markerPosition = new kakao.maps.LatLng(
     //   37.365264512305174,
@@ -135,8 +138,21 @@ const Location = () => {
       });
     });
   };
-  useEffect(() => {
-    if (!isSearch) {
+  const location = useLocation();
+  const { searchWord } = location.state;
+  console.log("searchWord:", searchWord);
+
+  useEffect(async () => {
+    if (searchWord !== "none") {
+      setSearchedWord(searchWord);
+
+      //await setIsSearch(true);
+      searching = true;
+      getSearchedResult(searchWord);
+    }
+
+    if (!searching) {
+      console.log("!isSearch!!");
       var config = {
         method: "get",
         url: url + `/fooding/restaurant?coord=true`,
@@ -169,7 +185,6 @@ const Location = () => {
         .catch(function (error) {
           console.log(error);
         });
-    } else {
     }
 
     // marker.setMap(map);
@@ -201,11 +216,12 @@ const Location = () => {
     console.log(e.target.value);
   };
 
-  const submit = (e) => {
-    e.preventDefault();
-    setIsSearch(true);
-
+  const getSearchedResult = (searchedWord) => {
     //searchedWord
+
+    console.log("searchedWord:", searchedWord);
+
+    console.log("getSearchedresult함수");
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/search?keyword=${searchedWord}`,
@@ -240,6 +256,12 @@ const Location = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    setIsSearch(true);
+
+    getSearchedResult(searchedWord);
 
     console.log("submit!");
   };

@@ -54,13 +54,19 @@ const RestaurantHeader = () => {
         {" "}
         {/* <div onClick={}>돋보기 아이콘 클릭하면 검색결과를 보여주는 페이지로 이동함 이동할 때 검색한 키워드도 전달 해야함? */}
         <div>
-          <Link  style={{ textDecoration: "none", color: "inherit" }} to={`/guest/restaurantSearch`}><FontAwesomeIcon icon={faMagnifyingGlass} />
-          </Link></div>{" "}
+          <Link
+            style={{ textDecoration: "none", color: "inherit" }}
+            to={`/guest/restaurantSearch`}
+          >
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </Link>
+        </div>{" "}
         <p> | </p>{" "}
         <div>
           <Link
             style={{ textDecoration: "none", color: "inherit" }}
             to="/guest/location"
+            state={{ searchWord: "none" }}
           >
             <FontAwesomeIcon icon={faMap} />
           </Link>
