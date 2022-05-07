@@ -269,23 +269,25 @@ const ManageReserv = () => {
     const handleSubmit = async () => {
         const data = JSON.stringify(
             [...layout, ...removedLayout].map((m) => {
-                return {
-                    flag: m.status,
-                    adminReservPostDTO: {
-                        reserv_id: 2,
-                        tableNum: m.tableNum,
-                        reserveDate: "2022-05-01",
-                        reserveTime: m.reservAt,
-                        reserveNum: m.reservCount,
-                        booker: {
-                            member_id: null,
-                            phoneNum: m.status === "NEW" ? m.phoneNum : null,
-                            name: null,
-                            nickName: m.nickname,
+                if (m.status !== "NONE") {
+                    return {
+                        flag: m.status,
+                        adminReservPostDTO: {
+                            reserv_id: 2,
+                            tableNum: m.tableNum,
+                            reserveDate: "2022-05-01",
+                            reserveTime: m.reservAt,
+                            reserveNum: m.reservCount,
+                            booker: {
+                                member_id: null,
+                                phoneNum: m.status === "NEW" ? m.phoneNum : null,
+                                name: null,
+                                nickName: m.nickname,
+                            },
+                            isCar: m.isCar,
                         },
-                        isCar: m.isCar,
-                    },
-                };
+                    };
+                }
             })
         );
 
@@ -301,13 +303,13 @@ const ManageReserv = () => {
             data: data,
         };
 
-        // axios(config)
-        //     .then(function (response) {
-        //         console.log(response);
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        axios(config)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     return (
