@@ -156,6 +156,7 @@ let last = false
     const getToken = localStorage.getItem("token");
     await new Promise((resolve)=>setTimeout(resolve,1000));
     console.log("searchWordsearchWordsearchWordsearchWord",searchWord);
+    setPost(true);
     await axios //${searchWord} 
       .get(url + `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`, { 
         headers: {  

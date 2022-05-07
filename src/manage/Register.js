@@ -954,8 +954,8 @@ function Register(floorCallback) {
                                             {marketInfo === null ? (
                                                 <input
                                                     id="market_img_input"
-                                                    type="image"
-                                                    // type="file"
+                                                    //type="image"
+                                                    type="file"
                                                     accept="image/jpg,image/png,image/jpeg,image/gif"
                                                     name="market_img"
                                                     onChange={marketImgChange}
@@ -1141,7 +1141,7 @@ function Register(floorCallback) {
                                             <option value="KOREAN" selected>
                                                 한식
                                             </option>
-                                            <option value="JAPAN">일식</option>
+                                            <option value="JAPANESE">일식</option>
                                             <option value="CHINESE">중식</option>
                                             <option value="WESTERN">양식</option>
                                             <option value="TAIWAN">태국</option>
