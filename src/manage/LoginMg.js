@@ -9,11 +9,11 @@ import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 200px 0px;
+  /* margin: 100px 0px; */
 `;
 
 const Form = styled.form`
@@ -24,6 +24,7 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 50px 0px;
 `;
 
 const Input = styled.input.attrs({ required: true })`
@@ -109,8 +110,12 @@ const LoginMg = () => {
       .then(function (response) {
         console.log(response);
         localStorage.setItem("token", response.data.token.accessToken);
-        localStorage.setItem("marketId", response.data.restaurants[0]);
-        navigate("/register");
+
+        if (response.data.restaurant) {
+          localStorage.setItem("marketId", response.data.restaurant[0]);
+        }
+
+        navigate("/manager/register");
         console.log(response.data.restaurants[0]);
       })
       .catch(function (error) {
@@ -125,13 +130,15 @@ const LoginMg = () => {
     logInPost(data);
   };
 
+  // useEffect(() => {
+  //   localStorage.setItem("marketId", -1);
+  // }, []);
+
   return (
     <Container>
       <Header />
-
       <Form onSubmit={handleSubmit(onValid)}>
         <Span>LOGIN </Span>
-
         <InputBox>
           <div
             style={{
