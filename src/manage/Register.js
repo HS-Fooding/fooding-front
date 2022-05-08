@@ -934,7 +934,7 @@ function Register(floorCallback) {
                     {marketInfo === null ? (
                       <input
                         {...register("businessName")}
-                        placeholder="상호명을 입력하시오."
+                        placeholder="상호명을 입력하세요"
                       />
                     ) : (
                       <InfoSpan>{marketInfo?.name}</InfoSpan>
@@ -950,7 +950,7 @@ function Register(floorCallback) {
                       <textarea
                         {...register("detail")}
                         style={{ fontFamily: "Roboto" }}
-                        placeholder="상세설명을 입력하시오"
+                        placeholder="상세설명을 입력하세요"
                       />
                     ) : (
                       <InfoSpan>{marketInfo?.intro}</InfoSpan>
@@ -1009,7 +1009,7 @@ function Register(floorCallback) {
                   <input
                     className="NumInputStyle"
                     {...register("address")}
-                    placeholder="주소를 입력하시오"
+                    placeholder="주소를 입력하세요"
                     style={{ marginTop: "1px" }}
                   />
                 ) : (
@@ -1224,17 +1224,11 @@ function Register(floorCallback) {
                     <input
                       className="NumInputStyle"
                       {...register("businessNum")}
-                      placeholder="번호를 입력하시오"
+                      placeholder=" - 포함해 입력하세요"
                       style={{ marginTop: "1px" }}
                     />
                   ) : (
-                    <InfoSpan>
-                      {marketInfo?.tel[0].slice(0, 3) +
-                        "-" +
-                        marketInfo?.tel[0].slice(3, 7) +
-                        "-" +
-                        marketInfo?.tel[0].slice(7, 11)}
-                    </InfoSpan>
+                    <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
                   )}
                 </div>
                 <div className="InputNTitleContainer">
@@ -1243,18 +1237,11 @@ function Register(floorCallback) {
                     <input
                       className="NumInputStyle"
                       {...register("personalNum")}
-                      placeholder="번호를 입력하시오"
+                      placeholder=" - 포함해 입력하세요"
                       style={{ alignItems: "center" }}
                     />
                   ) : (
-                    <InfoSpan>
-                      {" "}
-                      {marketInfo?.tel[1].slice(0, 3) +
-                        "-" +
-                        marketInfo?.tel[1].slice(3, 7) +
-                        "-" +
-                        marketInfo?.tel[1].slice(7, 11)}
-                    </InfoSpan>
+                    <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
                   )}
                 </div>
               </NumContainer>
@@ -1325,7 +1312,9 @@ function Register(floorCallback) {
             {/* 주차정보 , 최대 이용 시간*/}
             {/* </div> */}
 
-            <Button onClick={submitInfo}>등록</Button>
+            {marketInfo === null ? (
+              <Button onClick={submitInfo}>등록</Button>
+            ) : null}
           </InfoForm>
         </InputFormDiv>
       </div>
