@@ -152,7 +152,7 @@ const RestaurantSearch = () => {
             const getToken = localStorage.getItem("token");
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
-            setPost(true);
+            await setPost(true);
             await axios //${searchWord}
                 .get(
                     url +
