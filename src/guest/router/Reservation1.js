@@ -384,12 +384,13 @@ const Reservation1 = () => {
     makeSendingTime();
 
     const getToken = localStorage.getItem("token");
+    const marketId = localStorage.getItem("marketId");
 
     var config = {
       method: "get",
       url:
         url +
-        `/fooding/restaurant/3/reservation?date=${dateString}&num=${peopleNum}&time=${sendTotalTime}`,
+        `/fooding/restaurant/${marketId}/reservation?date=${dateString}&num=${peopleNum}&time=${sendTotalTime}`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
