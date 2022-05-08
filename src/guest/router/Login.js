@@ -196,7 +196,7 @@ const Login = () => {
 
     var config = {
       method: "post",
-      url: url + "/fooding/login",
+      url: "http://localhost:8080/fooding/login", //url + 
       headers: {
         //crossDomain: true,
         "Content-Type": "application/json",
