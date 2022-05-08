@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import _ from "lodash";
 import axios from "axios";
 import { url } from "../Api";
+import { v4 as uuidv4 } from "uuid";
 
 import RGL, { WidthProvider, Responsive } from "react-grid-layout";
 import { m } from "framer-motion";
@@ -31,7 +32,7 @@ const parseDate = (date, time) => {
 // };
 
 const transformData = (dummy) => {
-    // console.log("original : ", dummy);
+    console.log("original : ", dummy);
     return {
         date: dummy.tableInfo.date,
         open: parseDate(dummy.tableInfo.date, dummy.tableInfo.open),
@@ -44,6 +45,7 @@ const transformData = (dummy) => {
                     parseDate(dummy.tableInfo.date, dummy.tableInfo.open)) /
                 (60 * 1000 * BLOCK_OF_TIME);
             return {
+                reservId: m.reservId,
                 nickname: m.nickname,
                 tableNum: m.tableNum,
                 reservCount: m.reservCount,
@@ -110,6 +112,7 @@ const ManageReserv = () => {
                         y: response[i].y,
                         w: response[i].w,
                         h: parseInt(response[i].h),
+                        reservId: response[i].reservId,
                         nickname: response[i].nickname,
                         tableNum: response[i].tableNum,
                         reservCount: response[i].reservCount,
@@ -143,6 +146,7 @@ const ManageReserv = () => {
 
         for (var i = 0; i < tmp.length; i++) {
             if (tmp[i].i === to.i) tmp[i].status = "EDIT";
+            tmp[i].reservId = tmp[i].reservId;
             tmp[i].x = parseInt(data[i].x);
             tmp[i].y = parseInt(data[i].y);
             tmp[i].w = parseInt(data[i].w);
@@ -167,6 +171,7 @@ const ManageReserv = () => {
         // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
         console.log("transformed", transformed);
         const nickname = prompt("nickname");
+        const name = prompt("name");
         const reservAt = prompt("reservAt");
         const tableNum = prompt("tableNum");
         const reservCount = prompt("reservCount");
@@ -187,11 +192,14 @@ const ManageReserv = () => {
             h: transformed.maxUsageTime / 30,
             //
             nickname,
+            name,
             reservAt,
             tableNum,
             reservCount,
             isCar: isCar === "true" ? true : false,
             phoneNum,
+            // reservId: uuidv4(),
+            reservId: null,
             status: "NEW",
         };
         setNewCounter(newCounter + 1);
@@ -242,6 +250,7 @@ const ManageReserv = () => {
                     <div>reservCount : {el.reservCount}</div>
                     <div>isCar : {el.isCar ? "yes" : "no"}</div>
                     <div>status : {el.status}</div>
+                    <div>reservId : {el.reservId} </div>
                     <span
                         className="remove"
                         style={removeStyle}
@@ -266,36 +275,36 @@ const ManageReserv = () => {
         });
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         const data = JSON.stringify(
-            [...layout, ...removedLayout].map((m) => {
-                if (m.status !== "NONE") {
+            [...layout, ...removedLayout]
+                .filter((m) => m.status !== "NONE")
+                .map((m) => {
                     return {
                         flag: m.status,
                         adminReservPostDTO: {
-                            reserv_id: 2,
-                            tableNum: m.tableNum,
-                            reserveDate: "2022-05-01",
+                            reservId: m.reservId,
+                            tableNum: m.tableNum.toString(),
+                            reserveDate: "1997-06-05",
                             reserveTime: m.reservAt,
                             reserveNum: m.reservCount,
                             booker: {
-                                member_id: null,
-                                phoneNum: m.status === "NEW" ? m.phoneNum : null,
-                                name: null,
+                                member_id: 0,
+                                phoneNum: m.status === "NEW" ? m.phoneNum : "",
+                                name: "",
                                 nickName: m.nickname,
                             },
-                            isCar: m.isCar,
+                            car: m.isCar,
                         },
                     };
-                }
-            })
+                })
         );
 
         console.log("data!!!", data);
         const getToken = localStorage.getItem("token");
         const config = {
             method: "post",
-            url: url + `/fooding/admin/restaurant/${1}/reservation`,
+            url: url + `/fooding/admin/restaurant/1/reservation`,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + getToken,
