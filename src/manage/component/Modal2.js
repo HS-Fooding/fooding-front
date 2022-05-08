@@ -281,7 +281,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
     } else {
       setFigureWidth(figureWidth - 1);
       let tableWidth = figureWidth - 1;
-      setTableWidthPixel(tableWidth * 100);
+      setTableWidthPixel(tableWidth * 50);
     }
   };
   const tableWidthPlus = () => {
@@ -289,7 +289,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
       setFigureWidth(figureWidth + 1);
     }
     let tableWidth = figureWidth + 1;
-    setTableWidthPixel(tableWidth * 100);
+    setTableWidthPixel(tableWidth * 50);
   };
   const tableHeightMinus = () => {
     if (figureHeight - 1 === 0) {
@@ -297,7 +297,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
     } else {
       let tableHeight = figureHeight - 1;
       setFigureHeight(figureHeight - 1);
-      setTableHeightPixel(tableHeight * 100);
+      setTableHeightPixel(tableHeight * 50);
     }
   };
   const tableHeightPlus = () => {
@@ -305,7 +305,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
       setFigureHeight(figureHeight + 1);
     }
     let tableHeight = figureHeight + 1;
-    setTableHeightPixel(tableHeight * 100);
+    setTableHeightPixel(tableHeight * 50);
   };
   const changeWidthValue = (e) => {
     e.preventDefault();
