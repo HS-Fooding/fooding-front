@@ -218,7 +218,7 @@ const ManageReserv = () => {
 
         layout.forEach((m) => {
             if (m.i === i) {
-                m.status = "DELTE";
+                m.status = "DELETE";
                 // setRemovedLayout(removedLayout.push(m));
                 setRemovedLayout([...removedLayout, m]);
             }
