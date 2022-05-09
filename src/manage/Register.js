@@ -1332,11 +1332,16 @@ function Register(floorCallback) {
       </div>
       <CanvasContainer ref={structRef}>
         <CanvasOptionContainer>
-          {floorNum === null ? (
+          
+        {/* {floorNum === null ? (
             <AppendFloor onClick={appendFloor}>
               <div>층 추가</div>
             </AppendFloor>
-          ) : null}
+          ) : null} */}
+
+            <AppendFloor onClick={appendFloor}>
+              <div>층 추가</div>
+            </AppendFloor>          
           {floor.map((bool, index) => {
             console.log("button번호", index);
             //if(floor.length===(index+1)){
@@ -1355,7 +1360,8 @@ function Register(floorCallback) {
             );
             //}
           })}
-          {floorNum === null && floor.length !== 1 ? (
+          {/* floorNum === null && */}
+          { floor.length !== 1 ? (
             <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
               X
             </FloorButton>

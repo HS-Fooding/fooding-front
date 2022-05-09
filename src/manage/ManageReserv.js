@@ -237,7 +237,6 @@ const ManageReserv = () => {
             top: 0,
             cursor: "pointer",
         };
-
         return _.map(layout, (el, i) => {
             const t = el.i;
             return (
