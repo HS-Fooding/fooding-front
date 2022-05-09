@@ -151,6 +151,7 @@ const RestaurantSearch = () => {
     if (last == false && firstInput) {
       setIsLoaded(true);
 
+<<<<<<< HEAD
       // var axios = require("axios");
       //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
       const getToken = localStorage.getItem("token");
@@ -206,6 +207,61 @@ const RestaurantSearch = () => {
     // setResearchCount(researchCount + 1);
     await bringMarketInfo();
   };
+=======
+            // var axios = require("axios");
+            //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
+            const getToken = localStorage.getItem("token");
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
+            await setPost(true);
+            await axios //${searchWord}
+                .get(
+                    url +
+                        `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`,
+                    {
+                        headers: {
+                            //"Content-Type": "multipart/form-data",
+                            "Content-Type": "application/json",
+                            Authorization: "Bearer " + getToken,
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res.data);
+                    setPresentPage(presentPage + 1);
+                    console.log("last true / false ::", res.data.last);
+                    const lastresult = res.data.last;
+                    if (lastresult === true) {
+                        last = true;
+                    }
+                    // console.log("last가 true로 바뀜!!?", last);
+                    // console.log("  isLoaded", isLoaded);
+                    // console.log("currentPage", currentPage);
+                    // console.log("researchCount", researchCount);
+                    if (researchCount >= 1) {
+                        setRestaurantArr(res.data.content);
+                    } else {
+                        setRestaurantArr((restaurantArr) => restaurantArr.concat(res.data.content));
+                    }
+                })
+                .then(() => {
+                    currentPage += 1;
+                    setIsLoaded(true);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    };
+    const getSearch = async (e) => {
+        e.preventDefault();
+        // setSearchWord("");
+        // setResult([]);
+        // setBring(true);
+        // setResearchCount(researchCount + 1);
+        await bringMarketInfo();
+    };
+>>>>>>> 60ceb182faf2549434c51a68fdf6db3136fadaf0
 
   const onIntersect = async ([entry], observer) => {
     console.log("####################");
