@@ -24,7 +24,7 @@ const Form = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 50px 0px;
+  margin: 80px 0px;
 `;
 
 const Input = styled.input.attrs({ required: true })`
@@ -108,18 +108,17 @@ const LoginMg = () => {
 
     axios(config)
       .then(function (response) {
-        console.log("responseresponse",response);
+        console.log("responseresponse", response);
         localStorage.setItem("token", response.data.token.accessToken);
         if (response.data.restaurant) {
           localStorage.setItem("marketId", response.data.restaurant[0]);
         }
-        
-         navigate("/manager/register");
+
+        navigate("/manager/register");
         console.log(response.data.restaurants[0]);
       })
       .catch(function (error) {
         console.log(error);
-        
       });
   };
 

@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import React, { useState, useEffect, useRef } from "react";
 
 import styled from "styled-components";
-import { Link,useLocation,useNavigate  } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { url, token } from "../../Api";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -203,7 +203,7 @@ const DateReply = styled.div`
   }
 `;
 const Header = styled.div`
- display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -233,8 +233,8 @@ const ReviewDetail = () => {
   const [bigImg, setBigImg] = useState(false);
   const [comments, setComments] = useState([]);
   const [clickImg, setClickImg] = useState();
-const location = useLocation();
-let navigate = useNavigate();
+  const location = useLocation();
+  let navigate = useNavigate();
   var axios = require("axios");
 
   const commentSubmit = () => {
@@ -250,7 +250,9 @@ let navigate = useNavigate();
 
     var config = {
       method: "post",
-      url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}/comment`,
+      url:
+        url +
+        `/fooding/restaurant/${location.state.marketId}/review/${reviewId}/comment`,
       headers: {
         Authorization: "Bearer " + getToken,
         "Content-Type": "application/json",
@@ -284,7 +286,9 @@ let navigate = useNavigate();
   useEffect(() => {
     var config = {
       method: "get",
-      url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}`,
+      url:
+        url +
+        `/fooding/restaurant/${location.state.marketId}/review/${reviewId}`,
       headers: {
         //'Cookie': 'Cookie_1=31B130A5F9F3D2ED1CFB0B94AB5FCBD8',
         //...data.getHeaders()
@@ -300,24 +304,27 @@ let navigate = useNavigate();
       .catch(function (error) {
         console.log(error);
       });
-      console.log("location.state.marketId",location.state.marketId);
-  }, []);
+    console.log("location.state.marketId", location.state.marketId);
+  }, [comments]);
 
   console.log(reviewId);
 
   return (
     <Container>
       <Header>
-      <div onClick={()=>{navigate(-1)}}><FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /></div>
+        <div
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        </div>
       </Header>
       <MainBox>
         <ReviewContent>
           <div className="userName">{review.nickName}</div>
           <div className="dateStar">
-            <span>
-              {" "}
-              {review.createDate?.replaceAll("-", ".").slice(0, 10)}
-            </span>
+            <span> {review.createDate?.replaceAll("-", ".").slice(0, 10)}</span>
             <span>★</span>
             <span>{review.star}</span>
           </div>
@@ -326,8 +333,8 @@ let navigate = useNavigate();
             {review.images?.map((img, index) => (
               <div key={index}>
                 <img
-                key={img.id}
-                  style={{ cursor: "pointer", "objectFit": "cover" }}
+                  key={img.id}
+                  style={{ cursor: "pointer", objectFit: "cover" }}
                   src={img.path}
                   onClick={() => {
                     makeImgBig(index);
