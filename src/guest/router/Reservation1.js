@@ -171,9 +171,9 @@ const TimeInnerCon = styled(InnerContainer)``;
 
 const NextBtn = styled.button`
   width: 380px;
-  height: 50px;
+  height: 45px;
   background: white;
-  margin-top: 24px;
+  margin-top: 55px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
@@ -252,6 +252,7 @@ const NoticeBox = styled.div`
   align-items: center;
   border-radius: 3px;
   color: rgba(0, 0, 0, 0.5);
+  margin-top: 10px;
 `;
 
 const Reservation1 = () => {
@@ -355,8 +356,20 @@ const Reservation1 = () => {
   let dateString;
   const makeSendingTime = async () => {
     let month = calendarValue.getMonth() + 1;
-    dateString =
-      calendarValue.getFullYear() + "-" + month + "-" + calendarValue.getDate();
+
+    if (month.toString().length == 1) {
+      console.log("month lenght 하나");
+      month = "0" + month;
+      console.log(month);
+    }
+
+    let date = calendarValue.getDate();
+
+    if (date.toString().length == 1) {
+      date = "0" + date;
+    }
+
+    dateString = calendarValue.getFullYear() + "-" + month + "-" + date;
 
     setTotalDate(dateString);
     let splited = clickedTime?.split(" ");
@@ -377,6 +390,7 @@ const Reservation1 = () => {
     }
 
     console.log("sendTotalTime:", sendTotalTime);
+    console.log("dateString:", dateString);
     setTotalTime(sendTotalTime);
   };
   useEffect(() => {
@@ -521,21 +535,22 @@ const Reservation1 = () => {
         //   </NoticeBox>
         // ) : null} */}
 
-        <Link
-          to="/guest/reservation2"
-          state={{
-            isCar: isCar,
-            peopleNum: peopleNum,
-            // time: clickedTime,
-            time: totalTime,
-            // calendarValue: calendarValue,
-            calendarValue: totalDate,
-            availableTable: availableTable,
-          }}
-        >
-          <NextBtn onClick={nextBtnClick}>다음</NextBtn>
-        </Link>
-        <span>{isCar}</span>
+        {availableTable.length === 0 ? null : (
+          <Link
+            to="/guest/reservation2"
+            state={{
+              isCar: isCar,
+              peopleNum: peopleNum,
+              // time: clickedTime,
+              time: totalTime,
+              // calendarValue: calendarValue,
+              calendarValue: totalDate,
+              availableTable: availableTable,
+            }}
+          >
+            <NextBtn onClick={nextBtnClick}>다음</NextBtn>
+          </Link>
+        )}
       </MainBox>
     </Container>
   );
