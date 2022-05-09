@@ -235,7 +235,7 @@ function SignUp() {
         { shouldFocus: true }
       );
     } else {
-      navigate("/");
+      navigate("/guest/login");
       reset();
       signUpPost(data);
     }
