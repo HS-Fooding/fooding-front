@@ -400,19 +400,21 @@ const Step = styled.div`
 
   nav button {
     position: relative;
-    width: 33.333%;
+    width: auto;
     display: table-cell;
     text-align: center;
     color: #949494;
     text-decoration: none;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 10px 10px;
+    margin-right: 30px;
     transition: 0.2s ease color;
     outline: none;
     background: inherit;
     border: none;
     cursor: pointer;
+    font-size: 18px;
   }
 
   nav button:before,
@@ -464,13 +466,14 @@ const Step = styled.div`
 
   #indicator {
     position: absolute;
-    left: 5%;
+    left: 13px;
     bottom: 0;
     width: 30px;
     height: 3px;
     background-color: #fff;
     border-radius: 5px;
     transition: 0.2s ease left;
+    /* margin-right: 40px; */
   }
 
   nav button:nth-child(2) {
@@ -566,7 +569,7 @@ function Register(floorCallback) {
   }, [floor]);
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
-    else if (value === "JAPANESE") return "일식";
+    else if (value === "JAPAN") return "일식";
     else if (value === "CHINESE") return "중식";
     else if (value === "WESTERN") return "양식";
     else if (value === "VIETNAM") return "베트남";
@@ -617,7 +620,6 @@ function Register(floorCallback) {
           .then((res) => {
             setFloorNum("setFloorNum", res.data.floors.length);
             //false로 채우기
-            console.log("구조 가져오기  ",res.data);
             const savefloorNum = Array(floorNum);
             savefloorNum.fill(false);
             savefloorNum[0] = true;
@@ -897,21 +899,22 @@ function Register(floorCallback) {
           </button>
           <button
             onClick={() => {
-              menuRef.current?.scrollIntoView({ behavior: "smooth" });
-              setNav(2);
-            }}
-          >
-            MENU
-          </button>
-          <button
-            onClick={() => {
               structRef.current?.scrollIntoView({ behavior: "smooth" });
-              setNav(3);
+              setNav(2);
             }}
           >
             STRUCTURE
           </button>
-          <div id="indicator"></div>
+          <button
+            onClick={() => {
+              menuRef.current?.scrollIntoView({ behavior: "smooth" });
+              setNav(3);
+            }}
+          >
+            MENU
+          </button>
+
+          {/* <div id="indicator"></div> */}
         </nav>
       </Step>
 
@@ -935,7 +938,7 @@ function Register(floorCallback) {
                     {marketInfo === null ? (
                       <input
                         {...register("businessName")}
-                        placeholder="상호명을 입력하시오."
+                        placeholder="상호명을 입력하세요"
                       />
                     ) : (
                       <InfoSpan>{marketInfo?.name}</InfoSpan>
@@ -951,7 +954,7 @@ function Register(floorCallback) {
                       <textarea
                         {...register("detail")}
                         style={{ fontFamily: "Roboto" }}
-                        placeholder="상세설명을 입력하시오"
+                        placeholder="상세설명을 입력하세요"
                       />
                     ) : (
                       <InfoSpan>{marketInfo?.intro}</InfoSpan>
@@ -1010,7 +1013,7 @@ function Register(floorCallback) {
                   <input
                     className="NumInputStyle"
                     {...register("address")}
-                    placeholder="주소를 입력하시오"
+                    placeholder="주소를 입력하세요"
                     style={{ marginTop: "1px" }}
                   />
                 ) : (
@@ -1151,7 +1154,7 @@ function Register(floorCallback) {
                       <option value="KOREAN" selected>
                         한식
                       </option>
-                      <option value="JAPANESE">일식</option>
+                      <option value="JAPAN">일식</option>
                       <option value="CHINESE">중식</option>
                       <option value="WESTERN">양식</option>
                       <option value="TAIWAN">태국</option>
@@ -1225,17 +1228,11 @@ function Register(floorCallback) {
                     <input
                       className="NumInputStyle"
                       {...register("businessNum")}
-                      placeholder="번호를 입력하시오"
+                      placeholder=" - 포함해 입력하세요"
                       style={{ marginTop: "1px" }}
                     />
                   ) : (
-                    <InfoSpan>
-                      {marketInfo?.tel[0].slice(0, 3) +
-                        "-" +
-                        marketInfo?.tel[0].slice(3, 7) +
-                        "-" +
-                        marketInfo?.tel[0].slice(7, 11)}
-                    </InfoSpan>
+                    <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
                   )}
                 </div>
                 <div className="InputNTitleContainer">
@@ -1244,18 +1241,11 @@ function Register(floorCallback) {
                     <input
                       className="NumInputStyle"
                       {...register("personalNum")}
-                      placeholder="번호를 입력하시오"
+                      placeholder=" - 포함해 입력하세요"
                       style={{ alignItems: "center" }}
                     />
                   ) : (
-                    <InfoSpan>
-                      {" "}
-                      {marketInfo?.tel[1].slice(0, 3) +
-                        "-" +
-                        marketInfo?.tel[1].slice(3, 7) +
-                        "-" +
-                        marketInfo?.tel[1].slice(7, 11)}
-                    </InfoSpan>
+                    <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
                   )}
                 </div>
               </NumContainer>
@@ -1326,7 +1316,9 @@ function Register(floorCallback) {
             {/* 주차정보 , 최대 이용 시간*/}
             {/* </div> */}
 
-            <Button onClick={submitInfo}>등록</Button>
+            {marketInfo === null ? (
+              <Button onClick={submitInfo}>등록</Button>
+            ) : null}
           </InfoForm>
         </InputFormDiv>
       </div>
