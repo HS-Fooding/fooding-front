@@ -289,7 +289,10 @@ const Reservation2 = () => {
     console.log(id, maxPeople, minPeople, tableNum);
     const obj = { id, maxPeople, minPeople, tableNum };
 
-    setSelectedTable(obj);
+    console.log("availableTable", availableTableNumArr);
+    if (availableTableNumArr.includes(obj.tableNum)) {
+      setSelectedTable(obj);
+    }
   };
   const changeFloor = (index) => {
     console.log("indexindexindex", index);
