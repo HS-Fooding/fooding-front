@@ -673,8 +673,8 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
   const createSeat = () => {
     const seat = {
-      x: 200 + seatCnt * 20,
-      y: 200 + seatCnt * 20,
+      x: 200 + seatCnt,
+      y: 200 + seatCnt,
       radius: 11,
       fill: "gray",
       id: "seat" + seatCnt,
@@ -766,7 +766,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
           const seat = {
             x: s.x,
             y: s.y,
-            radius: 20,
+            radius: 11,
             fill: "gray",
             id: "seat" + id,
           };
