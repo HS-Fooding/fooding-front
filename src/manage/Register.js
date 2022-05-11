@@ -171,6 +171,12 @@ const InfoForm = styled.form`
     height: 80px;
     margin-top: 20px;
   }
+  .timeContainer{
+    display:flex;
+    align-items:center;
+    width:500px;
+    margin-left:20px;
+  }
 `;
 const NameBox = styled.div`
   width: 160px;
@@ -192,7 +198,7 @@ const SubBox = styled.div`
 const InputBox = styled.div`
   width: 525px;
   height: 94%;
-  margin-left: 3px;
+  margin-left: 13px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -293,7 +299,11 @@ const NumContainer = styled.div`
     display: flex;
     align-items: center;
   }
-
+.setTimeContainer{
+  &:nth-child(2){
+    margin-left:13px;
+  }
+}
   .TimeInput {
     width: 120px;
     font-size: 15px;
@@ -307,6 +317,7 @@ const NumContainer = styled.div`
 const SmallInput = styled.input``;
 const InfoSpan = styled.span`
   margin-left: 10px;
+  line-height:normal;
 `;
 const StyledSlider = styled(Slider)`
   height: 100%; //슬라이드 컨테이너 영역
@@ -938,6 +949,7 @@ function Register(floorCallback) {
                     {marketInfo === null ? (
                       <input
                         {...register("businessName")}
+                        style={{ fontFamily: "Roboto",marginLeft:"20px" }}
                         placeholder="상호명을 입력하세요"
                       />
                     ) : (
@@ -949,11 +961,11 @@ function Register(floorCallback) {
                   <NameBox>
                     <p>상세설명</p>
                   </NameBox>
-                  <InputBox>
+                  <InputBox style={{"width":"72%"}}>
                     {marketInfo === null ? (
                       <textarea
                         {...register("detail")}
-                        style={{ fontFamily: "Roboto" }}
+                        style={{ fontFamily: "Roboto",marginLeft:"20px",width:"92%" }}
                         placeholder="상세설명을 입력하세요"
                       />
                     ) : (
@@ -1008,13 +1020,13 @@ function Register(floorCallback) {
               <NameBox>
                 <p>주소</p>
               </NameBox>
-              <InputBox style={{ width: "80%" }}>
+              <InputBox style={{ width: "80%"}}>
                 {marketInfo === null ? (
                   <input
                     className="NumInputStyle"
                     {...register("address")}
                     placeholder="주소를 입력하세요"
-                    style={{ marginTop: "1px" }}
+                    style={{ marginTop: "1px",marginLeft:"20px" }}
                   />
                 ) : (
                   <InfoSpan>{marketInfo?.location.addressName}</InfoSpan>
@@ -1025,7 +1037,7 @@ function Register(floorCallback) {
               <NameBox>
                 <p>주차 정보</p>
               </NameBox>
-              <InputBox style={{ width: "25%" }}>
+              <InputBox style={{ width: "25%"}}>
                 {marketInfo === null ? (
                   <>
                     <label className="parkingLabel" htmlFor="can">
@@ -1052,14 +1064,14 @@ function Register(floorCallback) {
                     </label>
                   </>
                 ) : (
-                  <InfoSpan>{marketInfo?.parkingInfo}</InfoSpan>
+                  <InfoSpan style={{"width":"500px"}}>{marketInfo?.parkingInfo}</InfoSpan>
                 )}
               </InputBox>
               {marketInfo == null ? (
                 <div>
                   <input
                     {...register("parkingInfo")}
-                    style={{ width: "500px" }}
+                    style={{ width: "490px" }}
                     type="text"
                     placeholder="추가 정보를 입력하세요"
                   ></input>
@@ -1224,7 +1236,7 @@ function Register(floorCallback) {
               <NumContainer>
                 <div className="InputNTitleContainer">
                   <SubBox>사업자 번호</SubBox>
-                  {marketInfo === null ? (
+                  <div style={{ marginLeft: "13px" }}>{marketInfo === null ? (
                     <input
                       className="NumInputStyle"
                       {...register("businessNum")}
@@ -1233,11 +1245,11 @@ function Register(floorCallback) {
                     />
                   ) : (
                     <InfoSpan>{marketInfo?.tel[0]}</InfoSpan>
-                  )}
+                  )}</div>
                 </div>
                 <div className="InputNTitleContainer">
                   <SubBox>개인 번호</SubBox>
-                  {marketInfo === null ? (
+                 <div style={{ marginLeft: "13px" }}> {marketInfo === null ? (
                     <input
                       className="NumInputStyle"
                       {...register("personalNum")}
@@ -1246,7 +1258,7 @@ function Register(floorCallback) {
                     />
                   ) : (
                     <InfoSpan>{marketInfo?.tel[1]}</InfoSpan>
-                  )}
+                  )}</div>
                 </div>
               </NumContainer>
             </InputContainer>
@@ -1259,8 +1271,9 @@ function Register(floorCallback) {
               <NumContainer>
                 <div className="InputNTitleContainer">
                   <SubBox>평일 시간대</SubBox>
+                 
                   {marketInfo === null ? (
-                    <>
+                    <div className="timeContainer" >
                       <input
                         type="time"
                         value={weekdayTimeStartState}
@@ -1276,18 +1289,20 @@ function Register(floorCallback) {
                         className="TimeInput"
                       />
                       <p>까지</p>
-                    </>
+                      </div>
                   ) : (
                     <InfoSpan>
                       {marketInfo?.weekdaysWorkHour.open.slice(0, 5)} ~{" "}
                       {marketInfo?.weekdaysWorkHour.close.slice(0, 5)}{" "}
                     </InfoSpan>
                   )}
-                </div>
+                  </div>
+                
                 <div className="InputNTitleContainer">
                   <SubBox>주말 시간대</SubBox>
+                 
                   {marketInfo === null ? (
-                    <>
+                    <div className="Time"  className="timeContainer">
                       <input
                         type="time"
                         className="TimeInput"
@@ -1302,7 +1317,7 @@ function Register(floorCallback) {
                         value={weekendTimeEndState}
                       />
                       <p>까지</p>
-                    </>
+                    </div>
                   ) : (
                     <InfoSpan>
                       {" "}

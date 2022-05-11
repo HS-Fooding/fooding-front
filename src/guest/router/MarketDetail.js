@@ -228,6 +228,7 @@ const MoreMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color:orange;
   :hover {
     cursor: pointer;
   }
@@ -235,7 +236,7 @@ const MoreMenu = styled.div`
     margin-left: 20px;
   }
   .iconContainer {
-    margin-right: 10px;
+    margin-right: 24px;
     font-size: 20px;
   }
 `;
@@ -449,8 +450,8 @@ const MarketDetail = () => {
 
         {
           //세개만 만들어놓음.
-          representativeNNormal?.map((menu, index) => {
-            if (index < 3) {
+          representative?.map((menu, index) => {
+           
               return (
                 <EachMenu>
                   <MenuContainer>
@@ -474,7 +475,7 @@ const MarketDetail = () => {
                   </MenuContainer>
                 </EachMenu>
               );
-            }
+            
           })
         }
         <MoreMenu onClick={seeMoreMenu}>

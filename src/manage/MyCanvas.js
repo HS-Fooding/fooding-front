@@ -82,7 +82,7 @@ const ButtonContainer = styled.div`
   }
 `;
 const CanvasContainer = styled.div`
-  width: 760px;
+  width: 845px;
   height: 500px;
 `;
 const Garbage = styled.div`
@@ -1137,7 +1137,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
         </ButtonContainer>
         <CanvasContainer>
           <Stage
-            width={760}
+            width={845}
             height={500}
             onMouseDown={checkDeselect}
             onTouchStart={checkDeselect}
