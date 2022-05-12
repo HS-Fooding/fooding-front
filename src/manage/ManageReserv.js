@@ -1,11 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import axios from "axios";
 import { url } from "../Api";
 import { v4 as uuidv4 } from "uuid";
-
+import styled from "styled-components";
 import RGL, { WidthProvider, Responsive } from "react-grid-layout";
 import { m } from "framer-motion";
+import DatePicker from "react-datepicker"; // DatePicker 라는 컴포넌트도 가져오깅
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 맥이기
+
+const MyDatePicker = styled(DatePicker)`
+  width: 90%;
+  height: 3rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  background-color: transparent;
+  color: white;
+  border: 1px solid;
+`;
 
 const BLOCK_OF_TIME = 30;
 
@@ -73,9 +85,51 @@ const ManageReserv = () => {
   const [cols, setCols] = React.useState([]);
   const [restInfo, setRestInfo] = React.useState({});
   const [newCounter, setNewCounter] = React.useState(0);
+  const [dateDetail, setDateDetail] = React.useState(new Date());
+  const [date, setDate] = React.useState(dateDetail.getDate());
+  const [startDate, setStartDate] = useState(new Date());
+
+  let tomorrow = new Date();
+
+  useEffect(() => {
+    console.log("startDate:", startDate);
+    console.log(
+      startDate.getFullYear(),
+      startDate.getMonth(),
+      startDate.getDate()
+    );
+  }, [startDate]);
+  const handleDate = () => {
+    // // console.log("dateDetail:", dateDetail.getDate().length);
+    // console.log("date:", date);
+    // //setDate(date.getDate() + 1);
+    // //const getDate = dateDetail.getDate();
+    // setDate(date + 1);
+    // // // 어제
+    // // const yesterday = new Date();
+    // // yesterday.setDate(yesterday.getDate() - 1);
+    // // console.log(yesterday.toLocaleString());
+    // // 내일
+    // //const tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate() + 1);
+    // console.log(tomorrow.toLocaleString());
+  };
 
   useEffect(async () => {
     const getToken = localStorage.getItem("token");
+
+    let year = startDate.getFullYear();
+    let month = startDate.getMonth() + 1;
+    let date = startDate.getDate();
+
+    if (month.toString().length == 1) {
+      month = "0" + month;
+    }
+    if (date.toString().length == 1) {
+      date = "0" + date;
+    }
+
+    console.log("month, date:", month, date);
 
     const config = {
       method: "get",
@@ -87,7 +141,9 @@ const ManageReserv = () => {
       },
       params: {
         // date: "2022-05-01",
-        date: "2022-05-05",
+        date: `${year}-${month}-${date}`,
+
+        // 5,6,7일 데이터 있음
       },
     };
 
@@ -126,7 +182,7 @@ const ManageReserv = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [startDate]);
 
   ManageReserv.defaultProps = {
     className: "layout",
@@ -323,6 +379,12 @@ const ManageReserv = () => {
 
   return (
     <div>
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+      />
+
+      {/* <button onClick={handleDate}>plusDate</button> */}
       <button onClick={onAddItem}>Add Item</button>
       <button onClick={handleSubmit}>Submit</button>
       <ResponsiveReactGridLayout
