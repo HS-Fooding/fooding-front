@@ -20,6 +20,7 @@ const Container = styled.div`
   height: auto;
   padding: 0px 50px;
   .react-datepicker__input-container {
+    margin-bottom: 30px;
     input {
       height: 30px;
       border-radius: 3px;
@@ -43,6 +44,43 @@ const MyDatePicker = styled(DatePicker)`
   border: none;
   display: flex;
   justify-content: center;
+`;
+
+const Button = styled.button`
+  border: none;
+  width: 100px;
+  height: 35px;
+  border-radius: 26px;
+  cursor: pointer;
+  background-color: ${(props) => props.theme.blackColor};
+  color: white;
+  margin-right: 8px;
+`;
+
+const TimeTable = styled.div`
+  width: 60px;
+  height: auto;
+  /* background: teal; */
+  border: 1px solid;
+  margin-top: 9px;
+
+  .eachTime {
+    padding: 10.5px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid;
+  }
+`;
+
+const LayoutWrapper = styled.div`
+  display: inline-block;
+  width: 100%;
+
+  .react-grid-layout {
+    background-color: inherit;
+    margin: 0px;
+  }
 `;
 
 const BLOCK_OF_TIME = 30;
@@ -117,6 +155,11 @@ const ManageReserv = () => {
 
   const [manageModal,setManageModal] = useState(false);
   
+  const [openTime, setOpenTime] = useState();
+  const [closeTime, setCloseTime] = useState();
+
+  const [timeTable, setTimeTable] = useState([]);
+
   let tomorrow = new Date();
 
   useEffect(() => {
@@ -177,6 +220,44 @@ const ManageReserv = () => {
 
     await axios(config)
       .then((response) => {
+        console.log("response.data:", response.data);
+        const tableInfo = response.data.tableInfo;
+        setOpenTime(tableInfo.open);
+        setCloseTime(tableInfo.close);
+
+        console.log("hour:", tableInfo.open.substring(0, 2));
+        console.log("minute:", tableInfo.open.substring(3, 5));
+
+        const openHour = tableInfo.open.substring(0, 2);
+        const openMinute = tableInfo.open.substring(3, 5);
+        const closeHour = tableInfo.close.substring(0, 2);
+        const closeMinute = tableInfo.close.substring(3, 5);
+        let totalOpenMinute = Number(openHour) * 60 + Number(openMinute);
+        const totalCloseMinute = Number(closeHour) * 60 + Number(closeMinute);
+
+        console.log("totalOpenMinute:", totalOpenMinute);
+        console.log("totalCloseMinute", totalCloseMinute);
+
+        let timeArr = [];
+
+        while (totalOpenMinute <= totalCloseMinute) {
+          const eachHour = Math.floor(totalOpenMinute / 60);
+          let eachMin = totalOpenMinute % 60;
+
+          if (eachMin == 0) {
+            eachMin = "00";
+          }
+          const eachHourMin = eachHour + ":" + eachMin;
+
+          timeArr.push(eachHourMin);
+
+          totalOpenMinute += 30;
+        }
+        console.log("timeArr:", timeArr);
+        setTimeTable(timeArr);
+
+        console.log("finalMin", totalOpenMinute);
+
         setTransformed(transformData(response.data));
         // console.log(transformData(response.data));
         setReservations(transformed.reservations);
@@ -373,14 +454,13 @@ const ManageReserv = () => {
       return (
         <div key={t} data-grid={el}>
           {/* <div className="text">{i + 1}</div> */}
-          <div>nickname : {el.nickname}</div>
-          <div>tableNum : {el.tableNum}</div>
+          <div>{el.nickname}</div>
+          <div>{el.tableNum}번 테이블</div>
           {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
-          <div>reservAt : {el.reservAt}</div>
-          <div>reservCount : {el.reservCount}</div>
-          <div>isCar : {el.isCar ? "yes" : "no"}</div>
-          <div>status : {el.status}</div>
-          <div>reservId : {el.reservId} </div>
+          <div>{el.reservAt}</div>
+          <div>{el.reservCount}명</div>
+          <div>{el.isCar ? "차 있음" : "차 없음"}</div>
+          <div>예약 번호 {el.reservId} </div>
           <span
             className="remove"
             style={removeStyle}
@@ -389,6 +469,25 @@ const ManageReserv = () => {
             x
           </span>
         </div>
+
+        // <div key={t} data-grid={el}>
+        // {/* <div className="text">{i + 1}</div> */}
+        // <div>nickname : {el.nickname}</div>
+        // <div>tableNum : {el.tableNum}</div>
+        // {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
+        // <div>reservAt : {el.reservAt}</div>
+        // <div>reservCount : {el.reservCount}</div>
+        // <div>isCar : {el.isCar ? "yes" : "no"}</div>
+        // <div>status : {el.status}</div>
+        // <div>reservId : {el.reservId} </div>
+        // <span
+        //   className="remove"
+        //   style={removeStyle}
+        //   onClick={onRemoveItem.bind(this, t)}
+        // >
+        //   x
+        // </span>
+        // </div>
       );
     });
   };
@@ -460,18 +559,35 @@ const ManageReserv = () => {
       />
 
       {/* <button onClick={handleDate}>plusDate</button> */}
-      <button onClick={onAddItem}>Add Item</button>
-      <button onClick={handleSubmit}>Submit</button>
-      <ResponsiveReactGridLayout
-        layout={layout}
-        onDragStop={onLayoutChange}
-        onResize={onLayoutChange}
-        onBreakpointChange={onBreakpointChange}
-        onRemoveItem={onRemoveItem}
-        {...ManageReserv.defaultProps}
+      <Button onClick={onAddItem}>예약 추가</Button>
+      <Button onClick={handleSubmit}>등록</Button>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "30px",
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+        }}
       >
-        {generateDOM()}
-      </ResponsiveReactGridLayout>
+        <TimeTable>
+          {timeTable.map((time) => {
+            return <div class="eachTime">{time}</div>;
+          })}
+        </TimeTable>
+
+        <LayoutWrapper>
+          <ResponsiveReactGridLayout
+            layout={layout}
+            onDragStop={onLayoutChange}
+            onResize={onLayoutChange}
+            onBreakpointChange={onBreakpointChange}
+            onRemoveItem={onRemoveItem}
+            {...ManageReserv.defaultProps}
+            style={{ width: "100%" }}
+          >
+            {generateDOM()}
+          </ResponsiveReactGridLayout>
+        </LayoutWrapper>
+      </div>
       <div>
         <div className="layoutJSON">
           Displayed as <code>[x, y, w, h]</code>
