@@ -87,14 +87,14 @@ const ManageReserv = () => {
             },
             params: {
                 // date: "2022-05-01",
-                date: "1997-06-05",
+                date: "2022-05-07",
             },
         };
 
         await axios(config)
             .then((response) => {
                 setTransformed(transformData(response.data));
-                // console.log(transformData(response.data));
+                 console.log(transformData(response.data));
                 setReservations(transformed.reservations);
 
                 data = transformData(response.data);
@@ -284,7 +284,7 @@ const ManageReserv = () => {
                         adminReservPostDTO: {
                             reservId: m.reservId,
                             tableNum: m.tableNum.toString(),
-                            reserveDate: "1997-06-05",
+                            reserveDate: "2022-05-07",
                             reserveTime: m.reservAt,
                             reserveNum: m.reservCount,
                             booker: {

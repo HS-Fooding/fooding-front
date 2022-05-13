@@ -110,8 +110,8 @@ const LoginMg = () => {
       .then(function (response) {
         console.log("responseresponse", response);
         localStorage.setItem("token", response.data.token.accessToken);
-        if (response.data.restaurant) {
-          localStorage.setItem("marketId", response.data.restaurant[0]);
+        if (response.data.restaurants[0]) {
+          localStorage.setItem("marketId", response.data.restaurants[0]);
         }
 
         navigate("/manager/register");
