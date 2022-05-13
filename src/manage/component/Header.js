@@ -104,7 +104,7 @@ const throttle = function (callback, waitTime) {
 };
 
 const Header = () => {
-  const reservationMatch = useMatch("/manager/reservation");
+  const reservationMatch = useMatch("/manager/manageReserv");
   const registerMatch = useMatch("/manager/register");
   const currentTableMatch = useMatch("/manager/currentTableState");
   const userDataMatch = useMatch("/manager/userData");

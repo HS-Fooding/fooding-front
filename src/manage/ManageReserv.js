@@ -8,15 +8,40 @@ import RGL, { WidthProvider, Responsive } from "react-grid-layout";
 import { m } from "framer-motion";
 import DatePicker from "react-datepicker"; // DatePicker 라는 컴포넌트도 가져오깅
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 맥이기
+import Header from "./component/Header";
+
+const Container = styled.div`
+  margin-top: 100px;
+  /* display: flex;
+  justify-content: center; */
+
+  /* width: 100%; */
+  height: auto;
+  padding: 0px 50px;
+  .react-datepicker__input-container {
+    input {
+      height: 30px;
+      border-radius: 3px;
+      /* border: 1px solid black; */
+      display: flex;
+      justify-content: center;
+    }
+
+    .react-datepicker__triangle {
+      right: 0px;
+    }
+  }
+`;
 
 const MyDatePicker = styled(DatePicker)`
-  width: 90%;
   height: 3rem;
   font-size: 1.6rem;
   font-weight: bold;
-  background-color: transparent;
-  color: white;
-  border: 1px solid;
+  /* background-color: transparent; */
+  /* color: white; */
+  border: none;
+  display: flex;
+  justify-content: center;
 `;
 
 const BLOCK_OF_TIME = 30;
@@ -378,8 +403,9 @@ const ManageReserv = () => {
   };
 
   return (
-    <div>
-      <DatePicker
+    <Container>
+      <Header />
+      <MyDatePicker
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
@@ -405,7 +431,7 @@ const ManageReserv = () => {
           <div className="columns">{stringifyLayout()}</div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
