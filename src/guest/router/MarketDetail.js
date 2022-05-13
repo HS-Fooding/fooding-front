@@ -338,7 +338,6 @@ const MarketDetail = () => {
   return (
     <Container>
       <Header back="/guest/restaurantList" title={""} />
-
       <MarketImgsBox>
         <MultipleSlider images={market?.images} />
       </MarketImgsBox>

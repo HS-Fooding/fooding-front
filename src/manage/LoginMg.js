@@ -110,7 +110,7 @@ const LoginMg = () => {
       .then(function (response) {
         console.log("responseresponse", response);
         localStorage.setItem("token", response.data.token.accessToken);
-        if (response.data.restaurants[0]) {
+        if (response.data.restaurants) {
           localStorage.setItem("marketId", response.data.restaurants[0]);
         }
 
