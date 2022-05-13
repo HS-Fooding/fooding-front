@@ -319,6 +319,11 @@ const InfoSpan = styled.span`
   margin-left: 10px;
   line-height:normal;
 `;
+const InfoDiv = styled.div`
+  margin-left:23px;
+  width:500px;
+  line-height:normal;
+`;
 const StyledSlider = styled(Slider)`
   height: 100%; //슬라이드 컨테이너 영역
 
@@ -629,11 +634,13 @@ function Register(floorCallback) {
             },
           })
           .then((res) => {
-            setFloorNum("setFloorNum", res.data.floors.length);
+            console.log("structure",res.data);
+            setFloorNum(res.data.floors.length);
             //false로 채우기
-            const savefloorNum = Array(floorNum);
+            const savefloorNum = Array(res.data.floors.length);
             savefloorNum.fill(false);
             savefloorNum[0] = true;
+            console.log("saveFloorNum",savefloorNum);
             setFloor(savefloorNum);
           })
           .catch((err) => {
@@ -813,7 +820,7 @@ function Register(floorCallback) {
   }, [floors]);
   const postData = () => {
     const marketId = localStorage.getItem("marketId");
-
+    console.log("매장 구조 보내기 전 floor : ",floors);
     const data = JSON.stringify({
       floors: floors,
     });
@@ -861,6 +868,12 @@ function Register(floorCallback) {
     :hover {
       cursor: pointer;
     }
+  `;
+  const timeContainerDiv = styled.div`
+    width:500px;
+    height:20px;
+    margin-left:10px;
+    background-color:red;
   `;
   const onChange1 = (current) => {
     console.log("onChange:", current);
@@ -961,11 +974,11 @@ function Register(floorCallback) {
                   <NameBox>
                     <p>상세설명</p>
                   </NameBox>
-                  <InputBox style={{"width":"72%"}}>
+                  <InputBox style={{"width":"72%","display":"flex","alignItems":"center"}}>
                     {marketInfo === null ? (
                       <textarea
                         {...register("detail")}
-                        style={{ fontFamily: "Roboto",marginLeft:"20px",width:"92%" }}
+                        style={{ fontFamily: "Roboto",width:"94%",marginLeft:"20px",height:"80%",marginTop:"4px" }}
                         placeholder="상세설명을 입력하세요"
                       />
                     ) : (
@@ -1037,9 +1050,9 @@ function Register(floorCallback) {
               <NameBox>
                 <p>주차 정보</p>
               </NameBox>
-              <InputBox style={{ width: "25%"}}>
-                {marketInfo === null ? (
-                  <>
+                {marketInfo === null ? ( <InputBox style={{ width: "25%"}}>
+             
+                  <div style={{"width":"200px","display":"flex"}}>
                     <label className="parkingLabel" htmlFor="can">
                       <input
                         {...register("parking", { required: true })}
@@ -1062,11 +1075,11 @@ function Register(floorCallback) {
                       />
                       <p>불가능</p>
                     </label>
-                  </>
-                ) : (
-                  <InfoSpan style={{"width":"500px"}}>{marketInfo?.parkingInfo}</InfoSpan>
-                )}
+                  </div>               
               </InputBox>
+               ) : (
+                <InfoDiv>{marketInfo?.parkingInfo}</InfoDiv>
+              )}
               {marketInfo == null ? (
                 <div>
                   <input
@@ -1291,10 +1304,12 @@ function Register(floorCallback) {
                       <p>까지</p>
                       </div>
                   ) : (
-                    <InfoSpan>
+                    <div style={{ "width":"400px",
+                      "height":"20px",
+                      "marginLeft":"20px"}}>
                       {marketInfo?.weekdaysWorkHour.open.slice(0, 5)} ~{" "}
                       {marketInfo?.weekdaysWorkHour.close.slice(0, 5)}{" "}
-                    </InfoSpan>
+                    </div>
                   )}
                   </div>
                 
@@ -1319,11 +1334,13 @@ function Register(floorCallback) {
                       <p>까지</p>
                     </div>
                   ) : (
-                    <InfoSpan>
+                    <div style={{ "width":"400px",
+                    "height":"20px",
+                    "marginLeft":"20px"}}>
                       {" "}
                       {marketInfo?.weekendsWorkHour.open.slice(0, 5)} ~{" "}
                       {marketInfo?.weekendsWorkHour.close.slice(0, 5)}{" "}
-                    </InfoSpan>
+                    </div>
                   )}
                 </div>
               </NumContainer>

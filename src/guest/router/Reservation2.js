@@ -18,6 +18,9 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   margin-bottom: 30px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 `;
 const ButtonContainer = styled.div`
   width: 400px;
@@ -365,7 +368,7 @@ const Reservation2 = () => {
       </ButtonContainer>
       <MapContainer>
         <Stage
-          style={{ marginTop: "10px" }}
+          style={{ marginTop: "10px",display:"flex",justifyContent:"center" }}
           width={380}
           height={250}
           //   fill={"yellow"}
