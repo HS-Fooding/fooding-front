@@ -311,18 +311,21 @@ const ManageReserv = () => {
     tableNum,
     reservCount,
     isCar,
-    phoneNum
+    phoneNum,
+    modal,
+    submit
   )=>{
-    setManageModal(false);
-    console.log("nickname,name,reservAt,tableNum,reservCount,isCar,phoneNum",
-    nickname,
-      name,
-      reservAt,
-      tableNum,
-      reservCount,
-      isCar,
-      phoneNum);
-  const diff =
+    modal ? setManageModal(true) : setManageModal(false); 
+  //  if(nickname&&
+  //   name&&
+  //   reservAt&&
+  //   tableNum&&
+  //   reservCount&&
+  //   isCar&&
+  //   phoneNum&&
+ 
+    if(submit){
+    const diff =
    (parseDate(transformed.date, reservAt) -
      parseDate(transformed.date, transformed.open)) /
    (60 * 1000 * BLOCK_OF_TIME);
@@ -348,6 +351,7 @@ const ManageReserv = () => {
     setNewCounter(newCounter + 1);
 
     setLayout([...layout, tmp]);
+   }
   }
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
@@ -378,45 +382,7 @@ const ManageReserv = () => {
   };
 
   const onAddItem = () => {
-    // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
-    //입력하고 확인 누르면 극 ㄱㅏㅄ들을 가져옴...??
     setManageModal(true);
-    // console.log("transformed", transformed);
-    // const nickname = prompt("nickname");
-    // const name = prompt("name");
-    // const reservAt = prompt("reservAt");
-    // const tableNum = prompt("tableNum");
-    // const reservCount = prompt("reservCount");
-    // const isCar = prompt("isCar");
-    // const phoneNum = prompt("phoneNum");
-//입력값을 쓰고 다시 가져와서 컴포넌트로 전송??
-    // const diff =
-    //   (parseDate(transformed.date, reservAt) -
-    //     parseDate(transformed.date, transformed.open)) /
-    //   (60 * 1000 * BLOCK_OF_TIME);
-
-    // const tmp = {
-    //   i: "n" + newCounter,
-    //   // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-    //   x: parseInt(tableNum - 1),
-    //   y: diff,
-    //   w: 1,
-    //   h: transformed.maxUsageTime / 30,
-    //   //
-    //   nickname,
-    //   name,
-    //   reservAt,
-    //   tableNum,
-    //   reservCount,
-    //   isCar: isCar === "true" ? true : false,
-    //   phoneNum,
-    //   // reservId: uuidv4(),
-    //   reservId: null,
-    //   status: "NEW",
-    // };
-    // setNewCounter(newCounter + 1);
-
-    //  setLayout([...layout, tmp]);
   };
 
   // We're using the cols coming back from this to calculate where to add new items.

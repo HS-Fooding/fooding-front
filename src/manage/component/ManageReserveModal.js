@@ -7,6 +7,7 @@ import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import "@fortawesome/fontawesome-free/js/all.js";
+import NumericInput from "react-numeric-input";
 
 const fadeIn = keyframes`
   0% {
@@ -193,7 +194,12 @@ const ManageReservModal = ({ parentCallback}) => {
   const [reservCount,setReservCount]=useState();
   const [isCar,setIsCar] = useState();
   const [phoneNum,setPhoneNum]= useState();
- 
+
+  const [availableHour,setAvailableHour] = useState();
+  const [availableMinute,setAvailableMinute] = useState();
+
+  const onChangeAvailableHour = (e)=> setAvailableHour(e);
+  const onChangeAvailableMinute = (e)=> setAvailableMinute(e);
   const onChange = (event) => {
     const {
       target: { value, className },
@@ -236,17 +242,19 @@ const ManageReservModal = ({ parentCallback}) => {
   const handleEditNSubmit = async () => {         
         setModalTrigger(false);
         const modal = false;
-        const submit = false;
+        const submit = true;
         const edit = true;
-     
+        let time = `${availableHour}:${availableMinute}`;
         parentCallback(
             nickname,
             name,
-            reservAt,
+            time,
             tableNum,
             reservCount,
             isCar,
-            phoneNum
+            phoneNum,
+            modal,
+            submit
         );    
   };
 
@@ -280,7 +288,8 @@ const ManageReservModal = ({ parentCallback}) => {
                 tableNum,
                 reservCount,
                 isCar,
-                phoneNum
+                phoneNum,
+                modal
               );
             }}
           >
@@ -311,13 +320,32 @@ const ManageReservModal = ({ parentCallback}) => {
             </InputBox>
             <InputBox>
               <div>예약 시간</div>
-              <input
-                type="text"
-                className="reservAt"
-                value={reservAt}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
+            
+               <NumericInput
+                        style={{
+                          input: {
+                            height: "23px",
+                          },
+                        }}
+                        min={0}
+                        max={24}
+                        step={1}
+                        value={availableHour}
+                        onChange={onChangeAvailableHour}
+                      />
+                      <p>시</p>
+                      <NumericInput
+                        style={{
+                          input: {
+                            height: "23px",
+                          },
+                        }}
+                        min={0}
+                        max={30}
+                        step={30}
+                        value={availableMinute}
+                        onChange={onChangeAvailableMinute}
+                      /><p>분</p>
             </InputBox>
 
             <InputBox>
@@ -331,7 +359,7 @@ const ManageReservModal = ({ parentCallback}) => {
               />
             </InputBox>
             <InputBox>
-              <div>예약 번호</div>
+              <div>예약 명수</div>
               <input
                 type="text"
                 className="reservCount"
@@ -380,6 +408,8 @@ const ManageReservModal = ({ parentCallback}) => {
                 reservCount,
                 isCar,
                 phoneNum,
+                modal,
+                submit
                 )
             }}
           >
