@@ -324,7 +324,8 @@ const ReviewDetail = () => {
         <ReviewContent>
           <div className="userName">{review.nickName}</div>
           <div className="dateStar">
-            <span> {review.createDate?.replaceAll("-", ".").slice(0, 10)}</span>
+            
+            <span> {review.createdDate?.replaceAll("-", ".").slice(0, 10)}</span>
             <span>★</span>
             <span>{review.star}</span>
           </div>
