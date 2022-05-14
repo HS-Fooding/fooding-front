@@ -32,8 +32,7 @@ const Container = styled.div`
     .react-datepicker__triangle {
       right: 0px;
     }
-    
-  
+  }
 `;
 
 const MyDatePicker = styled(DatePicker)`
@@ -96,7 +95,7 @@ const LayoutWrapper = styled.div`
   .react-grid-item {
     background: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -344,72 +343,48 @@ const ManageReserv = () => {
     tableNum,
     reservCount,
     isCar,
-<<<<<<< HEAD
-    phoneNum
-  ) => {
-    setManageModal(false);
-    console.log(
-      "nickname,name,reservAt,tableNum,reservCount,isCar,phoneNum",
-      nickname,
-      name,
-      reservAt,
-      tableNum,
-      reservCount,
-      isCar,
-      phoneNum
-    );
-    const diff =
-      (parseDate(transformed.date, reservAt) -
-        parseDate(transformed.date, transformed.open)) /
-      (60 * 1000 * BLOCK_OF_TIME);
-=======
     phoneNum,
     modal,
     submit
-  )=>{
-    modal ? setManageModal(true) : setManageModal(false); 
-  //  if(nickname&&
-  //   name&&
-  //   reservAt&&
-  //   tableNum&&
-  //   reservCount&&
-  //   isCar&&
-  //   phoneNum&&
- 
-    if(submit){
-    const diff =
-   (parseDate(transformed.date, reservAt) -
-     parseDate(transformed.date, transformed.open)) /
-   (60 * 1000 * BLOCK_OF_TIME);
->>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
-    const tmp = {
-      i: "n" + newCounter,
-      // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-      x: parseInt(tableNum - 1),
-      y: diff,
-      w: 1,
-      h: transformed.maxUsageTime / 30,
-      //
-      nickname,
-      name,
-      reservAt,
-      tableNum,
-      reservCount,
-      isCar: isCar === "true" ? true : false,
-      phoneNum,
-      // reservId: uuidv4(),
-      reservId: null,
-      status: "NEW",
-    };
-    setNewCounter(newCounter + 1);
+  ) => {
+    modal ? setManageModal(true) : setManageModal(false);
+    //  if(nickname&&
+    //   name&&
+    //   reservAt&&
+    //   tableNum&&
+    //   reservCount&&
+    //   isCar&&
+    //   phoneNum&&
 
-    setLayout([...layout, tmp]);
-<<<<<<< HEAD
+    if (submit) {
+      const diff =
+        (parseDate(transformed.date, reservAt) -
+          parseDate(transformed.date, transformed.open)) /
+        (60 * 1000 * BLOCK_OF_TIME);
+      const tmp = {
+        i: "n" + newCounter,
+        // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+        x: parseInt(tableNum - 1),
+        y: diff,
+        w: 1,
+        h: transformed.maxUsageTime / 30,
+        //
+        nickname,
+        name,
+        reservAt,
+        tableNum,
+        reservCount,
+        isCar: isCar === "true" ? true : false,
+        phoneNum,
+        // reservId: uuidv4(),
+        reservId: null,
+        status: "NEW",
+      };
+      setNewCounter(newCounter + 1);
+
+      setLayout([...layout, tmp]);
+    }
   };
-=======
-   }
-  }
->>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
     const open = transformed.open;
@@ -440,45 +415,6 @@ const ManageReserv = () => {
 
   const onAddItem = () => {
     setManageModal(true);
-<<<<<<< HEAD
-    // console.log("transformed", transformed);
-    // const nickname = prompt("nickname");
-    // const name = prompt("name");
-    // const reservAt = prompt("reservAt");
-    // const tableNum = prompt("tableNum");
-    // const reservCount = prompt("reservCount");
-    // const isCar = prompt("isCar");
-    // const phoneNum = prompt("phoneNum");
-    //입력값을 쓰고 다시 가져와서 컴포넌트로 전송??
-    // const diff =
-    //   (parseDate(transformed.date, reservAt) -
-    //     parseDate(transformed.date, transformed.open)) /
-    //   (60 * 1000 * BLOCK_OF_TIME);
-
-    // const tmp = {
-    //   i: "n" + newCounter,
-    //   // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-    //   x: parseInt(tableNum - 1),
-    //   y: diff,
-    //   w: 1,
-    //   h: transformed.maxUsageTime / 30,
-    //   //
-    //   nickname,
-    //   name,
-    //   reservAt,
-    //   tableNum,
-    //   reservCount,
-    //   isCar: isCar === "true" ? true : false,
-    //   phoneNum,
-    //   // reservId: uuidv4(),
-    //   reservId: null,
-    //   status: "NEW",
-    // };
-    // setNewCounter(newCounter + 1);
-
-    //  setLayout([...layout, tmp]);
-=======
->>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
   };
 
   // We're using the cols coming back from this to calculate where to add new items.
@@ -507,8 +443,8 @@ const ManageReserv = () => {
   const generateDOM = () => {
     const removeStyle = {
       position: "absolute",
-      right: "7px",
-      top: "5px",
+      right: "2px",
+      top: 0,
       cursor: "pointer",
     };
     return _.map(layout, (el, i) => {
@@ -577,7 +513,7 @@ const ManageReserv = () => {
               booker: {
                 member_id: 0,
                 phoneNum: m.status === "NEW" ? m.phoneNum : "",
-                name: m.name,
+                name: "",
                 nickName: m.nickname,
               },
               reservId: m.reservId,
@@ -585,7 +521,7 @@ const ManageReserv = () => {
               reserveDate: "2022-05-06",
               reserveTime: m.reservAt,
               reserveNum: m.reservCount,
-             
+
               car: m.isCar,
             },
           };
@@ -612,7 +548,6 @@ const ManageReserv = () => {
         console.log(error.message);
       });
   };
-
   return (
     <Container>
       <Header />
