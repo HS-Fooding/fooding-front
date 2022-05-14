@@ -290,7 +290,7 @@ const NumContainer = styled.div`
   }
 
   .InputNTitleContainer {
-    width: 100%;
+    width: 103%;
     height: 40px;
     &:nth-child(1),
     &:nth-child(3) {
