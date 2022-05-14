@@ -32,7 +32,8 @@ const Container = styled.div`
     .react-datepicker__triangle {
       right: 0px;
     }
-  }
+    
+  
 `;
 
 const MyDatePicker = styled(DatePicker)`
@@ -61,16 +62,21 @@ const TimeTable = styled.div`
   width: 60px;
   height: auto;
   /* background: teal; */
-  border: 1px solid;
-  margin-top: 9px;
+  border: 1px solid #424242;
+  margin-top: 10px;
   background: white;
+  border-left: 3px solid #424242;
 
   .eachTime {
-    padding: 10.5px 0px;
+    padding: 10.7px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #424242;
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
@@ -85,6 +91,29 @@ const LayoutWrapper = styled.div`
     background-color: inherit;
     margin: 0px;
     width: 100%;
+  }
+
+  .react-grid-item {
+    background: white;
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    padding: 5px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    color: #495057;
+    div {
+      margin: 3px;
+    }
+
+    div:first-child {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
   }
 `;
 
@@ -158,8 +187,8 @@ const ManageReserv = () => {
   const [date, setDate] = React.useState(dateDetail.getDate());
   const [startDate, setStartDate] = useState(new Date());
 
-  const [manageModal,setManageModal] = useState(false);
-  
+  const [manageModal, setManageModal] = useState(false);
+
   const [openTime, setOpenTime] = useState();
   const [closeTime, setCloseTime] = useState();
 
@@ -316,20 +345,22 @@ const ManageReserv = () => {
     reservCount,
     isCar,
     phoneNum
-  )=>{
+  ) => {
     setManageModal(false);
-    console.log("nickname,name,reservAt,tableNum,reservCount,isCar,phoneNum",
-    nickname,
+    console.log(
+      "nickname,name,reservAt,tableNum,reservCount,isCar,phoneNum",
+      nickname,
       name,
       reservAt,
       tableNum,
       reservCount,
       isCar,
-      phoneNum);
-  const diff =
-   (parseDate(transformed.date, reservAt) -
-     parseDate(transformed.date, transformed.open)) /
-   (60 * 1000 * BLOCK_OF_TIME);
+      phoneNum
+    );
+    const diff =
+      (parseDate(transformed.date, reservAt) -
+        parseDate(transformed.date, transformed.open)) /
+      (60 * 1000 * BLOCK_OF_TIME);
     const tmp = {
       i: "n" + newCounter,
       // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
@@ -352,7 +383,7 @@ const ManageReserv = () => {
     setNewCounter(newCounter + 1);
 
     setLayout([...layout, tmp]);
-  }
+  };
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
     const open = transformed.open;
@@ -393,7 +424,7 @@ const ManageReserv = () => {
     // const reservCount = prompt("reservCount");
     // const isCar = prompt("isCar");
     // const phoneNum = prompt("phoneNum");
-//입력값을 쓰고 다시 가져와서 컴포넌트로 전송??
+    //입력값을 쓰고 다시 가져와서 컴포넌트로 전송??
     // const diff =
     //   (parseDate(transformed.date, reservAt) -
     //     parseDate(transformed.date, transformed.open)) /
@@ -449,8 +480,8 @@ const ManageReserv = () => {
   const generateDOM = () => {
     const removeStyle = {
       position: "absolute",
-      right: "2px",
-      top: 0,
+      right: "7px",
+      top: "5px",
       cursor: "pointer",
     };
     return _.map(layout, (el, i) => {
@@ -458,8 +489,8 @@ const ManageReserv = () => {
       return (
         <div key={t} data-grid={el}>
           {/* <div className="text">{i + 1}</div> */}
-          <div>{el.nickname}</div>
           <div>{el.tableNum}번 테이블</div>
+          <div>{el.nickname}</div>
           {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
           <div>{el.reservAt}</div>
           <div>{el.reservCount}명</div>
@@ -577,7 +608,7 @@ const ManageReserv = () => {
         style={{
           display: "flex",
 
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#f1f3f5",
         }}
       >
         <TimeTable>
@@ -609,12 +640,8 @@ const ManageReserv = () => {
         </div>
       </div>
       {manageModal ? (
-        <ManageReserveModal 
-          parentCallback={handleCallback}
-        />
-      ) : 
-      null
-      }
+        <ManageReserveModal parentCallback={handleCallback} />
+      ) : null}
     </Container>
   );
 };
