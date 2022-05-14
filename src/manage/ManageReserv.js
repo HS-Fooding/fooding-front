@@ -63,6 +63,7 @@ const TimeTable = styled.div`
   /* background: teal; */
   border: 1px solid;
   margin-top: 9px;
+  background: white;
 
   .eachTime {
     padding: 10.5px 0px;
@@ -77,9 +78,13 @@ const LayoutWrapper = styled.div`
   display: inline-block;
   width: 100%;
 
+  /* overflow-x: auto;
+  white-space: nowrap; */
+
   .react-grid-layout {
     background-color: inherit;
     margin: 0px;
+    width: 100%;
   }
 `;
 
@@ -159,6 +164,7 @@ const ManageReserv = () => {
   const [closeTime, setCloseTime] = useState();
 
   const [timeTable, setTimeTable] = useState([]);
+  const [tableNums, setTableNums] = useState();
 
   let tomorrow = new Date();
 
@@ -222,11 +228,9 @@ const ManageReserv = () => {
       .then((response) => {
         console.log("response.data:", response.data);
         const tableInfo = response.data.tableInfo;
+        setTableNums(response.data.tableInfo.tableNums);
         setOpenTime(tableInfo.open);
         setCloseTime(tableInfo.close);
-
-        console.log("hour:", tableInfo.open.substring(0, 2));
-        console.log("minute:", tableInfo.open.substring(3, 5));
 
         const openHour = tableInfo.open.substring(0, 2);
         const openMinute = tableInfo.open.substring(3, 5);
@@ -529,8 +533,16 @@ const ManageReserv = () => {
       <Button onClick={handleSubmit}>등록</Button>
       <div
         style={{
-          display: "flex",
+          width: "100%",
+          height: "40px",
+          background: "black",
           marginTop: "30px",
+        }}
+      ></div>
+      <div
+        style={{
+          display: "flex",
+
           backgroundColor: "rgba(0, 0, 0, 0.1)",
         }}
       >
@@ -548,7 +560,7 @@ const ManageReserv = () => {
             onBreakpointChange={onBreakpointChange}
             onRemoveItem={onRemoveItem}
             {...ManageReserv.defaultProps}
-            style={{ width: "100%" }}
+            // style={{ width: "100%" }}
           >
             {generateDOM()}
           </ResponsiveReactGridLayout>
