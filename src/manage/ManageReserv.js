@@ -9,6 +9,7 @@ import { m } from "framer-motion";
 import DatePicker from "react-datepicker"; // DatePicker 라는 컴포넌트도 가져오깅
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 맥이기
 import Header from "./component/Header";
+import ManageReserveModal from "./component/ManageReserveModal";
 
 const Container = styled.div`
   margin-top: 100px;
@@ -90,12 +91,12 @@ const LayoutWrapper = styled.div`
 const BLOCK_OF_TIME = 30;
 
 const parseDate = (date, time) => {
-  const _date = date.split("-");
+  const _date = date?.split("-");
   var _time;
   if (typeof time === "object") {
     _time = [time.getHours(), time.getMinutes()];
   } else {
-    _time = time.split(":");
+    _time = time?.split(":");
   }
 
   // const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
@@ -157,6 +158,8 @@ const ManageReserv = () => {
   const [date, setDate] = React.useState(dateDetail.getDate());
   const [startDate, setStartDate] = useState(new Date());
 
+  const [manageModal,setManageModal] = useState(false);
+  
   const [openTime, setOpenTime] = useState();
   const [closeTime, setCloseTime] = useState();
 
@@ -305,7 +308,51 @@ const ManageReserv = () => {
     // This turns off rearrangement so items will not be pushed arround.
     preventCollision: true,
   };
+  const handleCallback = (
+    nickname,
+    name,
+    reservAt,
+    tableNum,
+    reservCount,
+    isCar,
+    phoneNum
+  )=>{
+    setManageModal(false);
+    console.log("nickname,name,reservAt,tableNum,reservCount,isCar,phoneNum",
+    nickname,
+      name,
+      reservAt,
+      tableNum,
+      reservCount,
+      isCar,
+      phoneNum);
+  const diff =
+   (parseDate(transformed.date, reservAt) -
+     parseDate(transformed.date, transformed.open)) /
+   (60 * 1000 * BLOCK_OF_TIME);
+    const tmp = {
+      i: "n" + newCounter,
+      // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+      x: parseInt(tableNum - 1),
+      y: diff,
+      w: 1,
+      h: transformed.maxUsageTime / 30,
+      //
+      nickname,
+      name,
+      reservAt,
+      tableNum,
+      reservCount,
+      isCar: isCar === "true" ? true : false,
+      phoneNum,
+      // reservId: uuidv4(),
+      reservId: null,
+      status: "NEW",
+    };
+    setNewCounter(newCounter + 1);
 
+    setLayout([...layout, tmp]);
+  }
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
     const open = transformed.open;
@@ -336,42 +383,44 @@ const ManageReserv = () => {
 
   const onAddItem = () => {
     // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
-    console.log("transformed", transformed);
-    const nickname = prompt("nickname");
-    const name = prompt("name");
-    const reservAt = prompt("reservAt");
-    const tableNum = prompt("tableNum");
-    const reservCount = prompt("reservCount");
-    const isCar = prompt("isCar");
-    const phoneNum = prompt("phoneNum");
+    //입력하고 확인 누르면 극 ㄱㅏㅄ들을 가져옴...??
+    setManageModal(true);
+    // console.log("transformed", transformed);
+    // const nickname = prompt("nickname");
+    // const name = prompt("name");
+    // const reservAt = prompt("reservAt");
+    // const tableNum = prompt("tableNum");
+    // const reservCount = prompt("reservCount");
+    // const isCar = prompt("isCar");
+    // const phoneNum = prompt("phoneNum");
+//입력값을 쓰고 다시 가져와서 컴포넌트로 전송??
+    // const diff =
+    //   (parseDate(transformed.date, reservAt) -
+    //     parseDate(transformed.date, transformed.open)) /
+    //   (60 * 1000 * BLOCK_OF_TIME);
 
-    const diff =
-      (parseDate(transformed.date, reservAt) -
-        parseDate(transformed.date, transformed.open)) /
-      (60 * 1000 * BLOCK_OF_TIME);
+    // const tmp = {
+    //   i: "n" + newCounter,
+    //   // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+    //   x: parseInt(tableNum - 1),
+    //   y: diff,
+    //   w: 1,
+    //   h: transformed.maxUsageTime / 30,
+    //   //
+    //   nickname,
+    //   name,
+    //   reservAt,
+    //   tableNum,
+    //   reservCount,
+    //   isCar: isCar === "true" ? true : false,
+    //   phoneNum,
+    //   // reservId: uuidv4(),
+    //   reservId: null,
+    //   status: "NEW",
+    // };
+    // setNewCounter(newCounter + 1);
 
-    const tmp = {
-      i: "n" + newCounter,
-      // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-      x: parseInt(tableNum - 1),
-      y: diff,
-      w: 1,
-      h: transformed.maxUsageTime / 30,
-      //
-      nickname,
-      name,
-      reservAt,
-      tableNum,
-      reservCount,
-      isCar: isCar === "true" ? true : false,
-      phoneNum,
-      // reservId: uuidv4(),
-      reservId: null,
-      status: "NEW",
-    };
-    setNewCounter(newCounter + 1);
-
-    setLayout([...layout, tmp]);
+    //  setLayout([...layout, tmp]);
   };
 
   // We're using the cols coming back from this to calculate where to add new items.
@@ -559,6 +608,13 @@ const ManageReserv = () => {
           <div className="columns">{stringifyLayout()}</div>
         </div>
       </div>
+      {manageModal ? (
+        <ManageReserveModal 
+          parentCallback={handleCallback}
+        />
+      ) : 
+      null
+      }
     </Container>
   );
 };
