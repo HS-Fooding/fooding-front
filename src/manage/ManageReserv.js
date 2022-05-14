@@ -344,6 +344,7 @@ const ManageReserv = () => {
     tableNum,
     reservCount,
     isCar,
+<<<<<<< HEAD
     phoneNum
   ) => {
     setManageModal(false);
@@ -361,6 +362,26 @@ const ManageReserv = () => {
       (parseDate(transformed.date, reservAt) -
         parseDate(transformed.date, transformed.open)) /
       (60 * 1000 * BLOCK_OF_TIME);
+=======
+    phoneNum,
+    modal,
+    submit
+  )=>{
+    modal ? setManageModal(true) : setManageModal(false); 
+  //  if(nickname&&
+  //   name&&
+  //   reservAt&&
+  //   tableNum&&
+  //   reservCount&&
+  //   isCar&&
+  //   phoneNum&&
+ 
+    if(submit){
+    const diff =
+   (parseDate(transformed.date, reservAt) -
+     parseDate(transformed.date, transformed.open)) /
+   (60 * 1000 * BLOCK_OF_TIME);
+>>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
     const tmp = {
       i: "n" + newCounter,
       // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
@@ -383,7 +404,12 @@ const ManageReserv = () => {
     setNewCounter(newCounter + 1);
 
     setLayout([...layout, tmp]);
+<<<<<<< HEAD
   };
+=======
+   }
+  }
+>>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
     const open = transformed.open;
@@ -413,9 +439,8 @@ const ManageReserv = () => {
   };
 
   const onAddItem = () => {
-    // TODO : 추가적으로 모달창 띄워서 값들을 입력 받아야 함
-    //입력하고 확인 누르면 극 ㄱㅏㅄ들을 가져옴...??
     setManageModal(true);
+<<<<<<< HEAD
     // console.log("transformed", transformed);
     // const nickname = prompt("nickname");
     // const name = prompt("name");
@@ -452,6 +477,8 @@ const ManageReserv = () => {
     // setNewCounter(newCounter + 1);
 
     //  setLayout([...layout, tmp]);
+=======
+>>>>>>> bce8472b13cfb27ee8a5f6df283359a11bbe5cc5
   };
 
   // We're using the cols coming back from this to calculate where to add new items.

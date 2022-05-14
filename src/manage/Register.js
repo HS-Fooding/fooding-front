@@ -1122,6 +1122,7 @@ function Register(floorCallback) {
                         min={0}
                         max={4}
                         step={1}
+                        value={availableHour}
                         onChange={onChangeAvailableHour}
                       />
                       <p>시간</p>
@@ -1144,7 +1145,7 @@ function Register(floorCallback) {
                           },
                         }}
                         min={0}
-                        max={50}
+                        max={30}
                         step={30}
                         value={availableMinute}
                         onChange={onChangeAvailableMinute}
@@ -1179,7 +1180,7 @@ function Register(floorCallback) {
                       <option value="KOREAN" selected>
                         한식
                       </option>
-                      <option value="JAPAN">일식</option>
+                      <option value="JAPANESE">일식</option>
                       <option value="CHINESE">중식</option>
                       <option value="WESTERN">양식</option>
                       <option value="TAIWAN">태국</option>
