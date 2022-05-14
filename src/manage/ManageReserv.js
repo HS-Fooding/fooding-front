@@ -33,6 +33,7 @@ const Container = styled.div`
       right: 0px;
     }
   }
+  
 `;
 
 const MyDatePicker = styled(DatePicker)`
@@ -61,16 +62,21 @@ const TimeTable = styled.div`
   width: 60px;
   height: auto;
   /* background: teal; */
-  border: 1px solid;
-  margin-top: 9px;
+  border: 1px solid #424242;
+  margin-top: 10px;
   background: white;
+  border-left: 3px solid #424242;
 
   .eachTime {
-    padding: 10.5px 0px;
+    padding: 10.7px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #424242;
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
@@ -85,6 +91,29 @@ const LayoutWrapper = styled.div`
     background-color: inherit;
     margin: 0px;
     width: 100%;
+  }
+
+  .react-grid-item {
+    background: white;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    padding: 5px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    color: #495057;
+    div {
+      margin: 3px;
+    }
+
+    div:first-child {
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
   }
 `;
 
@@ -423,22 +452,22 @@ const ManageReserv = () => {
       const t = el.i;
       return (
         <div key={t} data-grid={el}>
-          {/* <div className="text">{i + 1}</div> */}
-          <div>{el.nickname}</div>
-          <div>{el.tableNum}번 테이블</div>
-          {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
-          <div>{el.reservAt}</div>
-          <div>{el.reservCount}명</div>
-          <div>{el.isCar ? "차 있음" : "차 없음"}</div>
-          <div>예약 번호 {el.reservId} </div>
-          <span
-            className="remove"
-            style={removeStyle}
-            onClick={onRemoveItem.bind(this, t)}
-          >
-            x
-          </span>
-        </div>
+        {/* <div className="text">{i + 1}</div> */}
+        <div>{el.tableNum}번 테이블</div>
+        <div>{el.nickname}</div>
+        {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
+        <div>{el.reservAt}</div>
+        <div>{el.reservCount}명</div>
+        <div>{el.isCar ? "차 있음" : "차 없음"}</div>
+        <div>예약 번호 {el.reservId} </div>
+        <span
+          className="remove"
+          style={removeStyle}
+          onClick={onRemoveItem.bind(this, t)}
+        >
+          x
+        </span>
+      </div>
 
         // <div key={t} data-grid={el}>
         // {/* <div className="text">{i + 1}</div> */}
@@ -485,7 +514,7 @@ const ManageReserv = () => {
               booker: {
                 member_id: 0,
                 phoneNum: m.status === "NEW" ? m.phoneNum : "",
-                name: m.name,
+                name: "",
                 nickName: m.nickname,
               },
               reservId: m.reservId,
@@ -520,8 +549,7 @@ const ManageReserv = () => {
         console.log(error.message);
       });
   };
-
-  return (
+ return (
     <Container>
       <Header />
       <MyDatePicker
@@ -544,7 +572,7 @@ const ManageReserv = () => {
         style={{
           display: "flex",
 
-          backgroundColor: "rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#f1f3f5",
         }}
       >
         <TimeTable>
@@ -576,12 +604,8 @@ const ManageReserv = () => {
         </div>
       </div>
       {manageModal ? (
-        <ManageReserveModal 
-          parentCallback={handleCallback}
-        />
-      ) : 
-      null
-      }
+        <ManageReserveModal parentCallback={handleCallback} />
+      ) : null}
     </Container>
   );
 };
