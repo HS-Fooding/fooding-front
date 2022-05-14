@@ -574,17 +574,18 @@ const ManageReserv = () => {
           return {
             flag: m.status,
             adminReservPostDTO: {
-              reservId: m.reservId,
-              tableNum: m.tableNum.toString(),
-              reserveDate: "1997-06-05",
-              reserveTime: m.reservAt,
-              reserveNum: m.reservCount,
               booker: {
                 member_id: 0,
                 phoneNum: m.status === "NEW" ? m.phoneNum : "",
-                name: "",
+                name: m.name,
                 nickName: m.nickname,
               },
+              reservId: m.reservId,
+              tableNum: m.tableNum.toString(),
+              reserveDate: "2022-05-06",
+              reserveTime: m.reservAt,
+              reserveNum: m.reservCount,
+             
               car: m.isCar,
             },
           };

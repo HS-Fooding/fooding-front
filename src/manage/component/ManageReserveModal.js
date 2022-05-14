@@ -118,9 +118,20 @@ const InputBox = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 20px;
-
+  align-items: center;
+  
+  .tableNum, .reservCount{
+    width:50px;
+  }
+  .isCar{
+    height:20px;
+    width:30px;
+  }
+  .phoneNum{
+    width:140px;
+  }
   input {
-    width: 140px;
+    width: 100px;
     height: 30px;
     padding: 5px;
     border: 1px solid rgba(0, 0, 0, 0.3);
@@ -224,6 +235,7 @@ const ManageReservModal = ({ parentCallback}) => {
         setReservCount(value);
     }
     else if (className === "isCar") {
+      console.log("isCarisCar",value);
         setIsCar(value);
     }
     else if (className === "phoneNum") {
@@ -239,12 +251,13 @@ const ManageReservModal = ({ parentCallback}) => {
     if (code === "Enter") event.preventDefault();
   };
 
-  const handleEditNSubmit = async () => {         
-        setModalTrigger(false);
+  const handleEditNSubmit = async () => {      
+      let time = `${availableHour}:${availableMinute}`;    
+        if(nickname&&name&&time&&tableNum&&reservCount&&isCar){
+         setModalTrigger(false);
         const modal = false;
         const submit = true;
-        const edit = true;
-        let time = `${availableHour}:${availableMinute}`;
+        const edit = true;    
         parentCallback(
             nickname,
             name,
@@ -256,8 +269,8 @@ const ManageReservModal = ({ parentCallback}) => {
             modal,
             submit
         );    
+        }
   };
-
   
   return (
     <>
@@ -324,7 +337,8 @@ const ManageReservModal = ({ parentCallback}) => {
                <NumericInput
                         style={{
                           input: {
-                            height: "23px",
+                            height: "30px",
+                            width:"60px",
                           },
                         }}
                         min={0}
@@ -333,11 +347,12 @@ const ManageReservModal = ({ parentCallback}) => {
                         value={availableHour}
                         onChange={onChangeAvailableHour}
                       />
-                      <p>시</p>
+                      <hr/><p>시</p><hr />
                       <NumericInput
                         style={{
                           input: {
-                            height: "23px",
+                            height: "30px",
+                            width:"60px",
                           },
                         }}
                         min={0}
@@ -345,13 +360,13 @@ const ManageReservModal = ({ parentCallback}) => {
                         step={30}
                         value={availableMinute}
                         onChange={onChangeAvailableMinute}
-                      /><p>분</p>
+                      /><hr/><p>분</p>
             </InputBox>
 
             <InputBox>
               <div>테이블 번호</div>
               <input
-                type="text"
+                type="number"
                 className="tableNum"
                 value={tableNum}
                 onChange={onChange}
@@ -361,7 +376,7 @@ const ManageReservModal = ({ parentCallback}) => {
             <InputBox>
               <div>예약 명수</div>
               <input
-                type="text"
+                type="number"
                 className="reservCount"
                 value={reservCount}
                 onChange={onChange}
@@ -370,13 +385,24 @@ const ManageReservModal = ({ parentCallback}) => {
             </InputBox>
             <InputBox>
               <div>차량 여부</div>
+             
               <input
-                type="text"
+                type="radio"
                 className="isCar"
-                value={isCar}
+                value={true}
                 onChange={onChange}
                 onKeyPress={onKeyPress}
-              />
+                name="isCar"
+              /> <p style={{marginRight:"10px"}}>있음</p>
+                <input
+                type="radio"
+                className="isCar"
+                value={false}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+                name="isCar"
+              /> 없음
+            
             </InputBox>
             <InputBox>
               <div>전화 번호</div>
