@@ -61,17 +61,17 @@ const TimeTable = styled.div`
   width: 60px;
   height: auto;
   /* background: teal; */
-  border: 1px solid #424242;
+  border: 1px solid #808080;
   margin-top: 10px;
   background: white;
-  border-left: 3px solid #424242;
+  border-left: 3px solid #808080;
 
   .eachTime {
     padding: 10.7px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #424242;
+    border-bottom: 1px solid #808080;
 
     &:last-child {
       border-bottom: none;
@@ -562,7 +562,7 @@ const ManageReserv = () => {
       <div
         style={{
           width: "100%",
-          height: "40px",
+          height: "20px",
           background: "black",
           marginTop: "30px",
         }}
