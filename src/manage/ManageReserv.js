@@ -89,7 +89,8 @@ const LayoutWrapper = styled.div`
   .react-grid-layout {
     background-color: inherit;
     margin: 0px;
-    width: 100%;
+    /* width: 100%; */
+    width: auto;
   }
 
   .react-grid-item {
@@ -193,6 +194,7 @@ const ManageReserv = () => {
 
   const [timeTable, setTimeTable] = useState([]);
   const [tableNums, setTableNums] = useState();
+  const [tableNumsCount, setTableNumsCount] = useState();
 
   let tomorrow = new Date();
 
@@ -239,7 +241,7 @@ const ManageReserv = () => {
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-      url: url + `/fooding/admin/restaurant/${1}/reservation`,
+      url: url + `/fooding/admin/restaurant/${35}/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -253,6 +255,33 @@ const ManageReserv = () => {
     };
 
     await axios(config)
+      .then((response) => {
+        const tableCount = response.data.tableInfo.tableNums.length;
+        setTableNumsCount(tableCount);
+        console.log(response.data.tableInfo.tableNums.length);
+
+        ManageReserv.defaultProps = {
+          className: "layout",
+          // cols: transformed.tableNums,
+          //  cols: data.tablenums, // TODO : Need to check
+          //tableNumsCount + 30
+          cols: {
+            lg: tableCount,
+            md: tableCount,
+            sm: tableCount,
+            xs: tableCount,
+            xxs: tableCount,
+          },
+          rowHeight: 30,
+          onLayoutChange: function () {},
+          // This turns off compaction so you can place items wherever.
+          compactType: null,
+          // This turns off rearrangement so items will not be pushed arround.
+          preventCollision: true,
+        };
+
+        return response;
+      })
       .then((response) => {
         console.log("response.data:", response.data);
         const tableInfo = response.data.tableInfo;
@@ -320,22 +349,25 @@ const ManageReserv = () => {
         });
         setLayout(layout);
       })
+
       .catch((error) => {
         console.log(error);
       });
   }, [startDate]);
 
-  ManageReserv.defaultProps = {
-    className: "layout",
-    // cols: transformed.tableNums,
-    cols: data.tablenums, // TODO : Need to check
-    rowHeight: 30,
-    onLayoutChange: function () {},
-    // This turns off compaction so you can place items wherever.
-    compactType: null,
-    // This turns off rearrangement so items will not be pushed arround.
-    preventCollision: true,
-  };
+  // ManageReserv.defaultProps = {
+  //   className: "layout",
+  //   // cols: transformed.tableNums,
+  //   //  cols: data.tablenums, // TODO : Need to check
+  //   cols: { lg: { tableNumsCount }, md: 10, sm: 6, xs: 4, xxs: 2 },
+  //   rowHeight: 30,
+  //   onLayoutChange: function () {},
+  //   // This turns off compaction so you can place items wherever.
+  //   compactType: null,
+  //   // This turns off rearrangement so items will not be pushed arround.
+  //   preventCollision: true,
+  // };
+
   const handleCallback = (
     nickname,
     name,
@@ -532,7 +564,7 @@ const ManageReserv = () => {
     const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
-      url: url + `/fooding/admin/restaurant/1/reservation`,
+      url: url + `/fooding/admin/restaurant/35/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
