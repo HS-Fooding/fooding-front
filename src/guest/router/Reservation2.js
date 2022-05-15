@@ -192,7 +192,7 @@ const Reservation2 = () => {
             const seat = {
               x: s.x,
               y: s.y,
-              radius: 20,
+              radius: 10,
               fill: "gray",
               id: "seat" + id,
             };
@@ -423,7 +423,7 @@ const Reservation2 = () => {
                 <Circle
                   x={seat.x / 2}
                   y={seat.y / 2}
-                  radius={10}
+                  radius={7}
                   fill="#FF4B00"
                   rotation={seat.rotation}
                 />

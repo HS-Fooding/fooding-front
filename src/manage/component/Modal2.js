@@ -199,10 +199,10 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [figureWidth, setFigureWidth] = useState(
-    editModal ? editTableObj.width / 100 : 1
+    editModal ? editTableObj.width / 50 : 1
   );
   const [figureHeight, setFigureHeight] = useState(
-    editModal ? editTableObj.height / 100 : 1
+    editModal ? editTableObj.height / 50 : 1
   );
   const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight * 50);
   const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight * 50);
