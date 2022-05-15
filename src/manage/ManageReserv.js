@@ -33,7 +33,6 @@ const Container = styled.div`
       right: 0px;
     }
   }
-  
 `;
 
 const MyDatePicker = styled(DatePicker)`
@@ -187,8 +186,8 @@ const ManageReserv = () => {
   const [date, setDate] = React.useState(dateDetail.getDate());
   const [startDate, setStartDate] = useState(new Date());
 
-  const [manageModal,setManageModal] = useState(false);
-  
+  const [manageModal, setManageModal] = useState(false);
+
   const [openTime, setOpenTime] = useState();
   const [closeTime, setCloseTime] = useState();
 
@@ -347,45 +346,45 @@ const ManageReserv = () => {
     phoneNum,
     modal,
     submit
-  )=>{
-    modal ? setManageModal(true) : setManageModal(false); 
-  //  if(nickname&&
-  //   name&&
-  //   reservAt&&
-  //   tableNum&&
-  //   reservCount&&
-  //   isCar&&
-  //   phoneNum&&
- 
-    if(submit){
-    const diff =
-   (parseDate(transformed.date, reservAt) -
-     parseDate(transformed.date, transformed.open)) /
-   (60 * 1000 * BLOCK_OF_TIME);
-    const tmp = {
-      i: "n" + newCounter,
-      // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
-      x: parseInt(tableNum - 1),
-      y: diff,
-      w: 1,
-      h: transformed.maxUsageTime / 30,
-      //
-      nickname,
-      name,
-      reservAt,
-      tableNum,
-      reservCount,
-      isCar: isCar === "true" ? true : false,
-      phoneNum,
-      // reservId: uuidv4(),
-      reservId: null,
-      status: "NEW",
-    };
-    setNewCounter(newCounter + 1);
+  ) => {
+    modal ? setManageModal(true) : setManageModal(false);
+    //  if(nickname&&
+    //   name&&
+    //   reservAt&&
+    //   tableNum&&
+    //   reservCount&&
+    //   isCar&&
+    //   phoneNum&&
 
-    setLayout([...layout, tmp]);
-   }
-  }
+    if (submit) {
+      const diff =
+        (parseDate(transformed.date, reservAt) -
+          parseDate(transformed.date, transformed.open)) /
+        (60 * 1000 * BLOCK_OF_TIME);
+      const tmp = {
+        i: "n" + newCounter,
+        // x: transformed.tableNums.findIndex((t) => t === tableNum), // 테이블 번호
+        x: parseInt(tableNum - 1),
+        y: diff,
+        w: 1,
+        h: transformed.maxUsageTime / 30,
+        //
+        nickname,
+        name,
+        reservAt,
+        tableNum,
+        reservCount,
+        isCar: isCar === "true" ? true : false,
+        phoneNum,
+        // reservId: uuidv4(),
+        reservId: null,
+        status: "NEW",
+      };
+      setNewCounter(newCounter + 1);
+
+      setLayout([...layout, tmp]);
+    }
+  };
   const onLayoutChange = (data, from, to, index) => {
     const tmp = layout;
     const open = transformed.open;
@@ -452,22 +451,22 @@ const ManageReserv = () => {
       const t = el.i;
       return (
         <div key={t} data-grid={el}>
-        {/* <div className="text">{i + 1}</div> */}
-        <div>{el.tableNum}번 테이블</div>
-        <div>{el.nickname}</div>
-        {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
-        <div>{el.reservAt}</div>
-        <div>{el.reservCount}명</div>
-        <div>{el.isCar ? "차 있음" : "차 없음"}</div>
-        <div>예약 번호 {el.reservId} </div>
-        <span
-          className="remove"
-          style={removeStyle}
-          onClick={onRemoveItem.bind(this, t)}
-        >
-          x
-        </span>
-      </div>
+          {/* <div className="text">{i + 1}</div> */}
+          <div>{el.tableNum}번 테이블</div>
+          <div>{el.nickname}</div>
+          {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
+          <div>{el.reservAt}</div>
+          <div>{el.reservCount}명</div>
+          <div>{el.isCar ? "차 있음" : "차 없음"}</div>
+          <div>예약 번호 {el.reservId} </div>
+          <span
+            className="remove"
+            style={removeStyle}
+            onClick={onRemoveItem.bind(this, t)}
+          >
+            x
+          </span>
+        </div>
 
         // <div key={t} data-grid={el}>
         // {/* <div className="text">{i + 1}</div> */}
@@ -522,7 +521,7 @@ const ManageReserv = () => {
               reserveDate: "2022-05-06",
               reserveTime: m.reservAt,
               reserveNum: m.reservCount,
-             
+
               car: m.isCar,
             },
           };
@@ -549,7 +548,7 @@ const ManageReserv = () => {
         console.log(error.message);
       });
   };
- return (
+  return (
     <Container>
       <Header />
       <MyDatePicker
