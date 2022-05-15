@@ -210,7 +210,7 @@ const ManageReservModal = ({ parentCallback}) => {
   const [availableMinute,setAvailableMinute] = useState();
 
   const onChangeAvailableHour = (e)=> setAvailableHour(e);
-  const onChangeAvailableMinute = (e)=> setAvailableMinute(e);
+  const onChangeAvailableMinute = (e)=> setAvailableMinute(e+"0");
   const onChange = (event) => {
     const {
       target: { value, className },

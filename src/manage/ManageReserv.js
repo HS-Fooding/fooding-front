@@ -83,8 +83,8 @@ const LayoutWrapper = styled.div`
   display: inline-block;
   width: 100%;
 
-  /* overflow-x: auto;
-  white-space: nowrap; */
+   overflow-x: scroll;
+/*  white-space: nowrap;  */
 
   .react-grid-layout {
     background-color: inherit;
@@ -171,6 +171,7 @@ const transformData = (dummy) => {
   };
 };
 
+//var tableLength;
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 var data = "hello";
 const ManageReserv = () => {
@@ -193,7 +194,7 @@ const ManageReserv = () => {
 
   const [timeTable, setTimeTable] = useState([]);
   const [tableNums, setTableNums] = useState();
-
+  const [tableLength,setTableLength] = useState(10);
   let tomorrow = new Date();
 
   useEffect(() => {
@@ -226,7 +227,7 @@ const ManageReserv = () => {
     let year = startDate.getFullYear();
     let month = startDate.getMonth() + 1;
     let date = startDate.getDate();
-
+    
     if (month.toString().length == 1) {
       month = "0" + month;
     }
@@ -239,7 +240,7 @@ const ManageReserv = () => {
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-      url: url + `/fooding/admin/restaurant/${1}/reservation`,
+      url: url + `/fooding/admin/restaurant/${35}/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -259,7 +260,8 @@ const ManageReserv = () => {
         setTableNums(response.data.tableInfo.tableNums);
         setOpenTime(tableInfo.open);
         setCloseTime(tableInfo.close);
-
+        setTableLength(parseInt(response.data.tableInfo.tableNums.length));
+        
         const openHour = tableInfo.open.substring(0, 2);
         const openMinute = tableInfo.open.substring(3, 5);
         const closeHour = tableInfo.close.substring(0, 2);
@@ -324,11 +326,14 @@ const ManageReserv = () => {
         console.log(error);
       });
   }, [startDate]);
-
+  let temp=1;
+  console.log("tableLength2",tableLength)
   ManageReserv.defaultProps = {
     className: "layout",
     // cols: transformed.tableNums,
-    cols: data.tablenums, // TODO : Need to check
+    //cols: data.tablenums, // TODO : Need to check
+    
+    cols: { lg: tableLength, md: 22, sm: 6, xs: 4, xxs: 2 },
     rowHeight: 30,
     onLayoutChange: function () {},
     // This turns off compaction so you can place items wherever.
@@ -582,13 +587,14 @@ const ManageReserv = () => {
 
         <LayoutWrapper>
           <ResponsiveReactGridLayout
+
             layout={layout}
             onDragStop={onLayoutChange}
             onResize={onLayoutChange}
             onBreakpointChange={onBreakpointChange}
             onRemoveItem={onRemoveItem}
             {...ManageReserv.defaultProps}
-            // style={{ width: "100%" }}
+             style={{ width: "100%" }}
           >
             {generateDOM()}
           </ResponsiveReactGridLayout>
