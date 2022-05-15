@@ -61,17 +61,17 @@ const TimeTable = styled.div`
   width: 60px;
   height: auto;
   /* background: teal; */
-  border: 1px solid #424242;
+  border: 1px solid #808080;
   margin-top: 10px;
   background: white;
-  border-left: 3px solid #424242;
+  border-left: 3px solid #808080;
 
   .eachTime {
     padding: 10.7px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #424242;
+    border-bottom: 1px solid #808080;
 
     &:last-child {
       border-bottom: none;
@@ -89,7 +89,8 @@ const LayoutWrapper = styled.div`
   .react-grid-layout {
     background-color: inherit;
     margin: 0px;
-    width: 100%;
+    /* width: 100%; */
+    width: auto;
   }
 
   .react-grid-item {
@@ -194,7 +195,8 @@ const ManageReserv = () => {
 
   const [timeTable, setTimeTable] = useState([]);
   const [tableNums, setTableNums] = useState();
-  const [tableLength,setTableLength] = useState(10);
+  const [tableNumsCount, setTableNumsCount] = useState();
+
   let tomorrow = new Date();
 
   useEffect(() => {
@@ -255,13 +257,39 @@ const ManageReserv = () => {
 
     await axios(config)
       .then((response) => {
+        const tableCount = response.data.tableInfo.tableNums.length;
+        setTableNumsCount(tableCount);
+        console.log(response.data.tableInfo.tableNums.length);
+
+        ManageReserv.defaultProps = {
+          className: "layout",
+          // cols: transformed.tableNums,
+          //  cols: data.tablenums, // TODO : Need to check
+          //tableNumsCount + 30
+          cols: {
+            lg: tableCount,
+            md: tableCount,
+            sm: tableCount,
+            xs: tableCount,
+            xxs: tableCount,
+          },
+          rowHeight: 30,
+          onLayoutChange: function () {},
+          // This turns off compaction so you can place items wherever.
+          compactType: null,
+          // This turns off rearrangement so items will not be pushed arround.
+          preventCollision: true,
+        };
+
+        return response;
+      })
+      .then((response) => {
         console.log("response.data:", response.data);
         const tableInfo = response.data.tableInfo;
         setTableNums(response.data.tableInfo.tableNums);
         setOpenTime(tableInfo.open);
         setCloseTime(tableInfo.close);
-        setTableLength(parseInt(response.data.tableInfo.tableNums.length));
-        
+      
         const openHour = tableInfo.open.substring(0, 2);
         const openMinute = tableInfo.open.substring(3, 5);
         const closeHour = tableInfo.close.substring(0, 2);
@@ -322,25 +350,26 @@ const ManageReserv = () => {
         });
         setLayout(layout);
       })
+
       .catch((error) => {
         console.log(error);
       });
   }, [startDate]);
-  let temp=1;
-  console.log("tableLength2",tableLength)
-  ManageReserv.defaultProps = {
-    className: "layout",
-    // cols: transformed.tableNums,
-    //cols: data.tablenums, // TODO : Need to check
-    
-    cols: { lg: tableLength, md: 22, sm: 6, xs: 4, xxs: 2 },
-    rowHeight: 30,
-    onLayoutChange: function () {},
-    // This turns off compaction so you can place items wherever.
-    compactType: null,
-    // This turns off rearrangement so items will not be pushed arround.
-    preventCollision: true,
-  };
+
+
+  // ManageReserv.defaultProps = {
+  //   className: "layout",
+  //   // cols: transformed.tableNums,
+  //   //  cols: data.tablenums, // TODO : Need to check
+  //   cols: { lg: { tableNumsCount }, md: 10, sm: 6, xs: 4, xxs: 2 },
+  //   rowHeight: 30,
+  //   onLayoutChange: function () {},
+  //   // This turns off compaction so you can place items wherever.
+  //   compactType: null,
+  //   // This turns off rearrangement so items will not be pushed arround.
+  //   preventCollision: true,
+  // };
+
   const handleCallback = (
     nickname,
     name,
@@ -537,7 +566,7 @@ const ManageReserv = () => {
     const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
-      url: url + `/fooding/admin/restaurant/1/reservation`,
+      url: url + `/fooding/admin/restaurant/35/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -567,7 +596,7 @@ const ManageReserv = () => {
       <div
         style={{
           width: "100%",
-          height: "40px",
+          height: "20px",
           background: "black",
           marginTop: "30px",
         }}

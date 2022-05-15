@@ -1022,14 +1022,13 @@ function Register(floorCallback) {
                         <SliderDiv>
                           <StyledSlider {...settings}>
                             {marketInfo !== null ? (
-                               file?.length !== 0 ? (
-                                file?.map((one, index) => (
-                                  <div>
-                                    <MarketImg src={one} key={index} />
-                                  </div>
-                                ))
-                                
-                            ) :marketImages?.map((one, index) => (
+                              marketInfo?.images.map((one, index) => (
+                                <div>
+                                  <MarketImg src={one} key={index} />
+                                </div>
+                              ))
+                            ) : file?.length !== 0 ? (
+                              file?.map((one, index) => (
                                 <div>
                                   <MarketImg src={one} key={index} />
                                 </div>
