@@ -269,6 +269,8 @@ const Reservation1 = () => {
   //   ]);
   let location = useLocation();
 
+  const maximumUsageTime = location.state.maximumUsageTime;
+
   const [calendarValue, onChange] = useState(new Date());
   const [isWeek, setIsWeek] = useState();
   const [open, setOpen] = useState();
@@ -333,6 +335,9 @@ const Reservation1 = () => {
           resultTime.substring(3, resultTime.length) &&
         resultTime.substring(0, 2) == "오후"
       ) {
+        for (let i = 0; i < maximumUsageTime / 30; i++) {
+          timesArr.pop();
+        }
         break;
       }
     }
@@ -340,6 +345,8 @@ const Reservation1 = () => {
 
   useEffect(() => {
     calcTime();
+
+    console.log("maximumUsageTime", maximumUsageTime);
   }, []);
 
   useEffect(() => {
