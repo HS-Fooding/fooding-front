@@ -22,101 +22,12 @@ import {
     PieChart,
 } from "recharts";
 
-const radarChart_data = [
-    {
-        subject: "Math",
-        A: 120,
-        B: 110,
-        fullMark: 150,
-    },
-    {
-        subject: "Chinese",
-        A: 98,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: "English",
-        A: 86,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: "Geography",
-        A: 99,
-        B: 100,
-        fullMark: 150,
-    },
-    {
-        subject: "Physics",
-        A: 85,
-        B: 90,
-        fullMark: 150,
-    },
-    {
-        subject: "History",
-        A: 65,
-        B: 85,
-        fullMark: 150,
-    },
-];
-
-const data01 = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-];
-const lineChart_data = [
-    {
-        name: "Page A",
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: "Page B",
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: "Page C",
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: "Page D",
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: "Page E",
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: "Page F",
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: "Page G",
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
-];
-
 const Chart = () => {
-    const [ageBarChart, setAgeBarChart] = React.useState([]);
-    const [sexBarChart, setSexBarChart] = React.useState([]);
-    const [jobPieChart, setJobPieChart] = React.useState([]);
-    const [favorRadarChart, setFavorRadarChart] = React.useState([]);
+    const [ageBarChart, setAgeBarChart] = useState([]);
+    const [sexBarChart, setSexBarChart] = useState([]);
+    const [jobPieChart, setJobPieChart] = useState([]);
+    const [favorRadarChart, setFavorRadarChart] = useState([]);
+    const [reserveLineChart, setReserveLineChart] = useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -137,6 +48,9 @@ const Chart = () => {
 
         await axios(config)
             .then(async (response) => {
+                const data = response.data.data;
+                const workingTime = response.data.workingTime;
+
                 let ageArr = [0, 0, 0, 0, 0, 0];
                 let menCount = 0;
                 let womenCount = 0;
@@ -144,9 +58,29 @@ const Chart = () => {
                 let jobResult = [];
                 let favor = new Map([]);
                 let favorResult = [];
+                let time = new Map([]);
+                let timeResult = [];
+                const openHour = parseInt(workingTime.open.split(":")[0]);
+                const openMin = parseInt(workingTime.open.split(":")[1]);
+                const closeHour = parseInt(workingTime.close.split(":")[0]);
+                const closeMin = parseInt(workingTime.close.split(":")[1]);
+                let h = openHour;
+                let m = openMin;
+                console.log("close at ", closeHour, closeMin);
+                while (true) {
+                    if (h === closeHour && m === closeMin) {
+                        // if (closeMin === 30)
+                        //     h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
+                        // else h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
+                        break;
+                    }
+                    h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
+                    h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
+                    h++;
+                }
 
-                await response.data.forEach((el) => {
-                    // console.log(el);
+                await data.forEach((el) => {
+                    // console.log("!!", el);
                     // age part
                     if (parseInt(el.age) < 20) ageArr[0] += 1;
                     else if (parseInt(el.age) < 30) ageArr[1] += 1;
@@ -167,7 +101,7 @@ const Chart = () => {
                         if (el.job != null) job.set(el.job, 1);
                     }
 
-                    // TODO : favor count
+                    // favor part
                     el.favor.forEach((m) => {
                         if (favor.has(m)) {
                             const tmp = favor.get(m);
@@ -176,6 +110,10 @@ const Chart = () => {
                             if (m != null) favor.set(m, 1);
                         }
                     });
+
+                    // reservation time part
+                    const tmp = time.get(el.reserveTime);
+                    time.set(el.reserveTime, tmp + 1);
                 });
 
                 setAgeBarChart([
@@ -204,6 +142,7 @@ const Chart = () => {
                         나이: ageArr[5],
                     },
                 ]);
+
                 setSexBarChart([
                     {
                         name: "남자",
@@ -224,6 +163,11 @@ const Chart = () => {
                     favorResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
                 }
                 setFavorRadarChart(favorResult);
+
+                for (var obj of time) {
+                    timeResult.push({ name: obj[0], value: parseInt(obj[1]) });
+                }
+                setReserveLineChart(timeResult);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -267,7 +211,7 @@ const Chart = () => {
             <LineChart
                 width={500}
                 height={300}
-                data={lineChart_data}
+                data={reserveLineChart}
                 margin={{
                     top: 20,
                     right: 50,
@@ -280,10 +224,9 @@ const Chart = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" />
-                <ReferenceLine y={9800} label="Max" stroke="red" />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
+                {/* <ReferenceLine y={3800} label="Max" stroke="red" /> */}
+                <Line type="monotone" dataKey="value" stroke="#8884d8" />
             </LineChart>
         </>
     );
