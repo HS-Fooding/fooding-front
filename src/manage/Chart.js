@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { url } from "../Api";
+import axios from "axios";
+
 import {
     LineChart,
     Line,
@@ -16,43 +20,6 @@ import {
     ReferenceLine,
 } from "recharts";
 
-const barChart_data = [
-    {
-        name: "Page A",
-        uv: 4000,
-        pv: 2400,
-    },
-    {
-        name: "Page B",
-        uv: 3000,
-        pv: 1398,
-    },
-    {
-        name: "Page C",
-        uv: 2000,
-        pv: 9800,
-    },
-    {
-        name: "Page D",
-        uv: 2780,
-        pv: 3908,
-    },
-    {
-        name: "Page E",
-        uv: 1890,
-        pv: 4800,
-    },
-    {
-        name: "Page F",
-        uv: 2390,
-        pv: 3800,
-    },
-    {
-        name: "Page G",
-        uv: 3490,
-        pv: 4300,
-    },
-];
 const radarChart_data = [
     {
         subject: "Math",
@@ -137,25 +104,76 @@ const lineChart_data = [
 ];
 
 const Chart = () => {
+    const [ageBarChart, setAgeBarChart] = React.useState([]);
+
+    useEffect(async () => {
+        const getToken = localStorage.getItem("token");
+
+        const config = {
+            method: "get",
+            // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
+            url: url + `/fooding/admin/restaurant/1/chart`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
+            params: {
+                start: "2022-05-05",
+                end: "2022-05-07",
+            },
+        };
+
+        await axios(config)
+            .then(async (response) => {
+                // age count
+                let ageArr = [0, 0, 0, 0, 0, 0];
+                await response.data.forEach((el) => {
+                    if (parseInt(el.age) < 20) ageArr[0] += 1;
+                    else if (parseInt(el.age) < 30) ageArr[1] += 1;
+                    else if (parseInt(el.age) < 40) ageArr[2] += 1;
+                    else if (parseInt(el.age) < 50) ageArr[3] += 1;
+                    else if (parseInt(el.age) < 60) ageArr[4] += 1;
+                    else ageArr[5] += 1;
+                });
+                setAgeBarChart([
+                    {
+                        name: "10대",
+                        나이: ageArr[0],
+                    },
+                    {
+                        name: "20대",
+                        나이: ageArr[1],
+                    },
+                    {
+                        name: "30대",
+                        나이: ageArr[2],
+                    },
+                    {
+                        name: "40대",
+                        나이: ageArr[3],
+                    },
+                    {
+                        name: "50대",
+                        나이: ageArr[4],
+                    },
+                    {
+                        name: "60대",
+                        나이: ageArr[5],
+                    },
+                ]);
+            })
+            .catch((error) => console.log(error));
+    }, []);
+
     return (
         <>
-            <BarChart width={730} height={250} data={barChart_data}>
+            <BarChart width={730} height={250} data={ageBarChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
-            <BarChart width={730} height={250} data={barChart_data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
+                <Bar dataKey="나이" fill="#82ca9d" />
             </BarChart>
 
             <RadarChart outerRadius={90} width={730} height={250} data={radarChart_data}>
