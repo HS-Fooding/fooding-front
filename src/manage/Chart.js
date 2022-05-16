@@ -18,6 +18,8 @@ import {
     PolarRadiusAxis,
     Radar,
     ReferenceLine,
+    Pie,
+    PieChart,
 } from "recharts";
 
 const radarChart_data = [
@@ -57,6 +59,13 @@ const radarChart_data = [
         B: 85,
         fullMark: 150,
     },
+];
+
+const data01 = [
+    { name: "Group A", value: 400 },
+    { name: "Group B", value: 300 },
+    { name: "Group C", value: 300 },
+    { name: "Group D", value: 200 },
 ];
 const lineChart_data = [
     {
@@ -106,7 +115,7 @@ const lineChart_data = [
 const Chart = () => {
     const [ageBarChart, setAgeBarChart] = React.useState([]);
     const [sexBarChart, setSexBarChart] = React.useState([]);
-    const [jobRadarChart, setJobRadarChart] = React.useState([]);
+    const [jobPieChart, setJobPieChart] = React.useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -196,16 +205,17 @@ const Chart = () => {
                 ]);
 
                 for (var obj of job) {
-                    jobResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
+                    // jobResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
+                    jobResult.push({ name: obj[0], value: parseInt(obj[1]) });
                 }
-                setJobRadarChart(jobResult);
+                setJobPieChart(jobResult);
             })
             .catch((error) => console.log(error));
     }, []);
 
     return (
         <>
-            <BarChart width={730} height={250} data={ageBarChart}>
+            <BarChart width={400} height={250} data={ageBarChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -213,7 +223,7 @@ const Chart = () => {
                 <Legend />
                 <Bar dataKey="나이" fill="#82ca9d" />
             </BarChart>
-            <BarChart width={730} height={250} data={sexBarChart}>
+            <BarChart width={400} height={250} data={sexBarChart}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -221,29 +231,10 @@ const Chart = () => {
                 <Legend />
                 <Bar dataKey="성별" fill="#82ca9d" />
             </BarChart>
-            {console.log(jobRadarChart)}
-            <RadarChart outerRadius={90} width={730} height={250} data={jobRadarChart}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={30} domain={[0, 30]} />
-                <Radar
-                    name="Job"
-                    dataKey="value"
-                    stroke="#8884d8"
-                    fill="#8884d8"
-                    fillOpacity={0.6}
-                />
-                <Legend />
-            </RadarChart>
-
-            <RadarChart outerRadius={90} width={730} height={250} data={radarChart_data}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={30} domain={[0, 150]} />
-                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                <Radar name="Lily" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-                <Legend />
-            </RadarChart>
+            <PieChart width={400} height={200}>
+                <Pie data={jobPieChart} dataKey="value" cx="50%" cy="50%" fill="#8884d8" />
+                <Tooltip />
+            </PieChart>
             <LineChart
                 width={500}
                 height={300}
