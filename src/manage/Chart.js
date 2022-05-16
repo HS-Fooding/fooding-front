@@ -105,6 +105,7 @@ const lineChart_data = [
 
 const Chart = () => {
     const [ageBarChart, setAgeBarChart] = React.useState([]);
+    const [sexBarChart, setSexBarChart] = React.useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -125,16 +126,23 @@ const Chart = () => {
 
         await axios(config)
             .then(async (response) => {
-                // age count
                 let ageArr = [0, 0, 0, 0, 0, 0];
+                let menCount = 0;
+                let womenCount = 0;
+
                 await response.data.forEach((el) => {
+                    // age count
                     if (parseInt(el.age) < 20) ageArr[0] += 1;
                     else if (parseInt(el.age) < 30) ageArr[1] += 1;
                     else if (parseInt(el.age) < 40) ageArr[2] += 1;
                     else if (parseInt(el.age) < 50) ageArr[3] += 1;
                     else if (parseInt(el.age) < 60) ageArr[4] += 1;
                     else ageArr[5] += 1;
+
+                    if (el.sex) menCount += 1;
+                    else womenCount += 1;
                 });
+
                 setAgeBarChart([
                     {
                         name: "10대",
@@ -161,6 +169,16 @@ const Chart = () => {
                         나이: ageArr[5],
                     },
                 ]);
+                setSexBarChart([
+                    {
+                        name: "남자",
+                        성별: menCount,
+                    },
+                    {
+                        name: "여자",
+                        성별: womenCount,
+                    },
+                ]);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -174,6 +192,14 @@ const Chart = () => {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="나이" fill="#82ca9d" />
+            </BarChart>
+            <BarChart width={730} height={250} data={sexBarChart}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="성별" fill="#82ca9d" />
             </BarChart>
 
             <RadarChart outerRadius={90} width={730} height={250} data={radarChart_data}>
