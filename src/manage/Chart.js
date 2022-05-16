@@ -106,6 +106,7 @@ const lineChart_data = [
 const Chart = () => {
     const [ageBarChart, setAgeBarChart] = React.useState([]);
     const [sexBarChart, setSexBarChart] = React.useState([]);
+    const [jobRadarChart, setJobRadarChart] = React.useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -129,8 +130,11 @@ const Chart = () => {
                 let ageArr = [0, 0, 0, 0, 0, 0];
                 let menCount = 0;
                 let womenCount = 0;
+                let job = new Map([]);
+                let jobResult = [];
 
                 await response.data.forEach((el) => {
+                    // console.log(el);
                     // age count
                     if (parseInt(el.age) < 20) ageArr[0] += 1;
                     else if (parseInt(el.age) < 30) ageArr[1] += 1;
@@ -139,8 +143,19 @@ const Chart = () => {
                     else if (parseInt(el.age) < 60) ageArr[4] += 1;
                     else ageArr[5] += 1;
 
+                    // sex count
                     if (el.sex) menCount += 1;
                     else womenCount += 1;
+
+                    // TODO : job count
+                    if (job.has(el.job)) {
+                        const tmp = job.get(el.job);
+                        job.set(el.job, tmp + 1);
+                    } else {
+                        if (el.job != null) job.set(el.job, 1);
+                    }
+
+                    // TODO : favor count
                 });
 
                 setAgeBarChart([
@@ -179,6 +194,11 @@ const Chart = () => {
                         성별: womenCount,
                     },
                 ]);
+
+                for (var obj of job) {
+                    jobResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
+                }
+                setJobRadarChart(jobResult);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -201,6 +221,20 @@ const Chart = () => {
                 <Legend />
                 <Bar dataKey="성별" fill="#82ca9d" />
             </BarChart>
+            {console.log(jobRadarChart)}
+            <RadarChart outerRadius={90} width={730} height={250} data={jobRadarChart}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis angle={30} domain={[0, 30]} />
+                <Radar
+                    name="Job"
+                    dataKey="value"
+                    stroke="#8884d8"
+                    fill="#8884d8"
+                    fillOpacity={0.6}
+                />
+                <Legend />
+            </RadarChart>
 
             <RadarChart outerRadius={90} width={730} height={250} data={radarChart_data}>
                 <PolarGrid />
@@ -210,15 +244,6 @@ const Chart = () => {
                 <Radar name="Lily" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
                 <Legend />
             </RadarChart>
-            <RadarChart outerRadius={90} width={730} height={250} data={radarChart_data}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={30} domain={[0, 150]} />
-                <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                <Radar name="Lily" dataKey="B" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} />
-                <Legend />
-            </RadarChart>
-
             <LineChart
                 width={500}
                 height={300}
