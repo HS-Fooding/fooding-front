@@ -116,6 +116,7 @@ const Chart = () => {
     const [ageBarChart, setAgeBarChart] = React.useState([]);
     const [sexBarChart, setSexBarChart] = React.useState([]);
     const [jobPieChart, setJobPieChart] = React.useState([]);
+    const [favorRadarChart, setFavorRadarChart] = React.useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -141,10 +142,12 @@ const Chart = () => {
                 let womenCount = 0;
                 let job = new Map([]);
                 let jobResult = [];
+                let favor = new Map([]);
+                let favorResult = [];
 
                 await response.data.forEach((el) => {
                     // console.log(el);
-                    // age count
+                    // age part
                     if (parseInt(el.age) < 20) ageArr[0] += 1;
                     else if (parseInt(el.age) < 30) ageArr[1] += 1;
                     else if (parseInt(el.age) < 40) ageArr[2] += 1;
@@ -152,11 +155,11 @@ const Chart = () => {
                     else if (parseInt(el.age) < 60) ageArr[4] += 1;
                     else ageArr[5] += 1;
 
-                    // sex count
+                    // sex part
                     if (el.sex) menCount += 1;
                     else womenCount += 1;
 
-                    // TODO : job count
+                    // job part
                     if (job.has(el.job)) {
                         const tmp = job.get(el.job);
                         job.set(el.job, tmp + 1);
@@ -165,6 +168,14 @@ const Chart = () => {
                     }
 
                     // TODO : favor count
+                    el.favor.forEach((m) => {
+                        if (favor.has(m)) {
+                            const tmp = favor.get(m);
+                            favor.set(m, tmp + 1);
+                        } else {
+                            if (m != null) favor.set(m, 1);
+                        }
+                    });
                 });
 
                 setAgeBarChart([
@@ -205,10 +216,14 @@ const Chart = () => {
                 ]);
 
                 for (var obj of job) {
-                    // jobResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
                     jobResult.push({ name: obj[0], value: parseInt(obj[1]) });
                 }
                 setJobPieChart(jobResult);
+
+                for (var obj of favor) {
+                    favorResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
+                }
+                setFavorRadarChart(favorResult);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -231,10 +246,24 @@ const Chart = () => {
                 <Legend />
                 <Bar dataKey="성별" fill="#82ca9d" />
             </BarChart>
-            <PieChart width={400} height={200}>
+            <PieChart width={400} height={250}>
                 <Pie data={jobPieChart} dataKey="value" cx="50%" cy="50%" fill="#8884d8" />
                 <Tooltip />
             </PieChart>
+            <RadarChart outerRadius={90} width={400} height={250} data={favorRadarChart}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="subject" />
+                <PolarRadiusAxis angle={30} domain={[0, 10]} />
+                <Radar
+                    name="Favor"
+                    dataKey="value"
+                    stroke="#8884d8"
+                    fill="#8884d8"
+                    fillOpacity={0.6}
+                />
+                <Tooltip />
+                <Legend />
+            </RadarChart>
             <LineChart
                 width={500}
                 height={300}
