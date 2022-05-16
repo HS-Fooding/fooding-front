@@ -28,6 +28,7 @@ const Chart = () => {
     const [jobPieChart, setJobPieChart] = useState([]);
     const [favorRadarChart, setFavorRadarChart] = useState([]);
     const [reserveLineChart, setReserveLineChart] = useState([]);
+    const [arrForMax, setArrForMax] = useState([]);
 
     useEffect(async () => {
         const getToken = localStorage.getItem("token");
@@ -66,18 +67,13 @@ const Chart = () => {
                 const closeMin = parseInt(workingTime.close.split(":")[1]);
                 let h = openHour;
                 let m = openMin;
-                console.log("close at ", closeHour, closeMin);
                 while (true) {
-                    if (h === closeHour && m === closeMin) {
-                        // if (closeMin === 30)
-                        //     h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
-                        // else h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
-                        break;
-                    }
+                    if (h === closeHour && m === closeMin) break;
                     h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
                     h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
                     h++;
                 }
+                setArrForMax(time);
 
                 await data.forEach((el) => {
                     // console.log("!!", el);
@@ -209,8 +205,8 @@ const Chart = () => {
                 <Legend />
             </RadarChart>
             <LineChart
-                width={500}
-                height={300}
+                width={1000}
+                height={500}
                 data={reserveLineChart}
                 margin={{
                     top: 20,
@@ -225,7 +221,7 @@ const Chart = () => {
                 <Tooltip />
                 <Legend />
                 {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
-                {/* <ReferenceLine y={3800} label="Max" stroke="red" /> */}
+                <ReferenceLine y={Math.max(...arrForMax.values())} label="Max" stroke="red" />
                 <Line type="monotone" dataKey="value" stroke="#8884d8" />
             </LineChart>
         </>
