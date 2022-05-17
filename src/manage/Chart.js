@@ -24,6 +24,38 @@ import {
   PieChart,
 } from "recharts";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 40px;
+  align-items: center;
+`;
+
+const Boxes = styled.div`
+  display: flex;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px 80px;
+`;
+
+const Title = styled.span`
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+  &:last-child {
+    text-align: left;
+    color: red;
+  }
+`;
+
 const Chart = () => {
   const [ageBarChart, setAgeBarChart] = useState([]);
   const [sexBarChart, setSexBarChart] = useState([]);
@@ -177,75 +209,98 @@ const Chart = () => {
   return (
     <>
       <Header />
-      <BarChart width={400} height={250} data={ageBarChart}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="나이" fill="#82ca9d" />
-      </BarChart>
-      <BarChart width={400} height={250} data={sexBarChart}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="성별" fill="#82ca9d" />
-      </BarChart>
-      <PieChart width={400} height={250}>
-        <Pie
-          data={jobPieChart}
-          dataKey="value"
-          cx="50%"
-          cy="50%"
-          fill="#8884d8"
-        />
-        <Tooltip />
-      </PieChart>
-      <RadarChart
-        outerRadius={90}
-        width={400}
-        height={250}
-        data={favorRadarChart}
-      >
-        <PolarGrid />
-        <PolarAngleAxis dataKey="subject" />
-        <PolarRadiusAxis angle={30} domain={[0, 10]} />
-        <Radar
-          name="Favor"
-          dataKey="value"
-          stroke="#8884d8"
-          fill="#8884d8"
-          fillOpacity={0.6}
-        />
-        <Tooltip />
-        <Legend />
-      </RadarChart>
-      <LineChart
-        width={1000}
-        height={500}
-        data={reserveLineChart}
-        margin={{
-          top: 20,
-          right: 50,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
-        <ReferenceLine
-          y={Math.max(...arrForMax.values())}
-          label="Max"
-          stroke="red"
-        />
-        <Line type="monotone" dataKey="value" stroke="#8884d8" />
-      </LineChart>
+      <Container>
+        <Boxes>
+          <Box>
+            <Title>AGE</Title>
+            <BarChart width={400} height={250} data={ageBarChart}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="나이" fill="#82ca9d" />
+            </BarChart>
+          </Box>
+          <Box>
+            <Title>JOB</Title>
+            <PieChart width={400} height={250}>
+              <Pie
+                data={jobPieChart}
+                dataKey="value"
+                cx="50%"
+                cy="50%"
+                fill="#8884d8"
+              />
+              <Tooltip />
+            </PieChart>
+          </Box>
+        </Boxes>
+        <Boxes>
+          <Box>
+            <Title>GENDER</Title>
+            <BarChart width={400} height={250} data={sexBarChart}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="성별" fill="#82ca9d" />
+            </BarChart>
+          </Box>
+
+          <Box>
+            <Title>FAVOR</Title>
+            <RadarChart
+              outerRadius={90}
+              width={400}
+              height={250}
+              data={favorRadarChart}
+            >
+              <PolarGrid />
+
+              <PolarAngleAxis dataKey="subject" />
+              <PolarRadiusAxis angle={30} domain={[0, 10]} />
+              <Radar
+                name="Favor"
+                dataKey="value"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.6}
+              />
+              <Tooltip />
+              <Legend />
+            </RadarChart>
+          </Box>
+        </Boxes>
+        <Box>
+          <Title class="reserveCount">RESERVE COUNT</Title>
+          <LineChart
+            width={1000}
+            height={500}
+            data={reserveLineChart}
+            margin={{
+              top: 20,
+              right: 50,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
+            <ReferenceLine
+              y={Math.max(...arrForMax.values())}
+              label="Max"
+              stroke="red"
+            />
+            <Line type="monotone" dataKey="value" stroke="#8884d8" />
+          </LineChart>
+        </Box>
+      </Container>
     </>
   );
 };
