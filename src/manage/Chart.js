@@ -18,95 +18,17 @@ import {
   PolarRadiusAxis,
   Radar,
   ReferenceLine,
+  Pie,
+  PieChart,
 } from "recharts";
 
-const radarChart_data = [
-  {
-    subject: "Math",
-    A: 120,
-    B: 110,
-    fullMark: 150,
-  },
-  {
-    subject: "Chinese",
-    A: 98,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: "English",
-    A: 86,
-    B: 130,
-    fullMark: 150,
-  },
-  {
-    subject: "Geography",
-    A: 99,
-    B: 100,
-    fullMark: 150,
-  },
-  {
-    subject: "Physics",
-    A: 85,
-    B: 90,
-    fullMark: 150,
-  },
-  {
-    subject: "History",
-    A: 65,
-    B: 85,
-    fullMark: 150,
-  },
-];
-const lineChart_data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
 const Chart = () => {
-  const [ageBarChart, setAgeBarChart] = React.useState([]);
-  const [sexBarChart, setSexBarChart] = React.useState([]);
-  const [jobRadarChart, setJobRadarChart] = React.useState([]);
+  const [ageBarChart, setAgeBarChart] = useState([]);
+  const [sexBarChart, setSexBarChart] = useState([]);
+  const [jobPieChart, setJobPieChart] = useState([]);
+  const [favorRadarChart, setFavorRadarChart] = useState([]);
+  const [reserveLineChart, setReserveLineChart] = useState([]);
+  const [arrForMax, setArrForMax] = useState([]);
 
   useEffect(async () => {
     const getToken = localStorage.getItem("managerToken");
@@ -127,15 +49,35 @@ const Chart = () => {
 
     await axios(config)
       .then(async (response) => {
+        const data = response.data.data;
+        const workingTime = response.data.workingTime;
+
         let ageArr = [0, 0, 0, 0, 0, 0];
         let menCount = 0;
         let womenCount = 0;
         let job = new Map([]);
         let jobResult = [];
+        let favor = new Map([]);
+        let favorResult = [];
+        let time = new Map([]);
+        let timeResult = [];
+        const openHour = parseInt(workingTime.open.split(":")[0]);
+        const openMin = parseInt(workingTime.open.split(":")[1]);
+        const closeHour = parseInt(workingTime.close.split(":")[0]);
+        const closeMin = parseInt(workingTime.close.split(":")[1]);
+        let h = openHour;
+        let m = openMin;
+        while (true) {
+          if (h === closeHour && m === closeMin) break;
+          h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
+          h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
+          h++;
+        }
+        setArrForMax(time);
 
-        await response.data.forEach((el) => {
-          // console.log(el);
-          // age count
+        await data.forEach((el) => {
+          // console.log("!!", el);
+          // age part
           if (parseInt(el.age) < 20) ageArr[0] += 1;
           else if (parseInt(el.age) < 30) ageArr[1] += 1;
           else if (parseInt(el.age) < 40) ageArr[2] += 1;
@@ -143,11 +85,11 @@ const Chart = () => {
           else if (parseInt(el.age) < 60) ageArr[4] += 1;
           else ageArr[5] += 1;
 
-          // sex count
+          // sex part
           if (el.sex) menCount += 1;
           else womenCount += 1;
 
-          // TODO : job count
+          // job part
           if (job.has(el.job)) {
             const tmp = job.get(el.job);
             job.set(el.job, tmp + 1);
@@ -155,7 +97,19 @@ const Chart = () => {
             if (el.job != null) job.set(el.job, 1);
           }
 
-          // TODO : favor count
+          // favor part
+          el.favor.forEach((m) => {
+            if (favor.has(m)) {
+              const tmp = favor.get(m);
+              favor.set(m, tmp + 1);
+            } else {
+              if (m != null) favor.set(m, 1);
+            }
+          });
+
+          // reservation time part
+          const tmp = time.get(el.reserveTime);
+          time.set(el.reserveTime, tmp + 1);
         });
 
         setAgeBarChart([
@@ -184,6 +138,7 @@ const Chart = () => {
             나이: ageArr[5],
           },
         ]);
+
         setSexBarChart([
           {
             name: "남자",
@@ -196,20 +151,30 @@ const Chart = () => {
         ]);
 
         for (var obj of job) {
-          jobResult.push({
+          jobResult.push({ name: obj[0], value: parseInt(obj[1]) });
+        }
+        setJobPieChart(jobResult);
+
+        for (var obj of favor) {
+          favorResult.push({
             subject: obj[0],
             value: parseInt(obj[1]),
             fullMark: 30,
           });
         }
-        setJobRadarChart(jobResult);
+        setFavorRadarChart(favorResult);
+
+        for (var obj of time) {
+          timeResult.push({ name: obj[0], value: parseInt(obj[1]) });
+        }
+        setReserveLineChart(timeResult);
       })
       .catch((error) => console.log(error));
   }, []);
 
   return (
     <>
-      <BarChart width={730} height={250} data={ageBarChart}>
+      <BarChart width={400} height={250} data={ageBarChart}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
@@ -217,7 +182,7 @@ const Chart = () => {
         <Legend />
         <Bar dataKey="나이" fill="#82ca9d" />
       </BarChart>
-      <BarChart width={730} height={250} data={sexBarChart}>
+      <BarChart width={400} height={250} data={sexBarChart}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
@@ -225,55 +190,39 @@ const Chart = () => {
         <Legend />
         <Bar dataKey="성별" fill="#82ca9d" />
       </BarChart>
-      {console.log(jobRadarChart)}
+      <PieChart width={400} height={250}>
+        <Pie
+          data={jobPieChart}
+          dataKey="value"
+          cx="50%"
+          cy="50%"
+          fill="#8884d8"
+        />
+        <Tooltip />
+      </PieChart>
       <RadarChart
         outerRadius={90}
-        width={730}
+        width={400}
         height={250}
-        data={jobRadarChart}
+        data={favorRadarChart}
       >
         <PolarGrid />
         <PolarAngleAxis dataKey="subject" />
-        <PolarRadiusAxis angle={30} domain={[0, 30]} />
+        <PolarRadiusAxis angle={30} domain={[0, 10]} />
         <Radar
-          name="Job"
+          name="Favor"
           dataKey="value"
           stroke="#8884d8"
           fill="#8884d8"
           fillOpacity={0.6}
         />
-        <Legend />
-      </RadarChart>
-
-      <RadarChart
-        outerRadius={90}
-        width={730}
-        height={250}
-        data={radarChart_data}
-      >
-        <PolarGrid />
-        <PolarAngleAxis dataKey="subject" />
-        <PolarRadiusAxis angle={30} domain={[0, 150]} />
-        <Radar
-          name="Mike"
-          dataKey="A"
-          stroke="#8884d8"
-          fill="#8884d8"
-          fillOpacity={0.6}
-        />
-        <Radar
-          name="Lily"
-          dataKey="B"
-          stroke="#82ca9d"
-          fill="#82ca9d"
-          fillOpacity={0.6}
-        />
+        <Tooltip />
         <Legend />
       </RadarChart>
       <LineChart
-        width={500}
-        height={300}
-        data={lineChart_data}
+        width={1000}
+        height={500}
+        data={reserveLineChart}
         margin={{
           top: 20,
           right: 50,
@@ -286,10 +235,13 @@ const Chart = () => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" />
-        <ReferenceLine y={9800} label="Max" stroke="red" />
-        <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
+        <ReferenceLine
+          y={Math.max(...arrForMax.values())}
+          label="Max"
+          stroke="red"
+        />
+        <Line type="monotone" dataKey="value" stroke="#8884d8" />
       </LineChart>
     </>
   );
