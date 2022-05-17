@@ -107,7 +107,7 @@ const Header = () => {
   const reservationMatch = useMatch("/manager/manageReserv");
   const registerMatch = useMatch("/manager/register");
   const currentTableMatch = useMatch("/manager/currentTableState");
-  const userDataMatch = useMatch("/manager/userData");
+  const userDataMatch = useMatch("/manager/chart");
   let location = useLocation();
 
   let [isToken, setIsToken] = useState(false);
@@ -189,7 +189,7 @@ const Header = () => {
                 </Link>
               </Item>
               <Item>
-                <Link to="/manager/userData">
+                <Link to="/manager/chart">
                   사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>

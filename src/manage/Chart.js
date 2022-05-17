@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { url } from "../Api";
 import axios from "axios";
+import Header from "./component/Header";
+import styled from "styled-components";
 
 import {
   LineChart,
@@ -174,6 +176,7 @@ const Chart = () => {
 
   return (
     <>
+      <Header />
       <BarChart width={400} height={250} data={ageBarChart}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
