@@ -118,7 +118,7 @@ const Header = () => {
 
   useEffect(() => {
     //window.location.reload(); // 새로고침
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("managerToken");
     if (token == undefined) {
       setIsToken(false);
     } else {

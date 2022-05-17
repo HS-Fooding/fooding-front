@@ -612,7 +612,7 @@ function Register(floorCallback) {
   // },[categorySelected]);
 
   const getMarketInfo = () => {
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
     const id = localStorage.getItem("marketId");
     //.get(url + `/fooding/restaurant/${id}`, {
     axios
@@ -745,7 +745,7 @@ function Register(floorCallback) {
     let changeToMinutes =
       parseInt(availableHour * 60) + parseInt(availableMinute);
     console.log("values", values);
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
     let data = new FormData();
     const address = values.address;
     let street;
@@ -829,7 +829,7 @@ function Register(floorCallback) {
     });
 
     console.log("datadatadatadata", data);
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,
@@ -1016,8 +1016,7 @@ function Register(floorCallback) {
                           name="market_img"
                           onChange={marketImgChange}
                         />
-                      ) : null
-                      }
+                      ) : null}
                       <label htmlFor="market_img_input">
                         <SliderDiv>
                           <StyledSlider {...settings}>

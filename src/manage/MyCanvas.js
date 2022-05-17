@@ -233,7 +233,7 @@ const Seat = ({
           const node = shapeRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
-       
+
           // we will reset it back
           node.scaleX(1);
           node.scaleY(1);
@@ -244,7 +244,6 @@ const Seat = ({
             // set minimal value
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(node.height() * scaleY),
-       
           });
         }}
       />
@@ -539,7 +538,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
   const [isDelete, setIsDelete] = React.useState(false);
 
-  const getToken = localStorage.getItem("token");
+  const getToken = localStorage.getItem("managerToken");
   const marketIdLS = localStorage.getItem("marketId");
 
   const validateRotation = (num) => {
@@ -956,7 +955,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
     });
 
     console.log(data);
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,

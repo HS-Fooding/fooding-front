@@ -10,7 +10,7 @@ import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import ReviewDetail from "./guest/router/ReviewDetail";
 import Register from "./manage/Register";
-import Reservation from "./manage/Reservation";
+// import Reservation from "./manage/Reservation";
 import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
@@ -43,7 +43,6 @@ function App() {
             path="/review/:marketId/:reviewId"
             element={<ReviewDetail />}
           ></Route>
-          <Route path="/reservation" element={<Reservation />}></Route>
 
           <Route path="/manager/login" element={<LoginMg />}></Route>
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
@@ -55,7 +54,6 @@ function App() {
             element={<ManageReserv />}
           ></Route>
           <Route path="/manager/chart" element={<Chart />}></Route>
-          <Route path="/canvas" element={<MyCanvas />}></Route>
 
           <Route path="/manager/userData" element={<UserData />}></Route>
           <Route

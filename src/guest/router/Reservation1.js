@@ -404,7 +404,7 @@ const Reservation1 = () => {
     console.log(isCar, peopleNum, calendarValue, clickedTime);
     makeSendingTime();
 
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("guestToken");
     const marketId = localStorage.getItem("marketId");
 
     var config = {

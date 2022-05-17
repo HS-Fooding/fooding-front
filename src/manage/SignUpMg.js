@@ -7,18 +7,22 @@ import { url } from "../Api";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 200px 0px;
 `;
-
 const Form = styled.form`
-  margin-top: 60px;
+  margin: 30px;
   height: 500px;
   padding: 20px;
   position: relative;
+`;
+
+const Title = styled.span`
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 40px;
 `;
 
 const Input = styled.input.attrs({ required: true })`
@@ -47,7 +51,6 @@ const RadioButton = styled.input`
   border-radius: 100%;
   background-color: white;
   border: 1px solid ${(props) => props.theme.mainColor};
-
   &:checked {
     background-color: ${(props) => props.theme.mainColor};
   }
@@ -68,17 +71,66 @@ const SubmitBtn = styled.button`
   border-radius: 3px;
   font-size: 15px;
   cursor: pointer;
-  width: 308px;
-  //position: absolute;
-  //bottom: 0;
-  margin-top: 100px;
+  //width: 308px;
+  width: 370px;
+  /* position: absolute;
+  bottom: -137px; */
+`;
+const SelectBox = styled.div`
+  select {
+    width: auto;
+    margin-left: 20px;
+  }
+
+  div {
+    margin: 18px 0px;
+  }
+
+  .CategoryTags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 400px;
+    height: 45px;
+
+    .EachCategoryTag {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      /* width:85px;         */
+      height: 22px;
+      color: gray;
+      padding-right: 8px;
+      border-radius: 5px;
+      background-color: ${(props) => props.theme.fillGrayColor};
+      background-color: ${(props) => props.theme.mainColor};
+      color: white;
+      margin-right: 6px;
+      margin-bottom: 7px;
+      .EachCategoryButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* border:0.5px solid gray; */
+        border-radius: 3px;
+        width: 15px;
+        height: 14px;
+        margin-left: 5px;
+        margin-right: 7px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
 `;
 
-const SignUpMg = () => {
-  let navigate = useNavigate();
-
+function SignUpMg() {
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
   const [categorySelected, setCategorySelected] = useState([]);
+
+  let navigate = useNavigate();
 
   const {
     register,
@@ -91,6 +143,40 @@ const SignUpMg = () => {
       sex: "female",
     },
   });
+
+  const handleSelect = (e) => {
+    if (!categoryValueSelected.includes(e.target.value)) {
+      setCategoryValueSelected((currentArray) => [
+        // 영어
+        ...currentArray,
+        e.target.value,
+      ]);
+      console.log("valueList", categoryValueSelected);
+    }
+    if (
+      !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
+    ) {
+      setCategorySelected((currentArray) => [
+        // 한글
+        ...currentArray,
+        e.target.options[e.target.selectedIndex].text,
+      ]);
+      console.log("list", categorySelected);
+    }
+  };
+
+  const categoryButtonClick = (index) => {
+    setCategorySelected(
+      categorySelected.filter((item, categoryIndex) => index !== categoryIndex)
+    );
+    setCategoryValueSelected(
+      categoryValueSelected.filter(
+        (item, categoryIndex) => index !== categoryIndex
+      )
+    );
+    console.log("list", categorySelected);
+    console.log("value list", categoryValueSelected);
+  };
 
   const signUpPost = (data) => {
     console.log(data);
@@ -133,6 +219,7 @@ const SignUpMg = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
+        navigate("/manager/login");
       })
       .catch(function (error) {
         console.log(error);
@@ -151,43 +238,16 @@ const SignUpMg = () => {
         { shouldFocus: true }
       );
     } else {
-      navigate("/manager/login");
       reset();
       signUpPost(data);
     }
   };
 
-  const handleSelect = (e) => {
-    if (!categoryValueSelected.includes(e.target.value)) {
-      setCategoryValueSelected((currentArray) => [
-        // 영어
-        ...currentArray,
-        e.target.value,
-      ]);
-      console.log("valueList", categoryValueSelected);
-    }
-    if (
-      !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
-    ) {
-      setCategorySelected((currentArray) => [
-        // 한글
-        ...currentArray,
-        e.target.options[e.target.selectedIndex].text,
-      ]);
-      console.log("list", categorySelected);
-    }
-  };
-
-  const categoryButtonClick = (index) => {
-    setCategorySelected(
-      categorySelected.filter((item, categoryIndex) => index !== categoryIndex)
-    );
-    console.log("list", categorySelected);
-  };
-
   return (
     <Container>
-      <Header />
+      <Header back={"/"} title={"회원가입"} />
+
+      <Title>SIGN UP</Title>
       <Form
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit(onValid)}
@@ -244,7 +304,6 @@ const SignUpMg = () => {
             validate: {
               /*noNico: (value) =>
                 value.includes("nico") ? "no nicos allowed" : true,
-
               noNick: (value) =>
                 value.includes("nick") ? "no nick allowed" : true,
                 */
@@ -288,51 +347,62 @@ const SignUpMg = () => {
           </RadioBox>
         </div>
         <Message>{errors?.age?.message}</Message>
-        <select onChange={handleSelect} value={categorySelected}>
-          <option>KOREAN</option>
-          <option>JAPANESE</option>
-          <option>CHINESE</option>
-          <option>WESTERN</option>
-          <option>SNACK</option>
-          <option>NOODLE</option>
-          <option>SOUP</option>
-          <option>BBQ</option>
-          <option>PORK</option>
-          <option>BEEF</option>
-          <option>CHICKEN</option>
-          <option>LAMB</option>
-          <option>CAFE</option>
-        </select>
-        <ul className="CategoryTags">
-          {categorySelected.map((value, index) => {
-            return (
-              <div style={{ display: "inlineBlock" }}>
-                <li key={index} className="EachCategoryTag">
-                  <div
-                    className="EachCategoryButton"
-                    onClick={() => categoryButtonClick(index)}
-                  >
-                    X
-                  </div>
-                  <p>{value}</p>
-                </li>
-              </div>
-            );
-          })}
-        </ul>
-        <select {...register("job")}>
-          <option>STUDENT</option>
-          <option>UNIV_STUDENT</option>
-          <option>WORKER</option>
-          <option>FREELANCER</option>
-          <option>HOUSEWIVES</option>
-          <option>NONE</option>
-        </select>
+        <SelectBox>
+          <div>
+            직업
+            <select {...register("job")}>
+              <option>STUDENT</option>
+              <option>UNIV_STUDENT</option>
+              <option>WORKER</option>
+              <option>FREELANCER</option>
+              <option>HOUSEWIVES</option>
+              <option>NONE</option>
+            </select>
+          </div>
+          <div>
+            선호 음식
+            <select
+              onChange={handleSelect}
+              value={categorySelected}
+              // {...register("favor")}
+            >
+              <option>KOREAN</option>
+              <option>JAPANESE</option>
+              <option>CHINESE</option>
+              <option>WESTERN</option>
+              <option>SNACK</option>
+              <option>NOODLE</option>
+              <option>SOUP</option>
+              <option>BBQ</option>
+              <option>PORK</option>
+              <option>BEEF</option>
+              <option>CHICKEN</option>
+              <option>LAMB</option>
+              <option>CAFE</option>
+            </select>
+          </div>
+          <ul className="CategoryTags">
+            {categorySelected.map((value, index) => {
+              return (
+                <div style={{ display: "inlineBlock" }}>
+                  <li key={index} className="EachCategoryTag">
+                    <div
+                      className="EachCategoryButton"
+                      onClick={() => categoryButtonClick(index)}
+                    >
+                      X
+                    </div>
+                    <p>{value}</p>
+                  </li>
+                </div>
+              );
+            })}
+          </ul>
+        </SelectBox>
         <SubmitBtn>회원가입</SubmitBtn>
         <Message>{errors?.extraError?.message}</Message>
       </Form>
     </Container>
   );
-};
-
+}
 export default SignUpMg;
