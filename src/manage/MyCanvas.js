@@ -705,8 +705,8 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
   const createWall = () => {
     const wall = {
-      x: 100 + wallCnt * 20,
-      y: 100 + wallCnt * 20,
+      x: 100 + wallCnt * 2,
+      y: 100 + wallCnt * 2,
       width: 250,
       height: 5,
       fill: "black",

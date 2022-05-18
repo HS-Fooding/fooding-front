@@ -81,7 +81,7 @@ const TimeTable = styled.div`
 
 const LayoutWrapper = styled.div`
   display: inline-block;
-  width: 100%;
+  width: 120%;
 
   overflow-x: scroll;
   /*  white-space: nowrap;  */
@@ -250,7 +250,7 @@ const ManageReserv = () => {
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-      url: url + `/fooding/admin/restaurant/${35}/reservation`,
+      url: url + `/fooding/admin/restaurant/${36}/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -607,7 +607,7 @@ const ManageReserv = () => {
     const getToken = localStorage.getItem("token");
     const config = {
       method: "post",
-      url: url + `/fooding/admin/restaurant/35/reservation`,
+      url: url + `/fooding/admin/restaurant/36/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -632,21 +632,16 @@ const ManageReserv = () => {
       />
 
       {/* <button onClick={handleDate}>plusDate</button> */}
+      <div style={{marginBottom:"10px"}}>
       <Button onClick={onAddItem}>예약 추가</Button>
       <Button onClick={handleSubmit}>등록</Button>
-      <div
-        style={{
-          width: "100%",
-          height: "20px",
-          background: "black",
-          marginTop: "30px",
-        }}
-      ></div>
+      </div>
       <div
         style={{
           display: "flex",
 
           backgroundColor: "#f1f3f5",
+          marginBottom:"10px",
         }}
       >
         <TimeTable>
@@ -670,14 +665,7 @@ const ManageReserv = () => {
           </ResponsiveReactGridLayout>
         </LayoutWrapper>
       </div>
-      <div>
-        <div className="layoutJSON">
-          Displayed as <code>[x, y, w, h]</code>
-          <br />
-          <br />
-          <div className="columns">{stringifyLayout()}</div>
-        </div>
-      </div>
+      
       {manageModal ? (
         <ManageReserveModal parentCallback={handleCallback} />
       ) : null}

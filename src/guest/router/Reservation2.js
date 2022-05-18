@@ -373,8 +373,8 @@ const Reservation2 = () => {
             display: "flex",
             justifyContent: "center",
           }}
-          width={380}
-          height={250}
+          width={300}
+          height={200}
           //   fill={"yellow"}
           //   onMouseDown={checkDeselect}
           //   onTouchStart={checkDeselect}
@@ -384,10 +384,10 @@ const Reservation2 = () => {
               return (
                 <Rect
                   id={table?.id}
-                  x={table.x / 2}
-                  y={table.y / 2}
-                  width={table.width / 2}
-                  height={table.height / 2}
+                  x={table.x / 3}
+                  y={table.y / 3}
+                  width={table.width / 3}
+                  height={table.height / 3}
                   rotation={table.rotation}
                   onClick={() => {
                     onClickTable(
@@ -410,10 +410,10 @@ const Reservation2 = () => {
             {walls[currentIndex]?.map((wall, i) => {
               return (
                 <Rect
-                  x={wall.x / 2}
-                  y={wall.y / 2}
-                  width={wall.width / 2}
-                  height={wall.height / 2}
+                  x={wall.x / 3}
+                  y={wall.y / 3}
+                  width={wall.width / 3}
+                  height={wall.height / 3}
                   fill="#2C323E"
                   rotation={wall.rotation}
                   onClick={() => {
@@ -425,8 +425,8 @@ const Reservation2 = () => {
             {seats[currentIndex]?.map((seat, i) => {
               return (
                 <Circle
-                  x={seat.x / 2}
-                  y={seat.y / 2}
+                  x={seat.x / 3}
+                  y={seat.y / 3}
                   radius={7}
                   fill="#FF4B00"
                   rotation={seat.rotation}
@@ -436,10 +436,10 @@ const Reservation2 = () => {
             {windows[currentIndex]?.map((window, i) => {
               return (
                 <Rect
-                  x={window.x / 2}
-                  y={window.y / 2}
-                  width={window.width / 2}
-                  height={window.height / 2}
+                  x={window.x / 3}
+                  y={window.y / 3}
+                  width={window.width / 3}
+                  height={window.height / 3}
                   fill="#93D5FF"
                   rotation={window.rotation}
                 />
@@ -448,10 +448,10 @@ const Reservation2 = () => {
             {doors[currentIndex]?.map((door, i) => {
               return (
                 <Rect
-                  x={door.x / 2}
-                  y={door.y / 2}
-                  width={door.width / 2}
-                  height={door.height / 2}
+                  x={door.x / 3}
+                  y={door.y / 3}
+                  width={door.width / 3}
+                  height={door.height / 3}
                   fill="#433320"
                   rotation={door.rotation}
                 />
