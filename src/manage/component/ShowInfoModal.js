@@ -279,7 +279,13 @@ const ManageReservModal = ({info,status}) => {
           <button
             class="closeBtn"
             style={{ color: "rgba(0, 0, 0, 0.2)" }}
-            
+            onClick={()=>{
+              setModalTrigger(false);              
+              const modal=false;              
+              status(
+            modal                
+                )
+            }}
           >
             <i className="fa-solid fa-xmark closeIcon"></i>
           </button>
