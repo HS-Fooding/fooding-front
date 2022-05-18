@@ -29,6 +29,7 @@ import RestaurantSearch from "./guest/router/RestaurantSearch";
 import RestaurantInput from "./guest/component/RestaurantInput";
 
 import MyPageHome from "./guest/router/MyPageHome";
+import ReservList from "./guest/router/ReservList";
 
 import Location from "./guest/router/Location";
 function App() {
@@ -75,7 +76,11 @@ function App() {
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
-          <Route path="/guest/MyPage" element={<MyPageHome />}></Route>
+          <Route path="/guest/myPage" element={<MyPageHome />}></Route>
+          <Route
+            path="/guest/myPage/reservList"
+            element={<ReservList />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
