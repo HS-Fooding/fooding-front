@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
+import CurrentTable from "../component/CurrentTable";
 import {
   faCaretRight,
   faCaretDown,
@@ -228,7 +229,7 @@ const MoreMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color:orange;
+  color: orange;
   :hover {
     cursor: pointer;
   }
@@ -450,31 +451,29 @@ const MarketDetail = () => {
         {
           //세개만 만들어놓음.
           representative?.map((menu, index) => {
-           
-              return (
-                <EachMenu>
-                  <MenuContainer>
-                    <MenuInfo>
-                      <div className="MenuName">{menu.name}</div>
-                      <div className="MenuDescription">
-                        {menu.description.length > 50
-                          ? menu.description.slice(0, 50) + "..."
-                          : menu.description}
-                      </div>
-                      <div className="MenuPrice">
-                        {menu.price}
-                        <p>원</p>
-                      </div>
-                    </MenuInfo>
-                    <MenuImg>
-                      <div className="imgContainer">
-                        <img src={menu.image}></img>
-                      </div>
-                    </MenuImg>
-                  </MenuContainer>
-                </EachMenu>
-              );
-            
+            return (
+              <EachMenu>
+                <MenuContainer>
+                  <MenuInfo>
+                    <div className="MenuName">{menu.name}</div>
+                    <div className="MenuDescription">
+                      {menu.description.length > 50
+                        ? menu.description.slice(0, 50) + "..."
+                        : menu.description}
+                    </div>
+                    <div className="MenuPrice">
+                      {menu.price}
+                      <p>원</p>
+                    </div>
+                  </MenuInfo>
+                  <MenuImg>
+                    <div className="imgContainer">
+                      <img src={menu.image}></img>
+                    </div>
+                  </MenuImg>
+                </MenuContainer>
+              </EachMenu>
+            );
           })
         }
         <MoreMenu onClick={seeMoreMenu}>
@@ -522,6 +521,8 @@ const MarketDetail = () => {
             })
           : null}
       </MarketMenuInfo>
+
+      <CurrentTable></CurrentTable>
     </Container>
   );
 };
