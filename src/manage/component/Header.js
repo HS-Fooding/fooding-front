@@ -158,7 +158,7 @@ const Header = () => {
                 </Item>
               ) : (
                 <Item onClick={logOut} className="small">
-                  로그아웃
+                  <Link to="/manager/login">로그아웃</Link>
                 </Item>
               )}
 

@@ -29,26 +29,33 @@ const Button = styled.button`
   width: 200px;
   height: 160px;
 `;
-const token = localStorage.getItem("token");
 
 const Home = () => {
   let navigate = useNavigate();
-  let [isToken, setIsToken] = useState(false);
+  let [isManagerToken, setIsManagerToken] = useState(false);
+  let [isGuestToken, setIsGuestToken] = useState(false);
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const managerToken = localStorage.getItem("managerToken");
+    const guestToken = localStorage.getItem("guestToken");
+
     console.log("render");
-    if (token == undefined) {
+    if (managerToken == undefined) {
       console.log("istoken false");
-      setIsToken(false);
+      setIsManagerToken(false);
     } else {
       console.log("istoken true");
-      setIsToken(true);
+      setIsManagerToken(true);
+    }
+
+    if (guestToken == undefined) {
+      console.log("istoken false");
+      setIsGuestToken(false);
+    } else {
+      console.log("istoken true");
+      setIsGuestToken(true);
     }
   }, []);
-  const logoutFun = () => {
-    localStorage.clear();
-    setIsToken(false);
-  };
 
   return (
     <>
@@ -67,12 +74,17 @@ const Home = () => {
         <Link to={"/guest/sign"}>
           <Button>회원가입 </Button>
         </Link> */}
+        {isManagerToken == false ? (
+          <Link to={"/manager/login"}>
+            <Button>관리자</Button>
+          </Link>
+        ) : (
+          <Link to={"/manager/register"}>
+            <Button>관리자</Button>
+          </Link>
+        )}
 
-        <Link to={"/manager/register"}>
-          <Button>관리자</Button>
-        </Link>
-
-        {isToken == false ? (
+        {isGuestToken == false ? (
           <Link to={"/guest/login"}>
             <Button>손님</Button>
           </Link>

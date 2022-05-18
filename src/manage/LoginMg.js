@@ -172,7 +172,9 @@ const LoginMg = () => {
           </div>
         </InputBox>
         <LoginBtn>로그인</LoginBtn>
-        <SignupBtn>회원가입</SignupBtn>
+        <Link to="/manager/signup">
+          <SignupBtn>회원가입</SignupBtn>
+        </Link>
       </Form>
     </Container>
   );
