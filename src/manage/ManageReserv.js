@@ -199,13 +199,7 @@ const ManageReserv = () => {
   const [isshowModalForInfo,setShowModalForInfo] = useState();
   const [isShowModalInfo, setShowModalInfo] = useState();
   let tomorrow = new Date();
-  let currentEl;
-  const [blockisCar,setBlockIsCar] = useState();
-  const [blockNickname,setBlockNickname] = useState();
-  const [blockReservAt,setBlockReservAt] = useState();
-  const [blockReservCount,setBlockReservCount] = useState();
-  const [blockReservId,setBlockReservId] = useState();
-  const [blockTableNum,setBlockTableNum] = useState();
+  
   
   useEffect(() => {
     console.log("startDate:", startDate);
@@ -377,21 +371,12 @@ const ManageReserv = () => {
   //   preventCollision: true,
   // };
   const handleShowCallback = (
-    blockisCar,
-    blockNickname,
-    blockReservAt,
-    blockReservCount,
-    blockReservId,
-    blockTableNum,    
-    modal,
-    submit
+    modal
   )=>{
     modal ? setShowModalForInfo(true):setShowModalForInfo(false); 
  
   }
-  const modal = (modal)=>{
-    modal ? setShowModalForInfo(true):setShowModalForInfo(false); 
-  }
+ 
   const handleCallback = (
     nickname,
     name,
@@ -562,21 +547,9 @@ const ManageReserv = () => {
    setTimeout(1000,setShowModalForInfo(true));
  }
   const showModalForInfo = (el) =>{
-     currentEl=el;
     setShowModalInfo(el);
-    setBlockIsCar(el.isCar);
-    setBlockNickname(el.nickname);
-    setBlockReservAt(el.resevAt);
-    setBlockReservCount(el.reservCount);
-    setBlockReservId(el.reservId);
-    setBlockTableNum(el.tableNum);
-    console.log("정보정보정보",el);
     makeModalTrue();
   }
-  useEffect(()=>{
-    console.log("졸려",isShowModalInfo);
-    console.log("차",blockisCar);
-  },[isShowModalInfo,blockisCar]);
   const handleSubmit = () => {
     const data = JSON.stringify(
       [...layout, ...removedLayout]
@@ -670,7 +643,7 @@ const ManageReserv = () => {
         <ManageReserveModal parentCallback={handleCallback} />
       ) : null}
       {isshowModalForInfo ? (
-       <ShowInfoModal info={handleShowCallback} />
+       <ShowInfoModal info={isShowModalInfo} status={handleShowCallback} />
                           
       ) : null}
     </Container>

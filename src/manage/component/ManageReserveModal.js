@@ -8,7 +8,6 @@ import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import "@fortawesome/fontawesome-free/js/all.js";
 import NumericInput from "react-numeric-input";
-
 const fadeIn = keyframes`
   0% {
     opacity: 0;
@@ -17,7 +16,6 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-
 const fadeOut = keyframes`
   0% {
     opacity: 1;
@@ -26,7 +24,6 @@ const fadeOut = keyframes`
     opacity: 0;
   }
 `;
-
 const Container = styled.div`
   width: 350px;
   height: 500px;
@@ -42,16 +39,13 @@ const Container = styled.div`
   animation: ${fadeIn} 0.15s ease-out;
   border-top: 5px solid ${(props) => props.theme.mainColor};
 `;
-
 const Header = styled.div`
   width: 100%;
   height: 50px;
-
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-
   .closeBtn {
     position: absolute;
     right: 20px;
@@ -62,7 +56,6 @@ const Header = styled.div`
     }
   }
 `;
-
 const Footer = styled.div`
   width: 100%;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -73,7 +66,6 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: right;
-
   button {
     width: 80px;
     height: 30px;
@@ -83,7 +75,6 @@ const Footer = styled.div`
     margin: 0px 7px;
     cursor: pointer;
   }
-
   .saveBtn {
     background-color: ${(props) => props.theme.mainColor};
     color: white;
@@ -93,7 +84,6 @@ const Footer = styled.div`
     background-color: inherit;
   }
 `;
-
 const InnerBox = styled.div`
   width: 320px;
   height: 500px;
@@ -101,16 +91,13 @@ const InnerBox = styled.div`
   padding: 5px;
   
 `;
-
 const halfBox = styled.div`
   width: 50%;
   height: 320px;
   padding: 20px;
 `;
-
 const InputsBox = styled(halfBox)`
   border-right: 1px solid rgba(0, 0, 0, 0.1);
-
   display: flex;
   flex-direction: column;
 `;
@@ -147,7 +134,6 @@ const InputBox = styled.div`
     font-weight: bold;
     color: ${(props) => props.theme.mainColor};
   }
-
   .tableTag {
     width: 34px;
     height: 30px;
@@ -156,7 +142,6 @@ const InputBox = styled.div`
     font-weight: normal;
     border: none;
   }
-
   .resizeBtn {
     width: 30px;
     height: 30px;
@@ -172,32 +157,25 @@ const InputBox = styled.div`
     }
   }
 `;
-
 const PreviewBox = styled(halfBox)``;
-
 const Background = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   position: fixed;
-
   background-color: ${(props) =>
     props.visible ? "rgba(0, 0, 0, 0.6)" : "none"};
 `;
-
 // 테이블 번호
 // 최대 인원
 // 최소 인원
 // 테이블 사이즈
-
-const ManageReservModal = ({info}) => {
+const ManageReservModal = ({ parentCallback}) => {
   const [validation, setValidation] = useState([false, false, false]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
-
-  const [reserveInfo,setReserveInfo] = useState(info);
   
   const [nickname,setNickname] = useState();
   const [name,setName] = useState();
@@ -206,7 +184,6 @@ const ManageReservModal = ({info}) => {
   const [reservCount,setReservCount]=useState();
   const [isCar,setIsCar] = useState();
   const [phoneNum,setPhoneNum]= useState();
-
   const [availableHour,setAvailableHour] = useState();
   const [availableMinute,setAvailableMinute] = useState();
 
@@ -216,9 +193,7 @@ const ManageReservModal = ({info}) => {
     const {
       target: { value, className },
     } = event;
-
     console.log(value);
-
     if (className=="nickname"){
         setNickname(value);
     }
@@ -246,15 +221,31 @@ const ManageReservModal = ({info}) => {
     
   };
   
-useEffect(()=>{
-  console.log("show 모달 정보 ",info);
-});
   const onKeyPress = (event) => {
     const { code } = event;
     if (code === "Enter") event.preventDefault();
   };
-
- 
+  const handleEditNSubmit = async () => {      
+      let time = `${availableHour}:${availableMinute}`;    
+        if(nickname&&name&&time&&tableNum&&reservCount&&isCar){
+         setModalTrigger(false);
+        const modal = false;
+        const submit = true;
+        const edit = true;    
+        parentCallback(
+            nickname,
+            name,
+            time,
+            tableNum,
+            reservCount,
+            isCar,
+            phoneNum,
+            modal,
+            submit
+        );    
+        }
+  };
+  
   return (
     <>
       <Background visible={modalTrigger} />
@@ -267,12 +258,27 @@ useEffect(()=>{
               fontSize: "16px",
             }}
           >
-            예약 정보
+            예약 등록
           </span>
           <button
             class="closeBtn"
             style={{ color: "rgba(0, 0, 0, 0.2)" }}
-            
+            onClick={() => {
+              setModalTrigger(false);
+              const modal = false;
+              const submit = false;
+              const edit = false;
+              parentCallback(
+                nickname,
+                name,
+                reservAt,
+                tableNum,
+                reservCount,
+                isCar,
+                phoneNum,
+                modal
+              );
+            }}
           >
             <i className="fa-solid fa-xmark closeIcon"></i>
           </button>
@@ -281,51 +287,135 @@ useEffect(()=>{
          
             <InputBox>
               <div>닉네임</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <input
+                className="nickname"
+                type="text"
+                value={nickname}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+              />
             </InputBox>
             <InputBox>
               <div>이름</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <input
+                type="text"
+                className="name"
+                value={name}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+              />
             </InputBox>
             <InputBox>
               <div>예약 시간</div>
-              <div><p>{reserveInfo.reservAt}</p></div>
-              
+            
+               <NumericInput
+                        style={{
+                          input: {
+                            height: "30px",
+                            width:"60px",
+                          },
+                        }}
+                        min={0}
+                        max={24}
+                        step={1}
+                        value={availableHour}
+                        onChange={onChangeAvailableHour}
+                      />
+                      <hr/><p>시</p><hr />
+                      <NumericInput
+                        style={{
+                          input: {
+                            height: "30px",
+                            width:"60px",
+                          },
+                        }}
+                        min={0}
+                        max={30}
+                        step={30}
+                        value={availableMinute}
+                        onChange={onChangeAvailableMinute}
+                      /><hr/><p>분</p>
             </InputBox>
-
             <InputBox>
               <div>테이블 번호</div>
-              <div><p>{reserveInfo.tableNum}번</p></div>
+              <input
+                type="number"
+                className="tableNum"
+                value={tableNum}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+              />
             </InputBox>
             <InputBox>
               <div>예약 명수</div>
-              <div><p>{reserveInfo.reservCount}명</p></div>
+              <input
+                type="number"
+                className="reservCount"
+                value={reservCount}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+              />
             </InputBox>
             <InputBox>
               <div>차량 여부</div>
              
-              <div>{reserveInfo.isCar ? <p>있음</p> : <p>없음</p>}</div>
+              <input
+                type="radio"
+                className="isCar"
+                value={true}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+                name="isCar"
+              /> <p style={{marginRight:"10px"}}>있음</p>
+                <input
+                type="radio"
+                className="isCar"
+                value={false}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+                name="isCar"
+              /> 없음
             
             </InputBox>
             <InputBox>
               <div>전화 번호</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <input
+                type="text"
+                className="phoneNum"
+                value={phoneNum}
+                onChange={onChange}
+                onKeyPress={onKeyPress}
+              />
             </InputBox>
-
          
          
         </InnerBox>
         <Footer>
           <button
             class="closeBtn"
-            onClick={()=>{
+            onClick={() => {
               setModalTrigger(false);
-            
+              const modal = false;
+              const submit = false;
+              const edit = false;
+              parentCallback(
+                nickname,
+                name,
+                reservAt,
+                tableNum,
+                reservCount,
+                isCar,
+                phoneNum,
+                modal,
+                submit
+                )
             }}
           >
             닫기
           </button>
-      
+          <button className="saveBtn" onClick={handleEditNSubmit}>
+            등록
+          </button>
         </Footer>
       </Container>
     </>

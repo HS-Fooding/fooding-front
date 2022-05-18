@@ -95,7 +95,7 @@ const Footer = styled.div`
 `;
 
 const InnerBox = styled.div`
-  width: 320px;
+  width: 280px;
   height: 500px;
   background-color: white;
   padding: 5px;
@@ -119,6 +119,7 @@ const InputBox = styled.div`
   width: 100%;
   margin-bottom: 20px;
   align-items: center;
+  justify-content: space-between;
   
   .tableNum, .reservCount{
     width:50px;
@@ -140,14 +141,16 @@ const InputBox = styled.div`
     outline: none;
   }
   div {
-    width: 140px;
+    
     height: 30px;
-    display: flex;
+    display: inline-block;
     align-items: center;
     font-weight: bold;
     color: ${(props) => props.theme.mainColor};
   }
-
+  .inlineblock{
+    display:inline-block;
+  }
   .tableTag {
     width: 34px;
     height: 30px;
@@ -191,7 +194,7 @@ const Background = styled.div`
 // 최소 인원
 // 테이블 사이즈
 
-const ManageReservModal = ({info}) => {
+const ManageReservModal = ({info,status}) => {
   const [validation, setValidation] = useState([false, false, false]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
@@ -210,12 +213,12 @@ const ManageReservModal = ({info}) => {
   const [availableHour,setAvailableHour] = useState();
   const [availableMinute,setAvailableMinute] = useState();
 
-  const [blockisCar,setBlockIsCar] = useState();
-  const [blockNickname,setBlockNickname] = useState("");
-  const [blockReservAt,setBlockReservAt] = useState("");
-  const [blockReservCount,setBlockReservCount] = useState("");
-  const [blockReservId,setBlockReservId] = useState("");
-  const [blockTableNum,setBlockTableNum] = useState("");
+  const [blockIsCar,setBlockIsCar] = useState(info.isCar);
+  const [blockNickname,setBlockNickname] = useState(info.nickname);
+  const [blockReservAt,setBlockReservAt] = useState(info.reservAt);
+  const [blockReservCount,setBlockReservCount] = useState(info.reservCount);
+  const [blockReservId,setBlockReservId] = useState(info.reservId);
+  const [blockTableNum,setBlockTableNum] = useState(info.tableNum);
   
 
   const onChangeAvailableHour = (e)=> setAvailableHour(e);
@@ -253,10 +256,6 @@ const ManageReservModal = ({info}) => {
    
     
   };
-  console.log("show 모달 정보 ",info);
-useEffect(()=>{
-  console.log("show 모달 정보 ",info);
-},[]);
   const onKeyPress = (event) => {
     const { code } = event;
     if (code === "Enter") event.preventDefault();
@@ -289,35 +288,35 @@ useEffect(()=>{
          
             <InputBox>
               <div>닉네임</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <div classname="inlineblock"><p>{blockNickname}</p></div>
             </InputBox>
             <InputBox>
               <div>이름</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <div classname="inlineblock"><p></p></div>
             </InputBox>
             <InputBox>
               <div>예약 시간</div>
-              <div><p>{reserveInfo.reservAt}</p></div>
+              <div classname="inlineblock"><p>{blockReservAt}</p></div>
               
             </InputBox>
 
             <InputBox>
               <div>테이블 번호</div>
-              <div><p>{reserveInfo.tableNum}번</p></div>
+              <div classname="inlineblock"><p>{blockTableNum}번</p></div>
             </InputBox>
             <InputBox>
               <div>예약 명수</div>
-              <div><p>{reserveInfo.reservCount}명</p></div>
+              <div classname="inlineblock"><p>{blockReservCount}명</p></div>
             </InputBox>
             <InputBox>
               <div>차량 여부</div>
              
-              <div>{reserveInfo.isCar ? <p>있음</p> : <p>없음</p>}</div>
+              <div classname="inlineblock">{blockIsCar ? <p>있음</p> : <p>없음</p>}</div>
             
             </InputBox>
             <InputBox>
               <div>전화 번호</div>
-              <div><p>{reserveInfo.nickname}</p></div>
+              <div classname="inlineblock"><p></p></div>
             </InputBox>
 
          
@@ -327,20 +326,10 @@ useEffect(()=>{
           <button
             class="closeBtn"
             onClick={()=>{
-              setModalTrigger(false);
-              
-              const modal=false;
-              
-              info(
-                blockisCar,
-                blockNickname,
-                blockReservAt,
-                blockReservCount,
-                blockReservId,
-                blockTableNum,    
-                false,
-                true
-                
+              setModalTrigger(false);              
+              const modal=false;              
+              status(
+            modal                
                 )
             }}
           >
