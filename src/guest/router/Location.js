@@ -155,7 +155,7 @@ const Location = () => {
       console.log("!isSearch!!");
       var config = {
         method: "get",
-        url: url + `/fooding/restaurant?coord=true`,
+        url: url + `/fooding/restaurant/coord?x=${center[1]}&y=${center[0]}`,
         headers: {
           Authorization: "Bearer " + getToken,
         },

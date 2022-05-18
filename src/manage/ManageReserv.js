@@ -83,8 +83,8 @@ const LayoutWrapper = styled.div`
   display: inline-block;
   width: 100%;
 
-   overflow-x: scroll;
-/*  white-space: nowrap;  */
+  overflow-x: scroll;
+  /*  white-space: nowrap;  */
 
   .react-grid-layout {
     background-color: inherit;
@@ -232,12 +232,12 @@ const ManageReserv = () => {
   };
 
   useEffect(async () => {
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
 
     let year = startDate.getFullYear();
     let month = startDate.getMonth() + 1;
     let date = startDate.getDate();
-    
+
     if (month.toString().length == 1) {
       month = "0" + month;
     }
@@ -297,7 +297,7 @@ const ManageReserv = () => {
         setTableNums(response.data.tableInfo.tableNums);
         setOpenTime(tableInfo.open);
         setCloseTime(tableInfo.close);
-      
+
         const openHour = tableInfo.open.substring(0, 2);
         const openMinute = tableInfo.open.substring(3, 5);
         const closeHour = tableInfo.close.substring(0, 2);
@@ -363,7 +363,6 @@ const ManageReserv = () => {
         console.log(error);
       });
   }, [startDate]);
-
 
   // ManageReserv.defaultProps = {
   //   className: "layout",
@@ -665,7 +664,7 @@ const ManageReserv = () => {
             onBreakpointChange={onBreakpointChange}
             onRemoveItem={onRemoveItem}
             {...ManageReserv.defaultProps}
-             style={{ width: "100%" }}
+            style={{ width: "100%" }}
           >
             {generateDOM()}
           </ResponsiveReactGridLayout>

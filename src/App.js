@@ -10,7 +10,7 @@ import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import ReviewDetail from "./guest/router/ReviewDetail";
 import Register from "./manage/Register";
-import Reservation from "./manage/Reservation";
+// import Reservation from "./manage/Reservation";
 import LoginMg from "./manage/LoginMg";
 import SignUpMg from "./manage/SignUpMg";
 import MyCanvas from "./manage/MyCanvas";
@@ -28,6 +28,8 @@ import MarketDetail from "./guest/router/MarketDetail";
 import RestaurantSearch from "./guest/router/RestaurantSearch";
 import RestaurantInput from "./guest/component/RestaurantInput";
 
+import MyPageHome from "./guest/router/MyPageHome";
+
 import Location from "./guest/router/Location";
 function App() {
   return (
@@ -43,7 +45,6 @@ function App() {
             path="/review/:marketId/:reviewId"
             element={<ReviewDetail />}
           ></Route>
-          <Route path="/reservation" element={<Reservation />}></Route>
 
           <Route path="/manager/login" element={<LoginMg />}></Route>
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
@@ -55,7 +56,6 @@ function App() {
             element={<ManageReserv />}
           ></Route>
           <Route path="/manager/chart" element={<Chart />}></Route>
-          <Route path="/canvas" element={<MyCanvas />}></Route>
 
           <Route path="/manager/userData" element={<UserData />}></Route>
           <Route
@@ -75,6 +75,7 @@ function App() {
           <Route path="/guest/reservation1" element={<Reservation1 />}></Route>
           <Route path="/guest/reservation2" element={<Reservation2 />}></Route>
           <Route path="/guest/:marketId" element={<MarketDetail />}></Route>
+          <Route path="/guest/MyPage" element={<MyPageHome />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { url } from "../Api";
 import axios from "axios";
+import Header from "./component/Header";
+import styled from "styled-components";
 
 import {
     LineChart,
@@ -20,106 +22,52 @@ import {
     ReferenceLine,
     Pie,
     PieChart,
+    Cell,
 } from "recharts";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
-const radarChart_data = [
-    {
-        subject: "Math",
-        A: 120,
-        B: 110,
-        fullMark: 150,
-    },
-    {
-        subject: "Chinese",
-        A: 98,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: "English",
-        A: 86,
-        B: 130,
-        fullMark: 150,
-    },
-    {
-        subject: "Geography",
-        A: 99,
-        B: 100,
-        fullMark: 150,
-    },
-    {
-        subject: "Physics",
-        A: 85,
-        B: 90,
-        fullMark: 150,
-    },
-    {
-        subject: "History",
-        A: 65,
-        B: 85,
-        fullMark: 150,
-    },
-];
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 40px;
+    align-items: center;
+`;
 
-const data01 = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-];
-const lineChart_data = [
-    {
-        name: "Page A",
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: "Page B",
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: "Page C",
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: "Page D",
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: "Page E",
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: "Page F",
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: "Page G",
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
-];
+const Boxes = styled.div`
+    display: flex;
+`;
+
+const Box = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 20px 80px;
+`;
+
+const Title = styled.span`
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    &:last-child {
+        text-align: left;
+        color: red;
+    }
+`;
 
 const Chart = () => {
-    const [ageBarChart, setAgeBarChart] = React.useState([]);
-    const [sexBarChart, setSexBarChart] = React.useState([]);
-    const [jobPieChart, setJobPieChart] = React.useState([]);
-    const [favorRadarChart, setFavorRadarChart] = React.useState([]);
+    const [ageBarChart, setAgeBarChart] = useState([]);
+    const [sexBarChart, setSexBarChart] = useState([]);
+    const [jobPieChart, setJobPieChart] = useState([]);
+    const [favorRadarChart, setFavorRadarChart] = useState([]);
+    const [reserveLineChart, setReserveLineChart] = useState([]);
+    const [arrForMax, setArrForMax] = useState([]);
 
     useEffect(async () => {
-        const getToken = localStorage.getItem("token");
+        const getToken = localStorage.getItem("managerToken");
 
         const config = {
             method: "get",
@@ -137,6 +85,9 @@ const Chart = () => {
 
         await axios(config)
             .then(async (response) => {
+                const data = response.data.data;
+                const workingTime = response.data.workingTime;
+
                 let ageArr = [0, 0, 0, 0, 0, 0];
                 let menCount = 0;
                 let womenCount = 0;
@@ -144,9 +95,24 @@ const Chart = () => {
                 let jobResult = [];
                 let favor = new Map([]);
                 let favorResult = [];
+                let time = new Map([]);
+                let timeResult = [];
+                const openHour = parseInt(workingTime.open.split(":")[0]);
+                const openMin = parseInt(workingTime.open.split(":")[1]);
+                const closeHour = parseInt(workingTime.close.split(":")[0]);
+                const closeMin = parseInt(workingTime.close.split(":")[1]);
+                let h = openHour;
+                let m = openMin;
+                while (true) {
+                    if (h === closeHour && m === closeMin) break;
+                    h < 10 ? time.set(`0${h}:00`, 0) : time.set(`${h}:00`, 0);
+                    h < 10 ? time.set(`0${h}:30`, 0) : time.set(`${h}:30`, 0);
+                    h++;
+                }
+                setArrForMax(time);
 
-                await response.data.forEach((el) => {
-                    // console.log(el);
+                await data.forEach((el) => {
+                    // console.log("!!", el);
                     // age part
                     if (parseInt(el.age) < 20) ageArr[0] += 1;
                     else if (parseInt(el.age) < 30) ageArr[1] += 1;
@@ -167,7 +133,7 @@ const Chart = () => {
                         if (el.job != null) job.set(el.job, 1);
                     }
 
-                    // TODO : favor count
+                    // favor part
                     el.favor.forEach((m) => {
                         if (favor.has(m)) {
                             const tmp = favor.get(m);
@@ -176,6 +142,10 @@ const Chart = () => {
                             if (m != null) favor.set(m, 1);
                         }
                     });
+
+                    // reservation time part
+                    const tmp = time.get(el.reserveTime);
+                    time.set(el.reserveTime, tmp + 1);
                 });
 
                 setAgeBarChart([
@@ -204,6 +174,7 @@ const Chart = () => {
                         나이: ageArr[5],
                     },
                 ]);
+
                 setSexBarChart([
                     {
                         name: "남자",
@@ -221,70 +192,127 @@ const Chart = () => {
                 setJobPieChart(jobResult);
 
                 for (var obj of favor) {
-                    favorResult.push({ subject: obj[0], value: parseInt(obj[1]), fullMark: 30 });
+                    favorResult.push({
+                        subject: obj[0],
+                        value: parseInt(obj[1]),
+                        fullMark: 30,
+                    });
                 }
                 setFavorRadarChart(favorResult);
+
+                for (var obj of time) {
+                    timeResult.push({ name: obj[0], value: parseInt(obj[1]) });
+                }
+                setReserveLineChart(timeResult);
             })
             .catch((error) => console.log(error));
     }, []);
 
+    const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
     return (
         <>
-            <BarChart width={400} height={250} data={ageBarChart}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="나이" fill="#82ca9d" />
-            </BarChart>
-            <BarChart width={400} height={250} data={sexBarChart}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="성별" fill="#82ca9d" />
-            </BarChart>
-            <PieChart width={400} height={250}>
-                <Pie data={jobPieChart} dataKey="value" cx="50%" cy="50%" fill="#8884d8" />
-                <Tooltip />
-            </PieChart>
-            <RadarChart outerRadius={90} width={400} height={250} data={favorRadarChart}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="subject" />
-                <PolarRadiusAxis angle={30} domain={[0, 10]} />
-                <Radar
-                    name="Favor"
-                    dataKey="value"
-                    stroke="#8884d8"
-                    fill="#8884d8"
-                    fillOpacity={0.6}
-                />
-                <Tooltip />
-                <Legend />
-            </RadarChart>
-            <LineChart
-                width={500}
-                height={300}
-                data={lineChart_data}
-                margin={{
-                    top: 20,
-                    right: 50,
-                    left: 20,
-                    bottom: 5,
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" />
-                <ReferenceLine y={9800} label="Max" stroke="red" />
-                <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-            </LineChart>
+            <Header />
+            <Container>
+                <Boxes>
+                    <Box>
+                        <Title>나이</Title>
+                        <BarChart width={400} height={250} data={ageBarChart}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="나이" fill="#82ca9d" />
+                        </BarChart>
+                    </Box>
+                    <Box>
+                        <Title>직업</Title>
+                        <PieChart width={400} height={250}>
+                            <Pie
+                                data={jobPieChart}
+                                cx="50%"
+                                cy="50%"
+                                label
+                                fill="#8884d8"
+                                dataKey="value"
+                            >
+                                {jobPieChart.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                        </PieChart>
+                    </Box>
+                </Boxes>
+                <Boxes>
+                    <Box>
+                        <Title>성별</Title>
+                        <BarChart width={400} height={250} data={sexBarChart}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="성별" fill="#82ca9d" />
+                        </BarChart>
+                    </Box>
+
+                    <Box>
+                        <Title>취향</Title>
+                        <RadarChart
+                            outerRadius={90}
+                            width={400}
+                            height={250}
+                            data={favorRadarChart}
+                        >
+                            <PolarGrid />
+
+                            <PolarAngleAxis dataKey="subject" />
+                            <PolarRadiusAxis angle={30} domain={[0, 10]} />
+                            <Radar
+                                name="취향"
+                                dataKey="value"
+                                stroke="#8884d8"
+                                fill="#8884d8"
+                                fillOpacity={0.6}
+                            />
+                            <Tooltip />
+                            <Legend />
+                        </RadarChart>
+                    </Box>
+                </Boxes>
+                <Box>
+                    <Title class="reserveCount">시간별 예약 수</Title>
+                    <LineChart
+                        width={1000}
+                        height={500}
+                        data={reserveLineChart}
+                        margin={{
+                            top: 20,
+                            right: 50,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        {/* <ReferenceLine x="Page C" stroke="red" label="Max PV PAGE" /> */}
+                        <ReferenceLine
+                            y={Math.max(...arrForMax.values())}
+                            label="Max"
+                            stroke="red"
+                        />
+                        <Line type="monotone" dataKey="value" stroke="#8884d8" name="예약 수" />
+                    </LineChart>
+                </Box>
+            </Container>
         </>
     );
 };

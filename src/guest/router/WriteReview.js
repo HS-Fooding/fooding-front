@@ -267,7 +267,7 @@ const WriteReview = () => {
     //console.log("getCookie", getCookie("JSESSIONID"));
     // console.log("documentcookie", document.cookie);
     //console.log("token", token);
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("guestToken");
     console.log(getToken);
   }, []);
   const countStar = () => {

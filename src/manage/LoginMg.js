@@ -109,7 +109,7 @@ const LoginMg = () => {
     axios(config)
       .then(function (response) {
         console.log("responseresponse", response);
-        localStorage.setItem("token", response.data.token.accessToken);
+        localStorage.setItem("managerToken", response.data.token.accessToken);
         if (response.data.restaurants) {
           localStorage.setItem("marketId", response.data.restaurants[0]);
         }
@@ -172,7 +172,9 @@ const LoginMg = () => {
           </div>
         </InputBox>
         <LoginBtn>로그인</LoginBtn>
-        <SignupBtn>회원가입</SignupBtn>
+        <Link to="/manager/signup">
+          <SignupBtn>회원가입</SignupBtn>
+        </Link>
       </Form>
     </Container>
   );

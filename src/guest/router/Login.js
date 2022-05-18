@@ -212,7 +212,7 @@ const Login = () => {
 
         console.log("token", response.data.token.accessToken);
 
-        localStorage.setItem("token", response.data.token.accessToken);
+        localStorage.setItem("guestToken", response.data.token.accessToken);
         console.log(response.status);
       })
       .catch(function (error) {

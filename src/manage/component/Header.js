@@ -107,7 +107,7 @@ const Header = () => {
   const reservationMatch = useMatch("/manager/manageReserv");
   const registerMatch = useMatch("/manager/register");
   const currentTableMatch = useMatch("/manager/currentTableState");
-  const userDataMatch = useMatch("/manager/userData");
+  const userDataMatch = useMatch("/manager/chart");
   let location = useLocation();
 
   let [isToken, setIsToken] = useState(false);
@@ -118,7 +118,7 @@ const Header = () => {
 
   useEffect(() => {
     //window.location.reload(); // 새로고침
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("managerToken");
     if (token == undefined) {
       setIsToken(false);
     } else {
@@ -158,7 +158,7 @@ const Header = () => {
                 </Item>
               ) : (
                 <Item onClick={logOut} className="small">
-                  로그아웃
+                  <Link to="/manager/login">로그아웃</Link>
                 </Item>
               )}
 
@@ -189,7 +189,7 @@ const Header = () => {
                 </Link>
               </Item>
               <Item>
-                <Link to="/manager/userData">
+                <Link to="/manager/chart">
                   사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>

@@ -18,7 +18,7 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   margin-bottom: 30px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 `;
@@ -319,7 +319,7 @@ const Reservation2 = () => {
       availableTable
     );
 
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("guestToken");
     const marketId = localStorage.getItem("marketId");
 
     var data = JSON.stringify({
@@ -368,7 +368,11 @@ const Reservation2 = () => {
       </ButtonContainer>
       <MapContainer>
         <Stage
-          style={{ marginTop: "10px",display:"flex",justifyContent:"center" }}
+          style={{
+            marginTop: "10px",
+            display: "flex",
+            justifyContent: "center",
+          }}
           width={380}
           height={250}
           //   fill={"yellow"}
