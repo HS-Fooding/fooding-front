@@ -58,15 +58,20 @@ const MyPageHome = () => {
 
   return (
     <Container>
-      <Header back="/guest/restaurantList" title={""} />
+      <Header back="/guest/restaurantList" title={"마이 페이지"} />
       <Buttons>
-        <Button>
-          <div>
-            <i className="fa-solid fa-list leftIcon"></i>
-            예약 리스트
-          </div>
-          <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
-        </Button>
+        <Link
+          style={{ textDecoration: "none", color: "inherit" }}
+          to={"/guest/myPage/reservList"}
+        >
+          <Button>
+            <div>
+              <i className="fa-solid fa-list leftIcon"></i>
+              예약 리스트
+            </div>
+            <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
+          </Button>
+        </Link>
         <Button>
           <div>
             <i className="fa-regular fa-star leftIcon"></i>
