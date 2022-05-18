@@ -210,6 +210,14 @@ const ManageReservModal = ({info}) => {
   const [availableHour,setAvailableHour] = useState();
   const [availableMinute,setAvailableMinute] = useState();
 
+  const [blockisCar,setBlockIsCar] = useState();
+  const [blockNickname,setBlockNickname] = useState("");
+  const [blockReservAt,setBlockReservAt] = useState("");
+  const [blockReservCount,setBlockReservCount] = useState("");
+  const [blockReservId,setBlockReservId] = useState("");
+  const [blockTableNum,setBlockTableNum] = useState("");
+  
+
   const onChangeAvailableHour = (e)=> setAvailableHour(e);
   const onChangeAvailableMinute = (e)=> setAvailableMinute(e+"0");
   const onChange = (event) => {
@@ -245,10 +253,10 @@ const ManageReservModal = ({info}) => {
    
     
   };
-  
+  console.log("show 모달 정보 ",info);
 useEffect(()=>{
   console.log("show 모달 정보 ",info);
-});
+},[]);
   const onKeyPress = (event) => {
     const { code } = event;
     if (code === "Enter") event.preventDefault();
@@ -320,7 +328,20 @@ useEffect(()=>{
             class="closeBtn"
             onClick={()=>{
               setModalTrigger(false);
-            
+              
+              const modal=false;
+              
+              info(
+                blockisCar,
+                blockNickname,
+                blockReservAt,
+                blockReservCount,
+                blockReservId,
+                blockTableNum,    
+                false,
+                true
+                
+                )
             }}
           >
             닫기

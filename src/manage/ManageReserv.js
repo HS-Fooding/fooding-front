@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker"; // DatePicker 라는 컴포넌트도 
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 맥이기
 import Header from "./component/Header";
 import ManageReserveModal from "./component/ManageReserveModal";
-
+import ShowInfoModal from "./component/ShowInfoModal";
 const Container = styled.div`
   margin-top: 100px;
   /* display: flex;
@@ -196,9 +196,17 @@ const ManageReserv = () => {
   const [timeTable, setTimeTable] = useState([]);
   const [tableNums, setTableNums] = useState();
   const [tableNumsCount, setTableNumsCount] = useState();
-
+  const [isshowModalForInfo,setShowModalForInfo] = useState();
+  const [isShowModalInfo, setShowModalInfo] = useState();
   let tomorrow = new Date();
-
+  let currentEl;
+  const [blockisCar,setBlockIsCar] = useState();
+  const [blockNickname,setBlockNickname] = useState();
+  const [blockReservAt,setBlockReservAt] = useState();
+  const [blockReservCount,setBlockReservCount] = useState();
+  const [blockReservId,setBlockReservId] = useState();
+  const [blockTableNum,setBlockTableNum] = useState();
+  
   useEffect(() => {
     console.log("startDate:", startDate);
     console.log(
@@ -369,7 +377,22 @@ const ManageReserv = () => {
   //   // This turns off rearrangement so items will not be pushed arround.
   //   preventCollision: true,
   // };
-
+  const handleShowCallback = (
+    blockisCar,
+    blockNickname,
+    blockReservAt,
+    blockReservCount,
+    blockReservId,
+    blockTableNum,    
+    modal,
+    submit
+  )=>{
+    modal ? setShowModalForInfo(true):setShowModalForInfo(false); 
+ 
+  }
+  const modal = (modal)=>{
+    modal ? setShowModalForInfo(true):setShowModalForInfo(false); 
+  }
   const handleCallback = (
     nickname,
     name,
@@ -484,7 +507,8 @@ const ManageReserv = () => {
     return _.map(layout, (el, i) => {
       const t = el.i;
       return (
-        <div key={t} data-grid={el}>
+        <div key={t} data-grid={el} 
+        onDoubleClick={()=>showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
           <div>{el.tableNum}번 테이블</div>
           <div>{el.nickname}</div>
@@ -535,7 +559,25 @@ const ManageReserv = () => {
       );
     });
   };
-
+ const makeModalTrue= ()=>{
+   setTimeout(1000,setShowModalForInfo(true));
+ }
+  const showModalForInfo = (el) =>{
+     currentEl=el;
+    setShowModalInfo(el);
+    setBlockIsCar(el.isCar);
+    setBlockNickname(el.nickname);
+    setBlockReservAt(el.resevAt);
+    setBlockReservCount(el.reservCount);
+    setBlockReservId(el.reservId);
+    setBlockTableNum(el.tableNum);
+    console.log("정보정보정보",el);
+    makeModalTrue();
+  }
+  useEffect(()=>{
+    console.log("졸려",isShowModalInfo);
+    console.log("차",blockisCar);
+  },[isShowModalInfo,blockisCar]);
   const handleSubmit = () => {
     const data = JSON.stringify(
       [...layout, ...removedLayout]
@@ -547,7 +589,7 @@ const ManageReserv = () => {
               booker: {
                 member_id: 0,
                 phoneNum: m.status === "NEW" ? m.phoneNum : "",
-                name: "",
+                name: m.name,//""
                 nickName: m.nickname,
               },
               reservId: m.reservId,
@@ -617,7 +659,7 @@ const ManageReserv = () => {
         <LayoutWrapper>
           <ResponsiveReactGridLayout
 
-            layout={layout}
+            layout={layout}           
             onDragStop={onLayoutChange}
             onResize={onLayoutChange}
             onBreakpointChange={onBreakpointChange}
@@ -639,6 +681,10 @@ const ManageReserv = () => {
       </div>
       {manageModal ? (
         <ManageReserveModal parentCallback={handleCallback} />
+      ) : null}
+      {isshowModalForInfo ? (
+       <ShowInfoModal info={handleShowCallback} />
+                          
       ) : null}
     </Container>
   );
