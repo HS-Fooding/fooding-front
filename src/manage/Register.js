@@ -18,8 +18,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 200px 0px;
-  
+  /* margin: 200px 0px; */
+  padding: 200px 0px;
 `;
 const InputFormDiv = styled.div`
   width: 900px;
@@ -76,7 +76,7 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
-  background-color: ${(props) => props.theme.blackColor};
+  background-color: ${(props) => props.theme.mainColor};
   color: white;
 `;
 const ButtonContainer = styled.div`
@@ -182,16 +182,21 @@ const InfoForm = styled.form`
 const NameBox = styled.div`
   width: 160px;
   height: 100%;
-  background-color: ${(props) => props.theme.fillGrayColor};
+  background-color: ${(props) => props.theme.menuOrangeColor};
+  color: black;
+  border: none;
+
+  /* font-weight: bold; */
+  //background-color: ${(props) => props.theme.fillGrayColor};
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: ${(props) => props.theme.menuBorderColor};
+  //border-right: ${(props) => props.theme.menuBorderColor};
 `;
 const SubBox = styled.div`
   width: 20%;
   height: 100%;
-  background-color: ${(props) => props.theme.fillGrayColor};
+  background-color: ${(props) => props.theme.menuOrangeColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -257,7 +262,7 @@ const InputBox = styled.div`
       padding-right: 8px;
       border-radius: 5px;
       background-color: ${(props) => props.theme.fillGrayColor};
-      background-color: ${(props) => props.theme.blackColor};
+      background-color: ${(props) => props.theme.mainColor};
       color: white;
       margin-right: 6px;
       margin-bottom: 7px;
@@ -282,7 +287,8 @@ const InputBox = styled.div`
 const NumContainer = styled.div`
   width: 80%;
   height: 80px;
-
+  border-top: 1px solid rgba(222, 222, 222, 0.93);
+  border-bottom: 1px solid rgba(222, 222, 222, 0.93);
   .NumInputStyle {
     width: 80%;
     font-size: 15px;
@@ -405,6 +411,7 @@ const CanvasOptionContainer = styled.div`
   margin-bottom: 20px;
 `;
 const Step = styled.div`
+  margin-bottom: 40px;
   nav {
     top: 50%;
     right: 0;
@@ -494,17 +501,17 @@ const Step = styled.div`
   }
 
   nav button:nth-child(2) {
-    color: ${(props) => (props.status == 2 ? "black" : "gray")};
+    color: ${(props) => (props.status == 2 ? "#FF7B54" : "rgba(0, 0, 0, 0.3)")};
   }
   nav button:nth-child(1) {
-    color: ${(props) => (props.status == 1 ? "black" : "gray")};
+    color: ${(props) => (props.status == 1 ? "#FF7B54" : "rgba(0, 0, 0, 0.3)")};
   }
   nav button:nth-child(3) {
-    color: ${(props) => (props.status == 3 ? "black" : "gray")};
+    color: ${(props) => (props.status == 3 ? "#FF7B54" : "rgba(0, 0, 0, 0.3)")};
   }
 
   nav button:hover {
-    color: black;
+    color: "#FF7B54";
   }
 
   nav button:hover:before,
@@ -919,7 +926,7 @@ function Register(floorCallback) {
         <nav>
           <button
             onClick={() => {
-              infoRef.current?.scrollIntoView({ behavior: "smooth" });
+              // infoRef.current?.scrollIntoView({ behavior: "smooth" });
               setNav(1);
             }}
           >
@@ -1266,7 +1273,9 @@ function Register(floorCallback) {
               </InputBox>
             </InputContainer>
             <InputContainer className="NumberContainer BorderTop">
-              <NameBox>
+              <NameBox
+              // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
+              >
                 <p>번호</p>
               </NameBox>
               <NumContainer>
@@ -1306,7 +1315,9 @@ function Register(floorCallback) {
             {/* </div> */}
             {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
             <InputContainer className="Time BorderTop">
-              <NameBox>
+              <NameBox
+              // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
+              >
                 <p>시간</p>
               </NameBox>
               <NumContainer>

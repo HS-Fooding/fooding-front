@@ -52,7 +52,7 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
-  background-color: ${(props) => props.theme.blackColor};
+  background-color: ${(props) => props.theme.mainColor};
   color: white;
   margin-right: 8px;
 `;
@@ -61,10 +61,10 @@ const TimeTable = styled.div`
   width: 60px;
   height: auto;
   /* background: teal; */
-  border: 1px solid #808080;
+  border: 1px solid ${(props) => props.theme.borderGrayColor};
   margin-top: 10px;
   background: white;
-  border-left: 3px solid #808080;
+  border-left: 3px solid ${(props) => props.theme.mainColor};
 
   .eachTime {
     padding: 10.7px 0px;
@@ -196,11 +196,10 @@ const ManageReserv = () => {
   const [timeTable, setTimeTable] = useState([]);
   const [tableNums, setTableNums] = useState();
   const [tableNumsCount, setTableNumsCount] = useState();
-  const [isshowModalForInfo,setShowModalForInfo] = useState();
+  const [isshowModalForInfo, setShowModalForInfo] = useState();
   const [isShowModalInfo, setShowModalInfo] = useState();
   let tomorrow = new Date();
-  
-  
+
   useEffect(() => {
     console.log("startDate:", startDate);
     console.log(
@@ -370,13 +369,10 @@ const ManageReserv = () => {
   //   // This turns off rearrangement so items will not be pushed arround.
   //   preventCollision: true,
   // };
-  const handleShowCallback = (
-    modal
-  )=>{
-    modal ? setShowModalForInfo(true):setShowModalForInfo(false); 
- 
-  }
- 
+  const handleShowCallback = (modal) => {
+    modal ? setShowModalForInfo(true) : setShowModalForInfo(false);
+  };
+
   const handleCallback = (
     nickname,
     name,
@@ -491,8 +487,7 @@ const ManageReserv = () => {
     return _.map(layout, (el, i) => {
       const t = el.i;
       return (
-        <div key={t} data-grid={el} 
-        onDoubleClick={()=>showModalForInfo(el)}>
+        <div key={t} data-grid={el} onDoubleClick={() => showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
           <div>{el.tableNum}번</div>
           <div>{el.nickname}</div>
@@ -543,13 +538,13 @@ const ManageReserv = () => {
       );
     });
   };
- const makeModalTrue= ()=>{
-   setTimeout(1000,setShowModalForInfo(true));
- }
-  const showModalForInfo = (el) =>{
+  const makeModalTrue = () => {
+    setTimeout(1000, setShowModalForInfo(true));
+  };
+  const showModalForInfo = (el) => {
     setShowModalInfo(el);
     makeModalTrue();
-  }
+  };
   const handleSubmit = () => {
     const data = JSON.stringify(
       [...layout, ...removedLayout]
@@ -561,12 +556,12 @@ const ManageReserv = () => {
               booker: {
                 member_id: 0,
                 phoneNum: m.status === "NEW" ? m.phoneNum : "",
-                name: m.name,//""
+                name: m.name, //""
                 nickName: m.nickname,
               },
               reservId: m.reservId,
               tableNum: m.tableNum.toString(),
-              
+
               reserveDate: "2022-05-18",
               reserveTime: m.reservAt,
               reserveNum: m.reservCount,
@@ -606,16 +601,16 @@ const ManageReserv = () => {
       />
 
       {/* <button onClick={handleDate}>plusDate</button> */}
-      <div style={{marginBottom:"10px"}}>
-      <Button onClick={onAddItem}>예약 추가</Button>
-      <Button onClick={handleSubmit}>등록</Button>
+      <div style={{ marginBottom: "10px" }}>
+        <Button onClick={onAddItem}>예약 추가</Button>
+        <Button onClick={handleSubmit}>등록</Button>
       </div>
       <div
         style={{
           display: "flex",
 
           backgroundColor: "#f1f3f5",
-          marginBottom:"10px",
+          marginBottom: "10px",
         }}
       >
         <TimeTable>
@@ -626,8 +621,7 @@ const ManageReserv = () => {
 
         <LayoutWrapper>
           <ResponsiveReactGridLayout
-
-            layout={layout}           
+            layout={layout}
             onDragStop={onLayoutChange}
             onResize={onLayoutChange}
             onBreakpointChange={onBreakpointChange}
@@ -639,13 +633,12 @@ const ManageReserv = () => {
           </ResponsiveReactGridLayout>
         </LayoutWrapper>
       </div>
-      
+
       {manageModal ? (
         <ManageReserveModal parentCallback={handleCallback} />
       ) : null}
       {isshowModalForInfo ? (
-       <ShowInfoModal info={isShowModalInfo} status={handleShowCallback} />
-                          
+        <ShowInfoModal info={isShowModalInfo} status={handleShowCallback} />
       ) : null}
     </Container>
   );

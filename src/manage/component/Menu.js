@@ -13,7 +13,7 @@ const Button = styled.button`
   height: 35px;
   border-radius: 26px;
   cursor: pointer;
-  background-color: ${(props) => props.theme.blackColor};
+  background-color: ${(props) => props.theme.mainColor};
   color: white;
 
   .submit {
@@ -40,7 +40,7 @@ const MenuList = styled.div`
 const MenuHeader = styled.div`
   height: 40px;
   width: 100%;
-  background-color: ${(props) => props.theme.fillGrayColor};
+  background-color: ${(props) => props.theme.menuOrangeColor};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -243,12 +243,12 @@ const Menu = ({ marketId }) => {
 
     e.target.value = "";
   };
-  function len_chk(){
-    var frm=document.inserFrm.detail;
-    if(frm.value.length>30){
+  function len_chk() {
+    var frm = document.inserFrm.detail;
+    if (frm.value.length > 30) {
       alert("글자수는 30자로 제한됩니다.");
-      frm.value=frm.value.sbustring(0,30);
-      frm.focus(); 
+      frm.value = frm.value.sbustring(0, 30);
+      frm.focus();
     }
   }
   const menuPost = (postData) => {
@@ -404,10 +404,8 @@ const Menu = ({ marketId }) => {
                 <input {...register("menuPrice", {})} placeholder="가격" />
               </MenuProp>
               <MenuProp className="menuDesc">
-             
                 <textarea
                   {...register("menuDesc", {})}
-                
                   placeholder="상세설명"
                 />
               </MenuProp>

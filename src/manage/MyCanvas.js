@@ -44,7 +44,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: ${(props) => props.theme.menuOrangeColor};
   & button {
     padding: 0;
     margin: 0;
@@ -705,8 +705,8 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
   const createWall = () => {
     const wall = {
-      x: 100 ,
-      y: 100 ,
+      x: 100,
+      y: 100,
       width: 250,
       height: 5,
       fill: "black",

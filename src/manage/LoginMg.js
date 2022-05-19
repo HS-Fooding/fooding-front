@@ -9,10 +9,13 @@ import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-items: center;
+  box-sizing: border-box;
+
   /* margin: 100px 0px; */
 `;
 
@@ -64,13 +67,14 @@ const SubmitBtn = styled.button`
 `;
 
 const LoginBtn = styled(SubmitBtn)`
-  background-color: black;
+  background-color: ${(props) => props.theme.mainColor};
   color: white;
 `;
 
 const SignupBtn = styled(SubmitBtn)`
-  background-color: gray;
-  color: white;
+  background-color: white;
+  border: 1px solid ${(props) => props.theme.mainColor};
+  color: ${(props) => props.theme.mainColor};
 `;
 
 const Span = styled.span`
@@ -136,46 +140,48 @@ const LoginMg = () => {
   return (
     <Container>
       <Header />
-      <Form onSubmit={handleSubmit(onValid)}>
-        <Span>LOGIN </Span>
-        <InputBox>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              margin: "0px 20px",
-            }}
-          >
-            <i class="fa-regular fa-user"></i>
-            <Input
-              {...register("Id", {
-                required: "아이디를 입력하세요.",
-              })}
-              placeholder="아이디를 입력해주세요."
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              margin: "0px 20px",
-            }}
-          >
-            <i class="fa-solid fa-lock"></i>
-            <Input
-              {...register("password", {
-                required: "비밀번호를 입력하세요.",
-              })}
-              placeholder="비밀번호를 입력해주세요."
-              type="password"
-            />
-          </div>
-        </InputBox>
-        <LoginBtn>로그인</LoginBtn>
-        <Link to="/manager/signup">
-          <SignupBtn>회원가입</SignupBtn>
-        </Link>
-      </Form>
+      <div>
+        <Form onSubmit={handleSubmit(onValid)}>
+          <Span>LOGIN </Span>
+          <InputBox>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                margin: "0px 20px",
+              }}
+            >
+              <i class="fa-regular fa-user"></i>
+              <Input
+                {...register("Id", {
+                  required: "아이디를 입력하세요.",
+                })}
+                placeholder="아이디를 입력해주세요."
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                margin: "0px 20px",
+              }}
+            >
+              <i class="fa-solid fa-lock"></i>
+              <Input
+                {...register("password", {
+                  required: "비밀번호를 입력하세요.",
+                })}
+                placeholder="비밀번호를 입력해주세요."
+                type="password"
+              />
+            </div>
+          </InputBox>
+          <LoginBtn>로그인</LoginBtn>
+          <Link to="/manager/signup">
+            <SignupBtn>회원가입</SignupBtn>
+          </Link>
+        </Form>
+      </div>
     </Container>
   );
 };

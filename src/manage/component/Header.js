@@ -16,8 +16,9 @@ const Nav = styled.nav`
   font-size: 14px;
   padding: 20px 60px;
   background-color: white;
-  color:  ${(props) => props.theme.mainColor};
+  color: ${(props) => props.theme.mainColor};
   box-sizing: border-box;
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
 `;
 
 const TopMenu = styled.div`
@@ -41,8 +42,9 @@ const Item = styled.li`
 
   a {
     text-decoration: none;
-    color:  ${(props) => props.theme.mainColor};
+    color: ${(props) => props.theme.blackColor};
     transition: color 0.3s ease-in-out;
+    font-weight: bold;
     &:hover {
       color: ${(props) => props.theme.mainColor};
     }
@@ -59,6 +61,7 @@ const MainMenu = styled.div`
 const Logo = styled.span`
   font-size: 25px;
   margin-right: 20px;
+  font-weight: 800;
 `;
 
 const Circle = styled(motion.span)`
@@ -172,23 +175,23 @@ const Header = () => {
           <MainMenu>
             <Items>
               <Logo>FOODING</Logo>
-              <Item>
+              <Item className="page">
                 <Link to="/manager/manageReserv">
                   예약 관리{reservationMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>
 
-              <Item>
+              <Item className="page">
                 <Link to="/manager/register">
                   매장 등록{registerMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>
-              <Item>
+              <Item className="page">
                 <Link to="/manager/currentTableState">
                   테이블 현황{currentTableMatch && <Circle layoutId="circle" />}
                 </Link>
               </Item>
-              <Item>
+              <Item className="page">
                 <Link to="/manager/chart">
                   사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
                 </Link>

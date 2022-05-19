@@ -482,7 +482,7 @@ const Reservation1 = () => {
     color: ${(props) => (props.time == clickedTime ? "#FF7B54" : "white")};
     &:active {
       background: white;
-      color: ${(props) => props.theme.purpleColor};
+      color: ${(props) => props.theme.mainColor};
     }
 
     border: 1px solid #ff7b54;
