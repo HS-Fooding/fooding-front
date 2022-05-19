@@ -1,6 +1,6 @@
 const theme = {
   //mainColor: "#FFA931",
-  mainColor: "#FF7F3F",
+  mainColor: "#FF7B54",
   //subColor: "#95afc0",
   subColor: "white",
   borderGrayColor: "#e4e2e1",

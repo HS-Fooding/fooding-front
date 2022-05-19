@@ -24,7 +24,7 @@ const Container = styled.div`
   .icon {
     cursor: pointer;
     &:hover {
-      color: ${(props) => props.theme.manColor};
+      color: ${(props) => props.theme.mainColor};
     }
     color: ${(props) => props.theme.mainColor};
   }

@@ -41,7 +41,7 @@ const NameNStarsContainer = styled.div`
   }
   .Stars {
     font-size: 18px;
-    color: orange;
+    color: ${(props) => props.theme.mainColor};
     font-weight: bold;
     height:21px;
   }

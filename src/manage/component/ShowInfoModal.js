@@ -296,10 +296,7 @@ const ManageReservModal = ({info,status}) => {
               <div>닉네임</div>
               <div classname="inlineblock"><p>{blockNickname}</p></div>
             </InputBox>
-            <InputBox>
-              <div>이름</div>
-              <div classname="inlineblock"><p></p></div>
-            </InputBox>
+           
             <InputBox>
               <div>예약 시간</div>
               <div classname="inlineblock"><p>{blockReservAt}</p></div>
