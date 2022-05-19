@@ -453,7 +453,7 @@ const MarketDetail = () => {
       <MarketTable>
         <span className="marketDesc">테이블 현황</span>
       </MarketTable>
-      <CurrentTable></CurrentTable>
+      <CurrentTable currentMarketId={marketId}></CurrentTable>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게
   만약에 대표메뉴가 있다면 그 메뉴를 우선 띄어줌 그리고 나머지 메뉴를 띄워줌.

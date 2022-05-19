@@ -7,7 +7,7 @@ import axios from "axios";
 const getToken = localStorage.getItem("guestToken");
 const marketId = localStorage.getItem("marketId");
 
-const CurrentTable = () => {
+const CurrentTable = ({currentMarketId}) => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
   const [walls, setWalls] = useState([]);
@@ -27,6 +27,7 @@ const CurrentTable = () => {
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
   useEffect(() => {
+    console.log("current market id",currentMarketId);
     getShape();
     getAvailableTable();
   }, []);
@@ -36,7 +37,7 @@ const CurrentTable = () => {
       method: "get",
       url:
         url +
-        `/fooding/restaurant/${marketId}/reservation?date=2022-05-19&num=2&time=11:30`,
+        `/fooding/restaurant/${currentMarketId}/reservation?date=2022-05-19&num=2&time=11:30`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
@@ -234,8 +235,8 @@ const CurrentTable = () => {
 
               fill={
                 availableTableNumArr.includes(table.tableNum)
-                  ? "brown"
-                  : "black"
+                  ? "#FF7B54"
+                  : "rgba(0,0,0,0.2)"
               }
             />
           );
@@ -257,8 +258,8 @@ const CurrentTable = () => {
             <Circle
               x={seat.x / 3}
               y={seat.y / 3}
-              radius={7}
-              fill="#FF4B00"
+              radius={4}
+              fill="#FEA82F"
               rotation={seat.rotation}
             />
           );
