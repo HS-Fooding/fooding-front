@@ -36,7 +36,7 @@ const Container = styled.div`
 const ButtonContainer = styled.div`
   width: 150px;
   height: 500px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
   border-top-left-radius: 8px;
   border-bottom-left-radius: 10px;
   display: flex;
@@ -45,6 +45,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: space-evenly;
   background-color: ${(props) => props.theme.menuOrangeColor};
+
   & button {
     padding: 0;
     margin: 0;
@@ -58,6 +59,12 @@ const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
     /* z-index: 1; */
+    transition: background-color, 0.3s;
+
+    svg {
+      color: orange;
+    }
+
     p {
       margin-left: 14px;
       font-size: 20px;
@@ -70,9 +77,13 @@ const ButtonContainer = styled.div`
       /* display:flex;
       align-items: center; */
 
-      background-color: gray;
+      background-color: #ffd59e;
       color: white;
       border-radius: 8px;
+
+      svg {
+        color: ${(props) => props.theme.lightMainColor};
+      }
 
       /* cursor: pointer;
   
@@ -96,6 +107,10 @@ const Garbage = styled.div`
   height: 50px;
   font-size: 35px;
   z-index: 2;
+
+  svg {
+    color: orange;
+  }
 `;
 
 const Table = ({
@@ -677,7 +692,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
       width: tableWidth,
       height: tableHeight,
       // fill: RGBA(101, 67, 33),
-      fill: "#E5A884",
+      fill: "#FFB385",
       rotation: 0,
       id: "table" + tableCnt,
       tableNum: tableNum,
@@ -696,7 +711,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
       x: 200 + seatCnt,
       y: 200 + seatCnt,
       radius: 11,
-      fill: "gray",
+      fill: "#FFD07F",
       id: "seat" + seatCnt,
     };
     setSeatCnt(seatCnt + 1);
@@ -709,7 +724,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
       y: 100,
       width: 250,
       height: 5,
-      fill: "black",
+      fill: "#DED7B1",
       rotation: 0,
       id: "wall" + wallCnt,
     };
@@ -723,7 +738,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
       y: 100 + windowCnt * 20,
       width: 250,
       height: 8,
-      fill: "skyblue",
+      fill: "#93D5FF",
       rotation: 0,
       id: "window" + windowCnt,
     };
@@ -737,7 +752,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
       y: 100 + doorCnt * 20,
       width: 50,
       height: 15,
-      fill: "green",
+      fill: "#CC7351",
       rotation: 0,
       id: "door" + doorCnt,
     };
@@ -770,7 +785,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             y: t.y,
             width: t.width,
             height: t.height,
-            fill: "#E5A884",
+            fill: "#FFB385",
             rotation: t.rotation,
             id: "table" + id,
             tableNum: t.tableNum,
@@ -787,7 +802,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             x: s.x,
             y: s.y,
             radius: 11,
-            fill: "gray",
+            fill: "#FFD07F",
             id: "seat" + id,
           };
           tempSeat.push(seat);
@@ -800,7 +815,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             y: w.y,
             width: w.width,
             height: 5,
-            fill: "black",
+            fill: "#DED7B1",
             rotation: w.rotation,
             id: "wall" + id,
           };
@@ -814,7 +829,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             y: w.y,
             width: w.width,
             height: 5,
-            fill: "skyblue",
+            fill: "#93D5FF",
             rotation: w.rotation,
             id: "window" + id,
           };
@@ -828,7 +843,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             y: d.y,
             width: d.width,
             height: 15,
-            fill: "green",
+            fill: "#CC7351",
             rotation: d.rotation,
             id: "door" + id,
           };
@@ -1111,31 +1126,31 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             <p>
               <FontAwesomeIcon icon={faSquare} />
             </p>
-            <span>테이블 생성</span>{" "}
+            <span>테이블 </span>{" "}
           </button>
           <button onClick={createSeat}>
             <p>
               <FontAwesomeIcon icon={faChair} />
             </p>
-            <span> 좌석 생성</span>
+            <span> 좌석 </span>
           </button>
           <button onClick={createWall}>
             <p>
               <FontAwesomeIcon icon={faGripLines} />
             </p>
-            <span>벽 생성</span>
+            <span>벽 </span>
           </button>
           <button onClick={createWindow}>
             <p>
               <FontAwesomeIcon icon={faBorderAll} />
             </p>
-            <span>창문 생성</span>
+            <span>창문 </span>
           </button>
           <button onClick={createDoor}>
             <p>
               <FontAwesomeIcon icon={faDoorOpen} />
             </p>
-            <span>출입구 생성</span>
+            <span>출입구 </span>
           </button>
           {/* <button onClick={postData}>
           <p>
@@ -1147,7 +1162,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             <p>
               <FontAwesomeIcon icon={faPenToSquare} />
             </p>
-            <span>수정</span>
+            <span>테이블 수정</span>
           </button>
           {/* <button onClick={eraseAll}><p><FontAwesomeIcon icon={faPenToSquare} /></p><span>모두 지우기</span></button> */}
 

@@ -392,7 +392,8 @@ const AppendFloor = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: ${(props) => props.theme.veryLightMainColor};
+  color: ${(props) => props.theme.mainColor};
   :hover {
     cursor: pointer;
   }
@@ -870,7 +871,7 @@ function Register(floorCallback) {
     border-radius: 10px;
     margin-left: 10px;
     background-color: ${(props) =>
-      props.num == selectedFloor ? "black" : "rgba(0,0,0,0.1)"};
+      props.num == selectedFloor ? "#FF7B54" : "#f4f4f5"};
     color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
 
     display: flex;

@@ -47,12 +47,15 @@ const Input = styled.input.attrs({ required: true })`
 
 const InputBox = styled.div`
   width: 480px;
-  border: 1px solid rgba(0, 0, 0, 0.45);
+  /* border: 1px solid rgba(0, 0, 0, 0.45); */
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   margin-bottom: 50px;
   margin-top: 70px;
 
   svg {
     position: absolute;
+    color: gray;
   }
 `;
 
@@ -69,17 +72,20 @@ const SubmitBtn = styled.button`
 const LoginBtn = styled(SubmitBtn)`
   background-color: ${(props) => props.theme.mainColor};
   color: white;
+  font-weight: bold;
 `;
 
 const SignupBtn = styled(SubmitBtn)`
-  background-color: white;
-  border: 1px solid ${(props) => props.theme.mainColor};
+  background-color: ${(props) => props.theme.lightMainColor};
+  //border: 1px solid ${(props) => props.theme.lightMainColor};
   color: ${(props) => props.theme.mainColor};
+  font-weight: bold;
 `;
 
 const Span = styled.span`
   font-size: 30px;
   font-weight: bold;
+  color: ${(props) => props.theme.mainColor};
 `;
 
 const LoginMg = () => {

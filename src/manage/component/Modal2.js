@@ -112,6 +112,7 @@ const InputsBox = styled(halfBox)`
 
   display: flex;
   flex-direction: column;
+  padding: 40px 0px;
 `;
 const InputBox = styled.div`
   display: flex;
@@ -338,7 +339,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
           <span
             style={{
               fontWeight: "bold",
-              color: "rgba(0, 0, 0, 0.5)",
+              color: "black",
               fontSize: "16px",
             }}
           >
@@ -435,8 +436,8 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
                   y={145 - (figureHeight * 50) / 2}
                   width={figureWidth * 50}
                   height={figureHeight * 50}
-                  fill="brown"
-                  shadowBlur={5}
+                  fill="#FF7B54"
+                  shadowBlur={0}
                 />
               </Layer>
             </Stage>
