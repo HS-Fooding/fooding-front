@@ -36,7 +36,7 @@ const CalendarContainer = styled.div`
   /* background-color: #d4f7d4; */
   .react-calendar {
     width: 380px;
-    height: 300px;
+    height: 345px;
     max-width: 100%;
     background-color: #fff;
     color: #222;
@@ -47,7 +47,8 @@ const CalendarContainer = styled.div`
     border: none;
   }
   .react-calendar__navigation button {
-    color: #6f48eb;
+    /* color: #6f48eb; */
+    color: ${(props) => props.theme.mainColor};
     min-width: 44px;
     background: none;
     font-size: 16px;
@@ -55,7 +56,9 @@ const CalendarContainer = styled.div`
   }
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
-    background-color: #f8f8fa;
+    //background-color: #f8f8fa;
+    background-color: #ffe2bc; // 연한 색깔f
+    //background-color: ${(props) => props.theme.veryLightMainColor};
   }
   .react-calendar__navigation button[disabled] {
     //background-color: #f0f0f0;
@@ -69,44 +72,57 @@ const CalendarContainer = styled.div`
 } */
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background: #f8f8fa;
-    color: #6f48eb;
+    background-color: ${(props) => props.theme.lightMainColor};
+    //background-color: #ffe2bc;
+    /* color: #6f48eb; */
+    color: ${(props) => props.theme.mainColor};
     border-radius: 6px;
   }
   .react-calendar__tile--now {
-    background: #6f48eb33;
+    /* background: #6f48eb33; */
+    background-color: ${(props) => props.theme.lightMainColor}; // 현재 날짜
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
+    //color: #6f48eb;
+    color: ${(props) => props.theme.mainColor};
   }
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: #6f48eb33;
+    /* background: #6f48eb33; */
+    background-color: ${(props) => props.theme.veryLightMainColor};
     border-radius: 6px;
     font-weight: bold;
-    color: #6f48eb;
+    color: ${(props) => props.theme.mainColor};
+    /* color: #6f48eb; */
   }
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
-    background: #f8f8fa;
+    //background: #f8f8fa;
+    background-color: ${(props) => props.theme.veryLightMainColor};
+    /* background-color: black; */
   }
   .react-calendar__tile--active {
-    background: #6f48eb;
+    /* background: #6f48eb; */
+    background: ${(props) => props.theme.mainColor};
     border-radius: 6px;
     font-weight: bold;
     color: white;
   }
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: #6f48eb;
+    /* background: #6f48eb; */
+    background: ${(props) => props.theme.mainColor};
     color: white;
   }
   .react-calendar--selectRange .react-calendar__tile--hover {
-    background-color: #f8f8fa;
+    /* background-color: #f8f8fa; */
+    background-color: ${(props) => props.theme.veryLightMainColor};
   }
   .react-calendar__tile--range {
-    background: #f8f8fa;
-    color: #6f48eb;
+    /* background: #f8f8fa; */
+    background-color: ${(props) => props.theme.lightMainColor};
+    /* color: #6f48eb; */
+    color: ${(props) => props.theme.mainColor};
     border-radius: 0;
   }
   .react-calendar__tile--rangeStart {
@@ -114,7 +130,8 @@ const CalendarContainer = styled.div`
     border-bottom-right-radius: 0;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
-    background: #6f48eb;
+    /* background: #6f48eb; */
+    background: ${(props) => props.theme.mainColor};
     color: white;
   }
   .react-calendar__tile--rangeEnd {
@@ -122,7 +139,8 @@ const CalendarContainer = styled.div`
     border-bottom-left-radius: 0;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
-    background: #6f48eb;
+    //background: #6f48eb;
+    background: ${(props) => props.theme.mainColor};
     color: white;
   }
   /* .react-calendar:disabled {
@@ -173,7 +191,7 @@ const NextBtn = styled.button`
   width: 380px;
   height: 45px;
   background: white;
-  margin-top: 55px;
+  margin-top: 20px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
@@ -222,7 +240,7 @@ const CheckBox = styled.div`
     box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.2);
   }
   input:checked + label {
-    background: #6f48eb;
+    background: ${(props) => props.theme.lightMainColor};
     transition: all 0.4s;
   }
   /* input:checked + label:after {left:inherit; right:7.5px; } */
@@ -433,7 +451,7 @@ const Reservation1 = () => {
 
   const PeopleBtn = styled.button`
     background-color: ${(props) =>
-      props.num == peopleNum ? "#6f48eb" : "white"};
+      props.num == peopleNum ? "#FF7B54" : "white"};
     color: ${(props) => (props.num == peopleNum ? "white" : "black")};
     width: 50px;
     height: 50px;
@@ -458,16 +476,16 @@ const Reservation1 = () => {
     font-size: 12px;
     border-radius: 3px;
     color: white;
-    background: ${(props) => (props.time == clickedTime ? "white" : "#6f48eb")};
+    background: ${(props) => (props.time == clickedTime ? "white" : "#FF7B54")};
     // background: ${(props) => props.theme.purpleColor};
 
-    color: ${(props) => (props.time == clickedTime ? "#6f48eb" : "white")};
+    color: ${(props) => (props.time == clickedTime ? "#FF7B54" : "white")};
     &:active {
       background: white;
       color: ${(props) => props.theme.purpleColor};
     }
 
-    border: 1px solid #6f48eb;
+    border: 1px solid #ff7b54;
   `;
 
   const nextBtnClick = () => {};
