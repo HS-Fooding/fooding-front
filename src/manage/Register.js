@@ -168,6 +168,10 @@ const InfoForm = styled.form`
   .BorderTop {
     border-top: ${(props) => props.theme.menuBorderColor};
   }
+  .BorderBottom{
+    border-bottom: ${(props) => props.theme.menuBorderColor};
+ 
+  }
   .Time {
     height: 80px;
     margin-top: 20px;
@@ -288,7 +292,7 @@ const NumContainer = styled.div`
   width: 80%;
   height: 80px;
   border-top: 1px solid rgba(222, 222, 222, 0.93);
-  border-bottom: 1px solid rgba(222, 222, 222, 0.93);
+  
   .NumInputStyle {
     width: 80%;
     font-size: 15px;
@@ -298,10 +302,12 @@ const NumContainer = styled.div`
 
   .InputNTitleContainer {
     width: 103%;
-    height: 40px;
+    height: 39px;
     &:nth-child(1),
     &:nth-child(3) {
-      border-bottom: ${(props) => props.theme.menuBorderColor};
+
+
+      border-bottom:1px ${(props) => props.theme.menuBorderColor};
     }
     display: flex;
     align-items: center;
@@ -1272,7 +1278,7 @@ function Register(floorCallback) {
                 ) : null}
               </InputBox>
             </InputContainer>
-            <InputContainer className="NumberContainer BorderTop">
+            <InputContainer className="NumberContainer BorderTop BorderBottom">
               <NameBox
               // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
               >
@@ -1295,7 +1301,7 @@ function Register(floorCallback) {
                   </div>
                 </div>
                 <div className="InputNTitleContainer">
-                  <SubBox>개인 번호</SubBox>
+                  <SubBox style={{border:"none"}}>개인 번호</SubBox>
                   <div style={{ marginLeft: "13px" }}>
                     {" "}
                     {marketInfo === null ? (
@@ -1314,7 +1320,7 @@ function Register(floorCallback) {
             </InputContainer>
             {/* </div> */}
             {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
-            <InputContainer className="Time BorderTop">
+            <InputContainer className="Time BorderTop BorderBottom">
               <NameBox
               // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
               >
