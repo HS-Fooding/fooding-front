@@ -148,7 +148,8 @@ const EachInfo = styled.div`
 
 const MarketMenuInfo = styled.div`
   width: 100%;
-  height: 700px;
+  height: auto;
+  margin-bottom: 50px;
   .RepresentatitiveTitle {
     width: 100%;
     height: 25px;
@@ -241,6 +242,17 @@ const MoreMenu = styled.div`
     font-size: 20px;
   }
 `;
+
+const MarketTable = styled.div`
+  padding: 30px 0px;
+  .marketDesc {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 23px 0px;
+    padding: 20px;
+  }
+`;
+
 const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
@@ -438,6 +450,10 @@ const MarketDetail = () => {
           </EachInfo>
         </div>
       </MarketDetailInfo>
+      <MarketTable>
+        <span className="marketDesc">테이블 현황</span>
+      </MarketTable>
+      <CurrentTable></CurrentTable>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게
   만약에 대표메뉴가 있다면 그 메뉴를 우선 띄어줌 그리고 나머지 메뉴를 띄워줌.
@@ -521,8 +537,6 @@ const MarketDetail = () => {
             })
           : null}
       </MarketMenuInfo>
-
-      <CurrentTable></CurrentTable>
     </Container>
   );
 };
