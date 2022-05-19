@@ -294,7 +294,7 @@ const WriteReview = () => {
     var axios = require("axios");
 
     const data = new FormData();
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("guestToken");
 
     console.log(
       "type",

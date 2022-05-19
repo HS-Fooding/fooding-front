@@ -62,7 +62,7 @@ const ButtonContainer = styled.div`
     transition: background-color, 0.3s;
 
     svg {
-      color: orange;
+      color: ${(props) => props.theme.mainColor};
     }
 
     p {
@@ -109,7 +109,7 @@ const Garbage = styled.div`
   z-index: 2;
 
   svg {
-    color: orange;
+    color: ${(props) => props.theme.fontGrayColor};
   }
 `;
 

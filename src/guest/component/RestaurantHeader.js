@@ -48,7 +48,7 @@ const RestaurantHeader = () => {
   return (
     <Container>
       <AreaContainer>
-        <p>지금 보고 있는 지역은</p> <div className="Area">강남역</div>
+        <p>지금 보고 있는 지역은</p> <div className="Area">성북구</div>
       </AreaContainer>
       <MapSearchContainer>
         {" "}

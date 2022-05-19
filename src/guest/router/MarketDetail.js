@@ -199,6 +199,7 @@ const MenuInfo = styled.div`
     font-size: 12px;
     margin-bottom: 20px;
     line-height: 1.5;
+    color: gray;
   }
   .MenuPrice {
     width: 80%;
@@ -230,7 +231,7 @@ const MoreMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color:${(props) => props.theme.mainColor};;
+  color: ${(props) => props.theme.mainColor};
   :hover {
     cursor: pointer;
   }
@@ -511,7 +512,10 @@ const MarketDetail = () => {
                     <MenuInfo>
                       <div className="MenuName">
                         {menu.representative == true ? (
-                          <FontAwesomeIcon icon={faStar} />
+                          <FontAwesomeIcon
+                            icon={faStar}
+                            style={{ color: "#FF7B54" }}
+                          />
                         ) : null}
                         {""}
                         {menu.name}

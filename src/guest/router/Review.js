@@ -111,19 +111,19 @@ const Review = () => {
   //     return cookies.get(name);
   //  }
   console.log("location.restId", location.state);
-  let token = localStorage.getItem("token");
+  const token = localStorage.getItem("guestToken");
   useEffect(() => {
     // console.log("cookie",getCookie("JSESSION"));
 
     var axios = require("axios");
-    const getToken = localStorage.getItem("guestToken");
+    //const getTtoken = localStorage.getItem("guestToken");
 
     var config = {
       method: "get", //url + `/fooding/restaurant?name=${searchWord}`
       url: url + `/fooding/restaurant/${location.state.marketId}/review`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + getToken,
+        Authorization: "Bearer " + token,
       },
     };
 
@@ -212,7 +212,7 @@ const Review = () => {
         </InnerReviews>
       </Reviews>
       {token == null ? (
-        <Link to={"/login"}>
+        <Link to={"/guest/login"}>
           {" "}
           <WriteReviewBtn>리뷰 작성</WriteReviewBtn>
         </Link>

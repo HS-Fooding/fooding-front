@@ -205,7 +205,7 @@ const Menu = ({ marketId }) => {
   const [menus, setMenus] = useState([]);
 
   const marketIdLS = localStorage.getItem("marketId");
-  const getToken = localStorage.getItem("token");
+  const getToken = localStorage.getItem("managerToken");
 
   const getMenus = () => {
     var config = {
