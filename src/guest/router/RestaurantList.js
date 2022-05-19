@@ -23,7 +23,7 @@ const Container = styled.div`
 const ListContainer = styled.div`
   width: 390px;
   /* 410,770 */
-  height: 700px;
+  height: 670px;
   /* background-color:red; */
   margin-top: 65px;
   /* display:flex; */
@@ -41,11 +41,11 @@ const ListContainer = styled.div`
   }
   .Target-Element {
     width: 100vw;
-    height: 140px;
+    height: 120px;
     display: flex;
     justify-content: center;
     text-align: center;
-    align-items: center;
+   
   }
 `;
 const Footer = styled.div`

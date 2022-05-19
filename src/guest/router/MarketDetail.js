@@ -230,7 +230,7 @@ const MoreMenu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: orange;
+  color:${(props) => props.theme.mainColor};;
   :hover {
     cursor: pointer;
   }

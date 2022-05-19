@@ -494,13 +494,13 @@ const ManageReserv = () => {
         <div key={t} data-grid={el} 
         onDoubleClick={()=>showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
-          <div>{el.tableNum}번 테이블</div>
+          <div>{el.tableNum}번</div>
           <div>{el.nickname}</div>
           {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
           <div>{el.reservAt}</div>
-          <div>{el.reservCount}명</div>
+          {/* <div>{el.reservCount}명</div>
           <div>{el.isCar ? "차 있음" : "차 없음"}</div>
-          <div>예약 번호 {el.reservId} </div>
+          <div>예약 번호 {el.reservId} </div> */}
           <span
             className="remove"
             style={removeStyle}
@@ -566,7 +566,8 @@ const ManageReserv = () => {
               },
               reservId: m.reservId,
               tableNum: m.tableNum.toString(),
-              reserveDate: "2022-05-06",
+              
+              reserveDate: "2022-05-18",
               reserveTime: m.reservAt,
               reserveNum: m.reservCount,
 
@@ -577,7 +578,7 @@ const ManageReserv = () => {
     );
 
     console.log("data!!!", data);
-    const getToken = localStorage.getItem("token");
+    const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/36/reservation`,
