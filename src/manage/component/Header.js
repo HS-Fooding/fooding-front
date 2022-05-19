@@ -15,8 +15,8 @@ const Nav = styled.nav`
   top: 0;
   font-size: 14px;
   padding: 20px 60px;
-  background-color: #21201e;
-  color: white;
+  background-color: white;
+  color:  ${(props) => props.theme.mainColor};
   box-sizing: border-box;
 `;
 
@@ -41,7 +41,7 @@ const Item = styled.li`
 
   a {
     text-decoration: none;
-    color: white;
+    color:  ${(props) => props.theme.mainColor};
     transition: color 0.3s ease-in-out;
     &:hover {
       color: ${(props) => props.theme.mainColor};

@@ -19,6 +19,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 200px 0px;
+  
 `;
 const InputFormDiv = styled.div`
   width: 900px;

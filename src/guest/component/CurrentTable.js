@@ -248,7 +248,7 @@ const CurrentTable = ({currentMarketId}) => {
               y={wall.y / 3}
               width={wall.width / 3}
               height={wall.height / 3}
-              fill="#2C323E"
+              fill="#DED7B1"
               rotation={wall.rotation}
             />
           );
@@ -259,7 +259,7 @@ const CurrentTable = ({currentMarketId}) => {
               x={seat.x / 3}
               y={seat.y / 3}
               radius={4}
-              fill="#FEA82F"
+              fill="#FFD07F"
               rotation={seat.rotation}
             />
           );
@@ -269,8 +269,8 @@ const CurrentTable = ({currentMarketId}) => {
             <Rect
               x={window.x / 3}
               y={window.y / 3}
-              width={window.width / 3}
-              height={window.height / 3}
+              width={window.width/3 }
+              height={window.height/3 }
               fill="#93D5FF"
               rotation={window.rotation}
             />
@@ -283,7 +283,7 @@ const CurrentTable = ({currentMarketId}) => {
               y={door.y / 3}
               width={door.width / 3}
               height={door.height / 3}
-              fill="#433320"
+              fill="#CC7351"
               rotation={door.rotation}
             />
           );
