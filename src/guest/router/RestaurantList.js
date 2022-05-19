@@ -183,7 +183,6 @@ const RestaurantList = () => {
       <Footer>
         <FooterButton>
           <i className="fa-solid fa-house"></i>
-
           <span>맛집찾기</span>
         </FooterButton>
 

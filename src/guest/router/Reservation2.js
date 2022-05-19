@@ -8,9 +8,6 @@ import axios from "axios";
 import { useLocation, Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/js/all.js";
 
-const getToken = localStorage.getItem("token");
-const marketIdLS = localStorage.getItem("marketId");
-
 const Container = styled.div`
   border: 1px solid black;
   width: 410px;
@@ -129,6 +126,9 @@ const Reservation2 = () => {
   const [selectedTable, setSelectedTable] = useState();
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
   const [reservationDone, setReservationDone] = useState(false);
+
+  const getToken = localStorage.getItem("guestToken");
+  const marketId = localStorage.getItem("marketId");
 
   let location = useLocation();
   const { isCar, peopleNum, time, calendarValue, availableTable } =
@@ -318,9 +318,6 @@ const Reservation2 = () => {
       selectedTable.tableNum,
       availableTable
     );
-
-    const getToken = localStorage.getItem("guestToken");
-    const marketId = localStorage.getItem("marketId");
 
     var data = JSON.stringify({
       car: isCar,

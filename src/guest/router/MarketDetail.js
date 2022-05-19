@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
+import CurrentTable from "../component/CurrentTable";
 import {
   faCaretRight,
   faCaretDown,
@@ -147,7 +148,8 @@ const EachInfo = styled.div`
 
 const MarketMenuInfo = styled.div`
   width: 100%;
-  height: 700px;
+  height: auto;
+  margin-bottom: 50px;
   .RepresentatitiveTitle {
     width: 100%;
     height: 25px;
@@ -240,6 +242,17 @@ const MoreMenu = styled.div`
     font-size: 20px;
   }
 `;
+
+const MarketTable = styled.div`
+  padding: 30px 0px;
+  .marketDesc {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 23px 0px;
+    padding: 20px;
+  }
+`;
+
 const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
@@ -437,6 +450,10 @@ const MarketDetail = () => {
           </EachInfo>
         </div>
       </MarketDetailInfo>
+      <MarketTable>
+        <span className="marketDesc">테이블 현황</span>
+      </MarketTable>
+      <CurrentTable></CurrentTable>
       <MarketMenuInfo>
         {/* 대표메뉴 3,4개 나오고 슬라이드 버튼 누르면 나머지 메뉴 나오게
   만약에 대표메뉴가 있다면 그 메뉴를 우선 띄어줌 그리고 나머지 메뉴를 띄워줌.
@@ -450,31 +467,29 @@ const MarketDetail = () => {
         {
           //세개만 만들어놓음.
           representative?.map((menu, index) => {
-           
-              return (
-                <EachMenu>
-                  <MenuContainer>
-                    <MenuInfo>
-                      <div className="MenuName">{menu.name}</div>
-                      <div className="MenuDescription">
-                        {menu.description.length > 50
-                          ? menu.description.slice(0, 50) + "..."
-                          : menu.description}
-                      </div>
-                      <div className="MenuPrice">
-                        {menu.price}
-                        <p>원</p>
-                      </div>
-                    </MenuInfo>
-                    <MenuImg>
-                      <div className="imgContainer">
-                        <img src={menu.image}></img>
-                      </div>
-                    </MenuImg>
-                  </MenuContainer>
-                </EachMenu>
-              );
-            
+            return (
+              <EachMenu>
+                <MenuContainer>
+                  <MenuInfo>
+                    <div className="MenuName">{menu.name}</div>
+                    <div className="MenuDescription">
+                      {menu.description.length > 50
+                        ? menu.description.slice(0, 50) + "..."
+                        : menu.description}
+                    </div>
+                    <div className="MenuPrice">
+                      {menu.price}
+                      <p>원</p>
+                    </div>
+                  </MenuInfo>
+                  <MenuImg>
+                    <div className="imgContainer">
+                      <img src={menu.image}></img>
+                    </div>
+                  </MenuImg>
+                </MenuContainer>
+              </EachMenu>
+            );
           })
         }
         <MoreMenu onClick={seeMoreMenu}>
