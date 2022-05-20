@@ -73,10 +73,10 @@ const CancelBtnBox = styled.div`
 
 const ReservList = () => {
   const [reservations, setReservations] = useState();
+  const getToken = localStorage.getItem("guestToken");
+  const [id, setId] = useState();
 
   useEffect(() => {
-    const getToken = localStorage.getItem("guestToken");
-
     var config = {
       method: "get",
       url: url + `/fooding/mypage/reservation`,
@@ -93,7 +93,29 @@ const ReservList = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, []);
+  }, [id]);
+
+  const deleteReservation = (id) => {
+    setId(id);
+    console.log(id);
+    var config = {
+      method: "delete",
+      url: url + `/fooding/mypage/reservation/${id}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setId(id);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Container>
       <Header back="/guest/myPage" title={"예약 리스트"} />
@@ -111,7 +133,11 @@ const ReservList = () => {
               </div>
             </Info>
             <CancelBtnBox>
-              <button>
+              <button
+                onClick={() => {
+                  deleteReservation(r.reserveId);
+                }}
+              >
                 <i className="fa-regular fa-trash-can"></i>
               </button>
             </CancelBtnBox>
