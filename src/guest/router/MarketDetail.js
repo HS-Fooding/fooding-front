@@ -346,6 +346,32 @@ const MarketDetail = () => {
   // useEffect(()=>{
 
   // },[representativeNNormal,market,marketMenu]);
+  const getToken = localStorage.getItem("guestToken");
+  const postFavorList = () =>{
+    const data = JSON.stringify({
+      restId:marketId,
+    });
+    console.log("보낼 데이터",data);
+    var config = {
+      method: "post",
+      url: url + `/fooding/mypage/bookmark/${marketId}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getToken,
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+      
+      })
+      .then(function () {})
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   const seeMoreMenu = () => {
     setToggle((toggle) => !toggle);
   };
@@ -373,7 +399,7 @@ const MarketDetail = () => {
         <div className="avgScore">{Number(market?.avgScore).toFixed(1)}</div>
       </MarketTitleBox>
       <MarketMenuBox>
-        <MenuBtnBox>
+        <MenuBtnBox onClick={postFavorList}>
           <i class="fa-solid fa-star"></i>
           <span>즐겨찾기</span>
         </MenuBtnBox>

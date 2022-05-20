@@ -172,7 +172,7 @@ const RestaurantList = () => {
               style={{ textDecoration: "none", color: "inherit" }}
               key={index}
             >
-              <Restaurant content={content} />
+              <Restaurant content={content} bookmark={false} />
             </Link>
           );
         })}

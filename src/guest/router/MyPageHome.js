@@ -72,6 +72,10 @@ const MyPageHome = () => {
             <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
           </Button>
         </Link>
+        <Link
+          style={{ textDecoration: "none", color: "inherit" }}
+          to={"/guest/myPage/favorList"}
+        >
         <Button>
           <div>
             <i className="fa-regular fa-star leftIcon"></i>
@@ -79,6 +83,7 @@ const MyPageHome = () => {
           </div>
           <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
         </Button>
+        </Link>
         <Link
           style={{ textDecoration: "none", color: "inherit" }}
           to={"/guest/login"}

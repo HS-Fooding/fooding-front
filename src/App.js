@@ -30,6 +30,7 @@ import RestaurantInput from "./guest/component/RestaurantInput";
 
 import MyPageHome from "./guest/router/MyPageHome";
 import ReservList from "./guest/router/ReservList";
+import FavorList from "./guest/router/FavorList";
 
 import Location from "./guest/router/Location";
 function App() {
@@ -81,6 +82,11 @@ function App() {
             path="/guest/myPage/reservList"
             element={<ReservList />}
           ></Route>
+          <Route
+            path="/guest/myPage/favorList"
+            element={<FavorList />}
+          ></Route>
+          path="/guest/myPage/favorList"
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

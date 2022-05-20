@@ -562,7 +562,7 @@ const ManageReserv = () => {
               reservId: m.reservId,
               tableNum: m.tableNum.toString(),
 
-              reserveDate: "2022-05-18",
+              reserveDate: "2022-05-20",
               reserveTime: m.reservAt,
               reserveNum: m.reservCount,
 
@@ -571,12 +571,12 @@ const ManageReserv = () => {
           };
         })
     );
-
+    console.log('whole layout',layout);
     console.log("data!!!", data);
     const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
-      url: url + `/fooding/admin/restaurant/36/reservation`,
+      url: url + `/fooding/admin/restaurant/35/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
