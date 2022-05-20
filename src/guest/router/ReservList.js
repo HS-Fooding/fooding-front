@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/Header";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-free/js/all.js";
+import { url } from "../../Api";
+import axios from "axios";
 
 const Container = styled.div`
   width: 410px;
@@ -15,13 +15,16 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   border: 1px solid black;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 const Reservations = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-
+  height: 800px;
   padding: 50px 10px;
 `;
 
@@ -69,42 +72,77 @@ const CancelBtnBox = styled.div`
 `;
 
 const ReservList = () => {
+  const [reservations, setReservations] = useState();
+  const getToken = localStorage.getItem("guestToken");
+  const [id, setId] = useState();
+
+  useEffect(() => {
+    var config = {
+      method: "get",
+      url: url + `/fooding/mypage/reservation`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setReservations(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [id]);
+
+  const deleteReservation = (id) => {
+    setId(id);
+    console.log(id);
+    var config = {
+      method: "delete",
+      url: url + `/fooding/mypage/reservation/${id}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setId(id);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Container>
       <Header back="/guest/myPage" title={"예약 리스트"} />
       <Reservations>
-        <Reservation>
-          <Info>
-            <div className="resName">음식점 이름</div>
-            <div>
-              <span>2022.05.15</span> <span>14:30</span>
-            </div>
-            <div>
-              <span>2명</span> <span>/</span> <span>차량 없음</span>
-            </div>
-          </Info>
-          <CancelBtnBox>
-            <button>
-              <i className="fa-regular fa-trash-can"></i>
-            </button>
-          </CancelBtnBox>
-        </Reservation>
-        <Reservation>
-          <Info>
-            <div className="resName">음식점 이름</div>
-            <div>
-              <span>2022.05.15</span> <span>14:30</span>
-            </div>
-            <div>
-              <span>2명</span> <span>/</span> <span>차량 없음</span>
-            </div>
-          </Info>
-          <CancelBtnBox>
-            <button>
-              <i className="fa-regular fa-trash-can"></i>
-            </button>
-          </CancelBtnBox>
-        </Reservation>
+        {reservations?.map((r, index) => (
+          <Reservation key={index}>
+            <Info>
+              <div className="resName">{r.restName}</div>
+              <div>
+                <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
+              </div>
+              <div>
+                <span>{r.reserveCount}명</span> <span>/</span>{" "}
+                {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
+              </div>
+            </Info>
+            <CancelBtnBox>
+              <button
+                onClick={() => {
+                  deleteReservation(r.reserveId);
+                }}
+              >
+                <i className="fa-regular fa-trash-can"></i>
+              </button>
+            </CancelBtnBox>
+          </Reservation>
+        ))}
       </Reservations>
     </Container>
   );

@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 410px;
   height: 60px;
   background-color: white;
   color: black;
@@ -17,7 +17,7 @@ const Container = styled.div`
   font-size: 15px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   /* /* position: absolute; */
-  position: sticky;
+  position: fixed;
   top: 0;
   font-weight: bold;
   z-index: 3;
@@ -30,7 +30,7 @@ const Container = styled.div`
   }
 `;
 
-const Header = ({ title, back,marketId }) => {
+const Header = ({ title, back, marketId }) => {
   return (
     <>
       <GlobalStyle />

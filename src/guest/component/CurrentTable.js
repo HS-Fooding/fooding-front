@@ -7,7 +7,7 @@ import axios from "axios";
 const getToken = localStorage.getItem("guestToken");
 const marketId = localStorage.getItem("marketId");
 
-const CurrentTable = ({currentMarketId}) => {
+const CurrentTable = ({ currentMarketId }) => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
   const [walls, setWalls] = useState([]);
@@ -27,9 +27,10 @@ const CurrentTable = ({currentMarketId}) => {
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
   useEffect(() => {
-    console.log("current market id",currentMarketId);
-    getShape();
+    console.log("current market id", currentMarketId);
+
     getAvailableTable();
+    getShape();
   }, []);
 
   const getAvailableTable = () => {
@@ -269,8 +270,8 @@ const CurrentTable = ({currentMarketId}) => {
             <Rect
               x={window.x / 3}
               y={window.y / 3}
-              width={window.width/3 }
-              height={window.height/3 }
+              width={window.width / 3}
+              height={window.height / 3}
               fill="#93D5FF"
               rotation={window.rotation}
             />

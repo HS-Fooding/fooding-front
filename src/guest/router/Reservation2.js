@@ -30,8 +30,9 @@ const FloorButton = styled.div`
   width: 40px;
   height: 25px;
   font-size: 15px;
-  border-radius: 10px;
-  border: solid black 1px;
+  border-radius: 8px;
+  background: ${(props) => props.theme.mainColor};
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,6 +52,8 @@ const SelectedTableBox = styled.div`
   /* background-color: teal; */
 `;
 const InnerTableBox = styled.div`
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+
   div {
     height: 80%;
     width: 50%;
@@ -175,7 +178,7 @@ const Reservation2 = () => {
               y: t.y,
               width: t.width,
               height: t.height,
-              fill: "brown",
+              fill: "#DED7B1",
               rotation: t.rotation,
               id: "table" + id,
               tableNum: t.tableNum,
@@ -193,7 +196,7 @@ const Reservation2 = () => {
               x: s.x,
               y: s.y,
               radius: 10,
-              fill: "gray",
+              fill: "#FFD07F",
               id: "seat" + id,
             };
             tempSeat.push(seat);
@@ -206,7 +209,7 @@ const Reservation2 = () => {
               y: w.y,
               width: w.width,
               height: 5,
-              fill: "black",
+              fill: "#DED7B1",
               rotation: w.rotation,
               id: "wall" + id,
             };
@@ -220,7 +223,7 @@ const Reservation2 = () => {
               y: w.y,
               width: w.width,
               height: 5,
-              fill: "skyblue",
+              fill: "#93D5FF",
               rotation: w.rotation,
               id: "window" + id,
             };
@@ -234,7 +237,7 @@ const Reservation2 = () => {
               y: d.y,
               width: d.width,
               height: 15,
-              fill: "green",
+              fill: "#CC7351",
               rotation: d.rotation,
               id: "door" + id,
             };
@@ -396,10 +399,10 @@ const Reservation2 = () => {
                   }}
                   fill={
                     selectedTable?.id === table.id
-                      ? "#764225"
+                      ? "#ffe2bc"
                       : availableTableNumArr.includes(table.tableNum)
-                      ? "brown"
-                      : "black"
+                      ? "#FF7B54"
+                      : "rgba(0,0,0,0.2)"
                   }
                 />
               );
@@ -411,7 +414,7 @@ const Reservation2 = () => {
                   y={wall.y / 3}
                   width={wall.width / 3}
                   height={wall.height / 3}
-                  fill="#2C323E"
+                  fill="#DED7B1"
                   rotation={wall.rotation}
                   onClick={() => {
                     onClickTable(wall.id, wall.maxPeople, wall.minPeople);
@@ -424,8 +427,8 @@ const Reservation2 = () => {
                 <Circle
                   x={seat.x / 3}
                   y={seat.y / 3}
-                  radius={7}
-                  fill="#FF4B00"
+                  radius={4}
+                  fill="#FFD07F"
                   rotation={seat.rotation}
                 />
               );
@@ -449,7 +452,7 @@ const Reservation2 = () => {
                   y={door.y / 3}
                   width={door.width / 3}
                   height={door.height / 3}
-                  fill="#433320"
+                  fill="#CC7351"
                   rotation={door.rotation}
                 />
               );
@@ -460,10 +463,17 @@ const Reservation2 = () => {
       <SelectedTableBox>
         <InnerTableBox>
           <div>
-            <span>최소 인원 {selectedTable?.minPeople}명</span>
+            <span>최소 인원</span>{" "}
+            <span style={{ color: "#FF7B54", marginLeft: "8px" }}>
+              {selectedTable?.minPeople}
+            </span>
           </div>
           <div>
-            <span>최대 인원 {selectedTable?.maxPeople}명</span>
+            <span>최대 인원</span>{" "}
+            <span style={{ color: "#FF7B54", marginLeft: "8px" }}>
+              {" "}
+              {selectedTable?.maxPeople}
+            </span>
           </div>
         </InnerTableBox>
       </SelectedTableBox>
