@@ -227,7 +227,7 @@ const ManageReservModal = ({ parentCallback}) => {
   };
   const handleEditNSubmit = async () => {      
       let time = `${availableHour}:${availableMinute}`;    
-        if(nickname&&name&&time&&tableNum&&reservCount&&isCar){
+        if(nickname&&name&&time&&tableNum&&reservCount&&isCar&&phoneNum){
          setModalTrigger(false);
         const modal = false;
         const submit = true;

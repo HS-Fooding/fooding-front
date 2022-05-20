@@ -29,10 +29,10 @@ const fadeOut = keyframes`
 
 const Container = styled.div`
   width: 350px;
-  height: 500px;
+  height: 450px;
   background-color: white;
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -219,7 +219,7 @@ const ManageReservModal = ({info,status}) => {
   const [blockReservCount,setBlockReservCount] = useState(info.reservCount);
   const [blockReservId,setBlockReservId] = useState(info.reservId);
   const [blockTableNum,setBlockTableNum] = useState(info.tableNum);
-  
+  const [blockPhoneNum,setBlockPhoneNum] = useState(info.phoneNum);
 
   const onChangeAvailableHour = (e)=> setAvailableHour(e);
   const onChangeAvailableMinute = (e)=> setAvailableMinute(e+"0");
@@ -317,11 +317,12 @@ const ManageReservModal = ({info,status}) => {
               <div classname="inlineblock">{blockIsCar ? <p>있음</p> : <p>없음</p>}</div>
             
             </InputBox>
+            {blockPhoneNum ? 
             <InputBox>
               <div>전화 번호</div>
-              <div classname="inlineblock"><p></p></div>
+              <div classname="inlineblock"><p>{blockPhoneNum}</p></div>
             </InputBox>
-
+            : null}
          
          
         </InnerBox>
