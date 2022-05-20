@@ -24,7 +24,7 @@ const Container = styled.div`
 const Reservations = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 800px;
   padding: 50px 10px;
 `;
 
