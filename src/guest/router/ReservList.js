@@ -74,9 +74,8 @@ const CancelBtnBox = styled.div`
 const ReservList = () => {
   const [reservations, setReservations] = useState();
   const getToken = localStorage.getItem("guestToken");
-  const [id, setId] = useState();
 
-  useEffect(() => {
+  const getReservation = () => {
     var config = {
       method: "get",
       url: url + `/fooding/mypage/reservation`,
@@ -93,10 +92,13 @@ const ReservList = () => {
       .catch(function (error) {
         console.log(error);
       });
-  }, [id]);
+  };
+  let statusId;
+  useEffect(() => {
+    getReservation();
+  }, []);
 
   const deleteReservation = (id) => {
-    setId(id);
     console.log(id);
     var config = {
       method: "delete",
@@ -109,7 +111,7 @@ const ReservList = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
-        setId(id);
+        getReservation();
       })
       .catch(function (error) {
         console.log(error);
