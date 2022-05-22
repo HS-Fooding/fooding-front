@@ -79,10 +79,16 @@ const NumOfViewsNReviews = styled.div`
   }
  
   .bookmarkCancelBtn{
-    font-size:20px;
+    font-size:18px;
     z-index:5;
     height:30px;
     width:25px;
+    margin-top:5px;
+    p{
+      display:flex;
+      flex-direction:column;
+      justify-content: flex-end;
+    }
     /* margin-right:5px; */
   }
 `;

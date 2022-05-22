@@ -413,7 +413,7 @@ const ManageReserv = () => {
         reservCount,
         isCar: isCar === "true" ? true : false,
         phoneNum,
-        // reservId: uuidv4(),
+       //reservId: uuidv4(),
         reservId: null,
         status: "NEW",
       };
@@ -485,7 +485,7 @@ const ManageReserv = () => {
       cursor: "pointer",
     };
     return _.map(layout, (el, i) => {
-      const t = el.i;
+      const t = el.i;      
       return (
         <div key={t} data-grid={el} onDoubleClick={() => showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
@@ -633,13 +633,21 @@ const ManageReserv = () => {
           </ResponsiveReactGridLayout>
         </LayoutWrapper>
       </div>
-
+      {/* <div>
+                <div className="layoutJSON">
+                    Displayed as <code>[x, y, w, h]</code>
+                    <br />
+                    <br />
+                    <div className="columns">{stringifyLayout()}</div>
+                </div>
+            </div> */}
       {manageModal ? (
         <ManageReserveModal parentCallback={handleCallback} />
       ) : null}
       {isshowModalForInfo ? (
         <ShowInfoModal info={isShowModalInfo} status={handleShowCallback} />
       ) : null}
+      
     </Container>
   );
 };

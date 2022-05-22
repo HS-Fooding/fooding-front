@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const Bookmarks = styled.div`
   display: flex;
- 
+  
   height: 800px;
   padding: 50px 10px;
 `;
@@ -62,14 +62,7 @@ const ListContainer = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
-  .Target-Element {
-    width: 100vw;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-   
-  }
+ 
 `;
 const BoomarkContainer = styled.div`
  height:300px;
