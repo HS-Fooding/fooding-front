@@ -89,7 +89,6 @@ const InnerBox = styled.div`
   height: 500px;
   background-color: white;
   padding: 5px;
-  
 `;
 const halfBox = styled.div`
   width: 50%;
@@ -106,16 +105,17 @@ const InputBox = styled.div`
   width: 100%;
   margin-bottom: 20px;
   align-items: center;
-  
-  .tableNum, .reservCount{
-    width:50px;
+
+  .tableNum,
+  .reservCount {
+    width: 50px;
   }
-  .isCar{
-    height:20px;
-    width:30px;
+  .isCar {
+    height: 20px;
+    width: 30px;
   }
-  .phoneNum{
-    width:140px;
+  .phoneNum {
+    width: 140px;
   }
   input {
     width: 100px;
@@ -171,81 +171,82 @@ const Background = styled.div`
 // 최대 인원
 // 최소 인원
 // 테이블 사이즈
-const ManageReservModal = ({ parentCallback}) => {
+const ManageReservModal = ({ parentCallback }) => {
   const [validation, setValidation] = useState([false, false, false]);
   const [isPassedValid, setIsPassedValid] = useState(false);
   const [modalTrigger, setModalTrigger] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
-  
-  const [nickname,setNickname] = useState();
-  const [name,setName] = useState();
-  const [reservAt,setReservAt] = useState();
-  const [tableNum,setTableNum] = useState();
-  const [reservCount,setReservCount]=useState();
-  const [isCar,setIsCar] = useState();
-  const [phoneNum,setPhoneNum]= useState();
-  const [availableHour,setAvailableHour] = useState();
-  const [availableMinute,setAvailableMinute] = useState();
 
-  const onChangeAvailableHour = (e)=> setAvailableHour(e);
-  const onChangeAvailableMinute = (e)=> setAvailableMinute(e+"0");
+  const [nickname, setNickname] = useState();
+  const [name, setName] = useState();
+  const [reservAt, setReservAt] = useState();
+  const [tableNum, setTableNum] = useState();
+  const [reservCount, setReservCount] = useState();
+  const [isCar, setIsCar] = useState();
+  const [phoneNum, setPhoneNum] = useState();
+  const [availableHour, setAvailableHour] = useState();
+  const [availableMinute, setAvailableMinute] = useState();
+
+  const [reservId, setReservId] = useState();
+
+  const onChangeAvailableHour = (e) => setAvailableHour(e);
+  const onChangeAvailableMinute = (e) => setAvailableMinute(e + "0");
   const onChange = (event) => {
     const {
       target: { value, className },
     } = event;
     console.log(value);
-    if (className=="nickname"){
-        setNickname(value);
-    }
-    else if(className=="name"){
-        setName(value);
-    }
-    else if(className=="reservAt"){
-        setReservAt(value);
-    }
-    
-    else if (className === "tableNum") {
+    if (className == "nickname") {
+      setNickname(value);
+    } else if (className == "name") {
+      setName(value);
+    } else if (className == "reservAt") {
+      setReservAt(value);
+    } else if (className === "tableNum") {
       setTableNum(value);
-    } 
-    else if (className === "reservCount") {
-        setReservCount(value);
+    } else if (className === "reservCount") {
+      setReservCount(value);
+    } else if (className === "isCar") {
+      console.log("isCarisCar", value);
+      setIsCar(value);
+    } else if (className === "phoneNum") {
+      setPhoneNum(value);
     }
-    else if (className === "isCar") {
-      console.log("isCarisCar",value);
-        setIsCar(value);
-    }
-    else if (className === "phoneNum") {
-        setPhoneNum(value);
-    }          
-   
-    
   };
-  
+
   const onKeyPress = (event) => {
     const { code } = event;
     if (code === "Enter") event.preventDefault();
   };
-  const handleEditNSubmit = async () => {      
-      let time = `${availableHour}:${availableMinute}`;    
-        if(nickname&&name&&time&&tableNum&&reservCount&&isCar&&phoneNum){
-         setModalTrigger(false);
-        const modal = false;
-        const submit = true;
-        const edit = true;    
-        parentCallback(
-            nickname,
-            name,
-            time,
-            tableNum,
-            reservCount,
-            isCar,
-            phoneNum,
-            modal,
-            submit
-        );    
-        }
+  const handleEditNSubmit = async () => {
+    let time = `${availableHour}:${availableMinute}`;
+    if (
+      nickname &&
+      name &&
+      time &&
+      tableNum &&
+      reservCount &&
+      isCar &&
+      phoneNum
+    ) {
+      setModalTrigger(false);
+      const modal = false;
+      const submit = true;
+      const edit = true;
+      parentCallback(
+        nickname,
+        name,
+        time,
+        tableNum,
+        reservCount,
+        isCar,
+        phoneNum,
+        modal,
+        submit
+      );
+    }
   };
-  
+
   return (
     <>
       <Background visible={modalTrigger} />
@@ -284,111 +285,112 @@ const ManageReservModal = ({ parentCallback}) => {
           </button>
         </Header>
         <InnerBox>
-         
-            <InputBox>
-              <div>닉네임</div>
-              <input
-                className="nickname"
-                type="text"
-                value={nickname}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
-            </InputBox>
-            <InputBox>
-              <div>이름</div>
-              <input
-                type="text"
-                className="name"
-                value={name}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
-            </InputBox>
-            <InputBox>
-              <div>예약 시간</div>
-            
-               <NumericInput
-                        style={{
-                          input: {
-                            height: "30px",
-                            width:"60px",
-                          },
-                        }}
-                        min={0}
-                        max={24}
-                        step={1}
-                        value={availableHour}
-                        onChange={onChangeAvailableHour}
-                      />
-                      <hr/><p>시</p><hr />
-                      <NumericInput
-                        style={{
-                          input: {
-                            height: "30px",
-                            width:"60px",
-                          },
-                        }}
-                        min={0}
-                        max={30}
-                        step={30}
-                        value={availableMinute}
-                        onChange={onChangeAvailableMinute}
-                      /><hr/><p>분</p>
-            </InputBox>
-            <InputBox>
-              <div>테이블 번호</div>
-              <input
-                type="number"
-                className="tableNum"
-                value={tableNum}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
-            </InputBox>
-            <InputBox>
-              <div>예약 명수</div>
-              <input
-                type="number"
-                className="reservCount"
-                value={reservCount}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
-            </InputBox>
-            <InputBox>
-              <div>차량 여부</div>
-             
-              <input
-                type="radio"
-                className="isCar"
-                value={true}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-                name="isCar"
-              /> <p style={{marginRight:"10px"}}>있음</p>
-                <input
-                type="radio"
-                className="isCar"
-                value={false}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-                name="isCar"
-              /> 없음
-            
-            </InputBox>
-            <InputBox>
-              <div>전화 번호</div>
-              <input
-                type="text"
-                className="phoneNum"
-                value={phoneNum}
-                onChange={onChange}
-                onKeyPress={onKeyPress}
-              />
-            </InputBox>
-         
-         
+          <InputBox>
+            <div>닉네임</div>
+            <input
+              className="nickname"
+              type="text"
+              value={nickname}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            />
+          </InputBox>
+          <InputBox>
+            <div>이름</div>
+            <input
+              type="text"
+              className="name"
+              value={name}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            />
+          </InputBox>
+          <InputBox>
+            <div>예약 시간</div>
+
+            <NumericInput
+              style={{
+                input: {
+                  height: "30px",
+                  width: "60px",
+                },
+              }}
+              min={0}
+              max={24}
+              step={1}
+              value={availableHour}
+              onChange={onChangeAvailableHour}
+            />
+            <hr />
+            <p>시</p>
+            <hr />
+            <NumericInput
+              style={{
+                input: {
+                  height: "30px",
+                  width: "60px",
+                },
+              }}
+              min={0}
+              max={30}
+              step={30}
+              value={availableMinute}
+              onChange={onChangeAvailableMinute}
+            />
+            <hr />
+            <p>분</p>
+          </InputBox>
+          <InputBox>
+            <div>테이블 번호</div>
+            <input
+              type="number"
+              className="tableNum"
+              value={tableNum}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            />
+          </InputBox>
+          <InputBox>
+            <div>예약 명수</div>
+            <input
+              type="number"
+              className="reservCount"
+              value={reservCount}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            />
+          </InputBox>
+          <InputBox>
+            <div>차량 여부</div>
+            <input
+              type="radio"
+              className="isCar"
+              value={true}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+              name="isCar"
+            />{" "}
+            <p style={{ marginRight: "10px" }}>있음</p>
+            <input
+              type="radio"
+              className="isCar"
+              value={false}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+              name="isCar"
+            />{" "}
+            없음
+          </InputBox>
+          <InputBox>
+            <div>전화 번호</div>
+            <input
+              type="text"
+              className="phoneNum"
+              value={phoneNum}
+              onChange={onChange}
+              onKeyPress={onKeyPress}
+            />
+          </InputBox>
         </InnerBox>
         <Footer>
           <button
@@ -408,7 +410,7 @@ const ManageReservModal = ({ parentCallback}) => {
                 phoneNum,
                 modal,
                 submit
-                )
+              );
             }}
           >
             닫기

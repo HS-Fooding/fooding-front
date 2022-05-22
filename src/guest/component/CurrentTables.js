@@ -7,7 +7,7 @@ import axios from "axios";
 const getToken = localStorage.getItem("guestToken");
 const marketId = localStorage.getItem("marketId");
 
-const CurrentTable = ({ currentMarketId }) => {
+const CurrentTables = ({ currentMarketId }) => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
   const [walls, setWalls] = useState([]);
@@ -294,4 +294,4 @@ const CurrentTable = ({ currentMarketId }) => {
   );
 };
 
-export default CurrentTable;
+export default CurrentTables;
