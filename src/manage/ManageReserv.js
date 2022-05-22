@@ -119,6 +119,8 @@ const LayoutWrapper = styled.div`
 
 const BLOCK_OF_TIME = 30;
 
+const marketId = localStorage.getItem("marketId");
+
 const parseDate = (date, time) => {
   const _date = date?.split("-");
   var _time;
@@ -243,7 +245,7 @@ const ManageReserv = () => {
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-      url: url + `/fooding/admin/restaurant/${36}/reservation`,
+      url: url + `/fooding/admin/restaurant/${marketId}/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
@@ -414,7 +416,7 @@ const ManageReserv = () => {
         isCar: isCar === "true" ? true : false,
         phoneNum,
         // reservId: uuidv4(),
-        reservId: null,
+        //reservId,
         status: "NEW",
       };
       setNewCounter(newCounter + 1);
@@ -489,6 +491,7 @@ const ManageReserv = () => {
       return (
         <div key={t} data-grid={el} onDoubleClick={() => showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
+          <div>{el.reservId}id</div>
           <div>{el.tableNum}번</div>
           <div>{el.nickname}</div>
           {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
@@ -571,12 +574,12 @@ const ManageReserv = () => {
           };
         })
     );
-    console.log('whole layout',layout);
+    console.log("whole layout", layout);
     console.log("data!!!", data);
     const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
-      url: url + `/fooding/admin/restaurant/35/reservation`,
+      url: url + `/fooding/admin/restaurant/${marketId}/reservation`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
