@@ -163,7 +163,7 @@ const transformData = (dummy) => {
         reservCount: m.reservCount,
         isCar: m.car,
         // reservAt: parseDate(dummy.tableInfo.date, m.reservAt),
-        phoneNum:m.phoneNum ? m.phoneNum : null,
+        phoneNum: m.phoneNum ? m.phoneNum : null,
         reservAt: m.reservAt,
         x: dummy.tableInfo.tableNums.findIndex((t) => t === m.tableNum), // 테이블 번호
         y: diff,
@@ -355,7 +355,7 @@ const ManageReserv = () => {
             reservId: response[i].reservId,
             nickname: response[i].nickname,
             tableNum: response[i].tableNum,
-            phoneNum:response[i].phoneNum,
+            phoneNum: response[i].phoneNum,
             reservCount: response[i].reservCount,
             isCar: response[i].isCar,
             reservAt: response[i].reservAt,
@@ -505,7 +505,7 @@ const ManageReserv = () => {
       return (
         <div key={t} data-grid={el} onDoubleClick={() => showModalForInfo(el)}>
           {/* <div className="text">{i + 1}</div> */}
-          <div>{el.reservId}id</div>
+          {/* <div>{el.reservId}id</div> */}
           <div>{el.tableNum}번</div>
           <div>{el.nickname}</div>
           {/* <div>reservAt : {el.reservAt.toLocaleString("en-US", { timeZone: "UTC" })}</div> */}
