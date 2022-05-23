@@ -99,6 +99,7 @@ const LayoutWrapper = styled.div`
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     font-size: 12px;
     padding: 5px 0px;
@@ -107,6 +108,7 @@ const LayoutWrapper = styled.div`
     color: #495057;
     div {
       margin: 3px;
+      display: flex;
     }
 
     div:first-child {
