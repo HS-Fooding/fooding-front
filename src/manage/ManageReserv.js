@@ -163,6 +163,7 @@ const transformData = (dummy) => {
         reservCount: m.reservCount,
         isCar: m.car,
         // reservAt: parseDate(dummy.tableInfo.date, m.reservAt),
+        phoneNum:m.phoneNum ? m.phoneNum : null,
         reservAt: m.reservAt,
         x: dummy.tableInfo.tableNums.findIndex((t) => t === m.tableNum), // 테이블 번호
         y: diff,
@@ -238,16 +239,16 @@ const ManageReserv = () => {
     let month = startDate.getMonth() + 1;
     let date = startDate.getDate();
 
-    setPostYear(year);
-    setPostMonth(month);
-    setPostDate(date);
-
     if (month.toString().length == 1) {
       month = "0" + month;
     }
     if (date.toString().length == 1) {
       date = "0" + date;
     }
+
+    setPostYear(year);
+    setPostMonth(month);
+    setPostDate(date);
 
     console.log("month, date:", month, date);
 
@@ -354,6 +355,7 @@ const ManageReserv = () => {
             reservId: response[i].reservId,
             nickname: response[i].nickname,
             tableNum: response[i].tableNum,
+            phoneNum:response[i].phoneNum,
             reservCount: response[i].reservCount,
             isCar: response[i].isCar,
             reservAt: response[i].reservAt,
