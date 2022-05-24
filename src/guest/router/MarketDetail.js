@@ -578,7 +578,13 @@ const getToken = localStorage.getItem("guestToken");
 //     </Stage>
 //   );
 // };
+const FloorButtonContainer = styled.div`
+ width: 90%;
+ margin-left:13px;
+  height: 30px;
+  display: flex;
 
+`;
 const MarketDetail = () => {
   const [market, setMarket] = useState();
   const [marketMenu, setMarketMenu] = useState();
@@ -607,7 +613,27 @@ const MarketDetail = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableTable, setAvailableTable] = useState([]);
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
+  
+  const [floor,setFloor] = useState([true]);
+  const [selectedFloor,setSelectedFloor] = useState(0);
+  
+  const FloorButton = styled.div`
+    width: 40px;
+    height: 30px;
+    font-size:13px;
+    border-radius: 7px;
+    margin-left: 10px;
+    background-color: ${(props) =>
+      props.num == selectedFloor ? "#FF7B54" : "#f4f4f5"};
+    color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+  }
+`;
   const getAvailableTable = () => {
     var config = {
       method: "get",
@@ -653,6 +679,11 @@ const MarketDetail = () => {
         const floors = response.data.floors;
         setWholeFloorsLength(floors.length);
         setWholeFloor(floors);
+        const savefloorNum = Array(response.data.floors.length);
+        savefloorNum.fill(false);
+        savefloorNum[0] = true;
+        console.log("saveFloorNum", savefloorNum);
+        setFloor(savefloorNum);
         console.log("floors length", wholeFloorsLength);
         let tempTableCntArr = [];
         let tempSeatCntArr = [];
@@ -945,7 +976,6 @@ const MarketDetail = () => {
         >
           <MenuBtnBox>
             <i className="fa-solid fa-calendar-days reservation"></i>
-
             <span>예약하기</span>
           </MenuBtnBox>
         </Link>
@@ -1010,7 +1040,20 @@ const MarketDetail = () => {
       <MarketTable>
         <span className="marketDesc">테이블 현황</span>
       </MarketTable>
-
+      <FloorButtonContainer>
+      {floor.map((bool,index)=>{
+          return (<FloorButton
+          classname="floorbutton"
+          num={index}
+          onClick={(e) => {
+           setCurrentIndex(index);
+           setSelectedFloor(index);
+          }}
+        >
+          <p>{index + 1}층</p>
+        </FloorButton>)
+      })}
+    </FloorButtonContainer>
       <Stage
         style={{
           marginTop: "10px",
