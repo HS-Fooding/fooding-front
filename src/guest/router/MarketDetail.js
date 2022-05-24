@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Component } from "react";
 import { useParams } from "react-router";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Header from "../component/Header";
 import { url } from "../../Api";
 import axios from "axios";
@@ -11,6 +11,8 @@ import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 // import CurrentTable from "../component/CurrentTables";
+import { motion, AnimatePresence } from "framer-motion";
+
 import {
   faCaretRight,
   faCaretDown,
@@ -254,6 +256,39 @@ const MarketTable = styled.div`
     padding: 20px;
   }
 `;
+
+const appearDisappear = keyframes`
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:1.0;
+    }
+    100%{
+      opacity:0;
+      
+    }
+`;
+
+const Modal = styled.div`
+  z-index: 10;
+  position: absolute;
+  width: 90%;
+  /* margin-top: 60%; */
+  left: 8%;
+  top: 50%;
+  height: 50px;
+  background-color: gray;
+  color: white;
+  border-radius: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  opacity: 0;
+  animation: ${appearDisappear} 3s ease-in-out;
+`;
+
 const marketId = localStorage.getItem("marketId");
 const getToken = localStorage.getItem("guestToken");
 
@@ -553,6 +588,8 @@ const MarketDetail = () => {
   const { marketId } = useParams();
   const [category, setCategory] = useState([]);
 
+  const [modal, setModal] = useState(false);
+
   useEffect(() => {
     console.log("marketId", marketId);
     localStorage.setItem("marketId", marketId);
@@ -654,6 +691,8 @@ const MarketDetail = () => {
 
     axios(config)
       .then(function (response) {
+        setModal(true);
+        modalSet();
         console.log(response.data);
       })
       .then(function () {})
@@ -661,6 +700,15 @@ const MarketDetail = () => {
         console.log(error);
       });
   };
+
+  function delay() {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  async function modalSet() {
+    await delay();
+    setModal(false);
+  }
+
   const seeMoreMenu = () => {
     setToggle((toggle) => !toggle);
   };
@@ -856,6 +904,9 @@ const MarketDetail = () => {
             })
           : null}
       </MarketMenuInfo>
+      <AnimatePresence>
+        {modal ? <Modal>즐겨찾기에 등록되었습니다.</Modal> : null}
+      </AnimatePresence>
     </Container>
   );
 };
