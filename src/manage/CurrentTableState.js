@@ -26,11 +26,11 @@ const CurrentTables = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableTable, setAvailableTable] = useState([]);
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
-  
-  const [floor,setFloor] = useState([true]);
-  const [selectedFloor,setSelectedFloor] = useState(0);
+
+  const [floor, setFloor] = useState([true]);
+  const [selectedFloor, setSelectedFloor] = useState(0);
   const FloorButton = styled.div`
-     width: 80px;
+    width: 80px;
     height: 40px;
     border-radius: 10px;
     margin-left: 10px;
@@ -44,15 +44,14 @@ const CurrentTables = () => {
     :hover {
       cursor: pointer;
     }
-`;
-const FloorButtonContainer = styled.div`
- width: 100%;
- background-color:white;
+  `;
+  const FloorButtonContainer = styled.div`
+    width: 100%;
+    background-color: white;
 
-  height: 60px;
-  display: flex;
-
-`;
+    height: 60px;
+    display: flex;
+  `;
   useEffect(() => {
     //console.log("current market id", currentMarketId);
 
@@ -63,9 +62,7 @@ const FloorButtonContainer = styled.div`
   const getAvailableTable = () => {
     var config = {
       method: "get",
-      url:
-        url +
-        `/fooding/restaurant/${marketId}/reservation?date=2022-05-19&num=2&time=11:30`,
+      url: url + `/fooding/restaurant/${marketId}/table`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
@@ -237,107 +234,110 @@ const FloorButtonContainer = styled.div`
   };
   return (
     <>
-       <FloorButtonContainer>
-    {floor.map((bool,index)=>{
-          return (<FloorButton
-          classname="floorbutton"
-          num={index}
-          onClick={(e) => {
-           setCurrentIndex(index);
-           setSelectedFloor(index);
-          }}
-        >
-          <p>{index + 1}층</p>
-        </FloorButton>)
-      })}
+      <FloorButtonContainer>
+        {floor.map((bool, index) => {
+          return (
+            <FloorButton
+              classname="floorbutton"
+              num={index}
+              onClick={(e) => {
+                setCurrentIndex(index);
+                setSelectedFloor(index);
+              }}
+            >
+              <p>{index + 1}층</p>
+            </FloorButton>
+          );
+        })}
       </FloorButtonContainer>
-    <Stage
-      style={{
-        marginTop: "10px",
-        display: "flex",
-        justifyContent: "center",
-      }}
-      width={900}
-      height={600}
-      //   fill={"yellow"}
-      //   onMouseDown={checkDeselect}
-      //   onTouchStart={checkDeselect}
-    >
-      <Layer>
-        {tables[currentIndex]?.map((table, i) => {
-          return (
-            <Rect
-              id={table?.id}
-              x={table.x}
-              y={table.y}
-              width={table.width}
-              height={table.height}
-              rotation={table.rotation}
-              //   fill={
-              //     selectedTable?.id === table.id
-              //       ? "#764225"
-              //       : availableTableNumArr.includes(table.tableNum)
-              //       ? "brown"
-              //       : "black"
-              //   }
+      <Stage
+        style={{
+          marginTop: "10px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+        width={900}
+        height={600}
+        //   fill={"yellow"}
+        //   onMouseDown={checkDeselect}
+        //   onTouchStart={checkDeselect}
+      >
+        <Layer>
+          {tables[currentIndex]?.map((table, i) => {
+            return (
+              <Rect
+                id={table?.id}
+                x={table.x}
+                y={table.y}
+                width={table.width}
+                height={table.height}
+                rotation={table.rotation}
+                //   fill={
+                //     selectedTable?.id === table.id
+                //       ? "#764225"
+                //       : availableTableNumArr.includes(table.tableNum)
+                //       ? "brown"
+                //       : "black"
+                //   }
 
-              fill={
-                availableTableNumArr.includes(table.tableNum)
-                  ? "#FF7B54"
-                  : "rgba(0,0,0,0.2)"
-              }
-            />
-          );
-        })}
-        {walls[currentIndex]?.map((wall, i) => {
-          return (
-            <Rect
-              x={wall.x}
-              y={wall.y}
-              width={wall.width}
-              height={wall.height}
-              fill="#DED7B1"
-              rotation={wall.rotation}
-            />
-          );
-        })}
-        {seats[currentIndex]?.map((seat, i) => {
-          return (
-            <Circle
-              x={seat.x}
-              y={seat.y}
-              radius={4}
-              fill="#FFD07F"
-              rotation={seat.rotation}
-            />
-          );
-        })}
-        {windows[currentIndex]?.map((window, i) => {
-          return (
-            <Rect
-              x={window.x}
-              y={window.y}
-              width={window.width}
-              height={window.height}
-              fill="#93D5FF"
-              rotation={window.rotation}
-            />
-          );
-        })}
-        {doors[currentIndex]?.map((door, i) => {
-          return (
-            <Rect
-              x={door.x}
-              y={door.y}
-              width={door.width}
-              height={door.height}
-              fill="#CC7351"
-              rotation={door.rotation}
-            />
-          );
-        })}
-      </Layer>
-    </Stage></>
+                fill={
+                  availableTableNumArr.includes(table.tableNum)
+                    ? "#FF7B54"
+                    : "rgba(0,0,0,0.2)"
+                }
+              />
+            );
+          })}
+          {walls[currentIndex]?.map((wall, i) => {
+            return (
+              <Rect
+                x={wall.x}
+                y={wall.y}
+                width={wall.width}
+                height={wall.height}
+                fill="#DED7B1"
+                rotation={wall.rotation}
+              />
+            );
+          })}
+          {seats[currentIndex]?.map((seat, i) => {
+            return (
+              <Circle
+                x={seat.x}
+                y={seat.y}
+                radius={4}
+                fill="#FFD07F"
+                rotation={seat.rotation}
+              />
+            );
+          })}
+          {windows[currentIndex]?.map((window, i) => {
+            return (
+              <Rect
+                x={window.x}
+                y={window.y}
+                width={window.width}
+                height={window.height}
+                fill="#93D5FF"
+                rotation={window.rotation}
+              />
+            );
+          })}
+          {doors[currentIndex]?.map((door, i) => {
+            return (
+              <Rect
+                x={door.x}
+                y={door.y}
+                width={door.width}
+                height={door.height}
+                fill="#CC7351"
+                rotation={door.rotation}
+              />
+            );
+          })}
+        </Layer>
+      </Stage>
+    </>
   );
 };
 
@@ -358,7 +358,7 @@ const CurrentTableState = () => {
   return (
     <Container>
       <Header />
-      <TableContainer> 
+      <TableContainer>
         <CurrentTables></CurrentTables>
       </TableContainer>
     </Container>

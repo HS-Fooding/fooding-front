@@ -95,6 +95,7 @@ const Chart = () => {
 
   useEffect(async () => {
     const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
 
     let startYear = startDate.getFullYear();
     let startMonth = startDate.getMonth() + 1;
@@ -126,7 +127,7 @@ const Chart = () => {
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,
-      url: url + `/fooding/admin/restaurant/1/chart`,
+      url: url + `/fooding/admin/restaurant/${marketId}/chart`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getToken,
