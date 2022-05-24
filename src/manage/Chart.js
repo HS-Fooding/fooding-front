@@ -3,6 +3,8 @@ import { url } from "../Api";
 import axios from "axios";
 import Header from "./component/Header";
 import styled from "styled-components";
+import DatePicker from "react-datepicker";
+import "./Calandar.css";
 
 import {
   LineChart,
@@ -32,6 +34,28 @@ const Container = styled.div`
   justify-content: center;
   margin: 40px;
   align-items: center;
+`;
+
+const MyDatePicker = styled(DatePicker)`
+  height: auto;
+  width: 216px;
+  input {
+    border: 1px solid gray;
+  }
+  color: ${(props) => props.theme.mainColor};
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  /* background-color: gray; */
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: bold;
+  /* background-color: transparent; */
+  /* color: white; */
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 `;
 
 const Boxes = styled.div`
@@ -66,8 +90,38 @@ const Chart = () => {
   const [reserveLineChart, setReserveLineChart] = useState([]);
   const [arrForMax, setArrForMax] = useState([]);
 
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+
   useEffect(async () => {
     const getToken = localStorage.getItem("managerToken");
+
+    let startYear = startDate.getFullYear();
+    let startMonth = startDate.getMonth() + 1;
+    let startDay = startDate.getDay() + 1;
+
+    let endYear = endDate.getFullYear();
+    let endMonth = endDate.getMonth() + 1;
+    let endDay = endDate.getDay() + 1;
+
+    console.log(startYear, startMonth, startDay);
+    console.log(endYear, endMonth, endDay);
+
+    if (endDay.toString().length == 1) {
+      endDay = "0" + endDay;
+    }
+
+    if (startDay.toString().length == 1) {
+      startDay = "0" + startDay;
+    }
+
+    if (startMonth.toString().length == 1) {
+      startMonth = "0" + startMonth;
+    }
+
+    if (endMonth.toString().length == 1) {
+      endMonth = "0" + endMonth;
+    }
 
     const config = {
       method: "get",
@@ -78,8 +132,10 @@ const Chart = () => {
         Authorization: "Bearer " + getToken,
       },
       params: {
-        start: "2022-05-05",
-        end: "2022-05-07",
+        // start: "2022-05-05",
+        // end: "2022-05-07",
+        start: `${startYear}-${startMonth}-${startDay}`,
+        end: `${endYear}-${endMonth}-${endDay}`,
       },
     };
 
@@ -206,7 +262,7 @@ const Chart = () => {
         setReserveLineChart(timeResult);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [startDate, endDate]);
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "orange"];
 
@@ -214,6 +270,16 @@ const Chart = () => {
     <>
       <Header />
       <Container>
+        <MyDatePicker
+          selectsRange={true}
+          startDate={startDate}
+          endDate={endDate}
+          onChange={(update) => {
+            setDateRange(update);
+            console.log(startDate, endDate);
+          }}
+          withPortal
+        />
         <Boxes>
           <Box>
             <Title>나이</Title>

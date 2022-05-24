@@ -1,0 +1,18 @@
+.react-datepicker__month-container {
+}
+
+.react-datepicker__day--in-range {
+  background-color: #ff7b54;
+}
+
+.react-datepicker__day--in-range:hover {
+  background-color: #ffe2bc;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #ff7b54;
+}
+
+.react-datepicker__day--in-selecting-range {
+  background-color: #ff7b54;
+}
