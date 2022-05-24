@@ -638,9 +638,7 @@ const MarketDetail = () => {
   const getAvailableTable = () => {
     var config = {
       method: "get",
-      url:
-        url +
-        `/fooding/restaurant/${marketId}/reservation?date=2022-05-19&num=2&time=11:30`,
+      url: url + `/fooding/restaurant/${marketId}/table`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
