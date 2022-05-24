@@ -59,8 +59,9 @@ const Title = styled.div`
   font-size: 10px;
 `;
 const LoginBut = styled.button`
+  margin-top: 50px;
   width: 80%;
-  height: 35px;
+  height: 50px;
   font-size: 15px;
   border: none;
   border-radius: 10px;
@@ -74,7 +75,7 @@ const LoginBut = styled.button`
 `;
 const SignUpBut = styled.button`
   width: 280px;
-  height: 35px;
+  height: 50px;
   font-size: 15px;
   border: 1px solid ${(props) => props.theme.mainColor};
   border-radius: 10px;
