@@ -25,7 +25,7 @@ const Reservations = styled.div`
   display: flex;
   flex-direction: column;
   height: 800px;
-  padding: 50px 10px;
+  padding: 80px 10px;
 `;
 
 const Reservation = styled.div`
@@ -71,8 +71,73 @@ const CancelBtnBox = styled.div`
   }
 `;
 
+const ModalContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: #00000080;
+  z-index: 5;
+`;
+
+const Modal = styled.div`
+  position: absolute;
+  width: 330px;
+  height: 200px;
+  left: 8%;
+  top: 30%;
+  background: white;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 16px;
+
+  .closeBtn {
+    display: flex;
+    justify-content: right;
+
+    /* span {
+      float: right;
+    } */
+  }
+
+  .message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 57px 0px 40px 0px;
+  }
+
+  .btns {
+    display: flex;
+    justify-content: center;
+    button {
+      border: none;
+      width: 88px;
+      height: 40px;
+      border-radius: 4px;
+      margin: 3px;
+      cursor: pointer;
+    }
+
+    button:first-child {
+    }
+
+    button:last-child {
+      background: ${(props) => props.theme.mainColor};
+      color: white;
+    }
+  }
+`;
+
 const ReservList = () => {
   const [reservations, setReservations] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+
   const getToken = localStorage.getItem("guestToken");
 
   const getReservation = () => {
@@ -98,11 +163,10 @@ const ReservList = () => {
     getReservation();
   }, []);
 
-  const deleteReservation = (id) => {
-    console.log(id);
+  const clickDelete = () => {
     var config = {
       method: "delete",
-      url: url + `/fooding/mypage/reservation/${id}`,
+      url: url + `/fooding/mypage/reservation/${deleteId}`,
       headers: {
         Authorization: "Bearer " + getToken,
       },
@@ -111,11 +175,17 @@ const ReservList = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
+        setShowModal(false);
         getReservation();
       })
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const deleteReservation = (id) => {
+    setShowModal(true);
+    setDeleteId(id);
   };
 
   return (
@@ -146,6 +216,26 @@ const ReservList = () => {
           </Reservation>
         ))}
       </Reservations>
+      {showModal ? (
+        <ModalContainer>
+          <Modal>
+            {/* <div className="closeBtn">
+              <span onClick = {() => {setShowModal(false)}} >X</span>
+            </div> */}
+            <div className="message">예약을 취소하시겠습니까?</div>
+            <div className="btns">
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                닫기
+              </button>
+              <button onClick={clickDelete}>확인</button>
+            </div>
+          </Modal>
+        </ModalContainer>
+      ) : null}
     </Container>
   );
 };
