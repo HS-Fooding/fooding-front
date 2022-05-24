@@ -277,7 +277,7 @@ const Location = () => {
         ></HeaderSearch>
       </form>
       <div>
-        <div id="map" style={{ width: "410px", height: "710px" }}></div>
+        <div id="map" style={{ width: "410px", height: "770px" }}></div>
         {/* <div id="map" style={{ width: "120px", height: "120px" }}></div> */}
       </div>
       {click ? (
