@@ -26,7 +26,33 @@ const CurrentTables = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableTable, setAvailableTable] = useState([]);
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
+  
+  const [floor,setFloor] = useState([true]);
+  const [selectedFloor,setSelectedFloor] = useState(0);
+  const FloorButton = styled.div`
+     width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    margin-left: 10px;
+    background-color: ${(props) =>
+      props.num == selectedFloor ? "#FF7B54" : "#f4f4f5"};
+    color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+    }
+`;
+const FloorButtonContainer = styled.div`
+ width: 100%;
+ background-color:white;
+
+  height: 60px;
+  display: flex;
+
+`;
   useEffect(() => {
     //console.log("current market id", currentMarketId);
 
@@ -80,6 +106,11 @@ const CurrentTables = () => {
         setWholeFloorsLength(floors.length);
         setWholeFloor(floors);
         console.log("floors length", wholeFloorsLength);
+        const savefloorNum = Array(response.data.floors.length);
+        savefloorNum.fill(false);
+        savefloorNum[0] = true;
+        console.log("saveFloorNum", savefloorNum);
+        setFloor(savefloorNum);
         let tempTableCntArr = [];
         let tempSeatCntArr = [];
         let tempWallCntArr = [];
@@ -205,6 +236,21 @@ const CurrentTables = () => {
       });
   };
   return (
+    <>
+       <FloorButtonContainer>
+    {floor.map((bool,index)=>{
+          return (<FloorButton
+          classname="floorbutton"
+          num={index}
+          onClick={(e) => {
+           setCurrentIndex(index);
+           setSelectedFloor(index);
+          }}
+        >
+          <p>{index + 1}층</p>
+        </FloorButton>)
+      })}
+      </FloorButtonContainer>
     <Stage
       style={{
         marginTop: "10px",
@@ -291,7 +337,7 @@ const CurrentTables = () => {
           );
         })}
       </Layer>
-    </Stage>
+    </Stage></>
   );
 };
 
@@ -305,14 +351,14 @@ const Container = styled.div`
 `;
 const TableContainer = styled.div`
   width: auto;
-  height: auto;
+  height: 900px;
   background-color: ${(props) => props.theme.borderGrayColor};
 `;
 const CurrentTableState = () => {
   return (
     <Container>
       <Header />
-      <TableContainer>
+      <TableContainer> 
         <CurrentTables></CurrentTables>
       </TableContainer>
     </Container>
