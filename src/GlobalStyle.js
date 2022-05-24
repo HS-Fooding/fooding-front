@@ -13,6 +13,7 @@ body {
   width:100%;
   background-color:orange;
    */
+  font-family: 'Nanum Gothic', sans-serif;
   }
 * {
     box-sizing: border-box;

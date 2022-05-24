@@ -20,6 +20,7 @@ const Container = styled.div`
   align-items: center;
   /* margin: 200px 0px; */
   padding: 200px 0px;
+ 
 `;
 const InputFormDiv = styled.div`
   width: 900px;
