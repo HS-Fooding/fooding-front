@@ -579,11 +579,10 @@ const getToken = localStorage.getItem("guestToken");
 //   );
 // };
 const FloorButtonContainer = styled.div`
- width: 90%;
- margin-left:13px;
+  width: 90%;
+  margin-left: 13px;
   height: 30px;
   display: flex;
-
 `;
 const MarketDetail = () => {
   const [market, setMarket] = useState();
@@ -613,14 +612,16 @@ const MarketDetail = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableTable, setAvailableTable] = useState([]);
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
-  
-  const [floor,setFloor] = useState([true]);
-  const [selectedFloor,setSelectedFloor] = useState(0);
-  
+
+  const [maximumUsageTime, setMaximumUsageTime] = useState();
+
+  const [floor, setFloor] = useState([true]);
+  const [selectedFloor, setSelectedFloor] = useState(0);
+
   const FloorButton = styled.div`
     width: 40px;
     height: 30px;
-    font-size:13px;
+    font-size: 13px;
     border-radius: 7px;
     margin-left: 10px;
     background-color: ${(props) =>
@@ -632,8 +633,8 @@ const MarketDetail = () => {
     align-items: center;
     :hover {
       cursor: pointer;
-  }
-`;
+    }
+  `;
   const getAvailableTable = () => {
     var config = {
       method: "get",
@@ -826,6 +827,11 @@ const MarketDetail = () => {
       .then(function (response) {
         console.log(response.data);
         setMarket(response.data);
+        setMaximumUsageTime(response.data.maximumUsageTime);
+        localStorage.setItem(
+          "maximumUsageTime",
+          response.data.maximumUsageTime
+        );
         const korCategory = response.data.category.map((category) => {
           if (category === "KOREAN") return "한식";
           else if (category === "JAPANESE") return "일식";
@@ -1041,19 +1047,21 @@ const MarketDetail = () => {
         <span className="marketDesc">테이블 현황</span>
       </MarketTable>
       <FloorButtonContainer>
-      {floor.map((bool,index)=>{
-          return (<FloorButton
-          classname="floorbutton"
-          num={index}
-          onClick={(e) => {
-           setCurrentIndex(index);
-           setSelectedFloor(index);
-          }}
-        >
-          <p>{index + 1}층</p>
-        </FloorButton>)
-      })}
-    </FloorButtonContainer>
+        {floor.map((bool, index) => {
+          return (
+            <FloorButton
+              classname="floorbutton"
+              num={index}
+              onClick={(e) => {
+                setCurrentIndex(index);
+                setSelectedFloor(index);
+              }}
+            >
+              <p>{index + 1}층</p>
+            </FloorButton>
+          );
+        })}
+      </FloorButtonContainer>
       <Stage
         style={{
           marginTop: "10px",

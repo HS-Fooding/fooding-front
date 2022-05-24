@@ -23,7 +23,7 @@ const ButtonContainer = styled.div`
   width: 400px;
   height: 30px;
   display: flex;
-  margin-top: 70px;
+  margin-top: 90px;
 `;
 const FloorButton = styled.div`
   margin-left: 10px;

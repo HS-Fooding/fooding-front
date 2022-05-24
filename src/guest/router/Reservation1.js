@@ -23,7 +23,7 @@ const MainBox = styled.div`
   //justify-content: center;
   align-items: center;
   /* margin-top: 90px; */
-  margin-top: 30px;
+  margin-top: 70px;
   flex-direction: column;
   position: relative;
 `;
@@ -36,7 +36,7 @@ const CalendarContainer = styled.div`
   /* background-color: #d4f7d4; */
   .react-calendar {
     width: 380px;
-    height: 345px;
+    height: 320px;
     max-width: 100%;
     background-color: #fff;
     color: #222;
@@ -191,7 +191,7 @@ const NextBtn = styled.button`
   width: 380px;
   height: 45px;
   background: white;
-  margin-top: 20px;
+  margin-top: 50px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
@@ -285,9 +285,12 @@ const Reservation1 = () => {
   //     new Date(2022, 4, 10),
   //     new Date(2022, 4, 20),
   //   ]);
-  let location = useLocation();
+  // let location = useLocation();
+  // localStorage.setItem("maximumUsageTime", location.state.maximumUsageTime);
+  // const maximumUsageTime = localStorage.getItem("maximumUsageTime");
+  // const maximumUsageTime = location.state.maximumUsageTime;
 
-  const maximumUsageTime = location.state.maximumUsageTime;
+  const maximumUsageTime = localStorage.getItem("maximumUsageTime");
 
   const [calendarValue, onChange] = useState(new Date());
   const [isWeek, setIsWeek] = useState();
@@ -400,7 +403,6 @@ const Reservation1 = () => {
     let splited = clickedTime?.split(" ");
 
     let splitedTime = splited[1]?.split(":");
-
     if (splited[0] === "오후") {
       if (splitedTime[0] !== "12") {
         sendHour = Number(splitedTime[0]) + 12;
@@ -420,7 +422,9 @@ const Reservation1 = () => {
   };
   useEffect(() => {
     console.log(isCar, peopleNum, calendarValue, clickedTime);
+
     makeSendingTime();
+    setAvailableTable(undefined);
 
     const getToken = localStorage.getItem("guestToken");
     const marketId = localStorage.getItem("marketId");
@@ -438,7 +442,10 @@ const Reservation1 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data.tables);
-        setAvailableTable(response.data.tables);
+        if (response.data.tables.length !== 0) {
+          console.log("테이블 1개 이상 가능");
+          setAvailableTable(response.data.tables);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -548,7 +555,7 @@ const Reservation1 = () => {
           <NoticeBox>
             <span>시간을 선택하세요.</span>
           </NoticeBox>
-        ) : availableTable.length === 0 ? (
+        ) : availableTable == undefined ? (
           <NoticeBox>
             <span>예약 가능한 좌석이 없습니다.</span>
           </NoticeBox>
@@ -560,7 +567,7 @@ const Reservation1 = () => {
         //   </NoticeBox>
         // ) : null} */}
 
-        {availableTable.length === 0 ? null : (
+        {availableTable == undefined ? null : (
           <Link
             to="/guest/reservation2"
             state={{
