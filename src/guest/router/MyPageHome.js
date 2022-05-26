@@ -15,8 +15,6 @@ const Container = styled.div`
   flex-direction: column;
 
   justify-content: center;
-
-  border: 1px solid black;
 `;
 
 const Buttons = styled.div`
@@ -76,13 +74,13 @@ const MyPageHome = () => {
           style={{ textDecoration: "none", color: "inherit" }}
           to={"/guest/myPage/favorList"}
         >
-        <Button>
-          <div>
-            <i className="fa-regular fa-star leftIcon"></i>
-            즐겨찾기
-          </div>
-          <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
-        </Button>
+          <Button>
+            <div>
+              <i className="fa-regular fa-star leftIcon"></i>
+              즐겨찾기
+            </div>
+            <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
+          </Button>
         </Link>
         <Link
           style={{ textDecoration: "none", color: "inherit" }}

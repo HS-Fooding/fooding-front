@@ -15,7 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid black;
+
   overflow: auto;
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const Bookmarks = styled.div`
   display: flex;
-  
+
   height: 800px;
   padding: 50px 10px;
 `;
@@ -62,20 +62,19 @@ const ListContainer = styled.div`
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
- 
 `;
 const BoomarkContainer = styled.div`
- height:300px;
+  height: 300px;
 `;
 const CloseBtnContainer = styled.div`
-width:100%;
-height:30px;
-display:flex-end;
+  width: 100%;
+  height: 30px;
+  display: flex-end;
 
-position:relative;
-  .btn{
-    position:absolute;
-    right:10px;
+  position: relative;
+  .btn {
+    position: absolute;
+    right: 10px;
   }
 `;
 const FavorList = () => {
@@ -101,26 +100,24 @@ const FavorList = () => {
       });
   }, []);
 
- 
   return (
     <Container>
       <Header back="/guest/myPage" title={"즐겨찾기 리스트"} />
-      <Bookmarks>  
-          <ListContainer>
-        {bookmarks?.map((content, index) => {
-       return (               
-        <Link
-          to={`/guest/${content.id}`}    
-          style={{ textDecoration: "none", color: "inherit" }}
-          key={index}
-        >
-          <Restaurant content={content} bookmark={true} />
-        </Link>      
-      );
-})
-        }  </ListContainer>
+      <Bookmarks>
+        <ListContainer>
+          {bookmarks?.map((content, index) => {
+            return (
+              <Link
+                to={`/guest/${content.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+                key={index}
+              >
+                <Restaurant content={content} bookmark={true} />
+              </Link>
+            );
+          })}{" "}
+        </ListContainer>
       </Bookmarks>
-      
     </Container>
   );
 };

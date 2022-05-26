@@ -9,7 +9,6 @@ import { useLocation, Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
-  border: 1px solid black;
   width: 410px;
   height: 770px;
   position: relative;

@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
-  border: 1px solid black;
   width: 410px;
   height: 770px;
   position: relative;

@@ -9,7 +9,7 @@ import { url } from "../../Api";
 import axios from "axios";
 
 const Container = styled.div`
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: 410px;
   height: 770px;
   position: relative;

@@ -5,7 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import { url } from "../../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
-  border: 1px solid black;
   width: 410px;
   height: 770px;
   position: relative;
@@ -25,8 +24,10 @@ const WriteReviewBtn = styled.button`
 
 const Reviews = styled.div`
   width: 100%;
-  height: 625px;
+  height: 770px;
   margin-bottom: 5px;
+  padding-top: 60px;
+  padding-bottom: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
