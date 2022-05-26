@@ -70,18 +70,15 @@ const CurrentTables = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data.tables);
-        setAvailableTable(response.data.tables);
-        const availableTable = response.data.tables;
-        return availableTable;
-      })
-      .then((availableTable) => {
-        const availableTableNumArr = availableTable.map((table) => {
-          return table.tableNum;
-        });
+        console.log("tables:", response.data.tables);
 
-        setAvailableTableNumArr(availableTableNumArr);
+        const tableAvailableArr = response.data.tables.map((table) => {
+          return table.available;
+        });
+        console.log("tableAvailableArr:", tableAvailableArr);
+        setAvailableTable(tableAvailableArr);
       })
+
       .catch(function (error) {
         console.log(error);
       });
@@ -279,12 +276,13 @@ const CurrentTables = () => {
                 //       ? "brown"
                 //       : "black"
                 //   }
-
-                fill={
-                  availableTableNumArr.includes(table.tableNum)
-                    ? "#FF7B54"
-                    : "rgba(0,0,0,0.2)"
-                }
+                // fill={table.available ? "#FF7B54" : "rgba(0,0,0,0.2)"}
+                fill={availableTable[i] ? "#FF7B54" : "rgba(0,0,0,0.2)"}
+                // fill={
+                //   availableTableNumArr.includes(table.tableNum)
+                //     ? "#FF7B54"
+                //     : "rgba(0,0,0,0.2)"
+                // }
               />
             );
           })}
@@ -305,7 +303,7 @@ const CurrentTables = () => {
               <Circle
                 x={seat.x}
                 y={seat.y}
-                radius={4}
+                radius={10}
                 fill="#FFD07F"
                 rotation={seat.rotation}
               />
