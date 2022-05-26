@@ -638,6 +638,7 @@ const MarketDetail = () => {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/table`,
             headers: {
+                "Content-Type": "application/json",
                 Authorization: "Bearer " + getToken,
             },
         };
@@ -664,7 +665,6 @@ const MarketDetail = () => {
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/structure`,
-            Authorization: "Bearer " + getToken,
         };
 
         axios(config)
@@ -805,7 +805,7 @@ const MarketDetail = () => {
     };
 
     useEffect(() => {
-        console.log("marketId", marketId);
+        console.log("!!!!!!!!marketId", marketId);
         localStorage.setItem("marketId", marketId);
 
         getAvailableTable();
@@ -814,12 +814,15 @@ const MarketDetail = () => {
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}`,
-            Authorization: "Bearer " + getToken,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
         };
 
         axios(config)
             .then(function (response) {
-                console.log(response.data);
+                console.log("@@@@", response.data);
                 setMarket(response.data);
                 setMaximumUsageTime(response.data.maximumUsageTime);
                 localStorage.setItem("maximumUsageTime", response.data.maximumUsageTime);
