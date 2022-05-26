@@ -665,6 +665,9 @@ const MarketDetail = () => {
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/structure`,
+            headers: {
+                Authorization: "Bearer " + getToken,
+            },
         };
 
         axios(config)
@@ -865,6 +868,10 @@ const MarketDetail = () => {
         var config2 = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/menu`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
         };
 
         axios(config2)

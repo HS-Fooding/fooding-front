@@ -151,7 +151,7 @@ const RestaurantSearch = () => {
 
             // var axios = require("axios");
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
-            const getToken = localStorage.getItem("token");
+            const getToken = localStorage.getItem("guestToken");
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
             setPost(true);
