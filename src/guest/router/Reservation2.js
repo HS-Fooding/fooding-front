@@ -90,10 +90,10 @@ const FinishModal = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: orange;
+  background-color: ${(props) => props.theme.mainColor};
   padding-top: 100px;
-  padding-right: 14px;
-  padding-left: 14px;
+  padding-right: 26px;
+  padding-left: 26px;
   color: white;
   z-index: 3;
   .bold {
@@ -107,6 +107,8 @@ const FinishModal = styled.div`
     font-size: 78px;
     color: white;
   }
+
+  background: linear-gradient(70deg, #ffbc80, #ff7b54);
 `;
 
 const Reservation2 = () => {

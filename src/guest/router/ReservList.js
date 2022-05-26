@@ -132,6 +132,13 @@ const Modal = styled.div`
     }
   }
 `;
+const Notice = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.fontGrayColor};
+  margin: 50px 0px;
+`;
 
 const ReservList = () => {
   const [reservations, setReservations] = useState();
@@ -192,6 +199,9 @@ const ReservList = () => {
     <Container>
       <Header back="/guest/myPage" title={"예약 리스트"} />
       <Reservations>
+        {reservations?.length == 0 ? (
+          <Notice>예약이 존재하지 않습니다.</Notice>
+        ) : null}
         {reservations?.map((r, index) => (
           <Reservation key={index}>
             <Info>
