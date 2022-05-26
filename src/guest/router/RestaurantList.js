@@ -106,7 +106,6 @@ const RestaurantList = () => {
                 .get(url + "/fooding/restaurant?page=" + currentPage + "&size=6", {
                     headers: {
                         //"Content-Type": "multipart/form-data",
-                        "Content-Type": "application/json",
                         Authorization: "Bearer " + getToken,
                     },
                 })

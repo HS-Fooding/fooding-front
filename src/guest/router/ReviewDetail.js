@@ -238,7 +238,7 @@ const ReviewDetail = () => {
     var axios = require("axios");
     const getToken = localStorage.getItem("guestToken");
 
-    const commentSubmit = () => {
+    const commentSubmit = async () => {
         let replyValue = commentRef.current.value;
         commentRef.current.value = "";
         console.log(replyValue);
@@ -251,16 +251,15 @@ const ReviewDetail = () => {
             method: "post",
             url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}/comment`,
             headers: {
+                "Content-Type": "application/json",
                 Authorization: "Bearer " + getToken,
             },
             data: data,
         };
 
-        axios(config)
+        await axios(config)
             .then(function (response) {
-                console.log(response.data);
-                console.log(response.data.comments);
-                setComments(response.data.comments);
+                setComments([...comments, response.data]);
             })
             .catch(function (error) {
                 console.log(error);
@@ -279,7 +278,7 @@ const ReviewDetail = () => {
         setClickImg(index);
     };
 
-    useEffect(() => {
+    useEffect(async () => {
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${location.state.marketId}/review/${reviewId}`,
@@ -289,7 +288,7 @@ const ReviewDetail = () => {
             },
         };
 
-        axios(config)
+        await axios(config)
             .then(function (response) {
                 console.log(response.data);
                 setReview(response.data);
@@ -298,10 +297,7 @@ const ReviewDetail = () => {
             .catch(function (error) {
                 console.log(error);
             });
-        console.log("location.state.marketId", location.state.marketId);
-    }, [comments]);
-
-    console.log(reviewId);
+    }, []);
 
     return (
         <Container>
