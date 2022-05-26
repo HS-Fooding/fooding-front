@@ -416,9 +416,6 @@ const Reservation2 = () => {
                   height={wall.height / 3}
                   fill="#DED7B1"
                   rotation={wall.rotation}
-                  onClick={() => {
-                    onClickTable(wall.id, wall.maxPeople, wall.minPeople);
-                  }}
                 />
               );
             })}

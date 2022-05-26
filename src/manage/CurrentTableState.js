@@ -85,8 +85,6 @@ const CurrentTables = () => {
   };
 
   const getShape = () => {
-    const marketId = localStorage.getItem("marketId");
-
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/structure`,
@@ -229,6 +227,27 @@ const CurrentTables = () => {
         console.log(error);
       });
   };
+
+  const clickTable = (id) => {
+    console.log("tableId", id);
+
+    var config = {
+      method: "put",
+      url: url + `/fooding/admin/restaurant/${marketId}/toggle/${id}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        getAvailableTable();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <>
       <FloorButtonContainer>
@@ -283,6 +302,9 @@ const CurrentTables = () => {
                 //     ? "#FF7B54"
                 //     : "rgba(0,0,0,0.2)"
                 // }
+                onClick={() => {
+                  clickTable(table.tableNum);
+                }}
               />
             );
           })}
