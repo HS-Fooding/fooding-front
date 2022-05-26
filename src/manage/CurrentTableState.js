@@ -60,6 +60,9 @@ const CurrentTables = () => {
   }, []);
 
   const getAvailableTable = () => {
+    const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
+
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/table`,
@@ -85,6 +88,9 @@ const CurrentTables = () => {
   };
 
   const getShape = () => {
+    const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
+
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/structure`,
@@ -230,6 +236,8 @@ const CurrentTables = () => {
 
   const clickTable = (id) => {
     console.log("tableId", id);
+    const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
 
     var config = {
       method: "put",
@@ -296,7 +304,11 @@ const CurrentTables = () => {
                 //       : "black"
                 //   }
                 // fill={table.available ? "#FF7B54" : "rgba(0,0,0,0.2)"}
-                fill={availableTable[i] ? "#FF7B54" : "rgba(0,0,0,0.2)"}
+                fill={
+                  availableTable[table.tableNum - 1]
+                    ? "#FF7B54"
+                    : "rgba(0,0,0,0.2)"
+                }
                 // fill={
                 //   availableTableNumArr.includes(table.tableNum)
                 //     ? "#FF7B54"
@@ -372,7 +384,7 @@ const Container = styled.div`
 const TableContainer = styled.div`
   width: auto;
   height: 900px;
-  background-color: ${(props) => props.theme.borderGrayColor};
+  background-color: ${(props) => props.theme.menuOrangeColor};
 `;
 const CurrentTableState = () => {
   return (
