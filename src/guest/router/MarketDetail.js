@@ -611,7 +611,6 @@ const MarketDetail = () => {
   const [id, setId] = useState();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [availableTable, setAvailableTable] = useState([]);
-  const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
 
   const [maximumUsageTime, setMaximumUsageTime] = useState();
 
@@ -646,18 +645,15 @@ const MarketDetail = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data.tables);
-        setAvailableTable(response.data.tables);
-        const availableTable = response.data.tables;
-        return availableTable;
-      })
-      .then((availableTable) => {
-        const availableTableNumArr = availableTable.map((table) => {
-          return table.tableNum;
-        });
+        console.log("tables:", response.data.tables);
 
-        setAvailableTableNumArr(availableTableNumArr);
+        const tableAvailableArr = response.data.tables.map((table) => {
+          return table.available;
+        });
+        console.log("tableAvailableArr:", tableAvailableArr);
+        setAvailableTable(tableAvailableArr);
       })
+
       .catch(function (error) {
         console.log(error);
       });
@@ -1090,8 +1086,13 @@ const MarketDetail = () => {
                 //       : "black"
                 //   }
 
+                // fill={
+                //   availableTableNumArr.includes(table.tableNum)
+                //     ? "#FF7B54"
+                //     : "rgba(0,0,0,0.2)"
+                // }
                 fill={
-                  availableTableNumArr.includes(table.tableNum)
+                  availableTable[table.tableNum - 1]
                     ? "#FF7B54"
                     : "rgba(0,0,0,0.2)"
                 }
