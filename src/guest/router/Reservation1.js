@@ -303,6 +303,28 @@ const Reservation1 = () => {
   const marketId = localStorage.getItem("marketId");
 
   const calcTime = () => {
+    const weekdaysWorkHour = JSON.parse(
+      localStorage.getItem("weekdaysWorkHour")
+    );
+    const weekendsWorkHour = JSON.parse(
+      localStorage.getItem("weekendsWorkHour")
+    );
+
+    if (
+      // 주말일 경우
+      calendarValue.toString().includes("Sat") ||
+      calendarValue.toString().includes("Sun")
+    ) {
+      setIsWeek(false);
+      setOpen(weekendsWorkHour.open);
+      setClose(weekendsWorkHour.close);
+    } else {
+      // 주말 아닐 경우
+      setIsWeek(true);
+      setOpen(weekdaysWorkHour.open);
+      setClose(weekdaysWorkHour.close);
+    }
+
     let openHours = open?.slice(0, 2);
     let openMin = open?.slice(3, 5);
     // 오전 8:30
@@ -372,28 +394,6 @@ const Reservation1 = () => {
   };
 
   useEffect(() => {
-    const weekdaysWorkHour = JSON.parse(
-      localStorage.getItem("weekdaysWorkHour")
-    );
-    const weekendsWorkHour = JSON.parse(
-      localStorage.getItem("weekendsWorkHour")
-    );
-
-    if (
-      // 주말일 경우
-      calendarValue.toString().includes("Sat") ||
-      calendarValue.toString().includes("Sun")
-    ) {
-      setIsWeek(false);
-      setOpen(weekendsWorkHour.open);
-      setClose(weekendsWorkHour.close);
-    } else {
-      // 주말 아닐 경우
-      setIsWeek(true);
-      setOpen(weekdaysWorkHour.open);
-      setClose(weekdaysWorkHour.close);
-    }
-
     calcTime();
 
     console.log("maximumUsageTime", maximumUsageTime);
@@ -479,8 +479,7 @@ const Reservation1 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data.tables);
-         setAvailableTable(response.data.tables);
-       
+        setAvailableTable(response.data.tables);
       })
       .catch(function (error) {
         console.log(error);

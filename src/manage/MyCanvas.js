@@ -762,6 +762,8 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
   let getManagerToken = localStorage.getItem("managerToken");
   const getShape = () => {
+    const getToken = localStorage.getItem("managerToken");
+
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketIdLS}/structure`,

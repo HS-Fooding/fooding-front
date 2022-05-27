@@ -10,7 +10,7 @@ const ShowHow = (props) => {
         setActiveMenu(activeMenu - 1);
     };
     const handleRightChev = () => {
-        if (activeMenu === 4) return;
+        if (activeMenu === 5) return;
         setActiveMenu(activeMenu + 1);
     };
 
@@ -26,7 +26,7 @@ const ShowHow = (props) => {
                             />
                         </button>
 
-                        <ImCross className="carousel-x" />
+                        <ImCross className="carousel-x" onClick={() => props.myClick(false)} />
                         <ul className="carousel__track">
                             <li
                                 className={
@@ -60,7 +60,8 @@ const ShowHow = (props) => {
                                         1. 테이블을 생성하세요
                                     </h4>
                                     <div className="carousel__slide__info__subtitle">
-                                        테이블 버튼을 눌러 각 테이블에 대한 정보를 입력하세요.
+                                        테이블 버튼을 눌러 각 테이블에 대한 정보를 입력할 수
+                                        있습니다.
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
@@ -81,7 +82,7 @@ const ShowHow = (props) => {
                                         2. 좌석, 벽, 창문, 출입구를 생성하세요
                                     </h4>
                                     <div className="carousel__slide__info__subtitle">
-                                        It won&apost take a long time to get result. I promise...!
+                                        각 버튼을 눌러 좌석, 벽, 창문, 출입구를 생성할 수 있습니다.
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
@@ -102,7 +103,7 @@ const ShowHow = (props) => {
                                         3. 위치를 조정하세요
                                     </h4>
                                     <div className="carousel__slide__info__subtitle">
-                                        You can remove it. And also you can add multiple music.
+                                        도형을 드래그, 드롭 하여 위치를 조정할 수 있습니다.
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
@@ -123,7 +124,8 @@ const ShowHow = (props) => {
                                         4. 수정 버튼을 눌러 테이블에 대한 정보를 수정하세요
                                     </h4>
                                     <div className="carousel__slide__info__subtitle">
-                                        If you satisfied with your work, make your work public!!
+                                        수정할 테이블을 선택 후 테이블 수정 버튼을 누르면 해당
+                                        테이블의 정보를 수정할 수 있습니다.
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
@@ -144,7 +146,8 @@ const ShowHow = (props) => {
                                         5. 도형을 휴지통으로 드래그하여 삭제하세요
                                     </h4>
                                     <div className="carousel__slide__info__subtitle">
-                                        If you satisfied with your work, make your work public!!
+                                        삭제할 도형을 드래그하여 휴지통으로 드롭하면 해당 도형을
+                                        삭제할 수 있습니다.
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
