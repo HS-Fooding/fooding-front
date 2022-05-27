@@ -12,6 +12,7 @@ import axios from "axios";
 import MyCanvas from "./MyCanvas";
 import NumericInput from "react-numeric-input";
 import ShowHow from "./component/ShowHow";
+import { BsQuestionCircleFill } from "react-icons/bs";
 
 const Container = styled.div`
     width: 100%;
@@ -1399,10 +1400,12 @@ function Register(floorCallback) {
                     <AppendFloor onClick={appendFloor}>
                         <div>층 추가</div>
                     </AppendFloor>
-                    <button onClick={() => setClickShowHow(!clickShowHow)}>INFO!!</button>
+                    <BsQuestionCircleFill
+                        className="workspace-infoIcon"
+                        onClick={() => setClickShowHow(!clickShowHow)}
+                    />
                     {clickShowHow && <ShowHow />}
                     {floor.map((bool, index) => {
-                        console.log("button번호", index);
                         return (
                             <FloorButton
                                 num={index}
