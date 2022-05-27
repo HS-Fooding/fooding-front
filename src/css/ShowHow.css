@@ -1,12 +1,17 @@
 .carousel {
     position: fixed;
     inset: 0;
-    top: 5rem;
+    /* top: 5rem; */
     width: 100%;
     height: 100%;
-    z-index: 2;
+    z-index: 5;
 }
-
+.carousel-x {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    z-index: 15;
+}
 .carousel-contents {
     position: relative;
     display: flex;
@@ -18,14 +23,16 @@
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-radius: 0.25em;
+}
+.carousel__button-left {
+    left: 0.25em;
 }
 
+.carousel__button-right {
+    right: 0.25em;
+}
 .carousel__button {
-    color: white;
+    color: black;
     font-size: 2em;
     position: absolute;
     top: 50%;
@@ -36,90 +43,82 @@
     z-index: 5;
 }
 
-.carousel__button-left {
-    left: 5%;
-}
-
-.carousel__button-right {
-    right: 5%;
-}
-
 .carousel__track-container {
+    position: relative;
     min-width: 30rem;
-    background-color: rgb(156, 154, 154);
-    border-radius: 0.25em;
+    background-color: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
+    border-radius: 0.5em;
+    border: 1px solid tomato;
     width: 80%;
     height: 70%;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
-
-.carousel__track {
-    width: 100%;
-}
-
 .carousel__slide {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    color: white;
-}
-
-.carousel__slide__info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.carousel__slide__info__title {
-    font-size: 2.5rem;
-    line-height: 2;
-    display: flex;
-    flex: 1;
-    align-items: center;
-    min-width: 28rem;
-    margin-left: 3rem;
-    color: yellow;
-    text-shadow: 0.025em 0.025em 0 black, 0.05em 0.05em 0 blue, 0.075em 0.075em 0 yellow,
-        0.1em 0.1em 0 black;
-}
-.carousel__slide__info__content {
+    color: black;
     font-size: 2rem;
-    line-height: 2;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    margin-left: 4rem;
-    max-width: 30rem;
-}
-.carousel__slide__img {
-    flex: 1;
-    height: 100%;
-    width: 30rem;
-    object-fit: cover;
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-}
-.object-contain {
-    object-fit: contain;
-    padding: 0.2rem;
 }
 
 .carousel__slide.active {
     opacity: 1;
 }
 
-.carousel__nav {
+.carousel__slide__info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.carousel__slide__info__title {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    /* min-width: 28rem; */
+    color: yellow;
+    text-shadow: 0.025em 0.025em 0 black, 0.05em 0.05em 0 blue, 0.075em 0.075em 0 yellow,
+        0.1em 0.1em 0 black;
+}
+.carousel__slide__info__subtitle {
+    position: absolute;
+    top: 5rem;
+    left: 1.5rem;
+    font-size: 0.8rem;
+    justify-content: flex-start;
+    margin-left: 4rem;
+    max-width: 30rem;
+}
+
+.carousel__slide__info__imgContainer {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
-    padding: 25px 0;
+    align-items: center;
+    top: 7rem;
+    width: 90%;
+    height: 75%;
 }
+
+.carousel__slide__info__imgContainer__img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .carousel__indicator {
     border: 0;
     border-radius: 50%;
@@ -130,8 +129,28 @@
     background-color: rgba(0, 0, 0, 0.3);
     will-change: transition;
     transition: background-color 0.6 ease-out;
-    z-index: 3;
 }
+
+.carousel__nav {
+    justify-content: center;
+    padding: 25px 0;
+}
+
+/* 
+.object-contain {
+    object-fit: contain;
+    padding: 0.2rem;
+}
+
+.carousel__track {
+    width: 100%;
+}
+
+
+
+
+
+*/
 
 .carousel__indicator.current-slide {
     background-color: yellow;

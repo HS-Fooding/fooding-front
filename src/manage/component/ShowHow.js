@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
+import { ImCross } from "react-icons/im";
 
-const ShowHow = () => {
+const ShowHow = (props) => {
     const [activeMenu, setActiveMenu] = useState(0);
 
     const handleLeftChev = () => {
@@ -17,14 +18,15 @@ const ShowHow = () => {
         <>
             <div className="carousel">
                 <div className="carousel-contents">
-                    <button className="carousel__button carousel__button-left">
-                        <BsChevronLeft
-                            className="workspace__showHow__container__chevron"
-                            onClick={handleLeftChev}
-                        />
-                    </button>
-
                     <div className="carousel__track-container">
+                        <button className="carousel__button carousel__button-left">
+                            <BsChevronLeft
+                                className="workspace__showHow__container__chevron"
+                                onClick={handleLeftChev}
+                            />
+                        </button>
+
+                        <ImCross className="carousel-x" />
                         <ul className="carousel__track">
                             <li
                                 className={
@@ -33,17 +35,20 @@ const ShowHow = () => {
                             >
                                 <div className="carousel__slide__info">
                                     <h4 className="carousel__slide__info__title">
-                                        1. Take a picture of your note.
+                                        매장 구조를 생성하세요
                                     </h4>
-                                    <p className="carousel__slide__info__content">
-                                        The result can be diffrent depends on the resolution.
-                                    </p>
+                                    <div className="carousel__slide__info__subtitle">
+                                        자신의 매장에 맞게 구조도를 생성할 수 있습니다.
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            // src="src/img/makingStructure.png"
+                                            src={require("../../img/makingStructure.png")}
+                                            alt="?!?!"
+                                        />
+                                    </div>
                                 </div>
-                                <img
-                                    className="carousel__slide__img"
-                                    src="/phone_camera2.jpg"
-                                    alt="camera with a phone"
-                                />
                             </li>
                             <li
                                 className={
@@ -52,17 +57,19 @@ const ShowHow = () => {
                             >
                                 <div className="carousel__slide__info">
                                     <h4 className="carousel__slide__info__title">
-                                        2. Crop your image if you need.
+                                        1. 테이블을 생성하세요
                                     </h4>
-                                    <p className="carousel__slide__info__content">
-                                        Please make sure to includes the first and last notes.
-                                    </p>
+                                    <div className="carousel__slide__info__subtitle">
+                                        테이블 버튼을 눌러 각 테이블에 대한 정보를 입력하세요.
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src="/phone_camera2.jpg"
+                                            alt="camera with a phone"
+                                        />
+                                    </div>
                                 </div>
-                                <img
-                                    className="carousel__slide__img object-contain"
-                                    src="/show_how.png"
-                                    alt="camera with a phone"
-                                />
                             </li>
                             <li
                                 className={
@@ -71,17 +78,19 @@ const ShowHow = () => {
                             >
                                 <div className="carousel__slide__info">
                                     <h4 className="carousel__slide__info__title">
-                                        3. Click play button.
+                                        2. 좌석, 벽, 창문, 출입구를 생성하세요
                                     </h4>
-                                    <p className="carousel__slide__info__content">
+                                    <div className="carousel__slide__info__subtitle">
                                         It won&apost take a long time to get result. I promise...!
-                                    </p>
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src="/phone_camera2.jpg"
+                                            alt="camera with a phone"
+                                        />
+                                    </div>
                                 </div>
-                                <img
-                                    className="carousel__slide__img object-contain"
-                                    src="/click_playBtn.png"
-                                    alt="camera with a phone"
-                                />
                             </li>
                             <li
                                 className={
@@ -90,17 +99,19 @@ const ShowHow = () => {
                             >
                                 <div className="carousel__slide__info">
                                     <h4 className="carousel__slide__info__title">
-                                        4. Check out the result.
+                                        3. 위치를 조정하세요
                                     </h4>
-                                    <p className="carousel__slide__info__content">
+                                    <div className="carousel__slide__info__subtitle">
                                         You can remove it. And also you can add multiple music.
-                                    </p>
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src="/phone_camera2.jpg"
+                                            alt="camera with a phone"
+                                        />
+                                    </div>
                                 </div>
-                                <img
-                                    className="carousel__slide__img object-contain"
-                                    src="/play.png"
-                                    alt="camera with a phone"
-                                />
                             </li>
                             <li
                                 className={
@@ -109,28 +120,49 @@ const ShowHow = () => {
                             >
                                 <div className="carousel__slide__info">
                                     <h4 className="carousel__slide__info__title">
-                                        5. Share your work!
+                                        4. 수정 버튼을 눌러 테이블에 대한 정보를 수정하세요
                                     </h4>
-                                    <p className="carousel__slide__info__content">
+                                    <div className="carousel__slide__info__subtitle">
                                         If you satisfied with your work, make your work public!!
-                                    </p>
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src="/phone_camera2.jpg"
+                                            alt="camera with a phone"
+                                        />
+                                    </div>
                                 </div>
-                                <img
-                                    className="carousel__slide__img"
-                                    src="/upload.png"
-                                    alt="camera with a phone"
-                                />
+                            </li>
+                            <li
+                                className={
+                                    activeMenu === 5 ? "carousel__slide active" : "carousel__slide"
+                                }
+                            >
+                                <div className="carousel__slide__info">
+                                    <h4 className="carousel__slide__info__title">
+                                        5. 도형을 휴지통으로 드래그하여 삭제하세요
+                                    </h4>
+                                    <div className="carousel__slide__info__subtitle">
+                                        If you satisfied with your work, make your work public!!
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src="/phone_camera2.jpg"
+                                            alt="camera with a phone"
+                                        />
+                                    </div>
+                                </div>
                             </li>
                         </ul>
+                        <button className="carousel__button carousel__button-right">
+                            <BsChevronRight
+                                className="workspace__showHow__container__chevron"
+                                onClick={handleRightChev}
+                            />
+                        </button>
                     </div>
-
-                    <button className="carousel__button carousel__button-right">
-                        <BsChevronRight
-                            className="workspace__showHow__container__chevron"
-                            onClick={handleRightChev}
-                        />
-                    </button>
-
                     <div className="carousel__nav">
                         <button
                             className={
@@ -171,6 +203,14 @@ const ShowHow = () => {
                                     : "carousel__indicator"
                             }
                             onClick={() => setActiveMenu(4)}
+                        ></button>
+                        <button
+                            className={
+                                activeMenu === 5
+                                    ? "carousel__indicator current-slide"
+                                    : "carousel__indicator"
+                            }
+                            onClick={() => setActiveMenu(5)}
                         ></button>
                     </div>
                 </div>
