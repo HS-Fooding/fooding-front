@@ -1402,9 +1402,9 @@ function Register(floorCallback) {
                     </AppendFloor>
                     <BsQuestionCircleFill
                         className="workspace-infoIcon"
-                        onClick={() => setClickShowHow(!clickShowHow)}
+                        onClick={() => setClickShowHow(true)}
                     />
-                    {clickShowHow && <ShowHow />}
+                    {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
                     {floor.map((bool, index) => {
                         return (
                             <FloorButton
