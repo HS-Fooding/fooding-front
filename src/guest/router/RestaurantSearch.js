@@ -12,7 +12,7 @@ import axios from "axios";
 //src\guest\component\Login.js
 import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMap, faMagnifyingGlass, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faMap, faMagnifyingGlass, faAngleLeft, faL } from "@fortawesome/free-solid-svg-icons";
 // border: 1px solid black;
 
 const Container = styled.div`
@@ -118,101 +118,66 @@ const InputContainer = styled.div`
     }
 `;
 
+let currentPage = 0;
 const RestaurantSearch = () => {
     const [restaurantArr, setRestaurantArr] = useState([]);
     const [target, setTarget] = useState(null);
     const [numOfElements, setNumOfElements] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
-    const [presentPage, setPresentPage] = useState(0);
-    const [bring, setBring] = useState(false);
     const [post, setPost] = useState(false);
     const [searchWord, setSearchWord] = useState();
-    const [result, setResult] = useState([]);
     const [firstInput, setfirstInput] = useState(false);
     const [researchCount, setResearchCount] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
-    //const [last,setLast] = useState(false);
+    // const [currentPage, setCurrentPage] = useState(0);
     let last = false;
-    // let currentPage = -1;
-    // const setIsIsLoaded = () => {
-    //     setIsLoaded(true);
-    // };
 
     const bringSearchWord = (e) => {
-        //e.preventDefault();
+        e.preventDefault();
         setSearchWord(e.target.value);
         setfirstInput(true);
-        console.log(e.target.value);
     };
 
+    const getToken = localStorage.getItem("guestToken");
     const bringMarketInfo = async () => {
         if (last == false && firstInput) {
-            // setIsLoaded(true);
-
-            // var axios = require("axios");
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
-            const getToken = localStorage.getItem("guestToken");
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            console.log("searchWordsearchWordsearchWordsearchWord", searchWord);
             setPost(true);
             await axios //${searchWord}
                 .get(
                     url +
-                        `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=6`,
+                        `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=10`,
                     {
                         headers: {
-                            //"Content-Type": "multipart/form-data",
                             "Content-Type": "application/json",
                             Authorization: "Bearer " + getToken,
                         },
                     }
                 )
                 .then((res) => {
-                    console.log(res.data);
-                    setPresentPage(presentPage + 1);
-                    console.log("last true / false ::", res.data.last);
+                    currentPage++;
                     const lastresult = res.data.last;
+                    setRestaurantArr((restaurantArr) => restaurantArr.concat(res.data.content));
+                    setIsLoaded(true);
                     if (lastresult === true) {
                         last = true;
+                        setIsLoaded(false);
                     }
-                    // console.log("last가 true로 바뀜!!?", last);
-                    // console.log("  isLoaded", isLoaded);
-                    // console.log("currentPage", currentPage);
-                    // console.log("researchCount", researchCount);
-                    if (researchCount >= 1) {
-                        setRestaurantArr(res.data.content);
-                    } else {
-                        setRestaurantArr((restaurantArr) => restaurantArr.concat(res.data.content));
-                    }
-                })
-                .then(async () => {
-                    setCurrentPage(currentPage + 1);
-                    setIsLoaded(true);
                 })
                 .catch((err) => {
                     console.log(err);
+                    setIsLoaded(false);
                 });
         }
     };
 
     const getSearch = (e) => {
         e.preventDefault();
-        // setSearchWord("");
-        // setResult([]);
-        // setBring(true);
-        // setResearchCount(researchCount + 1);
         bringMarketInfo();
     };
 
     const onIntersect = async ([entry], observer) => {
-        console.log("####################");
-        console.log(" isIntersecting", entry.isIntersecting);
-        console.log(" onInterect !isLoaded", isLoaded);
-        console.log(" onInterect !last", last);
-
         if (entry.isIntersecting && !last && isLoaded) {
-            // console.log("onIntersect last ????", last);
-            // setIsLoaded(false);
             observer.unobserve(entry.target);
             await bringMarketInfo();
             observer.observe(entry.target);
@@ -230,16 +195,6 @@ const RestaurantSearch = () => {
         return () => observer && observer.disconnect();
     }, [isLoaded]);
 
-    // useEffect(() => {
-    // console.log("change isLoaded", isLoaded);
-    // }, [last, isLoaded]);
-
-    // useEffect(() => {
-    //     console.log("TargetTargetTargetTargetTarget", target);
-    // }, [target]);
-
-    // useEffect(() => {}, [restaurantArr]);
-
     return (
         <Container>
             {/* 헤더 따로 만들기 */}
@@ -249,7 +204,12 @@ const RestaurantSearch = () => {
                 </Link>
                 <InputContainer>
                     <form onSubmit={getSearch}>
-                        <input onChange={bringSearchWord} value={searchWord} type="text" placeholder="검색어를 입력하세요"></input>
+                        <input
+                            onChange={bringSearchWord}
+                            value={searchWord}
+                            type="text"
+                            placeholder="검색어를 입력하세요"
+                        ></input>
                     </form>
                 </InputContainer>
                 {post ? (
@@ -291,4 +251,5 @@ const RestaurantSearch = () => {
         </Container>
     );
 };
-export default memo(RestaurantSearch);
+export default RestaurantSearch;
+// export default memo(RestaurantSearch);
