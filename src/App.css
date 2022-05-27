@@ -2,7 +2,8 @@
 @import url("./css/Modal.css");
 @import url("./css/styles.css");
 @import url("./css/example.css");
+@import url("./css/ShowHow.css");
 
 .App {
-  font-family: "Nanum Gothic", sans-serif;
+    font-family: "Nanum Gothic", sans-serif;
 }
