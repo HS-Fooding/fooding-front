@@ -124,7 +124,7 @@ const LoginMg = () => {
           localStorage.setItem("marketId", response.data.restaurants[0]);
         }
 
-        navigate("/manager/register");
+        navigate("/manager/currentTableState");
         console.log(response.data.restaurants[0]);
       })
       .catch(function (error) {
