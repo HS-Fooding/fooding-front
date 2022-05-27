@@ -287,7 +287,7 @@ const ManageReserv = () => {
     setPostDate(date);
 
     console.log("month, date:", month, date);
-
+    let marketId = localStorage.getItem("marketId");
     const config = {
       method: "get",
       // url: url + `/fooding/admin/restaurant/${restId}/reservation`,

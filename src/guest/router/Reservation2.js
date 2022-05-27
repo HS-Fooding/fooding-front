@@ -19,26 +19,12 @@ const Container = styled.div`
   align-items: center;
 `;
 const ButtonContainer = styled.div`
-  width: 400px;
+  width: 230px;
   height: 30px;
   display: flex;
-  margin-top: 90px;
+  
 `;
-const FloorButton = styled.div`
-  margin-left: 10px;
-  width: 40px;
-  height: 25px;
-  font-size: 15px;
-  border-radius: 8px;
-  background: ${(props) => props.theme.mainColor};
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  :hover {
-    cursor: pointer;
-  }
-`;
+
 const MapContainer = styled.div`
   width: 400px;
   height: 300px;
@@ -110,7 +96,26 @@ const FinishModal = styled.div`
 
   background: linear-gradient(70deg, #ffbc80, #ff7b54);
 `;
-
+const ButtonNDesContainer = styled.div`
+    width: 410px;
+  height: 30px;
+  display: flex;
+  margin-top: 90px;
+  
+`;
+const DescContainer = styled.div`
+  width: 160px;
+  height:30px;
+  display:flex;
+  font-size:13px;
+  .colorDescContainer{
+        display:flex;
+        align-items: center;
+        width:100px;
+        margin-right:5px;
+        height:30px;
+    }
+`;
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
@@ -131,6 +136,23 @@ const Reservation2 = () => {
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
   const [reservationDone, setReservationDone] = useState(false);
   const [availableTable, setAvailableTable] = useState([]);
+
+  const FloorButton = styled.div`
+  margin-left: 10px;
+  width: 40px;
+  height: 25px;
+  font-size: 15px;
+  border-radius: 8px;
+  background: ${(props) => (props.num == currentIndex ? "#FF7B54" : "#f4f4f5")};
+  color:  ${(props) => (props.num == currentIndex ? "white" : "black")};
+;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  :hover {
+    cursor: pointer;
+  }
+`;
 
   const getToken = localStorage.getItem("guestToken");
   const marketId = localStorage.getItem("marketId");
@@ -388,10 +410,12 @@ const Reservation2 = () => {
   return (
     <Container>
       <Header back="/guest/reservation1" title={""} />
+      <ButtonNDesContainer>
       <ButtonContainer>
         {wholeFloor?.map((one, index) => {
           return (
             <FloorButton
+            num={index}
               onClick={() => {
                 changeFloor(index);
               }}
@@ -401,6 +425,25 @@ const Reservation2 = () => {
           );
         })}
       </ButtonContainer>
+      <DescContainer>
+      <div className="colorDescContainer">
+                        <div classname="available" style={{height:"20px",width:"20px",backgroundColor:"#FF7B54",marginRight:"5px"}}>
+                                    
+                        </div>
+                        <div style={{width:"60px"}}>
+                            이용가능
+                        </div>
+                    </div>
+                    <div className="colorDescContainer">
+                        <div classname="notavailable" style={{height:"20px",width:"20px",backgroundColor:"rgba(0,0,0,0.2)",marginRight:"5px"}}>
+                                   
+                        </div>
+                        <div>
+                            이용중
+                        </div>
+                    </div>
+      </DescContainer>
+      </ButtonNDesContainer>
       <MapContainer>
         <Stage
           style={{

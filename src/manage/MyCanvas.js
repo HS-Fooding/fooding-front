@@ -760,11 +760,15 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
     setDoors([...doors, door]);
   };
 
+  let getManagerToken = localStorage.getItem("managerToken");
   const getShape = () => {
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketIdLS}/structure`,
-      Authorization: "Bearer " + getToken,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getToken,
+      },
     };
 
     axios(config)
