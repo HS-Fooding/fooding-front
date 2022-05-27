@@ -479,8 +479,8 @@ const Reservation1 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data.tables);
-
-        setAvailableTable(response.data.tables);
+         setAvailableTable(response.data.tables);
+       
       })
       .catch(function (error) {
         console.log(error);

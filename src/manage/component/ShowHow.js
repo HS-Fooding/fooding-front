@@ -26,7 +26,7 @@ const ShowHow = (props) => {
                             />
                         </button>
 
-                        <ImCross className="carousel-x" />
+                        <ImCross className="carousel-x" onClick={() => props.myClick(false)} />
                         <ul className="carousel__track">
                             <li
                                 className={
