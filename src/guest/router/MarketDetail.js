@@ -248,13 +248,42 @@ const MoreMenu = styled.div`
 `;
 
 const MarketTable = styled.div`
-    padding: 30px 0px;
-    .marketDesc {
+    display:flex;
+    justify-content: space-between;
+   .marketDesc {
+        height:30px;
         font-size: 17px;
         font-weight: bold;
         margin: 23px 0px;
         padding: 20px;
     }
+    .colorDesc{
+        display:flex;
+        height:30px;
+        width:200px;
+        font-size: 14px;
+        margin: 23px 0px;
+        padding: 20px;
+      
+    }
+    .colorDescContainer{
+        display:flex;
+        align-items: center;
+        width:200px;
+        margin-right:5px;
+        height:15px;
+        .available{
+            width:20px;
+            height:20px;
+            background-color:red;
+        }
+        .notavailable{
+            width:20px;
+            height:20px;
+            background-color:gray;
+        }
+    }
+   
 `;
 
 const appearDisappear = keyframes`
@@ -1045,7 +1074,25 @@ const MarketDetail = () => {
                 </div>
             </MarketDetailInfo>
             <MarketTable>
-                <span className="marketDesc">테이블 현황</span>
+                <div className="marketDesc">테이블 현황</div>
+                <div className="colorDesc">
+                    <div className="colorDescContainer">
+                        <div classname="available" style={{height:"20px",width:"20px",backgroundColor:"#FF7B54",marginRight:"5px"}}>
+                                    
+                        </div>
+                        <div style={{width:"60px"}}>
+                            이용가능
+                        </div>
+                    </div>
+                    <div className="colorDescContainer">
+                        <div classname="notavailable" style={{height:"20px",width:"20px",backgroundColor:"rgba(0,0,0,0.2)",marginRight:"5px"}}>
+                                   
+                        </div>
+                        <div>
+                            이용중
+                        </div>
+                    </div>
+                </div>               
             </MarketTable>
             <FloorButtonContainer>
                 {floor.map((bool, index) => {
