@@ -338,11 +338,10 @@ const Reservation1 = () => {
         resultTime = "오후 " + Number(resultHour - 12) + ":" + resultMinute;
       }
 
-      console.log("resultTime:", resultTime);
+      //   console.log("resultTime:", resultTime);
 
       timesArr.push(resultTime);
       setTime(timesArr);
-
 
       totalMin += 30;
 
@@ -461,7 +460,7 @@ const Reservation1 = () => {
     console.log(isCar, peopleNum, calendarValue, clickedTime);
 
     makeSendingTime();
-    setAvailableTable(undefined);
+    //setAvailableTable(undefined);
 
     const getToken = localStorage.getItem("guestToken");
     const marketId = localStorage.getItem("marketId");
@@ -480,10 +479,8 @@ const Reservation1 = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data.tables);
-        if (response.data.tables.length !== 0) {
-          console.log("테이블 1개 이상 가능");
-          setAvailableTable(response.data.tables);
-        }
+
+        setAvailableTable(response.data.tables);
       })
       .catch(function (error) {
         console.log(error);
@@ -593,7 +590,7 @@ const Reservation1 = () => {
           <NoticeBox>
             <span>시간을 선택하세요.</span>
           </NoticeBox>
-        ) : availableTable == undefined ? (
+        ) : availableTable?.length === 0 ? (
           <NoticeBox>
             <span>예약 가능한 좌석이 없습니다.</span>
           </NoticeBox>
