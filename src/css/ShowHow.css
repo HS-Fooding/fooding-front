@@ -1,0 +1,151 @@
+.carousel {
+    position: fixed;
+    inset: 0;
+    top: 5rem;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.carousel-contents {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 0.25em;
+}
+
+.carousel__button {
+    color: white;
+    font-size: 2em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.carousel__button-left {
+    left: 5%;
+}
+
+.carousel__button-right {
+    right: 5%;
+}
+
+.carousel__track-container {
+    min-width: 30rem;
+    background-color: rgb(156, 154, 154);
+    border-radius: 0.25em;
+    width: 80%;
+    height: 70%;
+    position: relative;
+}
+
+.carousel__track {
+    width: 100%;
+}
+
+.carousel__slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: white;
+}
+
+.carousel__slide__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.carousel__slide__info__title {
+    font-size: 2.5rem;
+    line-height: 2;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    min-width: 28rem;
+    margin-left: 3rem;
+    color: yellow;
+    text-shadow: 0.025em 0.025em 0 black, 0.05em 0.05em 0 blue, 0.075em 0.075em 0 yellow,
+        0.1em 0.1em 0 black;
+}
+.carousel__slide__info__content {
+    font-size: 2rem;
+    line-height: 2;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    margin-left: 4rem;
+    max-width: 30rem;
+}
+.carousel__slide__img {
+    flex: 1;
+    height: 100%;
+    width: 30rem;
+    object-fit: cover;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+.object-contain {
+    object-fit: contain;
+    padding: 0.2rem;
+}
+
+.carousel__slide.active {
+    opacity: 1;
+}
+
+.carousel__nav {
+    display: flex;
+    justify-content: center;
+    padding: 25px 0;
+}
+.carousel__indicator {
+    border: 0;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.3);
+    will-change: transition;
+    transition: background-color 0.6 ease-out;
+    z-index: 3;
+}
+
+.carousel__indicator.current-slide {
+    background-color: yellow;
+}
+
+@media screen and (max-width: 970px) {
+    .carousel__slide {
+        display: flex;
+        flex-direction: column;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .carousel__button {
+        color: black;
+    }
+}
