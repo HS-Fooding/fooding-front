@@ -612,7 +612,7 @@ const Reservation1 = () => {
               time: totalTime,
               // calendarValue: calendarValue,
               calendarValue: totalDate,
-              availableTable: availableTable,
+              availableTableLink: availableTable,
             }}
           >
             <NextBtn onClick={nextBtnClick}>다음</NextBtn>
