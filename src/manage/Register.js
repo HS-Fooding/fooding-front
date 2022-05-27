@@ -13,6 +13,7 @@ import MyCanvas from "./MyCanvas";
 import NumericInput from "react-numeric-input";
 import ShowHow from "./component/ShowHow";
 import { BsQuestionCircleFill } from "react-icons/bs";
+import { style } from "motion";
 
 const Container = styled.div`
     width: 100%;
@@ -413,8 +414,11 @@ const CanvasOptionContainer = styled.div`
     width: 1000px;
     height: 40px;
     display: flex;
+    // justify-content: flex-start;
+    // align-items: center;
     margin-bottom: 20px;
 `;
+
 const Step = styled.div`
     margin-bottom: 40px;
     nav {
@@ -1396,15 +1400,11 @@ function Register(floorCallback) {
                 </InputFormDiv>
             </div>
             <CanvasContainer ref={structRef}>
-                <CanvasOptionContainer>
+                <CanvasOptionContainer className="canvasOptionContainer">
                     <AppendFloor onClick={appendFloor}>
                         <div>층 추가</div>
                     </AppendFloor>
-                    <BsQuestionCircleFill
-                        className="workspace-infoIcon"
-                        onClick={() => setClickShowHow(true)}
-                    />
-                    {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
+
                     {floor.map((bool, index) => {
                         return (
                             <FloorButton
@@ -1417,6 +1417,11 @@ function Register(floorCallback) {
                             </FloorButton>
                         );
                     })}
+                    <BsQuestionCircleFill
+                        className="workspace-infoIcon"
+                        onClick={() => setClickShowHow(true)}
+                    />
+                    {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
                     {floor.length !== 1 ? (
                         <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
                             X
