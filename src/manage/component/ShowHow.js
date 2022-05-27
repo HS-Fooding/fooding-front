@@ -42,9 +42,10 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            // src="src/img/makingStructure.png"
+                                            src={require("../../img/makingStructure.png")}
+                                            alt="?!?!"
                                         />
                                     </div>
                                 </div>
@@ -63,7 +64,7 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
                                             src="/phone_camera2.jpg"
                                             alt="camera with a phone"
                                         />
@@ -84,7 +85,7 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
                                             src="/phone_camera2.jpg"
                                             alt="camera with a phone"
                                         />
@@ -105,7 +106,7 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
                                             src="/phone_camera2.jpg"
                                             alt="camera with a phone"
                                         />
@@ -126,7 +127,7 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
                                             src="/phone_camera2.jpg"
                                             alt="camera with a phone"
                                         />
@@ -147,7 +148,7 @@ const ShowHow = (props) => {
                                     </div>
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
-                                            className="carousel__slide__info__img object-contain"
+                                            className="carousel__slide__info__imgContainer__img object-contain"
                                             src="/phone_camera2.jpg"
                                             alt="camera with a phone"
                                         />
