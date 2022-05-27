@@ -400,7 +400,7 @@ const Reservation2 = () => {
                                         );
                                     }}
                                     fill={
-                                        selectedTable?.id === table.id
+                                        selectedTable?.tableNum === table.tableNum
                                             ? "#ffe2bc"
                                             : availableTableNumArr.includes(table.tableNum)
                                             ? "#FF7B54"
