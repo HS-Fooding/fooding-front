@@ -3,9 +3,9 @@ import _ from "lodash";
 import axios from "axios";
 import { url } from "../Api";
 import { v4 as uuidv4 } from "uuid";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import RGL, { WidthProvider, Responsive } from "react-grid-layout";
-import { m } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "react-datepicker"; // DatePicker 라는 컴포넌트도 가져오깅
 import "react-datepicker/dist/react-datepicker.css"; // 스타일 맥이기
 import Header from "./component/Header";
@@ -13,6 +13,7 @@ import ManageReserveModal from "./component/ManageReserveModal";
 import ShowInfoModal from "./component/ShowInfoModal";
 const Container = styled.div`
   margin-top: 100px;
+  position: relative;
   /* display: flex;
   justify-content: center; */
 
@@ -119,6 +120,37 @@ const LayoutWrapper = styled.div`
   }
 `;
 
+const appearDisappear = keyframes`
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:1.0;
+    }
+    100%{
+      opacity:0;
+      
+    }
+`;
+const Modal = styled.div`
+  z-index: 1;
+  position: absolute;
+  width: 300px;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  background-color: gray;
+  color: white;
+  border-radius: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  opacity: 0;
+  animation: ${appearDisappear} 3s ease-in-out;
+`;
+
 const BLOCK_OF_TIME = 30;
 
 const marketId = localStorage.getItem("marketId");
@@ -206,6 +238,8 @@ const ManageReserv = () => {
   const [postyear, setPostYear] = useState();
   const [postmonth, setPostMonth] = useState();
   const [postdate, setPostDate] = useState();
+
+  const [modal, setModal] = useState(false);
 
   let tomorrow = new Date();
 
@@ -607,11 +641,22 @@ const ManageReserv = () => {
     axios(config)
       .then(function (response) {
         console.log(response);
+        setModal(true);
+        modalSet();
       })
       .catch(function (error) {
         console.log(error.message);
       });
   };
+
+  function delay() {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  async function modalSet() {
+    await delay();
+    setModal(false);
+  }
+
   return (
     <Container>
       <Header />
@@ -667,6 +712,10 @@ const ManageReserv = () => {
       {isshowModalForInfo ? (
         <ShowInfoModal info={isShowModalInfo} status={handleShowCallback} />
       ) : null}
+
+      <AnimatePresence>
+        {modal ? <Modal>예약 정보가 등록되었습니다.</Modal> : null}
+      </AnimatePresence>
     </Container>
   );
 };
