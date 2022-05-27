@@ -158,7 +158,7 @@ const Review = () => {
                             <ReviewBox
                                 key={index}
                                 style={
-                                    reviews.length - 1 == index ? { marginBottom: "520px" } : null
+                                    reviews.length - 1 == index ? { marginBottom: "30px" } : null
                                 }
                             >
                                 <ReviewContent>
