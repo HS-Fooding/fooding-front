@@ -24,26 +24,27 @@ const WriteReviewBtn = styled.button`
 
 const Reviews = styled.div`
     width: 100%;
-    height: 770px;
+    height: 700px;
     margin-bottom: 5px;
     padding-top: 60px;
-    padding-bottom: 100px;
+    
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     background-color: white;
+ 
+`;
+
+const InnerReviews = styled.div`
+    height: 700px;
+    padding-top: 10px;
     overflow: auto;
-    /* padding-top: 50px; */
+      /* padding-top: 50px; */
 
     ::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera*/
     }
-`;
-
-const InnerReviews = styled.div`
-    height: 500px;
-    padding-top: 10px;
 `;
 
 const ReviewBox = styled.div`
@@ -56,6 +57,7 @@ const ReviewBox = styled.div`
     display: flex;
     flex-direction: column;
     border: 1px solid ${(props) => props.theme.borderGrayColor};
+    
     &:last-child {
         /*margin-bottom: 200px;*/
     }
