@@ -103,7 +103,7 @@ const RestaurantList = () => {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
             await axios
-                .get(url + "/fooding/restaurant?page=" + currentPage + "&size=6", {
+                .get(url + "/fooding/restaurant?page=" + currentPage + "&size=10", {
                     headers: {
                         //"Content-Type": "multipart/form-data",
                         Authorization: "Bearer " + getToken,

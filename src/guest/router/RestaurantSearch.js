@@ -249,7 +249,7 @@ const RestaurantSearch = () => {
                 </Link>
                 <InputContainer>
                     <form onSubmit={getSearch}>
-                        <input onChange={bringSearchWord} value={searchWord} type="text"></input>
+                        <input onChange={bringSearchWord} value={searchWord} type="text" placeholder="검색어를 입력하세요"></input>
                     </form>
                 </InputContainer>
                 {post ? (
