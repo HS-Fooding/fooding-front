@@ -43,9 +43,7 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            // src="src/img/makingStructure.png"
-                                            src={require("../../img/makingStructure.png")}
-                                            alt="?!?!"
+                                            src={require("../../img/intro.png")}
                                         />
                                     </div>
                                 </div>
