@@ -251,21 +251,7 @@ const ManageReserv = () => {
       startDate.getDate()
     );
   }, [startDate]);
-  const handleDate = () => {
-    // // console.log("dateDetail:", dateDetail.getDate().length);
-    // console.log("date:", date);
-    // //setDate(date.getDate() + 1);
-    // //const getDate = dateDetail.getDate();
-    // setDate(date + 1);
-    // // // 어제
-    // // const yesterday = new Date();
-    // // yesterday.setDate(yesterday.getDate() - 1);
-    // // console.log(yesterday.toLocaleString());
-    // // 내일
-    // //const tomorrow = new Date();
-    // tomorrow.setDate(tomorrow.getDate() + 1);
-    // console.log(tomorrow.toLocaleString());
-  };
+  const handleDate = () => {};
 
   useEffect(async () => {
     const getToken = localStorage.getItem("managerToken");
