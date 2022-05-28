@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
+
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 // import CurrentTable from "../component/CurrentTables";
 import { motion, AnimatePresence } from "framer-motion";
@@ -623,7 +625,7 @@ const MarketDetail = () => {
     const [category, setCategory] = useState([]);
 
     const [modal, setModal] = useState(false);
-
+    const [delModal,setDelModal] = useState(false);
     const [tables, setTables] = useState([]);
     const [seats, setSeats] = useState([]);
     const [walls, setWalls] = useState([]);
@@ -642,7 +644,7 @@ const MarketDetail = () => {
     const [availableTable, setAvailableTable] = useState([]);
 
     const [maximumUsageTime, setMaximumUsageTime] = useState();
-
+    const [bookmarked,setBookmarked] = useState();
     const [floor, setFloor] = useState([true]);
     const [selectedFloor, setSelectedFloor] = useState(0);
 
@@ -857,6 +859,7 @@ const MarketDetail = () => {
                 console.log("@@@@", response.data);
                 setMarket(response.data);
                 setMaximumUsageTime(response.data.maximumUsageTime);
+                setBookmarked(response.data.bookmarked);
                 localStorage.setItem("maximumUsageTime", response.data.maximumUsageTime);
                 const korCategory = response.data.category.map((category) => {
                     if (category === "KOREAN") return "한식";
@@ -935,11 +938,14 @@ const MarketDetail = () => {
     // },[representativeNNormal,market,marketMenu]);
     const getToken = localStorage.getItem("guestToken");
     const postFavorList = () => {
+        let currentState = !bookmarked;
+        setBookmarked(bookmarked => !bookmarked);
         const data = JSON.stringify({
             restId: marketId,
         });
         console.log("보낼 데이터", data);
-        var config = {
+       if(currentState==true){ 
+           var config = {
             method: "post",
             url: url + `/fooding/mypage/bookmark/${marketId}`,
             headers: {
@@ -959,6 +965,28 @@ const MarketDetail = () => {
             .catch(function (error) {
                 console.log(error);
             });
+        }else{
+            var config = {
+                method: "delete",
+                url: url + `/fooding/mypage/bookmark/${marketId}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + getToken,
+                },
+                data: data,
+            };
+    
+            axios(config)
+                .then(function (response) {
+                    setDelModal(true);
+                    modalSet();
+                    console.log(response.data);
+                })
+                .then(function () {})
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
     };
 
     function delay() {
@@ -997,8 +1025,11 @@ const MarketDetail = () => {
             </MarketTitleBox>
             <MarketMenuBox>
                 <MenuBtnBox onClick={postFavorList}>
-                    <i class="fa-solid fa-star"></i>
-                    <span>즐겨찾기</span>
+                     <FontAwesomeIcon
+                    icon={bookmarked ? faStar : faStarRegular}
+                    style={{ color: "#FF7B54" }} />
+                
+                    <span>{bookmarked}즐겨찾기</span>
                 </MenuBtnBox>
                 <Link
                     style={{ textDecoration: "none", color: "inherit" }}
