@@ -624,8 +624,7 @@ const MarketDetail = () => {
     const { marketId } = useParams();
     const [category, setCategory] = useState([]);
 
-    const [modal, setModal] = useState(false);
-    const [delModal,setDelModal] = useState(false);
+   
     const [tables, setTables] = useState([]);
     const [seats, setSeats] = useState([]);
     const [walls, setWalls] = useState([]);
@@ -956,9 +955,8 @@ const MarketDetail = () => {
         };
 
         axios(config)
-            .then(function (response) {
-                setModal(true);
-                modalSet();
+            .then(function (response) {              
+             
                 console.log(response.data);
             })
             .then(function () {})
@@ -978,8 +976,8 @@ const MarketDetail = () => {
     
             axios(config)
                 .then(function (response) {
-                    setDelModal(true);
-                    modalSet();
+                 
+                   
                     console.log(response.data);
                 })
                 .then(function () {})
@@ -992,10 +990,7 @@ const MarketDetail = () => {
     function delay() {
         return new Promise((resolve) => setTimeout(resolve, 3000));
     }
-    async function modalSet() {
-        await delay();
-        setModal(false);
-    }
+ 
 
     const seeMoreMenu = () => {
         setToggle((toggle) => !toggle);
@@ -1029,7 +1024,7 @@ const MarketDetail = () => {
                     icon={bookmarked ? faStar : faStarRegular}
                     style={{ color: "#FF7B54" }} />
                 
-                    <span>{bookmarked}즐겨찾기</span>
+                    <span>즐겨찾기</span>
                 </MenuBtnBox>
                 <Link
                     style={{ textDecoration: "none", color: "inherit" }}
@@ -1320,9 +1315,7 @@ const MarketDetail = () => {
                       })
                     : null}
             </MarketMenuInfo>
-            <AnimatePresence>
-                {modal ? <Modal>즐겨찾기에 등록되었습니다.</Modal> : null}
-            </AnimatePresence>
+           
         </Container>
     );
 };
