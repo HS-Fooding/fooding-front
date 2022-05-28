@@ -405,6 +405,7 @@ const AppendFloor = styled.div`
   }
 `;
 const CanvasContainer = styled.div`
+  position: relative;
   margin-top: 0px;
   width: 1000px;
   height: 700px;
@@ -573,7 +574,7 @@ const Modal = styled.div`
   z-index: 1;
   position: absolute;
   width: 300px;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 50px;
@@ -631,6 +632,9 @@ function Register(floorCallback) {
 
   const [alertModal, setAlertModal] = useState(false);
   const [failModal, setFailModal] = useState(false);
+  const [alertStructure, setAlertStructure] = useState(false);
+  const [alertInfo, setAlertInfo] = useState(false);
+
   useEffect(() => {
     console.log("floorfloorfloor배열", floor);
 
@@ -849,6 +853,7 @@ function Register(floorCallback) {
           })
           .then((res) => {
             setAlertModal(true);
+            setAlertInfo(true);
             modalSet();
             console.log("마켓 아이디", res.data);
             setMarketId(res.data);
@@ -858,6 +863,7 @@ function Register(floorCallback) {
           })
           .catch((err) => {
             setFailModal(true);
+            setAlertInfo(true);
             modalSet();
             console.log("content 컨텐츠", content);
             console.log("img", marketImgs);
@@ -873,6 +879,8 @@ function Register(floorCallback) {
     await delay();
     setAlertModal(false);
     setFailModal(false);
+    setAlertStructure(false);
+    setAlertInfo(false);
   }
 
   let floors = [];
@@ -906,9 +914,16 @@ function Register(floorCallback) {
 
     axios(config)
       .then(function (response) {
+        setAlertModal(true);
+        setAlertStructure(true);
+
+        modalSet();
         console.log(response);
       })
       .catch(function (error) {
+        setFailModal(true);
+        setAlertStructure(true);
+        modalSet();
         console.log(error);
       });
   };
@@ -1506,16 +1521,26 @@ function Register(floorCallback) {
             등록
           </Button>
         </ButtonContainer>
+        <AnimatePresence>
+          {alertModal && alertStructure ? (
+            <Modal>등록이 완료되었습니다.</Modal>
+          ) : null}
+        </AnimatePresence>
+        <AnimatePresence>
+          {failModal && alertStructure ? (
+            <Modal>등록에 실패하였습니다.</Modal>
+          ) : null}
+        </AnimatePresence>
       </CanvasContainer>
       <div ref={menuRef}>
         <Menu marketId={marketId} />
       </div>
 
       <AnimatePresence>
-        {alertModal ? <Modal>매장 정보가 등록되었습니다.</Modal> : null}
+        {alertModal && alertInfo ? <Modal>등록이 완료되었습니다.</Modal> : null}
       </AnimatePresence>
       <AnimatePresence>
-        {failModal ? <Modal>매장 정보 등록에 실패하였습니다.</Modal> : null}
+        {failModal && alertInfo ? <Modal>등록에 실패하였습니다.</Modal> : null}
       </AnimatePresence>
     </Container>
   );

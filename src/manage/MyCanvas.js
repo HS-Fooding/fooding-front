@@ -1,10 +1,10 @@
 import React, { isValidElement, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Modal from "./component/Modal";
 import Modal2 from "./component/Modal2";
 import axios from "axios";
-
+import { motion, AnimatePresence } from "framer-motion";
 import { tab } from "@testing-library/user-event/dist/tab";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { url } from "../Api";
@@ -111,6 +111,37 @@ const Garbage = styled.div`
   svg {
     color: ${(props) => props.theme.fontGrayColor};
   }
+`;
+
+const appearDisappear = keyframes`
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:1.0;
+    }
+    100%{
+      opacity:0;
+      
+    }
+`;
+const AlertModal = styled.div`
+  z-index: 10;
+  position: absolute;
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  background-color: gray;
+  color: white;
+  border-radius: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  opacity: 0;
+  animation: ${appearDisappear} 3s ease-in-out;
 `;
 
 const Table = ({
@@ -524,21 +555,21 @@ const Door = ({
 };
 
 const MyCanvas = ({ floorCallback, bool, index }) => {
-  const [tables, setTables] = React.useState([]);
-  const [seats, setSeats] = React.useState([]);
-  const [walls, setWalls] = React.useState([]);
-  const [windows, setWindows] = React.useState([]);
-  const [doors, setDoors] = React.useState([]);
+  const [tables, setTables] = useState([]);
+  const [seats, setSeats] = useState([]);
+  const [walls, setWalls] = useState([]);
+  const [windows, setWindows] = useState([]);
+  const [doors, setDoors] = useState([]);
   const [show, setShow] = useState(bool);
 
   console.log("showshowshowshow", bool);
   console.log("indexindexindexindexindexindex", index);
-  const [selectedId, selectShape] = React.useState(null);
-  const [tableCnt, setTableCnt] = React.useState(1);
-  const [seatCnt, setSeatCnt] = React.useState(1);
-  const [wallCnt, setWallCnt] = React.useState(1);
-  const [windowCnt, setWindowCnt] = React.useState(1);
-  const [doorCnt, setDoorCnt] = React.useState(1);
+  const [selectedId, selectShape] = useState(null);
+  const [tableCnt, setTableCnt] = useState(1);
+  const [seatCnt, setSeatCnt] = useState(1);
+  const [wallCnt, setWallCnt] = useState(1);
+  const [windowCnt, setWindowCnt] = useState(1);
+  const [doorCnt, setDoorCnt] = useState(1);
   let obj = {};
   const [modal, setModal] = useState(false);
   const [editTableObj, setEditTableObj] = useState();
@@ -551,7 +582,9 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
   const [tableWidth, setTableWidth] = useState();
   const [tableHeight, setTableHeight] = useState();
 
-  const [isDelete, setIsDelete] = React.useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+
+  const [alertModal, setAlertModal] = useState(false);
 
   const getToken = localStorage.getItem("managerToken");
   const marketIdLS = localStorage.getItem("marketId");
@@ -760,7 +793,6 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
     setDoors([...doors, door]);
   };
 
-  let getManagerToken = localStorage.getItem("managerToken");
   const getShape = () => {
     const getToken = localStorage.getItem("managerToken");
 
@@ -989,12 +1021,22 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
     axios(config)
       .then(function (response) {
-        console.log(response);
+        console.log("response:", response);
+        setAlertModal(true);
+        modalSet();
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+  function delay() {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  async function modalSet() {
+    await delay();
+    setAlertModal(false);
+  }
 
   // handlDblClick
   const handleTableDblClick = (e) => {
@@ -1306,6 +1348,12 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
             editTableObj={editTableObj}
           />
         ) : null}
+
+        <AnimatePresence>
+          {alertModal ? (
+            <AlertModal>매장 구조가 등록되었습니다.</AlertModal>
+          ) : null}
+        </AnimatePresence>
       </Container>
     );
   } else {
