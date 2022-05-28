@@ -614,12 +614,23 @@ const ArrowUp = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 5;
+  opacity: ${(props) => (props.BtnStatus ? "1" : "0")};
 
   svg {
     font-size: 26px;
   }
 
   cursor: pointer;
+`;
+
+const ArrowUpDiv = styled.div`
+  .active {
+    opacity: 1;
+  }
+
+  .none {
+    opacity: 0;
+  }
 `;
 
 function Register(floorCallback) {
@@ -673,32 +684,37 @@ function Register(floorCallback) {
   const [ScrollY, setScrollY] = useState(0); // 스크롤값을 저장하기 위한 상태
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
 
+  const [btnClick, setBtnClick] = useState(false);
+
   const handleFollow = () => {
     setScrollY(window.pageYOffset);
-    if (ScrollY > 400) {
+
+    if (ScrollY > 300) {
       // 100 이상이면 버튼이 보이게
       setBtnStatus(true);
     } else {
-      // 100 이하면 버튼이 사라지게
-
       setBtnStatus(false);
       setNav(1);
     }
   };
 
   const handleTop = () => {
-    setBtnStatus(false); // BtnStatus의 값을 false로 바꿈 => 버튼 숨김
-
     // 클릭하면 스크롤이 위로 올라가는 함수
+    // setScrollY(0); // ScrollY 의 값을 초기화
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-    setScrollY(0); // ScrollY 의 값을 초기화
 
+    // setScrollY(0);
+    //setBtnStatus(false); // BtnStatus의 값을 false로 바꿈 => 버튼 숨김
     setNav(1);
   };
+
+  // useEffect(() => {
+  //   console.log("ScrollY is ", ScrollY); // ScrollY가 변화할때마다 값을 콘솔에 출력
+  // }, [ScrollY]);
 
   useEffect(() => {
     const watch = () => {
@@ -1085,7 +1101,6 @@ function Register(floorCallback) {
           {/* <div id="indicator"></div> */}
         </nav>
       </Step>
-
       <div ref={infoRef}>
         <InputFormDiv>
           <form className="NameForm">
@@ -1604,22 +1619,30 @@ function Register(floorCallback) {
       <div ref={menuRef}>
         <Menu marketId={marketId} />
       </div>
-
       <AnimatePresence>
         {alertModal && alertInfo ? <Modal>등록이 완료되었습니다.</Modal> : null}
       </AnimatePresence>
       <AnimatePresence>
         {failModal && alertInfo ? <Modal>등록에 실패하였습니다.</Modal> : null}
       </AnimatePresence>
-
-      {BtnStatus ? (
+      (
+      <ArrowUp
+        // 버튼 노출 여부
+        onClick={handleTop} // 버튼 클릭시 함수 호출
+        BtnStatus={BtnStatus}
+      >
+        <i class="fas fa-angle-up"></i>
+      </ArrowUp>
+      )
+      {/* <ArrowUpDiv>
         <ArrowUp
           // 버튼 노출 여부
-          onClick={handleTop} // 버튼 클릭시 함수 호출
+          onClick={handleTop}
+          className={BtnStatus ? "active" : "none"}
         >
           <i class="fas fa-angle-up"></i>
         </ArrowUp>
-      ) : null}
+      </ArrowUpDiv> */}
     </Container>
   );
 }
