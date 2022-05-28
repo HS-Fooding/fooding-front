@@ -414,23 +414,23 @@ const CanvasContainer = styled.div`
   flex-direction: column;
 `;
 const CanvasOptionContainer = styled.div`
-    width: 1000px;
-    height: 40px;
-    display: flex;
-    
-    justify-content: space-between;
-    // align-items: center;
-    margin-bottom: 20px;
+  width: 1000px;
+  height: 40px;
+  display: flex;
+
+  justify-content: space-between;
+  // align-items: center;
+  margin-bottom: 20px;
 `;
 const FloorContainer = styled.div`
-  width:800px;
+  width: 800px;
   height: 40px;
-    display: flex;
+  display: flex;
 `;
 const StructureDesc = styled.div`
-  width:50px;
-  display:flex;
-  justify-content:center;
+  width: 50px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 `;
 const Step = styled.div`
@@ -1151,7 +1151,7 @@ function Register(floorCallback) {
                       {marketInfo === null ? (
                         <input
                           id="market_img_input"
-                          type="image"
+                          type="file"
                           accept="image/jpg,image/png,image/jpeg,image/gif"
                           name="market_img"
                           onChange={marketImgChange}
@@ -1535,36 +1535,36 @@ function Register(floorCallback) {
       </div>
       <CanvasContainer ref={structRef}>
         <CanvasOptionContainer className="canvasOptionContainer">
-            <FloorContainer>
-          <AppendFloor onClick={appendFloor}>
-            <div>층 추가</div>
-          </AppendFloor>
+          <FloorContainer>
+            <AppendFloor onClick={appendFloor}>
+              <div>층 추가</div>
+            </AppendFloor>
 
-          {floor.map((bool, index) => {
-            return (
-              <FloorButton
-                num={index}
-                onClick={(e) => {
-                  bringCanvas(index);
-                }}
-              >
-                <p>{index + 1}층</p>
+            {floor.map((bool, index) => {
+              return (
+                <FloorButton
+                  num={index}
+                  onClick={(e) => {
+                    bringCanvas(index);
+                  }}
+                >
+                  <p>{index + 1}층</p>
+                </FloorButton>
+              );
+            })}
+
+            {floor.length !== 1 ? (
+              <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
+                X
               </FloorButton>
-            );
-          })}
-         
-          {floor.length !== 1 ? (
-            <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
-              X
-            </FloorButton>
-          ) : null}
+            ) : null}
           </FloorContainer>
           <StructureDesc>
             <p>
-            <BsQuestionCircleFill
-            className="workspace-infoIcon"
-            onClick={() => setClickShowHow(true)}
-          />       
+              <BsQuestionCircleFill
+                className="workspace-infoIcon"
+                onClick={() => setClickShowHow(true)}
+              />
             </p>
             {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
           </StructureDesc>
