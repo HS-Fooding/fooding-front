@@ -681,6 +681,7 @@ function Register(floorCallback) {
 
   const [btnClick, setBtnClick] = useState(false);
 
+  let floors = [];
   const handleFollow = () => {
     setScrollY(window.pageYOffset);
 
@@ -956,7 +957,6 @@ function Register(floorCallback) {
     setAlertInfo(false);
   }
 
-  let floors = [];
   const handleFloorCallback = (index, structureInfo) => {
     floors[index] = structureInfo;
     console.log("층", index + 1);
@@ -1040,6 +1040,9 @@ function Register(floorCallback) {
   const eraseFloor = () => {
     let temp = floor.slice(0, -1);
     setFloor(temp);
+    floors.splice(-1,1);
+    console.log("삭제 버튼 눌렀을때 floors",floors);
+    postData();
   };
   const drawButtonagain = () => {
     floor.map((bool, index) => {
