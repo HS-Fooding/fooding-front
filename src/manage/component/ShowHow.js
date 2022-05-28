@@ -10,7 +10,7 @@ const ShowHow = (props) => {
         setActiveMenu(activeMenu - 1);
     };
     const handleRightChev = () => {
-        if (activeMenu === 5) return;
+        if (activeMenu === 7) return;
         setActiveMenu(activeMenu + 1);
     };
 
@@ -66,8 +66,7 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            src={require("../../img/createTable1.png")}
                                         />
                                     </div>
                                 </div>
@@ -75,6 +74,27 @@ const ShowHow = (props) => {
                             <li
                                 className={
                                     activeMenu === 2 ? "carousel__slide active" : "carousel__slide"
+                                }
+                            >
+                                <div className="carousel__slide__info">
+                                    <h4 className="carousel__slide__info__title">
+                                        1. 테이블을 생성하세요
+                                    </h4>
+                                    <div className="carousel__slide__info__subtitle">
+                                        테이블 버튼을 눌러 각 테이블에 대한 정보를 입력할 수
+                                        있습니다.
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src={require("../../img/createTable2.png")}
+                                        />
+                                    </div>
+                                </div>
+                            </li>
+                            <li
+                                className={
+                                    activeMenu === 3 ? "carousel__slide active" : "carousel__slide"
                                 }
                             >
                                 <div className="carousel__slide__info">
@@ -87,15 +107,14 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            src={require("../../img/createOthers.png")}
                                         />
                                     </div>
                                 </div>
                             </li>
                             <li
                                 className={
-                                    activeMenu === 3 ? "carousel__slide active" : "carousel__slide"
+                                    activeMenu === 4 ? "carousel__slide active" : "carousel__slide"
                                 }
                             >
                                 <div className="carousel__slide__info">
@@ -108,15 +127,14 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            src={require("../../img/customizeStructure.png")}
                                         />
                                     </div>
                                 </div>
                             </li>
                             <li
                                 className={
-                                    activeMenu === 4 ? "carousel__slide active" : "carousel__slide"
+                                    activeMenu === 5 ? "carousel__slide active" : "carousel__slide"
                                 }
                             >
                                 <div className="carousel__slide__info">
@@ -130,15 +148,14 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            src={require("../../img/editTableInfo.png")}
                                         />
                                     </div>
                                 </div>
                             </li>
                             <li
                                 className={
-                                    activeMenu === 5 ? "carousel__slide active" : "carousel__slide"
+                                    activeMenu === 6 ? "carousel__slide active" : "carousel__slide"
                                 }
                             >
                                 <div className="carousel__slide__info">
@@ -152,8 +169,25 @@ const ShowHow = (props) => {
                                     <div className="carousel__slide__info__imgContainer">
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
-                                            src="/phone_camera2.jpg"
-                                            alt="camera with a phone"
+                                            src={require("../../img/delete.png")}
+                                        />
+                                    </div>
+                                </div>
+                            </li>
+                            <li
+                                className={
+                                    activeMenu === 7 ? "carousel__slide active" : "carousel__slide"
+                                }
+                            >
+                                <div className="carousel__slide__info">
+                                    <h4 className="carousel__slide__info__title">6. 등록하세요</h4>
+                                    <div className="carousel__slide__info__subtitle">
+                                        등록 버튼을 눌러 등록을 마칩니다.
+                                    </div>
+                                    <div className="carousel__slide__info__imgContainer">
+                                        <img
+                                            className="carousel__slide__info__imgContainer__img object-contain"
+                                            src={require("../../img/submit.png")}
                                         />
                                     </div>
                                 </div>
@@ -214,6 +248,22 @@ const ShowHow = (props) => {
                                     : "carousel__indicator"
                             }
                             onClick={() => setActiveMenu(5)}
+                        ></button>
+                        <button
+                            className={
+                                activeMenu === 6
+                                    ? "carousel__indicator current-slide"
+                                    : "carousel__indicator"
+                            }
+                            onClick={() => setActiveMenu(6)}
+                        ></button>
+                        <button
+                            className={
+                                activeMenu === 7
+                                    ? "carousel__indicator current-slide"
+                                    : "carousel__indicator"
+                            }
+                            onClick={() => setActiveMenu(7)}
                         ></button>
                     </div>
                 </div>
