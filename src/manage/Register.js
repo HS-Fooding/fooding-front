@@ -414,11 +414,22 @@ const CanvasOptionContainer = styled.div`
     width: 1000px;
     height: 40px;
     display: flex;
-    // justify-content: flex-start;
+    
+    justify-content: space-between;
     // align-items: center;
     margin-bottom: 20px;
 `;
-
+const FloorContainer = styled.div`
+  width:800px;
+  height: 40px;
+    display: flex;
+`;
+const StructureDesc = styled.div`
+  width:50px;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+`;
 const Step = styled.div`
     margin-bottom: 40px;
     nav {
@@ -1401,6 +1412,7 @@ function Register(floorCallback) {
             </div>
             <CanvasContainer ref={structRef}>
                 <CanvasOptionContainer className="canvasOptionContainer">
+                  <FloorContainer>
                     <AppendFloor onClick={appendFloor}>
                         <div>층 추가</div>
                     </AppendFloor>
@@ -1417,16 +1429,21 @@ function Register(floorCallback) {
                             </FloorButton>
                         );
                     })}
-                    <BsQuestionCircleFill
-                        className="workspace-infoIcon"
-                        onClick={() => setClickShowHow(true)}
-                    />
-                    {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
+                  
                     {floor.length !== 1 ? (
                         <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
                             X
                         </FloorButton>
                     ) : null}
+                    </FloorContainer>
+                    <StructureDesc>
+                      <p>
+                      <BsQuestionCircleFill
+                        className="workspace-infoIcon"
+                        onClick={() => setClickShowHow(true)}
+                    /></p>
+                    {clickShowHow && <ShowHow myClick={() => setClickShowHow()} />}
+                    </StructureDesc>
                 </CanvasOptionContainer>
                 {floor.map((bool, index) => {
                     console.log("register index bool ", index, bool);
