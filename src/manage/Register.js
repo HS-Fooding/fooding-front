@@ -83,6 +83,11 @@ const Button = styled.button`
   cursor: pointer;
   background-color: ${(props) => props.theme.mainColor};
   color: white;
+  /* transition: transform 300ms ease;
+
+  &:hover {
+    transform: scale(1.05);
+  } */
 `;
 const ButtonContainer = styled.div`
   width: 100%;
@@ -613,7 +618,7 @@ const ArrowUp = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5;
+  z-index: 2;
   opacity: ${(props) => (props.BtnStatus ? "1" : "0")};
 
   svg {
@@ -621,16 +626,6 @@ const ArrowUp = styled.div`
   }
 
   cursor: pointer;
-`;
-
-const ArrowUpDiv = styled.div`
-  .active {
-    opacity: 1;
-  }
-
-  .none {
-    opacity: 0;
-  }
 `;
 
 function Register(floorCallback) {
@@ -1577,6 +1572,11 @@ function Register(floorCallback) {
           <StructureDesc>
             <p>
               <BsQuestionCircleFill
+                style={{
+                  color: "#ffe2bc",
+                  cursor: "pointer",
+                  fontSize: "28px",
+                }}
                 className="workspace-infoIcon"
                 onClick={() => setClickShowHow(true)}
               />
@@ -1625,7 +1625,7 @@ function Register(floorCallback) {
       <AnimatePresence>
         {failModal && alertInfo ? <Modal>등록에 실패하였습니다.</Modal> : null}
       </AnimatePresence>
-      (
+
       <ArrowUp
         // 버튼 노출 여부
         onClick={handleTop} // 버튼 클릭시 함수 호출
@@ -1633,7 +1633,7 @@ function Register(floorCallback) {
       >
         <i class="fas fa-angle-up"></i>
       </ArrowUp>
-      )
+
       {/* <ArrowUpDiv>
         <ArrowUp
           // 버튼 노출 여부
