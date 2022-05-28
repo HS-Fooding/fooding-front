@@ -1043,7 +1043,10 @@ function Register(floorCallback) {
   const onChangeAvailableMinute = (e) => setAvailableMinute(e);
 
   const eraseFloor = () => {
+    setSelectedFloor(0);
     let temp = floor.slice(0, -1);
+    temp.fill(false);
+    temp[0] = true;
     setFloor(temp);
     floors.splice(-1,1);
     console.log("삭제 버튼 눌렀을때 floors",floors);
