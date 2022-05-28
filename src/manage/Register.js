@@ -15,6 +15,7 @@ import ShowHow from "./component/ShowHow";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { style } from "motion";
 import { motion, AnimatePresence } from "framer-motion";
+import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   width: 100%;
@@ -600,6 +601,27 @@ const Modal = styled.div`
   animation: ${appearDisappear} 3s ease-in-out;
 `;
 
+const ArrowUp = styled.div`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.mainColor};
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+
+  svg {
+    font-size: 26px;
+  }
+
+  cursor: pointer;
+`;
+
 function Register(floorCallback) {
   const [modal, setModal] = useState(false);
 
@@ -646,11 +668,48 @@ function Register(floorCallback) {
   const [alertStructure, setAlertStructure] = useState(false);
   const [alertInfo, setAlertInfo] = useState(false);
 
-  useEffect(() => {
-    console.log("floorfloorfloor배열", floor);
+  const [arrowUp, setArrowUp] = useState(false);
 
-    //  drawButtonagain();
-  }, [floor]);
+  const [ScrollY, setScrollY] = useState(0); // 스크롤값을 저장하기 위한 상태
+  const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
+
+  const handleFollow = () => {
+    setScrollY(window.pageYOffset);
+    if (ScrollY > 400) {
+      // 100 이상이면 버튼이 보이게
+      setBtnStatus(true);
+    } else {
+      // 100 이하면 버튼이 사라지게
+
+      setBtnStatus(false);
+      setNav(1);
+    }
+  };
+
+  const handleTop = () => {
+    setBtnStatus(false); // BtnStatus의 값을 false로 바꿈 => 버튼 숨김
+
+    // 클릭하면 스크롤이 위로 올라가는 함수
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setScrollY(0); // ScrollY 의 값을 초기화
+
+    setNav(1);
+  };
+
+  useEffect(() => {
+    const watch = () => {
+      window.addEventListener("scroll", handleFollow);
+    };
+    watch(); // addEventListener 함수를 실행
+    return () => {
+      window.removeEventListener("scroll", handleFollow); // addEventListener 함수를 삭제
+    };
+  });
+
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
     else if (value === "JAPANESE") return "일식";
@@ -724,7 +783,6 @@ function Register(floorCallback) {
 
   useEffect(() => {
     getMarketInfo();
-    console.log(marketInfo);
   }, []);
 
   const weekdayTimeEndHandleForm = (e) => {
@@ -772,7 +830,6 @@ function Register(floorCallback) {
         ...currentArray,
         e.target.value,
       ]);
-      console.log("valueList", categoryValueSelected);
     }
     if (
       !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
@@ -781,7 +838,6 @@ function Register(floorCallback) {
         ...currentArray,
         e.target.options[e.target.selectedIndex].text,
       ]);
-      console.log("list", categorySelected);
     }
   };
   const categoryButtonClick = (index) => {
@@ -793,14 +849,10 @@ function Register(floorCallback) {
         (item, categoryIndex) => index !== categoryIndex
       )
     );
-    console.log("list", categorySelected);
-    console.log("value list", categoryValueSelected);
   };
   const appendFloor = () => {
     //원래 있는 층에서 추가. 버튼 생성되고 그 버튼 누르면 canvas창 나옴
     setFloor([...floor, false]);
-    console.log("floor추가", floor);
-    //false로 추가해주고 -> canvas를 생성해야하는데 어덯게 하지
   };
   const submitInfo = (e) => {
     var axios = require("axios");
@@ -808,7 +860,7 @@ function Register(floorCallback) {
     const values = getValues();
     let changeToMinutes =
       parseInt(availableHour * 60) + parseInt(availableMinute);
-    console.log("values", values);
+
     const getToken = localStorage.getItem("managerToken");
     let data = new FormData();
     const address = values.address;
@@ -821,7 +873,6 @@ function Register(floorCallback) {
         },
       })
       .then((res) => {
-        console.log("post 됨");
         console.log(res.data);
         setStreetAddress(res.data);
         street = res.data;
@@ -845,7 +896,7 @@ function Register(floorCallback) {
           parkingInfo: values.parking + " " + values.parkingInfo,
           maximumUsageTime: changeToMinutes,
         };
-        console.log("content이전", content);
+
         data.append(
           "restaurant",
           new Blob([JSON.stringify(content)], { type: "application/json" })
@@ -853,7 +904,7 @@ function Register(floorCallback) {
         marketImgs.map((img) => {
           data.append("image", img);
         });
-        console.log(data);
+
         axios
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
@@ -1560,6 +1611,15 @@ function Register(floorCallback) {
       <AnimatePresence>
         {failModal && alertInfo ? <Modal>등록에 실패하였습니다.</Modal> : null}
       </AnimatePresence>
+
+      {BtnStatus ? (
+        <ArrowUp
+          // 버튼 노출 여부
+          onClick={handleTop} // 버튼 클릭시 함수 호출
+        >
+          <i class="fas fa-angle-up"></i>
+        </ArrowUp>
+      ) : null}
     </Container>
   );
 }
