@@ -22,7 +22,6 @@ const ButtonContainer = styled.div`
   width: 230px;
   height: 30px;
   display: flex;
-  
 `;
 
 const MapContainer = styled.div`
@@ -97,24 +96,23 @@ const FinishModal = styled.div`
   background: linear-gradient(70deg, #ffbc80, #ff7b54);
 `;
 const ButtonNDesContainer = styled.div`
-    width: 410px;
+  width: 410px;
   height: 30px;
   display: flex;
   margin-top: 90px;
-  
 `;
 const DescContainer = styled.div`
   width: 160px;
-  height:30px;
-  display:flex;
-  font-size:13px;
-  .colorDescContainer{
-        display:flex;
-        align-items: center;
-        width:100px;
-        margin-right:5px;
-        height:30px;
-    }
+  height: 30px;
+  display: flex;
+  font-size: 13px;
+  .colorDescContainer {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    margin-right: 5px;
+    height: 30px;
+  }
 `;
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);
@@ -138,31 +136,28 @@ const Reservation2 = () => {
   const [availableTable, setAvailableTable] = useState([]);
 
   const FloorButton = styled.div`
-  margin-left: 10px;
-  width: 40px;
-  height: 25px;
-  font-size: 15px;
-  border-radius: 8px;
-  background: ${(props) => (props.num == currentIndex ? "#FF7B54" : "#f4f4f5")};
-  color:  ${(props) => (props.num == currentIndex ? "white" : "black")};
-;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-  const getToken = localStorage.getItem("guestToken");
-  const marketId = localStorage.getItem("marketId");
+    margin-left: 10px;
+    width: 40px;
+    height: 25px;
+    font-size: 15px;
+    border-radius: 8px;
+    background: ${(props) =>
+      props.num == currentIndex ? "#FF7B54" : "#f4f4f5"};
+    color: ${(props) => (props.num == currentIndex ? "white" : "black")};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+    }
+  `;
 
   let location = useLocation();
   const { isCar, peopleNum, time, calendarValue, availableTableLink } =
     location.state;
 
   const getAvailableTable = () => {
-    const getToken = localStorage.getItem("managerToken");
+    const getToken = localStorage.getItem("guestToken");
     const marketId = localStorage.getItem("marketId");
 
     var config = {
@@ -191,6 +186,7 @@ const Reservation2 = () => {
 
   const getShape = () => {
     const marketId = localStorage.getItem("marketId");
+    const getToken = localStorage.getItem("guestToken");
 
     var config = {
       method: "get",
@@ -369,6 +365,10 @@ const Reservation2 = () => {
     //   "reserveTime": "string",
     //   "tableNum": "string"
     // }
+
+    const getToken = localStorage.getItem("guestToken");
+    const marketId = localStorage.getItem("marketId");
+
     console.log(
       "받아옴:",
       isCar,
@@ -411,38 +411,46 @@ const Reservation2 = () => {
     <Container>
       <Header back="/guest/reservation1" title={""} />
       <ButtonNDesContainer>
-      <ButtonContainer>
-        {wholeFloor?.map((one, index) => {
-          return (
-            <FloorButton
-            num={index}
-              onClick={() => {
-                changeFloor(index);
+        <ButtonContainer>
+          {wholeFloor?.map((one, index) => {
+            return (
+              <FloorButton
+                num={index}
+                onClick={() => {
+                  changeFloor(index);
+                }}
+              >
+                <p>{index + 1}층</p>
+              </FloorButton>
+            );
+          })}
+        </ButtonContainer>
+        <DescContainer>
+          <div className="colorDescContainer">
+            <div
+              classname="available"
+              style={{
+                height: "20px",
+                width: "20px",
+                backgroundColor: "#FF7B54",
+                marginRight: "5px",
               }}
-            >
-              <p>{index + 1}층</p>
-            </FloorButton>
-          );
-        })}
-      </ButtonContainer>
-      <DescContainer>
-      <div className="colorDescContainer">
-                        <div classname="available" style={{height:"20px",width:"20px",backgroundColor:"#FF7B54",marginRight:"5px"}}>
-                                    
-                        </div>
-                        <div style={{width:"60px"}}>
-                            이용가능
-                        </div>
-                    </div>
-                    <div className="colorDescContainer">
-                        <div classname="notavailable" style={{height:"20px",width:"20px",backgroundColor:"rgba(0,0,0,0.2)",marginRight:"5px"}}>
-                                   
-                        </div>
-                        <div>
-                            이용중
-                        </div>
-                    </div>
-      </DescContainer>
+            ></div>
+            <div style={{ width: "60px" }}>이용가능</div>
+          </div>
+          <div className="colorDescContainer">
+            <div
+              classname="notavailable"
+              style={{
+                height: "20px",
+                width: "20px",
+                backgroundColor: "rgba(0,0,0,0.2)",
+                marginRight: "5px",
+              }}
+            ></div>
+            <div>이용중</div>
+          </div>
+        </DescContainer>
       </ButtonNDesContainer>
       <MapContainer>
         <Stage
