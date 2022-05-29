@@ -103,16 +103,16 @@ const ButtonNDesContainer = styled.div`
 `;
 const DescContainer = styled.div`
   width: 160px;
-  height: 30px;
-  display: flex;
-  font-size: 13px;
-  .colorDescContainer {
-    display: flex;
-    align-items: center;
-    width: 100px;
-    margin-right: 5px;
-    height: 30px;
-  }
+  height:30px;
+  display:flex;
+  font-size:10px;
+  .colorDescContainer{
+        display:flex;
+        align-items: center;
+        width:100px;
+        margin-right:3px;
+        height:30px;
+    }
 `;
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);
@@ -406,10 +406,10 @@ const Reservation2 = () => {
             <div
               classname="available"
               style={{
-                height: "20px",
-                width: "20px",
+                height: "10px",
+                width: "10px",
                 backgroundColor: "#FF7B54",
-                marginRight: "5px",
+                marginRight: "3px",
               }}
             ></div>
             <div style={{ width: "60px" }}>이용가능</div>
@@ -418,10 +418,10 @@ const Reservation2 = () => {
             <div
               classname="notavailable"
               style={{
-                height: "20px",
-                width: "20px",
+                height: "10px",
+                width: "10px",
                 backgroundColor: "rgba(0,0,0,0.2)",
-                marginRight: "5px",
+                marginRight: "3px",
               }}
             ></div>
             <div>이용중</div>

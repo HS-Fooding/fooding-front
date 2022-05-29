@@ -262,8 +262,8 @@ const MarketTable = styled.div`
     .colorDesc{
         display:flex;
         height:30px;
-        width:200px;
-        font-size: 14px;
+        width:190px;
+        font-size: 10px;
         margin: 23px 0px;
         padding: 20px;
       
@@ -271,8 +271,8 @@ const MarketTable = styled.div`
     .colorDescContainer{
         display:flex;
         align-items: center;
-        width:200px;
-        margin-right:5px;
+        width:190px;
+        margin-right:2px;
         height:15px;
         .available{
             width:20px;
@@ -955,8 +955,7 @@ const MarketDetail = () => {
         };
 
         axios(config)
-            .then(function (response) {              
-             
+            .then(function (response) {                          
                 console.log(response.data);
             })
             .then(function () {})
@@ -1103,7 +1102,7 @@ const MarketDetail = () => {
                 <div className="marketDesc">테이블 현황</div>
                 <div className="colorDesc">
                     <div className="colorDescContainer">
-                        <div classname="available" style={{height:"20px",width:"20px",backgroundColor:"#FF7B54",marginRight:"5px"}}>
+                        <div classname="available" style={{height:"10px",width:"10px",backgroundColor:"#FF7B54",marginRight:"5px"}}>
                                     
                         </div>
                         <div style={{width:"60px"}}>
@@ -1111,7 +1110,7 @@ const MarketDetail = () => {
                         </div>
                     </div>
                     <div className="colorDescContainer">
-                        <div classname="notavailable" style={{height:"20px",width:"20px",backgroundColor:"rgba(0,0,0,0.2)",marginRight:"5px"}}>
+                        <div classname="notavailable" style={{height:"10px",width:"10px",backgroundColor:"rgba(0,0,0,0.2)",marginRight:"5px"}}>
                                    
                         </div>
                         <div>
