@@ -254,7 +254,7 @@ const MarketTable = styled.div`
     justify-content: space-between;
    .marketDesc {
         height:30px;
-        font-size: 10px;
+        font-size: 17px;
         font-weight: bold;
         margin: 23px 0px;
         padding: 20px;
