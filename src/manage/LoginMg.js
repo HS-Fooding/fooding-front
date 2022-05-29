@@ -91,6 +91,10 @@ const Span = styled.span`
 const LoginMg = () => {
   let navigate = useNavigate();
 
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   const {
     register,
     handleSubmit,

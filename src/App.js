@@ -47,25 +47,21 @@ function App() {
             path="/review/:marketId/:reviewId"
             element={<ReviewDetail />}
           ></Route>
-
           <Route path="/manager/login" element={<LoginMg />}></Route>
           <Route path="/manager/signup" element={<SignUpMg />}></Route>
           {/* <Route path="/manager/signup" element={<SignUpMg />}></Route> */}
-
           <Route path="/manager/register" element={<Register />}></Route>
           <Route
             path="/manager/manageReserv"
             element={<ManageReserv />}
           ></Route>
           <Route path="/manager/chart" element={<Chart />}></Route>
-
           <Route path="/manager/userData" element={<UserData />}></Route>
           <Route
             path="/manager/currentTableState"
             element={<CurrentTableState />}
           ></Route>
           <Route path="/guest/location" element={<Location />}></Route>
-
           <Route
             path="/guest/restaurantList"
             element={<RestaurantList />}
@@ -82,10 +78,7 @@ function App() {
             path="/guest/myPage/reservList"
             element={<ReservList />}
           ></Route>
-          <Route
-            path="/guest/myPage/favorList"
-            element={<FavorList />}
-          ></Route>
+          <Route path="/guest/myPage/favorList" element={<FavorList />}></Route>
           path="/guest/myPage/favorList"
         </Routes>
       </BrowserRouter>
