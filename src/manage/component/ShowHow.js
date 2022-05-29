@@ -44,6 +44,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/intro.png")}
+                                            alt="intro.png"
                                         />
                                     </div>
                                 </div>
@@ -65,6 +66,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/createTable1.png")}
+                                            alt="createTable1.png"
                                         />
                                     </div>
                                 </div>
@@ -86,6 +88,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/createTable2.png")}
+                                            alt="createTable2.png"
                                         />
                                     </div>
                                 </div>
@@ -106,6 +109,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/createOthers.png")}
+                                            alt="createOthers.png"
                                         />
                                     </div>
                                 </div>
@@ -126,6 +130,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/customizeStructure.png")}
+                                            alt="customizeStructure.png"
                                         />
                                     </div>
                                 </div>
@@ -147,6 +152,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/editTableInfo.png")}
+                                            alt="editTableInfo.png"
                                         />
                                     </div>
                                 </div>
@@ -168,6 +174,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/delete.png")}
+                                            alt="delete.png"
                                         />
                                     </div>
                                 </div>
@@ -186,6 +193,7 @@ const ShowHow = (props) => {
                                         <img
                                             className="carousel__slide__info__imgContainer__img object-contain"
                                             src={require("../../img/submit.png")}
+                                            alt="submit.png"
                                         />
                                     </div>
                                 </div>
