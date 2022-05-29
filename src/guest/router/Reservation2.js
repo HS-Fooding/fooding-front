@@ -134,6 +134,7 @@ const Reservation2 = () => {
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
   const [reservationDone, setReservationDone] = useState(false);
   const [availableTable, setAvailableTable] = useState([]);
+  const [availableTableNums, setAvailableTableNums] = useState([]);
 
   const FloorButton = styled.div`
     margin-left: 10px;
@@ -157,31 +158,13 @@ const Reservation2 = () => {
     location.state;
 
   const getAvailableTable = () => {
-    const getToken = localStorage.getItem("guestToken");
-    const marketId = localStorage.getItem("marketId");
+    console.log("availableTableLink:", availableTableLink);
+    const availableTableNums = availableTableLink.map((table) => {
+      return table.tableNum;
+    });
 
-    var config = {
-      method: "get",
-      url: url + `/fooding/restaurant/${marketId}/table`,
-      headers: {
-        Authorization: "Bearer " + getToken,
-      },
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log("tables:", response.data.tables);
-
-        const tableAvailableArr = response.data.tables.map((table) => {
-          return table.available;
-        });
-        console.log("tableAvailableArr:", tableAvailableArr);
-        setAvailableTable(tableAvailableArr);
-      })
-
-      .catch(function (error) {
-        console.log(error);
-      });
+    console.log("availableTableNums", availableTableNums);
+    setAvailableTableNums(availableTableNums);
   };
 
   const getShape = () => {
@@ -333,13 +316,6 @@ const Reservation2 = () => {
 
     // setPossibleTableArr(...availableTable.tableNum);
     console.log("받아옴:", isCar, peopleNum, time, calendarValue);
-    const availableTableNumArr = availableTableLink.map((table) => {
-      return table.tableNum;
-    });
-
-    setAvailableTableNumArr(availableTableNumArr);
-
-    // console.log(availableTableNumArr);
   }, []);
 
   const onClickTable = (id, maxPeople, minPeople, tableNum) => {
@@ -476,7 +452,7 @@ const Reservation2 = () => {
                   height={table.height / 3}
                   rotation={table.rotation}
                   onClick={
-                    availableTable[table.tableNum - 1]
+                    availableTableNums.includes(table.tableNum)
                       ? () => {
                           onClickTable(
                             table.id,
@@ -498,7 +474,7 @@ const Reservation2 = () => {
                   fill={
                     selectedTable?.tableNum === table.tableNum
                       ? "#ffe2bc"
-                      : availableTable[table.tableNum - 1]
+                      : availableTableNums.includes(table.tableNum)
                       ? "#FF7B54"
                       : "rgba(0,0,0,0.2)"
                   }
