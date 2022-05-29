@@ -2,7 +2,7 @@ import styled from "styled-components";
 import GlobalStyle from "../../../src/GlobalStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   /* position: absolute; */
@@ -31,13 +31,21 @@ const Container = styled.div`
 `;
 
 const Header = ({ title, back, marketId }) => {
+  let navigate = useNavigate();
+
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Link to={back}>
-          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
-        </Link>
+        <FontAwesomeIcon
+          onClick={() => {
+            navigate(-1);
+          }}
+          icon={faAngleLeft}
+          className="icon"
+          size="lg"
+        />
+
         <span>{title}</span>
         <div></div>
       </Container>
