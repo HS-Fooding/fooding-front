@@ -176,25 +176,53 @@ const Header = () => {
             <Items>
               <Logo>FOODING</Logo>
               <Item className="page">
-                <Link to="/manager/manageReserv">
-                  예약 관리{reservationMatch && <Circle layoutId="circle" />}
-                </Link>
+                {isToken ? (
+                  <Link to="/manager/manageReserv">
+                    예약 관리{reservationMatch && <Circle layoutId="circle" />}
+                  </Link>
+                ) : (
+                  <Link to="/manager/login">
+                    예약 관리
+                    {currentTableMatch && <Circle layoutId="circle" />}
+                  </Link>
+                )}
               </Item>
 
               <Item className="page">
-                <Link to="/manager/register">
-                  매장 등록{registerMatch && <Circle layoutId="circle" />}
-                </Link>
+                {isToken ? (
+                  <Link to="/manager/register">
+                    매장 등록{registerMatch && <Circle layoutId="circle" />}
+                  </Link>
+                ) : (
+                  <Link to="/manager/login">
+                    매장 등록{registerMatch && <Circle layoutId="circle" />}
+                  </Link>
+                )}
               </Item>
               <Item className="page">
-                <Link to="/manager/currentTableState">
-                  테이블 현황{currentTableMatch && <Circle layoutId="circle" />}
-                </Link>
+                {isToken ? (
+                  <Link to="/manager/currentTableState">
+                    테이블 현황
+                    {currentTableMatch && <Circle layoutId="circle" />}
+                  </Link>
+                ) : (
+                  <Link to="/manager/login">
+                    테이블 현황
+                    {currentTableMatch && <Circle layoutId="circle" />}
+                  </Link>
+                )}
               </Item>
               <Item className="page">
-                <Link to="/manager/chart">
-                  사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
-                </Link>
+                {isToken ? (
+                  <Link to="/manager/chart">
+                    사용자 데이터{userDataMatch && <Circle layoutId="circle" />}
+                  </Link>
+                ) : (
+                  <Link to="/manager/login">
+                    사용자 데이터
+                    {currentTableMatch && <Circle layoutId="circle" />}
+                  </Link>
+                )}
               </Item>
             </Items>
           </MainMenu>
