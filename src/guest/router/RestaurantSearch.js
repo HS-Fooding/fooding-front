@@ -131,6 +131,17 @@ const RestaurantSearch = () => {
         setfirstInput(true);
     };
 
+    const getSearch = async (e) => {
+        e.preventDefault();
+        if (currentSearchWord === "" || currentSearchWord !== searchWord) {
+            currentPage = 0;
+            setRestaurantArr([]);
+            setfirstInput(false);
+        }
+        currentSearchWord = searchWord;
+        bringMarketInfo();
+    };
+
     const bringMarketInfo = async () => {
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
@@ -162,16 +173,6 @@ const RestaurantSearch = () => {
                     setIsLoaded(false);
                 });
         }
-    };
-
-    const getSearch = async (e) => {
-        e.preventDefault();
-        if (currentSearchWord === "" || currentSearchWord !== searchWord) {
-            currentPage = 0;
-            setRestaurantArr([]);
-        }
-        currentSearchWord = searchWord;
-        bringMarketInfo();
     };
 
     const onIntersect = async ([entry], observer) => {
@@ -222,30 +223,28 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
-            {searchWord ? (
-                <ListContainer>
-                    {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
-                    {restaurantArr?.map((content, index) => {
-                        return (
-                            <Link
-                                to={`/guest/${content.id}`}
-                                key={index}
-                                state={{
-                                    avgScore: content.avgScore,
-                                    reviewCount: content.reviewCount,
-                                    viewCount: content.viewCount,
-                                }}
-                                style={{ textDecoration: "none", color: "inherit" }}
-                            >
-                                <Restaurant content={content} />
-                            </Link>
-                        );
-                    })}
-                    <div ref={setTarget} className="Target-Element">
-                        {isLoaded && !last && <Loader />}
-                    </div>
-                </ListContainer>
-            ) : null}
+            <ListContainer>
+                {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+                {restaurantArr?.map((content, index) => {
+                    return (
+                        <Link
+                            to={`/guest/${content.id}`}
+                            key={index}
+                            state={{
+                                avgScore: content.avgScore,
+                                reviewCount: content.reviewCount,
+                                viewCount: content.viewCount,
+                            }}
+                            style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                            <Restaurant content={content} />
+                        </Link>
+                    );
+                })}
+                <div ref={setTarget} className="Target-Element">
+                    {isLoaded && !last && <Loader />}
+                </div>
+            </ListContainer>
         </Container>
     );
 };
