@@ -7,6 +7,7 @@ import RestaurantHeader from "../component/RestaurantHeader";
 import Loader from "../component/Loader";
 import { url } from "../../Api";
 import axios from "axios";
+import Footer from "../component/Footer";
 // src\Api.js
 //src\guest\component\Login.js
 import { motion, AnimatePresence } from "framer-motion";
@@ -46,37 +47,6 @@ const ListContainer = styled.div`
     display: flex;
     justify-content: center;
     text-align: center;
-  }
-`;
-const Footer = styled.div`
-  width: 410px;
-  height: 60px;
-  background-color: white;
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid ${(props) => props.theme.borderGrayColor};
-  padding: 0px 10px;
-  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
-`;
-
-const FooterButton = styled.div`
-  width: 80px;
-  height: auto;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-  color: ${(props) => props.theme.fontGrayColor};
-  cursor: pointer;
-
-  svg {
-    font-size: 23px;
-    margin-bottom: 8px;
-    color: ${(props) => props.theme.fontGrayColor};
   }
 `;
 
@@ -180,21 +150,7 @@ const RestaurantList = () => {
           {isLoaded && !last && <Loader />}
         </div>
       </ListContainer>
-      <Footer>
-        <FooterButton>
-          <i className="fa-solid fa-house"></i>
-          <span>맛집찾기</span>
-        </FooterButton>
-
-        <FooterButton
-          onClick={() => {
-            navigate("/guest/myPage");
-          }}
-        >
-          <i className="fa-regular fa-user"></i>
-          <span>마이페이지</span>
-        </FooterButton>
-      </Footer>
+      <Footer></Footer>
     </Container>
   );
 };

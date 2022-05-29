@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import "@fortawesome/fontawesome-free/js/all.js";
+import Footer from "../component/Footer";
 
 const Container = styled.div`
   width: 410px;
@@ -89,6 +90,7 @@ const MyPageHome = () => {
           <Button onClick={logoutFun}>로그아웃</Button>
         </Link>
       </Buttons>
+      <Footer></Footer>
     </Container>
   );
 };
