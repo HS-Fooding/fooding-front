@@ -147,7 +147,7 @@ const Location = () => {
 
   //웹에서 호출하는 좌표구하기 함수
   function myLocate() {
-    var lat, lng, v; //변수
+    var lat, lng, v, list; //변수
     var isAndroid = /android/i.test(navigator.userAgent); //현재기기가 안드인지 체크
 
     if (isAndroid) {
@@ -155,23 +155,22 @@ const Location = () => {
       //여기가 위쪽에서 작성된 안드로이드 코드를 사용하는 부분
       //window."안드야".함수;
       //하며 호출함
-      lat = window.android.getGeocode("lat");
-      lng = window.android.getGeocode(null);
+      list = window.android.getGeocode();
 
-      v = [lat, lng];
+      //   v = [lat, lng];
 
       //   myLocation.push(lat);
       //   myLocation.push(lng);
 
-      localStorage.setItem("lat", lat);
-      localStorage.setItem("lng", lng);
+      localStorage.setItem("lat", list[0]);
+      localStorage.setItem("lng", list[1]);
 
       //setCenter([lat, lng]);
     } else {
       //안드가 아니라면
 
-      v = [37.58265617070882, 127.01017798663574];
-      console.log(v); //콘솔에 찍자
+      //   v = [37.58265617070882, 127.01017798663574];
+      //   console.log(v); //콘솔에 찍자
 
       //   myLocation[0] = 37.676615072936; // 상계
       //   myLocation[1] = 127.05226074939;
