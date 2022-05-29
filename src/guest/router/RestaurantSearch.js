@@ -1,19 +1,13 @@
 import React, { memo, useEffect, useState } from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Header from "../component/Header";
-import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 import Restaurant from "../component/Restaurant";
-import RestaurantHeader from "../component/RestaurantHeader";
 import Loader from "../component/Loader";
 import { url } from "../../Api";
 import axios from "axios";
 
-// src\Api.js
-//src\guest\component\Login.js
-import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMap, faMagnifyingGlass, faAngleLeft, faL } from "@fortawesome/free-solid-svg-icons";
-// border: 1px solid black;
+import { faMap, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
     width: 410px;
@@ -119,16 +113,16 @@ const InputContainer = styled.div`
 `;
 
 let currentPage = 0;
+let currentSearchWord = "";
+const getToken = localStorage.getItem("guestToken");
+
 const RestaurantSearch = () => {
     const [restaurantArr, setRestaurantArr] = useState([]);
     const [target, setTarget] = useState(null);
-    const [numOfElements, setNumOfElements] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [post, setPost] = useState(false);
-    const [searchWord, setSearchWord] = useState();
+    const [searchWord, setSearchWord] = useState("");
     const [firstInput, setfirstInput] = useState(false);
-    const [researchCount, setResearchCount] = useState(0);
-    // const [currentPage, setCurrentPage] = useState(0);
     let last = false;
 
     const bringSearchWord = (e) => {
@@ -137,7 +131,6 @@ const RestaurantSearch = () => {
         setfirstInput(true);
     };
 
-    const getToken = localStorage.getItem("guestToken");
     const bringMarketInfo = async () => {
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
@@ -146,7 +139,7 @@ const RestaurantSearch = () => {
             await axios //${searchWord}
                 .get(
                     url +
-                        `/fooding/restaurant/search?keyword=${searchWord}&page=${currentPage}&size=10`,
+                        `/fooding/restaurant/search?keyword=${currentSearchWord}&page=${currentPage}&size=10`,
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -171,8 +164,13 @@ const RestaurantSearch = () => {
         }
     };
 
-    const getSearch = (e) => {
+    const getSearch = async (e) => {
         e.preventDefault();
+        if (currentSearchWord === "" || currentSearchWord !== searchWord) {
+            currentPage = 0;
+            setRestaurantArr([]);
+        }
+        currentSearchWord = searchWord;
         bringMarketInfo();
     };
 
@@ -252,4 +250,3 @@ const RestaurantSearch = () => {
     );
 };
 export default RestaurantSearch;
-// export default memo(RestaurantSearch);
