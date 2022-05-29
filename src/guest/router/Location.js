@@ -88,13 +88,14 @@ const Location = () => {
   const [searchedWord, setSearchedWord] = useState();
   const [clickedMarket, setClickedMarket] = useState();
   const [click, setClick] = useState(false);
-  const [center, setCenter] = useState([37.58265617070882, 127.01017798663574]);
+  const [center, setCenter] = useState([]);
 
   const [isSearch, setIsSearch] = useState(false);
   const [markerData, setMarkerData] = useState([]);
   const getToken = localStorage.getItem("guestToken");
 
   let markerdata = [];
+  //   let myLocation = [37.58265617070882, 127.0101779866357]; // 한성대
 
   let searching = false;
 
@@ -107,9 +108,12 @@ const Location = () => {
     //   position: markerPosition,
     // });
 
+    const latLS = localStorage.getItem("lat");
+    const lngLS = localStorage.getItem("lng");
+
     let container = document.getElementById("map");
     let options = {
-      center: new kakao.maps.LatLng(center[0], center[1]),
+      center: new kakao.maps.LatLng(latLS, lngLS),
       level: 5,
     };
 
@@ -155,18 +159,39 @@ const Location = () => {
       lng = window.android.getGeocode(null);
 
       v = [lat, lng];
+
+      //   myLocation.push(lat);
+      //   myLocation.push(lng);
+
+      localStorage.setItem("lat", lat);
+      localStorage.setItem("lng", lng);
+
+      //setCenter([lat, lng]);
     } else {
       //안드가 아니라면
-      v = [37.26389, 127.02861];
+
+      v = [37.58265617070882, 127.01017798663574];
+      console.log(v); //콘솔에 찍자
+
+      //   myLocation[0] = 37.676615072936; // 상계
+      //   myLocation[1] = 127.05226074939;
+
+      //   console.log("myLocation:", myLocation);
+
+      // setCenter([37.676615072936, 127.05226074939]);
+
+      localStorage.setItem("lat", 37.582412965088);
+      localStorage.setItem("lng", 127.00378236901); // 혜화
     }
-    console.log(v); //콘솔에 찍자
   }
 
-  useEffect(() => {
-    myLocate();
-  }, []);
-
   useEffect(async () => {
+    //let myLocation = [37.58265617070882, 127.0101779866357];
+    await localStorage.setItem("lat", 37.58265617070882); // 한성대
+    await localStorage.setItem("lng", 127.0101779866357);
+
+    await myLocate(); // 혜화로 세팅 테스트
+
     if (searchWord !== "none") {
       setSearchedWord(searchWord);
 
@@ -177,9 +202,15 @@ const Location = () => {
 
     if (!searching) {
       console.log("!isSearch!!");
+
+      //setCenter([myLocation[0], myLocation[1]]);
+
+      const latLS = localStorage.getItem("lat");
+      const lngLS = localStorage.getItem("lng");
+
       var config = {
         method: "get",
-        url: url + `/fooding/restaurant/coord?x=${center[1]}&y=${center[0]}`,
+        url: url + `/fooding/restaurant/coord?x=${latLS}&y=${lngLS}`,
         headers: {
           Authorization: "Bearer " + getToken,
         },
