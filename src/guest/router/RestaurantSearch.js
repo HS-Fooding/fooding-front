@@ -42,9 +42,9 @@ const HeaderContainer = styled.div`
         color: ${(props) => props.theme.mainColor};
     }
     .map {
-        font-size:23px;
-        color: rgba(0,0,0,0.3);
-        margin-top:3px;
+        font-size: 23px;
+        color: rgba(0, 0, 0, 0.3);
+        margin-top: 3px;
     }
 `;
 const ListContainer = styled.div`
@@ -128,11 +128,29 @@ const RestaurantSearch = () => {
     const [firstInput, setfirstInput] = useState(false);
     let last = false;
 
-    const bringSearchWord = (e) => {
+    const bringSearchWord = async (e) => {
         e.preventDefault();
-        setSearchWord(e.target.value);
+        const keyword = e.target.value;
+        setSearchWord(keyword);
         // TODO : axios로 추천 키워드를 요청받아야 함
-        setfirstInput(true);
+        var config = {
+            method: "post",
+            url: url + `/fooding/search?query=${keyword}`,
+            headers: {
+                Authorization: "Bearer " + getToken,
+            },
+        };
+        await axios(config)
+            .then((res) => {
+                console.log("res!!", res);
+            })
+            .catch((err) => {
+                console.log(err);
+                setIsLoaded(false);
+            })
+            .finally(() => {
+                setfirstInput(true);
+            });
     };
 
     const getSearch = async (e) => {
@@ -147,8 +165,7 @@ const RestaurantSearch = () => {
     };
 
     const bringMarketInfo = async () => {
-        
-    const getToken = localStorage.getItem("guestToken");
+        const getToken = localStorage.getItem("guestToken");
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
