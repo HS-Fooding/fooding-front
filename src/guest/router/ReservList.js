@@ -25,8 +25,13 @@ const Container = styled.div`
 const Reservations = styled.div`
   display: flex;
   flex-direction: column;
-  height: 800px;
-  padding: 80px 10px;
+  height: 670px;
+
+  padding: 37px 10px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 const Reservation = styled.div`
@@ -80,7 +85,7 @@ const ModalContainer = styled.div`
   bottom: 0;
 
   background: #00000080;
-  z-index: 5;
+  z-index: 10;
 `;
 
 const Modal = styled.div`
@@ -90,7 +95,7 @@ const Modal = styled.div`
   left: 8%;
   top: 30%;
   background: white;
-  z-index: 6;
+  z-index: 11;
   display: flex;
   flex-direction: column;
   padding: 15px;
