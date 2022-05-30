@@ -616,6 +616,7 @@ const ManageReserv = () => {
     console.log("whole layout", layout);
     console.log("data!!!", data);
     const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/reservation`,

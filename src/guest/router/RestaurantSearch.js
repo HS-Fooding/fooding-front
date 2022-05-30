@@ -147,6 +147,8 @@ const RestaurantSearch = () => {
     };
 
     const bringMarketInfo = async () => {
+        
+    const getToken = localStorage.getItem("guestToken");
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
