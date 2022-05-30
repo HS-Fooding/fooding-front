@@ -13,7 +13,8 @@ import "@fortawesome/fontawesome-free/js/all.js";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 // import CurrentTable from "../component/CurrentTables";
-import { motion, AnimatePresence } from "framer-motion";
+import { HiOutlinePencil } from "react-icons/hi";
+import { AiOutlineCalendar, AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 import {
   faCaretRight,
@@ -52,7 +53,7 @@ const MarketTitleBox = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 0px 20px 10px 20px;
   align-items: center;
 
   span {
@@ -85,6 +86,9 @@ const MarketMenuBox = styled.div`
 `;
 
 const MenuBtnBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 70px;
   height: 70px;
   display: flex;
@@ -1025,10 +1029,16 @@ const MarketDetail = () => {
       </MarketTitleBox>
       <MarketMenuBox>
         <MenuBtnBox onClick={postFavorList}>
-          <FontAwesomeIcon
+          {/* <FontAwesomeIcon
             icon={bookmarked ? faStar : faStarRegular}
-            style={{ color: "#FF7B54" }}
-          />
+            style={{ color: "#FF7B54", fontSize: "30px" }}
+          /> */}
+
+          {bookmarked ? (
+            <AiOutlineStar style={{ fontSize: "32px" }}></AiOutlineStar>
+          ) : (
+            <AiFillStar style={{ fontSize: "32px" }}></AiFillStar>
+          )}
 
           <span>즐겨찾기</span>
         </MenuBtnBox>
@@ -1043,7 +1053,7 @@ const MarketDetail = () => {
           }}
         >
           <MenuBtnBox>
-            <i className="fa-solid fa-calendar-days reservation"></i>
+            <AiOutlineCalendar></AiOutlineCalendar>
             <span>예약하기</span>
           </MenuBtnBox>
         </Link>
@@ -1055,7 +1065,7 @@ const MarketDetail = () => {
           }}
         >
           <MenuBtnBox>
-            <i class="fa-solid fa-pen"></i>
+            <HiOutlinePencil></HiOutlinePencil>
             <span>리뷰</span>
           </MenuBtnBox>
         </Link>

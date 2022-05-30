@@ -31,7 +31,7 @@ function MultipleSlider({ images }) {
   console.log("slider:", images);
   {
     const settings = {
-      dots: true,
+      dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 3,
