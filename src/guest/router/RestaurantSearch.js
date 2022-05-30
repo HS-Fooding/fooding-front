@@ -128,6 +128,7 @@ const RestaurantSearch = () => {
     const bringSearchWord = (e) => {
         e.preventDefault();
         setSearchWord(e.target.value);
+        // TODO : axios로 추천 키워드를 요청받아야 함
         setfirstInput(true);
     };
 
