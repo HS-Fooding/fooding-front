@@ -8,7 +8,7 @@ import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMap, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
-
+import { BiMapAlt } from "react-icons/bi";
 const Container = styled.div`
     width: 410px;
     height: 770px;
@@ -42,6 +42,9 @@ const HeaderContainer = styled.div`
         color: ${(props) => props.theme.mainColor};
     }
     .map {
+        font-size:23px;
+        color: rgba(0,0,0,0.3);
+        margin-top:3px;
     }
 `;
 const ListContainer = styled.div`
@@ -219,7 +222,7 @@ const RestaurantSearch = () => {
                             to={`/guest/location`}
                             state={{ searchWord: searchWord }}
                         >
-                            <FontAwesomeIcon icon={faMap} className="icon" size="1x" />
+                            <BiMapAlt></BiMapAlt>
                         </Link>
                     </div>
                 ) : null}
