@@ -15,7 +15,7 @@ const Container = styled.div`
 `;
 
 const MainBox = styled.div`
-    height: 600px;
+    height: 658px;
     overflow: auto;
     ::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera*/
@@ -25,7 +25,7 @@ const MainBox = styled.div`
 const ReviewContent = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 80px 20px;
+    padding: 0px 20px;
     border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
 
     .userName {
@@ -107,7 +107,6 @@ const CommentContainer = styled.div`
     //width: 100%;
     //background-color: pink;
     // height: 150px;
-    margin-bottom: 100px;
     padding: 10px;
 `;
 

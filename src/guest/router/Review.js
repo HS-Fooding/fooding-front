@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const WriteReviewBtn = styled.button`
   position: absolute;
-  bottom: 0;
+  bottom: -10;
   width: 100%;
   height: 80px;
   border: none;
