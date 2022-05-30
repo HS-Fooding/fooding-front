@@ -60,6 +60,7 @@ const ListContainer = styled.div`
   gap: 10px;
   grid-template-columns: repeat(2, minmax(120px, 1fr));
   grid-template-rows: masonry; */
+
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -114,6 +115,33 @@ const InputContainer = styled.div`
         }
     }
 `;
+const Recommends = styled.div`
+    width: 100vh;
+    height: 100wh;
+    display: flex;
+
+    width: 390px;
+    /* 410,770 */
+    height: 700px;
+    /* background-color:red; */
+    margin-top: 65px;
+    /* display:flex; */
+
+    background-color: tomato;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    ::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
+    .Target-Element {
+        width: 100vw;
+        height: 140px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+    }
+`;
 
 let currentPage = 0;
 let currentSearchWord = "";
@@ -126,11 +154,13 @@ const RestaurantSearch = () => {
     const [post, setPost] = useState(false);
     const [searchWord, setSearchWord] = useState("");
     const [firstInput, setfirstInput] = useState(false);
+    const [recommends, seetRecommends] = useState([]);
     let last = false;
+    let keyword;
 
     const bringSearchWord = async (e) => {
         e.preventDefault();
-        const keyword = e.target.value;
+        keyword = e.target.value;
         setSearchWord(keyword);
         // TODO : axios로 추천 키워드를 요청받아야 함
         var config = {
@@ -142,7 +172,8 @@ const RestaurantSearch = () => {
         };
         await axios(config)
             .then((res) => {
-                console.log("res!!", res);
+                console.log("data!!", res.data);
+                seetRecommends([...recommends, res.data]);
             })
             .catch((err) => {
                 console.log(err);
@@ -165,7 +196,6 @@ const RestaurantSearch = () => {
     };
 
     const bringMarketInfo = async () => {
-        const getToken = localStorage.getItem("guestToken");
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -185,15 +215,14 @@ const RestaurantSearch = () => {
                     currentPage++;
                     const lastresult = res.data.last;
                     setRestaurantArr((restaurantArr) => restaurantArr.concat(res.data.content));
-                    setIsLoaded(true);
                     if (lastresult === true) {
                         last = true;
                         setIsLoaded(false);
-                    }
+                    } else setIsLoaded(true);
                 })
                 .catch((err) => {
                     console.log(err);
-                    setIsLoaded(false);
+                    setIsLoaded(true);
                 });
         }
     };
@@ -246,6 +275,8 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
+            {recommends && recommends.forEach((m) => <Recommends>{m}</Recommends>)}
+
             <ListContainer>
                 {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
                 {restaurantArr?.map((content, index) => {
