@@ -84,6 +84,15 @@ const HeaderSearch = styled.input`
   }
 `;
 
+const MyLocationBtn = styled.button`
+  position: absolute;
+  top: 80px;
+  right: 5px;
+  width: 60px;
+  height: 60px;
+  z-index: 10;
+`;
+
 const Location = () => {
   const [searchedWord, setSearchedWord] = useState();
   const [clickedMarket, setClickedMarket] = useState();
@@ -180,13 +189,12 @@ const Location = () => {
 
       // setCenter([37.676615072936, 127.05226074939]);
 
-      localStorage.setItem("lat", 37.582412965088);
-      localStorage.setItem("lng", 127.00378236901); // 혜화
+      // localStorage.setItem("lat", 37.582412965088);
+      // localStorage.setItem("lng", 127.00378236901); // 혜화
     }
   }
 
-  useEffect(async () => {
-    //let myLocation = [37.58265617070882, 127.0101779866357];
+  const getMyLocateRes = async () => {
     await localStorage.setItem("lat", 37.58265617070882); // 한성대
     await localStorage.setItem("lng", 127.0101779866357);
 
@@ -210,7 +218,7 @@ const Location = () => {
 
       var config = {
         method: "get",
-        url: url + `/fooding/restaurant/coord?x=${latLS}&y=${lngLS}`,
+        url: url + `/fooding/restaurant/coord?x=${lngLS}&y=${latLS}`,
         headers: {
           Authorization: "Bearer " + getToken,
         },
@@ -241,7 +249,11 @@ const Location = () => {
           console.log(error);
         });
     }
+  };
+  useEffect(() => {
+    //let myLocation = [37.58265617070882, 127.0101779866357];
 
+    getMyLocateRes();
     // marker.setMap(map);
   }, []);
 
@@ -369,6 +381,7 @@ const Location = () => {
           </MarketBox>
         </Link>
       ) : null}
+      <MyLocationBtn onClick={getMyLocateRes}>새로고침</MyLocationBtn>
     </Container>
   );
 };
