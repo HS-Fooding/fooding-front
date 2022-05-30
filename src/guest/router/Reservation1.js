@@ -601,7 +601,7 @@ const Reservation1 = () => {
         //   </NoticeBox>
         // ) : null} */}
 
-        {availableTable == undefined ? null : (
+        {availableTable?.length !== 0 ? (
           <Link
             to="/guest/reservation2"
             state={{
@@ -616,7 +616,7 @@ const Reservation1 = () => {
           >
             <NextBtn onClick={nextBtnClick}>다음</NextBtn>
           </Link>
-        )}
+        ) : null}
       </MainBox>
     </Container>
   );
