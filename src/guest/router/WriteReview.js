@@ -27,7 +27,8 @@ const SubmitButton = styled.button`
     height: 80px;
     font-size: 15px;
     position: absolute;
-    bottom: 0px;
+   
+    bottom: -10px;
     background-color: ${(props) => props.theme.mainColor};
     font-family: "Source Sans Pro", sans-serif;
 
@@ -51,8 +52,9 @@ const TypeInput = styled.input`
 `;
 const ContentTextArea = styled.textarea`
     line-height: 25px;
+    
     width: 220px;
-    height: 200px;
+   
     font-size: 14px;
     resize: none;
     border: none;
@@ -102,8 +104,7 @@ const Stars = styled.div`
     width: 60%;
     height: 50px;
     display: flex;
-    justify-content: space-evenly;
-    margin-top: 30px;
+    justify-content: space-evenly;  
     margin-bottom: 10px;
 `;
 const Star = styled.span`
@@ -428,6 +429,7 @@ const WriteReview = () => {
                     <ContentTextArea
                         placeholder="내용을 입력하세요"
                         onChange={onChangeReviewContent}
+                        
                     />
                     <br />
                 </ContentForm>
