@@ -408,7 +408,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
                 <p>-</p>
               </button>
               <div className="tableTag" style={{ color: "rgba(0,0,0,0.6)" }}>
-                <p>{figureWidth}</p>{" "}
+                <p>{Math.floor(figureWidth)}</p>{" "}
               </div>
 
               <button className="resizeBtn" onClick={tableWidthPlus}>
@@ -421,7 +421,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
                 <p>-</p>
               </button>
               <div className="tableTag" style={{ color: "rgba(0,0,0,0.6)" }}>
-                <p>{figureHeight}</p>{" "}
+                <p>{Math.floor(figureHeight)}</p>{" "}
               </div>
               <button className="resizeBtn" onClick={tableHeightPlus}>
                 <p>+</p>
