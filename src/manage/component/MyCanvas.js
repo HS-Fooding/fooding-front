@@ -1,7 +1,6 @@
 import React, { isValidElement, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled, { keyframes } from "styled-components";
-import Modal from "./Modal";
 import Modal2 from "./Modal2";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
