@@ -222,7 +222,6 @@ const MenuImg = styled.div`
   .imgContainer {
     width: 100%;
     height: 90%;
-  
     
     img {
       width: 100%;

@@ -183,7 +183,7 @@ const InfoForm = styled.form`
     }
     .Time {
         height: 80px;
-        margin-top: 20px;
+        margin-top: 10px;
     }
     .timeContainer {
         display: flex;
@@ -1002,9 +1002,25 @@ function Register(floorCallback) {
         height: 40px;
         border-radius: 10px;
         margin-left: 10px;
-        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "#f4f4f5")};
+        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "white")}; 
+        /* #f4f4f5 */
         color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
-
+        border: solid  2px #FF7B54 ;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        :hover {
+            cursor: pointer;
+        }
+    `;
+    const DelButton= styled.div`
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-left: 10px;
+        background-color:  ${(props) => props.theme.veryLightMainColor};
+        color: #FF7B54;
+       
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1564,9 +1580,9 @@ function Register(floorCallback) {
                         })}
 
                         {floor.length !== 1 ? (
-                            <FloorButton style={{ width: "45px" }} onClick={eraseFloor}>
+                            <DelButton onClick={eraseFloor}>
                                 X
-                            </FloorButton>
+                            </DelButton>
                         ) : null}
                     </FloorContainer>
                     <StructureDesc>
