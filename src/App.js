@@ -2,37 +2,32 @@ import React from "react";
 import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./Home.js";
-import Review from "./guest/router/Review.js";
-import WriteReview from "./guest/router/WriteReview.js";
-import SignUp from "./guest/router/SignUp.js";
-import Login from "./guest/router/Login.js";
+
 import styled, { ThemeProvider } from "styled-components";
 import theme from "./theme";
-import ReviewDetail from "./guest/router/ReviewDetail";
-import Register from "./manage/Register";
-// import Reservation from "./manage/Reservation";
-import LoginMg from "./manage/LoginMg";
-import SignUpMg from "./manage/SignUpMg";
-import MyCanvas from "./manage/MyCanvas";
-import ManageReserv from "./manage/ManageReserv";
-// import TestManageReserv2 from "./manage/ManageReserv2";
-import Chart from "./manage/Chart";
-import UserData from "./manage/UserData";
-import CurrentTableState from "./manage/CurrentTableState";
 
-import maincanvas from "./manage/maincanvas";
+import Register from "./manage/router/Register";
+import LoginMg from "./manage/router/LoginMg";
+import SignUpMg from "./manage/router/SignUpMg";
+import ManageReserv from "./manage/router/ManageReserv";
+import Chart from "./manage/router/Chart";
+import UserData from "./manage/router/UserData";
+import CurrentTableState from "./manage/router/CurrentTableState";
+
 import RestaurantList from "./guest/router/RestaurantList";
 import Reservation1 from "./guest/router/Reservation1";
 import Reservation2 from "./guest/router/Reservation2";
 import MarketDetail from "./guest/router/MarketDetail";
 import RestaurantSearch from "./guest/router/RestaurantSearch";
-import RestaurantInput from "./guest/component/RestaurantInput";
-
 import MyPageHome from "./guest/router/MyPageHome";
 import ReservList from "./guest/router/ReservList";
 import FavorList from "./guest/router/FavorList";
-
 import Location from "./guest/router/Location";
+import ReviewDetail from "./guest/router/ReviewDetail";
+import Review from "./guest/router/Review.js";
+import WriteReview from "./guest/router/WriteReview.js";
+import SignUp from "./guest/router/SignUp.js";
+import Login from "./guest/router/Login.js";
 function App() {
   return (
     <ThemeProvider theme={theme}>

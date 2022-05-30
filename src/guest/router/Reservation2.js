@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/Header";
-import MyCanvas from "../../../src/manage/MyCanvas";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import { url } from "../../Api";
 import axios from "axios";
@@ -103,16 +102,16 @@ const ButtonNDesContainer = styled.div`
 `;
 const DescContainer = styled.div`
   width: 160px;
-  height:30px;
-  display:flex;
-  font-size:10px;
-  .colorDescContainer{
-        display:flex;
-        align-items: center;
-        width:100px;
-        margin-right:3px;
-        height:30px;
-    }
+  height: 30px;
+  display: flex;
+  font-size: 10px;
+  .colorDescContainer {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    margin-right: 3px;
+    height: 30px;
+  }
 `;
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);

@@ -1,13 +1,13 @@
 import React, { isValidElement, useEffect, useState } from "react";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 import styled, { keyframes } from "styled-components";
-import Modal from "./component/Modal";
-import Modal2 from "./component/Modal2";
+import Modal from "./Modal";
+import Modal2 from "./Modal2";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { tab } from "@testing-library/user-event/dist/tab";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-import { url } from "../Api";
+import { url } from "../../Api";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

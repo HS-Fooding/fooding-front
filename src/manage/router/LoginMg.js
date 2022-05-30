@@ -1,9 +1,9 @@
-import Header from "./component/Header";
+import Header from "../component/Header";
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { url } from "../Api";
+import { url } from "../../Api";
 import { useNavigate, Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/js/all.js";
 

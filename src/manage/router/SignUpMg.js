@@ -1,9 +1,9 @@
-import Header from "./component/Header";
+import Header from "../component/Header";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { url } from "../Api";
+import { url } from "../../Api";
 
 const Container = styled.div`
   width: 100%;

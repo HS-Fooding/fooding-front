@@ -1,8 +1,8 @@
-import Header from "./component/Header";
+import Header from "../component/Header";
 import React, { useEffect, useState, useRef } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
-import { url } from "../Api";
+import { url } from "../../Api";
 import axios from "axios";
 
 const getToken = localStorage.getItem("managerToken");
