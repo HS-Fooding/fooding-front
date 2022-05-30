@@ -9,6 +9,7 @@ import "@fortawesome/fontawesome-free/js/all.js";
 import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { BiCurrentLocation } from "react-icons/bi";
 
 const Container = styled.div`
   width: 410px;
@@ -87,10 +88,20 @@ const HeaderSearch = styled.input`
 const MyLocationBtn = styled.button`
   position: absolute;
   top: 80px;
-  right: 5px;
-  width: 60px;
-  height: 60px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
   z-index: 10;
+  background-color: white;
+  border-radius: 50%;
+  border: none;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.05) 0px 8px 32px;
+  font-size: 29px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const Location = () => {
@@ -381,7 +392,9 @@ const Location = () => {
           </MarketBox>
         </Link>
       ) : null}
-      <MyLocationBtn onClick={getMyLocateRes}>새로고침</MyLocationBtn>
+      <MyLocationBtn onClick={getMyLocateRes}>
+        <BiCurrentLocation></BiCurrentLocation>
+      </MyLocationBtn>
     </Container>
   );
 };
