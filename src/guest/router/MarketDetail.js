@@ -1037,9 +1037,9 @@ const MarketDetail = () => {
           /> */}
 
           {bookmarked ? (
-            <AiOutlineStar style={{ fontSize: "32px" }}></AiOutlineStar>
-          ) : (
             <AiFillStar style={{ fontSize: "32px" }}></AiFillStar>
+          ) : (            
+            <AiOutlineStar style={{ fontSize: "32px" }}></AiOutlineStar>
           )}
 
           <span>즐겨찾기</span>
