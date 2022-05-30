@@ -52,7 +52,7 @@ const TypeInput = styled.input`
 `;
 const ContentTextArea = styled.textarea`
     line-height: 25px;
-    
+    height:650px;
     width: 220px;
    
     font-size: 14px;
@@ -152,7 +152,7 @@ const ContentForm = styled.form`
     textarea {
         width: 90%;
     }
-    height: 300px;
+    height: 400px;
     color: ${(props) => props.theme.fontGrayColor};
 `;
 const Header = styled.div`
@@ -429,7 +429,7 @@ const WriteReview = () => {
                     <ContentTextArea
                         placeholder="내용을 입력하세요"
                         onChange={onChangeReviewContent}
-                        
+                       
                     />
                     <br />
                 </ContentForm>
