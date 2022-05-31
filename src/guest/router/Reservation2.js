@@ -450,7 +450,20 @@ const Reservation2 = () => {
                   width={table.width / 3}
                   height={table.height / 3}
                   rotation={table.rotation}
-                  onClick={
+                  onTouchStart={
+                    availableTableNums.includes(table.tableNum)
+                      ? () => {
+                          onClickTable(
+                            table.id,
+                            table.maxPeople,
+                            table.minPeople,
+                            table.tableNum,
+                            table.available
+                          );
+                        }
+                      : null
+                  }
+                  onTouchEnd={
                     availableTableNums.includes(table.tableNum)
                       ? () => {
                           onClickTable(
