@@ -156,10 +156,11 @@ const Restaurant = ({ content, bookmark }) => {
     return (
         <Container>
             <BestMenuContainer>
-                <img //,boxShadow: "0px 5px 3px 0px rgba(0, 0, 0, 0.5)" 
+                {/* //,boxShadow: "0px 5px 3px 0px rgba(0, 0, 0, 0.5)"  */}
+                { content.image ? <img 
                     style={{ width: "188px", height: "180px",borderRadius:"14px", objectFit: "cover"}}
                     src={content.image?.path}
-                ></img>
+                ></img>: <div  style={{ width: "188px", height: "180px"}} ></div>}
             </BestMenuContainer>
 
             <NameNStarsContainer>
