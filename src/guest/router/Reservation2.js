@@ -16,7 +16,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  
 `;
 const ButtonContainer = styled.div`
   width: 230px;
@@ -51,7 +51,7 @@ const InnerTableBox = styled.div`
   }
 
   width: 370px;
-  height: 60px;
+  height: 80px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   display: flex;
   justify-content: space-around;
@@ -67,7 +67,7 @@ const NextBtn = styled.button`
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  margin: 0px 10px 0px 10px;
+  margin: 190px 10px 0px 10px;
 `;
 
 const FinishModal = styled.div`
