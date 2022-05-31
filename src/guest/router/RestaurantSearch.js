@@ -16,8 +16,6 @@ const Container = styled.div`
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
 `;
 const HeaderContainer = styled.div`
     display: flex;
@@ -49,22 +47,23 @@ const HeaderContainer = styled.div`
     }
 `;
 const ListContainer = styled.div`
-    width: 390px;
     /* 410,770 */
+    // width: 400px;
+    width: 100%;
     height: 700px;
-    /* background-color:red; */
     margin-top: 65px;
-    /* display:flex; */
 
     overflow: auto;
     /* display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  grid-template-rows: masonry; */
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    grid-template-rows: masonry; */
 
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    padding: 0 0.5rem;
+
     ::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera*/
     }
@@ -72,7 +71,6 @@ const ListContainer = styled.div`
         width: 100vw;
         height: 140px;
         display: flex;
-        justify-content: center;
         text-align: center;
         align-items: center;
     }
@@ -110,6 +108,11 @@ const Recommend = styled.span`
     color: black;
     font-size: 0.8rem;
     border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    :hover {
+        color: tomato;
+        transition: color 0.3s ease;
+    }
 `;
 const Footer = styled.div`
     width: 410px;
