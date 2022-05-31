@@ -60,6 +60,8 @@ const InnerTableBox = styled.div`
 `;
 
 const NextBtn = styled.button`
+  //position: absolute;
+  bottom: 0;
   width: 95%;
   height: 50px;
   background: white;

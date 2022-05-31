@@ -605,7 +605,7 @@ const Reservation1 = () => {
         //   </NoticeBox>
         // ) : null} */}
 
-        {availableTable?.length !== 0 ? (
+        {availableTable?.length !== 0 && clickedTime !== undefined ? (
           <Link
             to="/guest/reservation2"
             state={{
