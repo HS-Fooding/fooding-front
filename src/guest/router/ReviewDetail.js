@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 775px;
   position: relative;
   box-sizing: border-box;
 `;
@@ -74,11 +74,12 @@ const ReviewContent = styled.div`
 const CommentInputBox = styled.div`
   position: absolute;
   bottom: 0;
-  height: 50px;
+  height: 60px;
   width: 100%;
   background-color: white;
-  border-top: 1px solid ${(props) => props.theme.borderGrayColor};
+
   border: 1px solid ${(props) => props.theme.borderGrayColor};
+  border-bottom: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +93,7 @@ const CommentInputBox = styled.div`
 
 const CommentInput = styled.textarea`
   width: 90%;
-  height: 68%;
+  height: 75%;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   &:focus {
     outline: none;
@@ -101,6 +102,9 @@ const CommentInput = styled.textarea`
   resize: none;
   padding: 8px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 13px 10px;
 `;
 
 const CommentContainer = styled.div`
