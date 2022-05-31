@@ -34,6 +34,7 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   overflow-y: auto;
+  overflow-x: hidden;
   /* flex-wrap:wrap; */
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/

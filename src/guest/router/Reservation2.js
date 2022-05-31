@@ -16,6 +16,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 `;
 const ButtonContainer = styled.div`
   width: 230px;
