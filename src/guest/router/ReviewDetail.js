@@ -26,6 +26,7 @@ const ReviewContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 20px;
+  padding-top: 12px;
   border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
 
   .userName {
