@@ -317,6 +317,15 @@ const Location = () => {
       .then(function (response) {
         console.log(response.data.content);
 
+        localStorage.setItem(
+          "lat",
+          response.data.content[0].location.coordinate.y
+        );
+        localStorage.setItem(
+          "lng",
+          response.data.content[0].location.coordinate.x
+        );
+
         markerdata = [];
 
         response.data.content.map((market) => {
