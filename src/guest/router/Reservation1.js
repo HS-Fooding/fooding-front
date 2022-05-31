@@ -192,14 +192,18 @@ const TimeContainer = styled(ScollContainer)`
 const TimeInnerCon = styled(InnerContainer)``;
 
 const NextBtn = styled.button`
+  position: fixed;
+  left: 15px;
+  bottom: 15px;
   width: 380px;
-  height: 45px;
+  height: 50px;
   background: white;
   margin-top: 50px;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
+  //margin: 190px 10px 0px 10px;
 `;
 
 const CheckBox = styled.div`

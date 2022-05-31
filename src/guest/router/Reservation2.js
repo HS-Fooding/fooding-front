@@ -12,11 +12,10 @@ const Container = styled.div`
   height: 775px;
   position: relative;
   box-sizing: border-box;
- 
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+  overflow: hidden;
 `;
 const ButtonContainer = styled.div`
   width: 230px;
@@ -60,9 +59,10 @@ const InnerTableBox = styled.div`
 `;
 
 const NextBtn = styled.button`
-  //position: absolute;
-  bottom: 0;
-  width: 95%;
+  position: fixed;
+  left: 15px;
+  bottom: 15px;
+  width: 380px;
   height: 50px;
   background: white;
   border: 1px solid ${(props) => props.theme.borderGrayColor};
