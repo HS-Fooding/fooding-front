@@ -14,11 +14,14 @@ const Container = styled.div`
   height: 770px;
   position: relative;
   box-sizing: border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 `;
 
 const MainBox = styled.div`
   display: flex;
-  width: 100%;
+  width: 390px;
   height: 100%;
   //justify-content: center;
   align-items: center;
