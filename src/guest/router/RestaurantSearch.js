@@ -97,7 +97,6 @@ const RecommendContainer = styled.div`
         justify-content: center;
         align-items: center;
         font-size: 0.8rem;
-        margin: 0.5rem 0;
         padding: 5px 0;
         border-bottom: 1px solid tomato;
     }
@@ -163,6 +162,7 @@ const RestaurantSearch = () => {
     const [post, setPost] = useState(false);
     const [searchWord, setSearchWord] = useState("");
     const [firstInput, setfirstInput] = useState(false);
+    const [focus, setFocus] = useState(false);
     const [recommends, setRecommends] = useState([]);
     let last = false;
     let keyword;
@@ -171,7 +171,6 @@ const RestaurantSearch = () => {
         e.preventDefault();
         keyword = e.target.value;
         setSearchWord(keyword);
-        // TODO : axios로 추천 키워드를 요청받아야 함
         var config = {
             method: "post",
             url: url + `/fooding/search?query=${keyword}`,
@@ -199,6 +198,7 @@ const RestaurantSearch = () => {
             currentPage = 0;
             setRestaurantArr([]);
             setfirstInput(false);
+            setRecommends([]);
         }
         currentSearchWord = searchWord;
         bringMarketInfo();
@@ -244,15 +244,22 @@ const RestaurantSearch = () => {
         }
     };
 
+    const handleFocus = () => {
+        console.log("!!", recommends);
+        setFocus(true);
+    };
+
     const handleClick = async (e) => {
-        e.preventDefault();
+        // console.log("!!", e.target.innerText);
         if (currentSearchWord === "" || currentSearchWord !== searchWord) {
             currentPage = 0;
             setRestaurantArr([]);
             setfirstInput(false);
         }
-        currentSearchWord = e.target.value;
+        currentSearchWord = e.target.innerText;
+        setSearchWord(e.target.innerText);
         bringMarketInfo();
+        setFocus(false);
     };
 
     useEffect(() => {
@@ -277,6 +284,8 @@ const RestaurantSearch = () => {
                     <form onSubmit={getSearch}>
                         <input
                             onChange={bringSearchWord}
+                            onFocus={handleFocus}
+                            // onBlur={handleBlur}
                             value={searchWord}
                             type="text"
                             placeholder="검색어를 입력하세요"
@@ -295,36 +304,37 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
-            {recommends && (
+            {focus && searchWord.length > 1 ? (
                 <RecommendContainer>
                     <span className="recommendTitle">추천 키워드</span>
                     {recommends.map((m) => (
-                        <Recommend onClick={() => handleClick()}>{m}</Recommend>
+                        <Recommend onClick={handleClick}>{m}</Recommend>
                     ))}
                 </RecommendContainer>
+            ) : (
+                <ListContainer>
+                    {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+                    {restaurantArr?.map((content, index) => {
+                        return (
+                            <Link
+                                to={`/guest/${content.id}`}
+                                key={index}
+                                state={{
+                                    avgScore: content.avgScore,
+                                    reviewCount: content.reviewCount,
+                                    viewCount: content.viewCount,
+                                }}
+                                style={{ textDecoration: "none", color: "inherit" }}
+                            >
+                                <Restaurant content={content} />
+                            </Link>
+                        );
+                    })}
+                    <div ref={setTarget} className="Target-Element">
+                        {isLoaded && !last && <Loader />}
+                    </div>
+                </ListContainer>
             )}
-            <ListContainer>
-                {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
-                {restaurantArr?.map((content, index) => {
-                    return (
-                        <Link
-                            to={`/guest/${content.id}`}
-                            key={index}
-                            state={{
-                                avgScore: content.avgScore,
-                                reviewCount: content.reviewCount,
-                                viewCount: content.viewCount,
-                            }}
-                            style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                            <Restaurant content={content} />
-                        </Link>
-                    );
-                })}
-                <div ref={setTarget} className="Target-Element">
-                    {isLoaded && !last && <Loader />}
-                </div>
-            </ListContainer>
         </Container>
     );
 };
