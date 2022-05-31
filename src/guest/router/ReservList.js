@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../component/Header";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { url } from "../../Api";
 import axios from "axios";
@@ -47,8 +47,10 @@ const Reservation = styled.div`
 `;
 
 const Info = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
+  width: 80%;
   div {
     margin: 10px 7px;
   }
@@ -74,6 +76,10 @@ const CancelBtnBox = styled.div`
     padding: 5px 6px;
     font-size: 19px;
     cursor: pointer;
+  }
+
+  svg {
+    z-index: 5;
   }
 `;
 
@@ -151,6 +157,8 @@ const ReservList = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState();
 
+  let navigate = useNavigate();
+
   const getToken = localStorage.getItem("guestToken");
 
   const getReservation = () => {
@@ -211,7 +219,11 @@ const ReservList = () => {
         ) : null}
         {reservations?.map((r, index) => (
           <Reservation key={index}>
-            <Info>
+            <Info
+              onClick={() => {
+                navigate(`/guest/${r.restId}`);
+              }}
+            >
               <div className="resName">{r.restName}</div>
               <div>
                 <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
