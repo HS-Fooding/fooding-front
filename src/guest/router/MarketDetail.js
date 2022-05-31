@@ -33,7 +33,7 @@ const Container = styled.div`
   height: 770px;
   position: relative;
   box-sizing: border-box;
-  overflow: auto;
+  overflow-y: auto;
   /* flex-wrap:wrap; */
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
@@ -226,7 +226,7 @@ const MenuImg = styled.div`
   .imgContainer {
     width: 100%;
     height: 90%;
-    
+
     img {
       width: 100%;
       height: 100%;
@@ -1038,7 +1038,7 @@ const MarketDetail = () => {
 
           {bookmarked ? (
             <AiFillStar style={{ fontSize: "32px" }}></AiFillStar>
-          ) : (            
+          ) : (
             <AiOutlineStar style={{ fontSize: "32px" }}></AiOutlineStar>
           )}
 
