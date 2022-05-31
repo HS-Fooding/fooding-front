@@ -15,6 +15,7 @@ const Container = styled.div`
     position: relative;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 `;
@@ -78,17 +79,38 @@ const ListContainer = styled.div`
 `;
 const RecommendContainer = styled.div`
     position: absolute;
+    top: 4rem;
     width: 100%;
     height: 100%;
-    top: 100px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: start;
+    flex-direction: column;
     font-size: 10px;
-    color: blue;
     ::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera*/
     }
+    .recommendTitle {
+        color: tomato;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+        margin: 0.5rem 0;
+        padding: 5px 0;
+        border-bottom: 1px solid tomato;
+    }
+`;
+const Recommend = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 2.5rem;
+    color: black;
+    font-size: 0.8rem;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 `;
 const Footer = styled.div`
     width: 410px;
@@ -273,12 +295,14 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
-            <RecommendContainer>
-                {recommends &&
-                    recommends.forEach((m) => {
-                        <div onClick={() => handleClick()}>!!!!!!!!!!!!{m}</div>;
-                    })}
-            </RecommendContainer>
+            {recommends && (
+                <RecommendContainer>
+                    <span className="recommendTitle">추천 키워드</span>
+                    {recommends.map((m) => (
+                        <Recommend onClick={() => handleClick()}>{m}</Recommend>
+                    ))}
+                </RecommendContainer>
+            )}
             <ListContainer>
                 {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
                 {restaurantArr?.map((content, index) => {
