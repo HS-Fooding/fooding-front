@@ -15,6 +15,7 @@ const Container = styled.div`
     position: relative;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 `;
@@ -42,9 +43,9 @@ const HeaderContainer = styled.div`
         color: ${(props) => props.theme.mainColor};
     }
     .map {
-        font-size:23px;
-        color: rgba(0,0,0,0.3);
-        margin-top:3px;
+        font-size: 23px;
+        color: rgba(0, 0, 0, 0.3);
+        margin-top: 3px;
     }
 `;
 const ListContainer = styled.div`
@@ -60,6 +61,7 @@ const ListContainer = styled.div`
   gap: 10px;
   grid-template-columns: repeat(2, minmax(120px, 1fr));
   grid-template-rows: masonry; */
+
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -74,6 +76,41 @@ const ListContainer = styled.div`
         text-align: center;
         align-items: center;
     }
+`;
+const RecommendContainer = styled.div`
+    position: absolute;
+    top: 4rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    flex-direction: column;
+    font-size: 10px;
+    ::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera*/
+    }
+    .recommendTitle {
+        color: tomato;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8rem;
+        margin: 0.5rem 0;
+        padding: 5px 0;
+        border-bottom: 1px solid tomato;
+    }
+`;
+const Recommend = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 2.5rem;
+    color: black;
+    font-size: 0.8rem;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 `;
 const Footer = styled.div`
     width: 410px;
@@ -126,13 +163,34 @@ const RestaurantSearch = () => {
     const [post, setPost] = useState(false);
     const [searchWord, setSearchWord] = useState("");
     const [firstInput, setfirstInput] = useState(false);
+    const [recommends, setRecommends] = useState([]);
     let last = false;
+    let keyword;
 
-    const bringSearchWord = (e) => {
+    const bringSearchWord = async (e) => {
         e.preventDefault();
-        setSearchWord(e.target.value);
+        keyword = e.target.value;
+        setSearchWord(keyword);
         // TODO : axios로 추천 키워드를 요청받아야 함
-        setfirstInput(true);
+        var config = {
+            method: "post",
+            url: url + `/fooding/search?query=${keyword}`,
+            headers: {
+                Authorization: "Bearer " + getToken,
+            },
+        };
+        await axios(config)
+            .then((res) => {
+                // console.log("data!!", res.data);
+                setRecommends([...res.data]);
+            })
+            .catch((err) => {
+                console.log(err);
+                setIsLoaded(false);
+            })
+            .finally(() => {
+                setfirstInput(true);
+            });
     };
 
     const getSearch = async (e) => {
@@ -147,8 +205,6 @@ const RestaurantSearch = () => {
     };
 
     const bringMarketInfo = async () => {
-        
-    const getToken = localStorage.getItem("guestToken");
         if (last == false && firstInput) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -168,15 +224,14 @@ const RestaurantSearch = () => {
                     currentPage++;
                     const lastresult = res.data.last;
                     setRestaurantArr((restaurantArr) => restaurantArr.concat(res.data.content));
-                    setIsLoaded(true);
                     if (lastresult === true) {
                         last = true;
                         setIsLoaded(false);
-                    }
+                    } else setIsLoaded(true);
                 })
                 .catch((err) => {
                     console.log(err);
-                    setIsLoaded(false);
+                    setIsLoaded(true);
                 });
         }
     };
@@ -187,6 +242,17 @@ const RestaurantSearch = () => {
             await bringMarketInfo();
             observer.observe(entry.target);
         }
+    };
+
+    const handleClick = async (e) => {
+        e.preventDefault();
+        if (currentSearchWord === "" || currentSearchWord !== searchWord) {
+            currentPage = 0;
+            setRestaurantArr([]);
+            setfirstInput(false);
+        }
+        currentSearchWord = e.target.value;
+        bringMarketInfo();
     };
 
     useEffect(() => {
@@ -229,6 +295,14 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
+            {recommends && (
+                <RecommendContainer>
+                    <span className="recommendTitle">추천 키워드</span>
+                    {recommends.map((m) => (
+                        <Recommend onClick={() => handleClick()}>{m}</Recommend>
+                    ))}
+                </RecommendContainer>
+            )}
             <ListContainer>
                 {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
                 {restaurantArr?.map((content, index) => {

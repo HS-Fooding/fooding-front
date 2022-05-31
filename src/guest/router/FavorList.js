@@ -26,8 +26,8 @@ const Container = styled.div`
 const Bookmarks = styled.div`
   display: flex;
 
-  height: 800px;
-  padding: 50px 10px;
+  height: 635px;
+  padding: 0px 10px;
 `;
 
 const CancelBtnBox = styled.div`
@@ -47,9 +47,9 @@ const CancelBtnBox = styled.div`
 const ListContainer = styled.div`
   width: 390px;
   /* 410,770 */
-  height: 670px;
+  height: 645px;
   /* background-color:red; */
-  margin-top: 45px;
+  
   /* display:flex; */
 
   overflow: auto;
