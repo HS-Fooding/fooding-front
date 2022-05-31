@@ -12,7 +12,7 @@ const Container = styled.div`
   height: 775px;
   position: relative;
   box-sizing: border-box;
-  margin-bottom: 30px;
+ 
   display: flex;
   flex-direction: column;
   align-items: center;
