@@ -198,7 +198,7 @@ const NextBtn = styled.button`
   width: 380px;
   height: 50px;
   background: white;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   border: 1px solid ${(props) => props.theme.borderGrayColor};
   border-radius: 3px;
   font-weight: bold;

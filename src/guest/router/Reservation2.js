@@ -69,7 +69,6 @@ const NextBtn = styled.button`
   border-radius: 3px;
   font-weight: bold;
   cursor: pointer;
-  margin: 190px 10px 0px 10px;
 `;
 
 const FinishModal = styled.div`

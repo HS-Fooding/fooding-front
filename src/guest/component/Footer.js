@@ -28,7 +28,7 @@ const FooterButton = styled.div`
   align-items: center;
   font-size: 12px;
   //color: ${(props) => props.theme.fontGrayColor};
-  color: ${(props) => (props.match ? "black" : "rgba(0, 0, 0, 0.4)")};
+  color: ${(props) => (props.match ? "#FF7B54" : "rgba(0, 0, 0, 0.4)")};
   cursor: pointer;
   font-weight: ${(props) => (props.match ? "bold" : "normal")};
 
@@ -36,7 +36,7 @@ const FooterButton = styled.div`
     font-size: 23px;
     margin-bottom: 8px;
     // color: ${(props) => props.theme.fontGrayColor};
-    color: ${(props) => (props.match ? "black" : "rgba(0, 0, 0, 0.4)")};
+    color: ${(props) => (props.match ? "#FF7B54" : "rgba(0, 0, 0, 0.4)")};
     font-weight: ${(props) => (props.match ? "bold" : "normal")};
   }
 `;
