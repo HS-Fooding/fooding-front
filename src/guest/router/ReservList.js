@@ -214,7 +214,7 @@ const ReservList = () => {
 
   return (
     <Container>
-      <Header back="/guest/myPage" title={"예약내역"} />
+      <Header back="/guest/restaurantList" title={"예약내역"} />
       <Reservations>
         {reservations?.length == 0 ? (
           <Notice>예약이 존재하지 않습니다.</Notice>

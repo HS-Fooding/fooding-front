@@ -10,7 +10,7 @@ import Footer from "../component/Footer";
 
 const Container = styled.div`
   width: 410px;
-  height: 100vh; 
+  height: 100vh;
   /* 770px */
   position: relative;
   box-sizing: border-box;
@@ -105,7 +105,7 @@ const FavorList = () => {
 
   return (
     <Container>
-      <Header back="/guest/myPage" title={"즐겨찾기"} />
+      <Header back="/guest/restaurantList" title={"즐겨찾기"} />
       <Bookmarks>
         <ListContainer>
           {bookmarks?.map((content, index) => {
