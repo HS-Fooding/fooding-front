@@ -1,5 +1,5 @@
 import React, { isValidElement, useEffect, useState } from "react";
-import { Stage, Layer, Rect, Circle, Transformer, Text } from "react-konva";
+import { Stage, Layer, Rect, Circle, Transformer, Text, Group, Label } from "react-konva";
 import styled, { keyframes } from "styled-components";
 import Modal2 from "./Modal2";
 import axios from "axios";
@@ -21,6 +21,7 @@ import {
     faSquare,
     faGripLines,
 } from "@fortawesome/free-solid-svg-icons";
+import { text } from "@fortawesome/fontawesome-svg-core";
 //import { faWindowFrame as FaWindowFrameRegular } from "@fortawesome/free-regular-svg-icons";
 
 const Container = styled.div`
@@ -228,10 +229,87 @@ const Table = ({
     );
 };
 
-const TableNum = ({ tableId, x, y }) => {
+const MyGroup = ({
+    shapeProps,
+    isSelected,
+    onSelect,
+    onChange,
+    onDblClick,
+    isDelete,
+    tables,
+    setTables,
+    setIsDelete,
+    validateRotation,
+}) => {
+    const shapeRef = React.useRef();
+    const trRef = React.useRef();
+
+    React.useEffect(() => {
+        if (isSelected) {
+            // we need to attach transformer manually
+            trRef.current.nodes([shapeRef.current]);
+            trRef.current.getLayer().batchDraw();
+        }
+    }, [isSelected]);
+
     return (
         <React.Fragment>
-            <Text text={tableId} x={x} y={y} zIndex={300}></Text>
+            <Group
+                onClick={onSelect}
+                onTap={onSelect}
+                ref={shapeRef}
+                {...shapeProps}
+                draggable
+                onDragEnd={(e) => {
+                    onChange({
+                        ...shapeProps,
+                        x: e.target.x(),
+                        y: e.target.y(),
+                    });
+
+                    if (isDelete === true) {
+                        const tmp = tables.filter((table) => table.id !== e.target.attrs.id);
+                        setTables([...tmp]);
+                        setIsDelete(false);
+                    }
+                }}
+                onTransformEnd={(e) => {
+                    // transformer is changing scale of the node
+                    // and NOT its width or height
+                    // but in the store we have only width and height
+                    // to match the data better we will reset scale on transform end
+                    const node = shapeRef.current;
+                    const scaleX = node.scaleX();
+                    const scaleY = node.scaleY();
+                    const rotation = node.rotation();
+
+                    // we will reset it back
+                    node.scaleX(1);
+                    node.scaleY(1);
+                    onChange({
+                        ...shapeProps,
+                        x: node.x(),
+                        y: node.y(),
+                        // set minimal value
+                        width: Math.max(5, node.width() * scaleX),
+                        height: Math.max(node.height() * scaleY),
+                        rotation: validateRotation(rotation),
+                    });
+                }}
+            />
+
+            {isSelected && (
+                <Transformer
+                    ref={trRef}
+                    boundBoxFunc={(oldBox, newBox) => {
+                        // limit resize
+                        if (newBox.width < 5 || newBox.height < 5) {
+                            return oldBox;
+                        }
+                        return newBox;
+                    }}
+                />
+            )}
         </React.Fragment>
     );
 };
@@ -1202,18 +1280,19 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
                         <Layer>
                             {tables.map((table, i) => {
                                 console.log("테이블 그림", table, i);
+
                                 return (
-                                    <>
+                                    <Group draggable onDragStart={() => selectShape(table.id)}>
                                         <Table
                                             key={i}
                                             onDblClick={handleTableDblClick}
                                             shapeProps={table}
-                                            isSelected={table.id === selectedId}
                                             tables={tables}
                                             setTables={setTables}
                                             isDelete={isDelete}
                                             setIsDelete={setIsDelete}
                                             validateRotation={validateRotation}
+                                            isSelected={table.id === selectedId}
                                             onSelect={() => {
                                                 selectShape(table.id);
                                             }}
@@ -1224,14 +1303,17 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
                                             }}
                                         />
                                         <Text
-                                            key={i}
                                             text={table.tableNum}
-                                            x={table.x + table.width / 2}
-                                            y={table.y + table.height / 2}
-                                            align={"center"}
-                                            zIndex={10}
+                                            rotation={table.rotation}
+                                            x={table.x}
+                                            y={table.y}
+                                            width={table.width}
+                                            height={table.height}
+                                            align="center"
+                                            verticalAlign="middle"
+                                            fontSize="15"
                                         />
-                                    </>
+                                    </Group>
                                 );
                             })}
                             {seats.map((seat, i) => {
