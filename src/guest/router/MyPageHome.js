@@ -9,7 +9,7 @@ import Footer from "../component/Footer";
 
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
   display: flex;

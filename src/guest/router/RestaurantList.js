@@ -25,7 +25,7 @@ const Container = styled.div`
 const ListContainer = styled.div`
   width: 390px;
   /* 410,770 */
-  height: 670px;
+  height:85vh;
   /* background-color:red; */
   margin-top: 65px;
   /* display:flex; */
@@ -33,8 +33,9 @@ const ListContainer = styled.div`
   
 `;
 const Listlistcontainer = styled.div`
-  height:85vh;
+  /* 85vh */
   width: 390px;
+  height:85vh;
   overflow: auto;
   /* display: grid;
   gap: 10px;

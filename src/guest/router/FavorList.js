@@ -10,7 +10,8 @@ import Footer from "../component/Footer";
 
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 100vh; 
+  /* 770px */
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -26,7 +27,8 @@ const Container = styled.div`
 const Bookmarks = styled.div`
   display: flex;
 
-  height: 635px;
+  height: 85vh;
+  /* 635px; */
   padding: 0px 10px;
 `;
 
@@ -47,9 +49,9 @@ const CancelBtnBox = styled.div`
 const ListContainer = styled.div`
   width: 390px;
   /* 410,770 */
-  height: 645px;
+  /* height: 645px; */
   /* background-color:red; */
-  
+  height: 85vh;
   /* display:flex; */
 
   overflow: auto;

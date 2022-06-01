@@ -30,7 +30,7 @@ import {
 const Container = styled.div`
   /* border: 1px solid black; */
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
   overflow-y: auto;
