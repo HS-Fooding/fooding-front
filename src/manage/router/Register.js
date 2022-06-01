@@ -849,7 +849,8 @@ const Register = () => {
     };
 
     const handleSelect = (e) => {
-        if (!categoryValueSelected.includes(e.target.value)) {
+    if(categorySelected.length <6){
+            if (!categoryValueSelected.includes(e.target.value)) {
             setCategoryValueSelected((currentArray) => [...currentArray, e.target.value]);
         }
         if (!categorySelected.includes(e.target.options[e.target.selectedIndex].text)) {
@@ -858,6 +859,8 @@ const Register = () => {
                 e.target.options[e.target.selectedIndex].text,
             ]);
         }
+    }
+        
     };
     const categoryButtonClick = (index) => {
         setCategorySelected(
