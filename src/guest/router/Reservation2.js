@@ -9,7 +9,8 @@ import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
   width: 412px;
-  height: 778px;
+  /* height: 778px; */
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
   display: flex;
