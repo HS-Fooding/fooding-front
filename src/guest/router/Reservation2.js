@@ -8,8 +8,8 @@ import { useLocation, Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
-  width: 410px;
-  height: 775px;
+  width: 412px;
+  height: 778px;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -25,7 +25,8 @@ const ButtonContainer = styled.div`
 
 const MapContainer = styled.div`
   width: 400px;
-  height: 300px;
+  height: 250px;
+  padding-top: 20px;
 `;
 
 const SelectedTableBox = styled.div`
@@ -73,14 +74,17 @@ const NextBtn = styled.button`
 
 const FinishModal = styled.div`
   position: absolute;
-  top: 0;
+  overflow: hidden;
+  top: 0px;
   width: 100%;
   height: 100%;
   background-color: ${(props) => props.theme.mainColor};
+
   padding-top: 100px;
   padding-right: 26px;
   padding-left: 26px;
   color: white;
+
   z-index: 3;
   .bold {
     font-size: 28px;
@@ -115,6 +119,19 @@ const DescContainer = styled.div`
     height: 30px;
   }
 `;
+
+const NoticeBox = styled.div`
+  width: 384px;
+  height: 37px;
+  background-color: rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 90px;
+`;
+
 const Reservation2 = () => {
   const [tables, setTables] = useState([]);
   const [seats, setSeats] = useState([]);
@@ -131,7 +148,7 @@ const Reservation2 = () => {
   const [doorCnt, setDoorCnt] = useState([]);
   const [id, setId] = useState();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedTable, setSelectedTable] = useState();
+  const [selectedTable, setSelectedTable] = useState([]);
   const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
   const [reservationDone, setReservationDone] = useState(false);
   const [availableTable, setAvailableTable] = useState([]);
@@ -452,6 +469,19 @@ const Reservation2 = () => {
                   width={table.width / 3}
                   height={table.height / 3}
                   rotation={table.rotation}
+                  onClick={
+                    availableTableNums.includes(table.tableNum)
+                      ? () => {
+                          onClickTable(
+                            table.id,
+                            table.maxPeople,
+                            table.minPeople,
+                            table.tableNum,
+                            table.available
+                          );
+                        }
+                      : null
+                  }
                   onTouchStart={
                     availableTableNums.includes(table.tableNum)
                       ? () => {
@@ -545,6 +575,7 @@ const Reservation2 = () => {
           </Layer>
         </Stage>
       </MapContainer>
+
       <SelectedTableBox>
         <InnerTableBox>
           <div>
@@ -562,7 +593,15 @@ const Reservation2 = () => {
           </div>
         </InnerTableBox>
       </SelectedTableBox>
-      <NextBtn onClick={submit}>완료</NextBtn>
+      {selectedTable.length == 0 ? (
+        <NoticeBox>
+          <span>테이블을 선택하세요.</span>
+        </NoticeBox>
+      ) : null}
+
+      {selectedTable.length !== 0 ? (
+        <NextBtn onClick={submit}>완료</NextBtn>
+      ) : null}
 
       {reservationDone == true ? (
         <FinishModal>
