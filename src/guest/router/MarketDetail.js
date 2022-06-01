@@ -1287,8 +1287,9 @@ const MarketDetail = () => {
                   </MenuInfo>
                   <MenuImg>
                     <div className="imgContainer">
-                      <img src={menu.image}></img>
+                      {menu.image ? <img src={menu.image}></img> : null}
                     </div>
+                    
                   </MenuImg>
                 </MenuContainer>
               </EachMenu>
@@ -1334,7 +1335,7 @@ const MarketDetail = () => {
                     </MenuInfo>
                     <MenuImg>
                       <div className="imgContainer">
-                        <img src={menu.image}></img>
+                      {menu.image ? <img src={menu.image}></img> : null}
                       </div>
                     </MenuImg>
                   </MenuContainer>

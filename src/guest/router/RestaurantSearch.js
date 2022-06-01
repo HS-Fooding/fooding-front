@@ -219,7 +219,7 @@ const RestaurantSearch = () => {
                         `/fooding/restaurant/search?keyword=${currentSearchWord}&page=${currentPage}&size=10`,
                     {
                         headers: {
-                            "Content-Type": "application/json",
+                            // "Content-Type": "application/json",
                             Authorization: "Bearer " + getToken,
                         },
                     }
@@ -241,7 +241,6 @@ const RestaurantSearch = () => {
     };
 
     const onIntersect = async ([entry], observer) => {
-        console.log("intersect!");
         if (entry.isIntersecting && !last && isLoaded) {
             observer.unobserve(entry.target);
             await bringMarketInfo();
@@ -250,7 +249,6 @@ const RestaurantSearch = () => {
     };
 
     const handleFocus = () => {
-        console.log("!!", recommends);
         setFocus(true);
     };
 
@@ -266,7 +264,7 @@ const RestaurantSearch = () => {
         setFocus(false);
     };
 
-    useEffect(() => {}, [target, last]);
+    // useEffect(() => {}, [target, last]);
     useEffect(() => {
         let observer;
         if (target && !last) {

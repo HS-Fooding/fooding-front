@@ -26,9 +26,9 @@ const CurrentTables = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [availableTable, setAvailableTable] = useState([]);
     const [availableTableNumArr, setAvailableTableNumArr] = useState([]);
-
     const [floor, setFloor] = useState([true]);
     const [selectedFloor, setSelectedFloor] = useState(0);
+
     const FloorButton = styled.div`
         width: 80px;
         height: 40px;
@@ -59,9 +59,6 @@ const CurrentTables = () => {
     }, []);
 
     const getAvailableTable = () => {
-        const getToken = localStorage.getItem("managerToken");
-        const marketId = localStorage.getItem("marketId");
-
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/table`,
@@ -87,9 +84,6 @@ const CurrentTables = () => {
     };
 
     const getShape = () => {
-        const getToken = localStorage.getItem("managerToken");
-        const marketId = localStorage.getItem("marketId");
-
         var config = {
             method: "get",
             url: url + `/fooding/restaurant/${marketId}/structure`,
