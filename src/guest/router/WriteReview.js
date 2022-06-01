@@ -16,7 +16,7 @@ import { url } from "../../Api";
 const token = localStorage.getItem("guestToken");
 const WriteReviewContainer = styled.div`
     width: 410px;
-    height: 770px;
+    height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;

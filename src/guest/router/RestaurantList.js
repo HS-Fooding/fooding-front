@@ -35,7 +35,7 @@ const ListContainer = styled.div`
 const Listlistcontainer = styled.div`
   /* 85vh */
   width: 390px;
-  height:85vh;
+ height:85vh;
   overflow: auto;
   /* display: grid;
   gap: 10px;

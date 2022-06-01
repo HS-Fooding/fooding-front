@@ -198,6 +198,7 @@ const RestaurantSearch = () => {
 
     const getSearch = async (e) => {
         e.preventDefault();
+        
         if (currentSearchWord === "" || currentSearchWord !== searchWord) {
             currentPage = 0;
             setRestaurantArr([]);

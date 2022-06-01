@@ -6,28 +6,18 @@ import { url } from "../../Api";
 // import {Cookies} from "react-cookie";
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
-`;
+  display:flex;
+  flex-direction:column;
 
-const WriteReviewBtn = styled.button`
-  position: absolute;
-  bottom: -10;
-  width: 100%;
-  height: 80px;
-  border: none;
-  cursor: pointer;
-  color: white;
-  background-color: ${(props) => props.theme.mainColor};
-`;
 
+`;
 const Reviews = styled.div`
+  margin-top:60px;
   width: 100%;
-  height: 700px;
-  margin-bottom: 5px;
-  padding-top: 60px;
-
+  height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -36,8 +26,8 @@ const Reviews = styled.div`
 `;
 
 const InnerReviews = styled.div`
-  height: 700px;
-  padding-top: 10px;
+  height: 85vh;
+  
   overflow: auto;
   /* padding-top: 50px; */
 
@@ -45,6 +35,18 @@ const InnerReviews = styled.div`
     display: none; /* Chrome, Safari, Opera*/
   }
 `;
+
+const WriteReviewBtn = styled.button`
+  width: 100%;
+  height: 80px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  position:absolute;
+  bottom:0;
+  background-color: ${(props) => props.theme.mainColor};
+`;
+
 
 const ReviewBox = styled.div`
   width: 350px;
