@@ -255,7 +255,6 @@ const InputBox = styled.div`
     .SelectCategoryContainer {
         margin-left: 22px;
         width: 100px;
-        
     }
     .CategoryTags {
         display: flex;
@@ -850,18 +849,17 @@ const Register = () => {
     };
 
     const handleSelect = (e) => {
-    if(categorySelected.length <5){
+        if (categorySelected.length < 5) {
             if (!categoryValueSelected.includes(e.target.value)) {
-            setCategoryValueSelected((currentArray) => [...currentArray, e.target.value]);
+                setCategoryValueSelected((currentArray) => [...currentArray, e.target.value]);
+            }
+            if (!categorySelected.includes(e.target.options[e.target.selectedIndex].text)) {
+                setCategorySelected((currentArray) => [
+                    ...currentArray,
+                    e.target.options[e.target.selectedIndex].text,
+                ]);
+            }
         }
-        if (!categorySelected.includes(e.target.options[e.target.selectedIndex].text)) {
-            setCategorySelected((currentArray) => [
-                ...currentArray,
-                e.target.options[e.target.selectedIndex].text,
-            ]);
-        }
-    }
-        
     };
     const categoryButtonClick = (index) => {
         setCategorySelected(
@@ -1227,20 +1225,6 @@ const Register = () => {
                             <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
                                 {marketInfo === null ? (
                                     <>
-                                        {/* <label>
-                
-                    <input
-                      type="number"
-                      min="0"
-                      max="10"
-                      name="availableHour"
-                      className="TimeInputStyle"
-                      // {...register("availableHour")}
-                      style={{ marginTop: "1px" }}
-                    />
-                    
-                    
-                  </div></label> */}
                                         <div className="TimeDiv">
                                             <NumericInput
                                                 style={{

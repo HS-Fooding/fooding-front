@@ -7,7 +7,7 @@ import { url } from "../../Api";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMap, faAngleLeft, faL } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { BiMapAlt } from "react-icons/bi";
 const Container = styled.div`
     width: 410px;
@@ -172,6 +172,7 @@ const RestaurantSearch = () => {
 
     const bringSearchWord = async (e) => {
         e.preventDefault();
+        currentPage = 0;
         setFocus(true);
         keyword = e.target.value;
         setSearchWord(keyword);
@@ -190,9 +191,6 @@ const RestaurantSearch = () => {
             .catch((err) => {
                 console.log(err);
                 setIsLoaded(false);
-            })
-            .finally(() => {
-                // setFocus(false)
             });
     };
 
@@ -201,15 +199,15 @@ const RestaurantSearch = () => {
         if (currentSearchWord === "" || currentSearchWord !== searchWord) {
             currentPage = 0;
             setRestaurantArr([]);
-            setRecommends([]);
-            setFocus(false);
         }
+        setFocus(false);
         currentSearchWord = searchWord.trim();
-        bringMarketInfo();
+        console.log("current!", currentSearchWord);
+        await bringMarketInfo();
     };
 
     const bringMarketInfo = async () => {
-        if (last == false) {
+        if (last === false) {
             //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
             await new Promise((resolve) => setTimeout(resolve, 1000));
             setPost(true);
@@ -249,11 +247,11 @@ const RestaurantSearch = () => {
     };
 
     const handleFocus = () => {
+        console.log("focus");
         setFocus(true);
     };
 
     const handleClick = async (e) => {
-        // console.log("!!", e.target.innerText);
         if (currentSearchWord === "" || currentSearchWord !== searchWord) {
             currentPage = 0;
             setRestaurantArr([]);
@@ -264,7 +262,6 @@ const RestaurantSearch = () => {
         setFocus(false);
     };
 
-    // useEffect(() => {}, [target, last]);
     useEffect(() => {
         let observer;
         if (target && !last) {
@@ -287,7 +284,8 @@ const RestaurantSearch = () => {
                     <form onSubmit={getSearch}>
                         <input
                             onChange={bringSearchWord}
-                            onFocus={handleFocus}
+                            // onFocus={handleFocus}
+                            onClick={handleFocus}
                             value={searchWord}
                             type="text"
                             placeholder="검색어를 입력하세요"
@@ -306,8 +304,8 @@ const RestaurantSearch = () => {
                     </div>
                 ) : null}
             </HeaderContainer>
-            {focus && searchWord.length > 1 ? (
-                <RecommendContainer>
+            {focus ? (
+                <RecommendContainer onClick={() => setFocus(false)}>
                     <span className="recommendTitle">추천 키워드</span>
                     {recommends.map((m) => (
                         <Recommend onClick={handleClick}>{m}</Recommend>
