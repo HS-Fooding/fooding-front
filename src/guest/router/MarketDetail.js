@@ -1010,6 +1010,7 @@ const MarketDetail = () => {
           navigate(-1);
         }}
       />
+
       <MarketImgsBox>
         <MultipleSlider images={market?.images} />
       </MarketImgsBox>

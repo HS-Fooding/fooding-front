@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 const Form = styled.form`
   margin: 30px;
-  height: 500px;
+  height: auto;
   padding: 20px;
   position: relative;
 `;
@@ -75,6 +75,7 @@ const SubmitBtn = styled.button`
   width: 370px;
   /* position: absolute;
   bottom: -137px; */
+  margin-top: 50px;
 `;
 const SelectBox = styled.div`
   select {
@@ -399,7 +400,9 @@ function SignUpMg() {
             })}
           </ul>
         </SelectBox>
-        <SubmitBtn>회원가입</SubmitBtn>
+        <div>
+          <SubmitBtn>회원가입</SubmitBtn>
+        </div>
         <Message>{errors?.extraError?.message}</Message>
       </Form>
     </Container>

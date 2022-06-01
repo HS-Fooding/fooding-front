@@ -561,8 +561,6 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
   const [doors, setDoors] = useState([]);
   const [show, setShow] = useState(bool);
 
-  console.log("showshowshowshow", bool);
-  console.log("indexindexindexindexindexindex", index);
   const [selectedId, selectShape] = useState(null);
   const [tableCnt, setTableCnt] = useState(1);
   const [seatCnt, setSeatCnt] = useState(1);
@@ -667,6 +665,7 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
     modal ? setModal(true) : setModal(false);
 
+    
     if (submit) {
       createTable(
         tableNum,

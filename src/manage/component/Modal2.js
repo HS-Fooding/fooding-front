@@ -40,6 +40,7 @@ const Container = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.1);
   animation: ${fadeIn} 0.15s ease-out;
   border-top: 5px solid ${(props) => props.theme.mainColor};
+  z-index: 4;
 `;
 
 const Header = styled.div`
@@ -173,6 +174,7 @@ const Background = styled.div`
 
   background-color: ${(props) =>
     props.visible ? "rgba(0, 0, 0, 0.6)" : "none"};
+  z-index: 3;
 `;
 
 // 테이블 번호
@@ -256,7 +258,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
           edit
         );
       } else {
-        // 기본 등록
+        // 기본 등록ff
         console.log("기본 등록");
         setModalTrigger(false);
         const modal = false;
