@@ -1,5 +1,5 @@
 import React, { isValidElement, useEffect, useState } from "react";
-import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
+import { Stage, Layer, Rect, Circle, Transformer, Text } from "react-konva";
 import styled, { keyframes } from "styled-components";
 import Modal2 from "./Modal2";
 import axios from "axios";
@@ -230,6 +230,28 @@ const Table = ({
   );
 };
 
+const TableNum = ({
+  shapeProps,
+  tables,
+  isSelected,
+  onChange,
+  onDblClick,
+  isDelete,
+  seats,
+  setSeats,
+  setIsDelete,
+  tableId,
+  x,
+  y,
+  width,
+  height,
+}) => {
+  return (
+    <React.Fragment>
+      <Text text={tableId} x={x} y={y} zIndex={300}></Text>
+    </React.Fragment>
+  );
+};
 const Seat = ({
   shapeProps,
   isSelected,
@@ -665,7 +687,6 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
 
     modal ? setModal(true) : setModal(false);
 
-    
     if (submit) {
       createTable(
         tableNum,
@@ -1227,25 +1248,36 @@ const MyCanvas = ({ floorCallback, bool, index }) => {
               {tables.map((table, i) => {
                 console.log("테이블 그림", table, i);
                 return (
-                  <Table
-                    key={i}
-                    onDblClick={handleTableDblClick}
-                    shapeProps={table}
-                    isSelected={table.id === selectedId}
-                    tables={tables}
-                    setTables={setTables}
-                    isDelete={isDelete}
-                    setIsDelete={setIsDelete}
-                    validateRotation={validateRotation}
-                    onSelect={() => {
-                      selectShape(table.id);
-                    }}
-                    onChange={(newAttrs) => {
-                      const tmp = tables.slice();
-                      tmp[i] = newAttrs;
-                      setTables(tmp);
-                    }}
-                  />
+                  <>
+                    <TableNum
+                      shapeProps={table}
+                      tables={tables}
+                      tableId={table.tableNum}
+                      x={table.x}
+                      y={table.y}
+                      width={table.width}
+                      height={table.height}
+                    />
+                    <Table
+                      key={i}
+                      onDblClick={handleTableDblClick}
+                      shapeProps={table}
+                      isSelected={table.id === selectedId}
+                      tables={tables}
+                      setTables={setTables}
+                      isDelete={isDelete}
+                      setIsDelete={setIsDelete}
+                      validateRotation={validateRotation}
+                      onSelect={() => {
+                        selectShape(table.id);
+                      }}
+                      onChange={(newAttrs) => {
+                        const tmp = tables.slice();
+                        tmp[i] = newAttrs;
+                        setTables(tmp);
+                      }}
+                    />
+                  </>
                 );
               })}
               {seats.map((seat, i) => {
