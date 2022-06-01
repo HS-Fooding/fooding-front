@@ -60,6 +60,18 @@ const RestaurantList = () => {
   const [presentPage, setPresentPage] = useState(0);
   //const [last,setLast] = useState(false);
 
+  // const preventGoBack = () => {
+  //   history.pushState(null, "", location.href);
+  // };
+  // useEffect(() => {
+  //   history.pushState(null, "", location.href);
+  //   window.addEventListener("popstate", preventGoBack);
+  //   return () => {
+  //     window.removeEventListener("popstate", preventGoBack);
+  //     handleCloseDrawer();
+  //   };
+  // }, []);
+
   let navigate = useNavigate();
 
   let last = false;
