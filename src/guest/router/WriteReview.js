@@ -28,7 +28,7 @@ const SubmitButton = styled.button`
     font-size: 15px;
     position: absolute;
    
-    bottom: -10px;
+    bottom:0;
     background-color: ${(props) => props.theme.mainColor};
     font-family: "Source Sans Pro", sans-serif;
 
