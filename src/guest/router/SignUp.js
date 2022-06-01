@@ -7,7 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { url } from "../../Api";
 
 const Container = styled.div`
-  border: 1px solid black;
   /* width: 350px;
   height: 600px; */
   width: 410px;
@@ -17,7 +16,7 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
-  margin-top: 60px;
+  margin-top: 90px;
   height: 500px;
   padding: 20px;
   position: relative;
@@ -65,7 +64,7 @@ const SubmitBtn = styled.button`
   border: none;
   background-color: ${(props) => props.theme.mainColor};
   color: white;
-  height: 50px;
+  height: 60px;
   border-radius: 3px;
   font-size: 15px;
   cursor: pointer;
@@ -78,10 +77,16 @@ const SelectBox = styled.div`
   select {
     width: auto;
     margin-left: 20px;
+    color: gray;
   }
 
   div {
-    margin: 18px 0px;
+    margin: 24px 8px;
+
+    span {
+      color: gray;
+      font-size: 14px;
+    }
   }
 
   .CategoryTags {
@@ -346,7 +351,7 @@ function SignUp() {
         <Message>{errors?.age?.message}</Message>
         <SelectBox>
           <div>
-            직업
+            <span>직업</span>
             <select {...register("job")}>
               <option>STUDENT</option>
               <option>UNIV_STUDENT</option>
@@ -357,7 +362,7 @@ function SignUp() {
             </select>
           </div>
           <div>
-            선호 음식
+            <span>선호 음식</span>
             <select
               onChange={handleSelect}
               value={categorySelected}
