@@ -7,7 +7,7 @@ import { Stage, Layer, Rect, Text, Circle, Line } from "react-konva";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import "@fortawesome/fontawesome-free/js/all.js";
-
+import { url } from "../../Api";
 const fadeIn = keyframes`
   0% {
     opacity: 0;
@@ -188,6 +188,9 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   const [tableNum, setTableNum] = useState(
     editModal ? editTableObj.tableNum : ""
   );
+  const [originalTableNum,setOriginalTableNum] = useState(
+    editModal ? editTableObj.tableNum : ""
+  );
   const [minPeopleNum, setMinPeopleNum] = useState(
     editModal ? editTableObj.minPeople : ""
   );
@@ -238,45 +241,84 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   };
 
   const handleEditNSubmit = async () => {
-    if (isPassedValid) {
-      console.log("isPassedValid");
-      if (editModal) {
-        // 수정
-        setModalTrigger(false);
-        const modal = false;
-        const submit = false;
-        const edit = true;
-        parentCallback(
-          id,
-          tableNum,
-          maxPeopleNum,
-          minPeopleNum,
-          tableWidthPixel,
-          tableHeightPixel,
-          modal,
-          submit,
-          edit
-        );
-      } else {
-        // 기본 등록ff
-        console.log("기본 등록");
-        setModalTrigger(false);
-        const modal = false;
-        const submit = true;
-        const edit = false;
-        parentCallback(
-          id,
-          tableNum,
-          maxPeopleNum,
-          minPeopleNum,
-          tableWidthPixel,
-          tableHeightPixel,
-          modal,
-          submit,
-          edit
-        );
-      }
-    }
+    //등록 혹은 수정을 했을때 테이블 번호가 존재하는지 여기서 확인
+    let wholeTablesArr= [];
+    let wholeTables=[];
+    let tableNumss=[];
+    const getToken = localStorage.getItem("managerToken");
+    const id = localStorage.getItem("marketId");
+                axios
+                    .get(url + `/fooding/restaurant/${id}/structure`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: "Bearer " + getToken,
+                        },
+                    })
+                    .then((res) => {
+                    let temp = res.data.floors;
+                     temp.map((one,index)=>{
+                      wholeTablesArr.push(one.tables);
+                     });
+                     wholeTablesArr.map((one,index)=>{
+                       one.map((each,index)=>{
+                        wholeTables.push(each);
+                       });
+
+                     });
+                    wholeTables.map((table,index)=>{
+                      tableNumss.push(table.tableNum);
+                     })
+                  return tableNumss;
+              }).then((tableNumss)=>{
+                  if (isPassedValid) {//빈칸 있는지 확인 
+                    console.log("isPassedValid");
+                    if (editModal && (originalTableNum==tableNum)||((originalTableNum!==tableNum)&&!tableNumss.includes(tableNum))) {
+                      // 수정
+                      setModalTrigger(false);
+                      const modal = false;
+                      const submit = false;
+                      const edit = true;
+                      parentCallback(
+                        id,
+                        tableNum,
+                        maxPeopleNum,
+                        minPeopleNum,
+                        tableWidthPixel,
+                        tableHeightPixel,
+                        modal,
+                        submit,
+                        edit
+                      );
+                    } else {
+                      // 기본 등록ff
+                      if(!tableNumss.includes(tableNum)){
+                      console.log("기본 등록");
+                      setModalTrigger(false);
+                      const modal = false;
+                      const submit = true;
+                      const edit = false;
+                      parentCallback(
+                        id,
+                        tableNum,
+                        maxPeopleNum,
+                        minPeopleNum,
+                        tableWidthPixel,
+                        tableHeightPixel,
+                        modal,
+                        submit,
+                        edit
+                      );
+                    }
+                  }
+                  }
+                
+              
+              })
+                    .catch((err) => {
+                        console.error(err);
+                });
+          
+   
   };
   const tableWidthMinus = () => {
     if (figureWidth - 1 === 0) {
