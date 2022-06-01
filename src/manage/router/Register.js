@@ -1,8 +1,7 @@
 import Header from "../component/Header";
 import React, { useEffect, useState, useRef } from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slick";
@@ -12,10 +11,9 @@ import axios from "axios";
 import MyCanvas from "../component/MyCanvas";
 import NumericInput from "react-numeric-input";
 import ShowHow from "../component/ShowHow";
-import { BsQuestionCircleFill,BsPlusSquare } from "react-icons/bs";
+import { BsQuestionCircleFill, BsPlusSquare } from "react-icons/bs";
 import { MdOutlineCancel } from "react-icons/md";
-import { style } from "motion";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
@@ -432,27 +430,26 @@ const FloorContainer = styled.div`
     width: 800px;
     height: 40px;
     display: flex;
-    .floorPlusBtn{
-        font-size:40px;
+    .floorPlusBtn {
+        font-size: 40px;
         background-color: ${(props) => props.theme.veryLightMainColor};
         color: ${(props) => props.theme.mainColor};
-
     }
-    .floorPlusBtn:hover{
-        cursor:pointer;
+    .floorPlusBtn:hover {
+        cursor: pointer;
     }
-    .floorCancelCss{
-        color:#ffe2bc;
-        width:30px;
-        height:30px;
-        display:flex; 
-        justify-content:center;
-        align-items:center;
-        font-size:25px;
-        margin-left:5px;
+    .floorCancelCss {
+        color: #ffe2bc;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px;
+        margin-left: 5px;
     }
-    .floorCancelCss:hover{
-        cursor:pointer;
+    .floorCancelCss:hover {
+        cursor: pointer;
     }
 `;
 const StructureDesc = styled.div`
@@ -699,9 +696,26 @@ function Register(floorCallback) {
     const [ScrollY, setScrollY] = useState(0); // 스크롤값을 저장하기 위한 상태
     const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
 
-    const [btnClick, setBtnClick] = useState(false);
-
     let floors = [];
+    const FloorButton = styled.div`
+        width: 60px;
+        height: 40px;
+        border-radius: 10px;
+        margin-left: 10px;
+        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "#ffe2bc")};
+        /* #f4f4f5 */
+        color: ${(props) => (props.num == selectedFloor ? "white" : "#FF7B54")};
+        /* border: solid  2px #FF7B54 ; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        :hover {
+            cursor: pointer;
+        }
+    `;
+
+    const getToken = localStorage.getItem("managerToken");
+    const id = localStorage.getItem("marketId");
     const handleFollow = () => {
         setScrollY(window.pageYOffset);
 
@@ -717,20 +731,12 @@ function Register(floorCallback) {
     const handleTop = () => {
         // 클릭하면 스크롤이 위로 올라가는 함수
         // setScrollY(0); // ScrollY 의 값을 초기화
-
         window.scrollTo({
             top: 0,
             behavior: "smooth",
         });
-
-        // setScrollY(0);
-        //setBtnStatus(false); // BtnStatus의 값을 false로 바꿈 => 버튼 숨김
         setNav(1);
     };
-
-    // useEffect(() => {
-    //   console.log("ScrollY is ", ScrollY); // ScrollY가 변화할때마다 값을 콘솔에 출력
-    // }, [ScrollY]);
 
     useEffect(() => {
         const watch = () => {
@@ -762,16 +768,8 @@ function Register(floorCallback) {
         else if (value === "PUB") return "술집";
     };
     let categoryList = [];
-    // useEffect(()=>{
-    //   let temp = categorySelected;
-    //   categoryList.push(temp);
-    //   console.log(categoryList);
-    // },[categorySelected]);
 
     const getMarketInfo = () => {
-        const getToken = localStorage.getItem("managerToken");
-        const id = localStorage.getItem("marketId");
-        //.get(url + `/fooding/restaurant/${id}`, {
         axios
             .get(url + `/fooding/restaurant/${id}`, {
                 headers: {
@@ -800,7 +798,6 @@ function Register(floorCallback) {
                         const savefloorNum = Array(res.data.floors.length);
                         savefloorNum.fill(false);
                         savefloorNum[0] = true;
-                        console.log("saveFloorNum", savefloorNum);
                         setFloor(savefloorNum);
                     })
                     .catch((err) => {
@@ -816,6 +813,7 @@ function Register(floorCallback) {
     useEffect(() => {
         getMarketInfo();
     }, []);
+    useEffect(() => {}, [floors]);
 
     const weekdayTimeEndHandleForm = (e) => {
         const val = e.target.value;
@@ -841,11 +839,8 @@ function Register(floorCallback) {
 
         const tempArr = [...marketImgs, img];
         setMarketImgs(tempArr);
-        console.log("마켓이미지", tempArr);
         const prevFile = URL.createObjectURL(e.target.files[0]);
         setFile([...file, prevFile]);
-        console.log("imgs: ", file);
-        console.log("prevFile:", prevFile);
         e.target.value = "";
     };
 
@@ -879,17 +874,15 @@ function Register(floorCallback) {
         //원래 있는 층에서 추가. 버튼 생성되고 그 버튼 누르면 canvas창 나옴
         setFloor([...floor, false]);
     };
-    const submitInfo = (e) => {
-        var axios = require("axios");
+    const submitInfo = async (e) => {
         e.preventDefault();
         const values = getValues();
         let changeToMinutes = parseInt(availableHour * 60) + parseInt(availableMinute);
-
-        const getToken = localStorage.getItem("managerToken");
-        let data = new FormData();
-        const address = values.address;
         let street;
-        axios
+        let data = new FormData();
+
+        const address = values.address;
+        await axios
             .post(url + "/fooding/geocode", address, {
                 headers: {
                     "Content-Type": "application/json",
@@ -901,7 +894,6 @@ function Register(floorCallback) {
                 setStreetAddress(res.data);
                 street = res.data;
             })
-            .then((res) => {})
             .then(() => {
                 const content = {
                     name: values.businessName,
@@ -933,7 +925,6 @@ function Register(floorCallback) {
                     .post(url + "/fooding/admin/restaurant", data, {
                         headers: {
                             "Content-Type": "multipart/form-data",
-                            //  "Content-Type": "application/json",
                             Authorization: "Bearer " + getToken,
                         },
                     })
@@ -945,7 +936,6 @@ function Register(floorCallback) {
                         setMarketId(res.data);
                         localStorage.setItem("marketId", res.data);
                         getMarketInfo();
-                        // structRef.current?.scrollIntoView({ behavior: "smooth" });
                     })
                     .catch((err) => {
                         setFailModal(true);
@@ -971,22 +961,13 @@ function Register(floorCallback) {
 
     const handleFloorCallback = (index, structureInfo) => {
         floors[index] = structureInfo;
-        console.log("층", index + 1);
-        console.log("구조도", structureInfo);
-        console.log("층들", floors);
     };
-    useEffect(() => {
-        console.log("gg");
-    }, [floors]);
+
     const postData = () => {
-        const marketId = localStorage.getItem("marketId");
-        console.log("매장 구조 보내기 전 floor : ", floors);
         const data = JSON.stringify({
             floors: floors,
         });
 
-        console.log("datadatadatadata", data);
-        const getToken = localStorage.getItem("managerToken");
         const config = {
             method: "post",
             url: url + `/fooding/admin/restaurant/${marketId}/structure`,
@@ -1001,9 +982,7 @@ function Register(floorCallback) {
             .then(function (response) {
                 setAlertModal(true);
                 setAlertStructure(true);
-
                 modalSet();
-                console.log(response);
             })
             .catch(function (error) {
                 setFailModal(true);
@@ -1012,7 +991,6 @@ function Register(floorCallback) {
                 console.log(error);
             });
     };
-    const [current, setCurrent] = useState(0);
     const bringCanvas = (index) => {
         setSelectedFloor(index);
         let temp = floor;
@@ -1020,47 +998,7 @@ function Register(floorCallback) {
         temptemp[index] = true;
         setFloor(temptemp);
     };
-    const FloorButton = styled.div`
-        width: 60px;
-        height: 40px;
-        border-radius: 10px;
-        margin-left: 10px;
-        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "#ffe2bc")}; 
-        /* #f4f4f5 */
-        color: ${(props) => (props.num == selectedFloor ? "white" : "#FF7B54")};
-        /* border: solid  2px #FF7B54 ; */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        :hover {
-            cursor: pointer;
-        }
-    `;
-    const DelButton= styled.div`
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        margin-left: 10px;
-        background-color:  ${(props) => props.theme.veryLightMainColor};
-        color: #FF7B54;
-       
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        :hover {
-            cursor: pointer;
-        }
-    `;
-    const timeContainerDiv = styled.div`
-        width: 500px;
-        height: 20px;
-        margin-left: 10px;
-        background-color: red;
-    `;
-    const onChange1 = (current) => {
-        console.log("onChange:", current);
-        setCurrent({ current });
-    };
+
     const onChangeAvailableHour = (e) => setAvailableHour(e);
     const onChangeAvailableMinute = (e) => setAvailableMinute(e);
 
@@ -1338,16 +1276,6 @@ function Register(floorCallback) {
                                             <p>시간</p>
                                         </div>
                                         <div className="TimeDiv">
-                                            {/* <input
-                      type="number"
-                      step="10"
-                      min="10"
-                      max="50"
-                      className="TimeInputStyle"
-                      {...register("availableMinute")}
-                      style={{ marginTop: "1px" }}
-                    /> */}
-
                                             <NumericInput
                                                 style={{
                                                     input: {
@@ -1366,7 +1294,7 @@ function Register(floorCallback) {
                                     </>
                                 ) : (
                                     <span>
-                                        {Math.floor(marketInfo?.maximumUsageTime / 60)}시간{" "}
+                                        {Math.floor(marketInfo?.maximumUsageTime / 60)}시간
                                         {marketInfo?.maximumUsageTime % 60}분
                                     </span>
                                 )}
@@ -1456,9 +1384,7 @@ function Register(floorCallback) {
                             </InputBox>
                         </InputContainer>
                         <InputContainer className="NumberContainer BorderTop BorderBottom">
-                            <NameBox
-                            // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
-                            >
+                            <NameBox>
                                 <p>번호</p>
                             </NameBox>
                             <NumContainer>
@@ -1495,12 +1421,8 @@ function Register(floorCallback) {
                                 </div>
                             </NumContainer>
                         </InputContainer>
-                        {/* </div> */}
-                        {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
                         <InputContainer className="Time BorderTop BorderBottom">
-                            <NameBox
-                            // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
-                            >
+                            <NameBox>
                                 <p>시간</p>
                             </NameBox>
                             <NumContainer>
@@ -1514,7 +1436,6 @@ function Register(floorCallback) {
                                                 value={weekdayTimeStartState}
                                                 className="TimeInput"
                                                 onChange={weekdayTimeStartHandleForm}
-                                                //  {...register("weekdayTimeStart")}
                                             />
                                             <p>부터</p>
                                             <input
@@ -1585,9 +1506,9 @@ function Register(floorCallback) {
             <CanvasContainer ref={structRef}>
                 <CanvasOptionContainer className="canvasOptionContainer">
                     <FloorContainer>
-                        {/* <AppendFloor onClick={appendFloor}> */}
-                        <div className="floorPlusBtn" onClick={appendFloor}><BsPlusSquare></BsPlusSquare></div>
-                        {/* </AppendFloor> */}
+                        <div className="floorPlusBtn" onClick={appendFloor}>
+                            <BsPlusSquare></BsPlusSquare>
+                        </div>
 
                         {floor.map((bool, index) => {
                             return (
@@ -1628,7 +1549,6 @@ function Register(floorCallback) {
                     console.log("층수", floorNum);
                     console.log("플로어", floor);
 
-                    //   if(bool==true){
                     return (
                         <MyCanvas
                             floorCallback={handleFloorCallback}
@@ -1636,7 +1556,6 @@ function Register(floorCallback) {
                             index={index}
                         ></MyCanvas>
                     );
-                    // }
                 })}
 
                 <ButtonContainer>
@@ -1668,16 +1587,6 @@ function Register(floorCallback) {
             >
                 <i class="fas fa-angle-up"></i>
             </ArrowUp>
-
-            {/* <ArrowUpDiv>
-        <ArrowUp
-          // 버튼 노출 여부
-          onClick={handleTop}
-          className={BtnStatus ? "active" : "none"}
-        >
-          <i class="fas fa-angle-up"></i>
-        </ArrowUp>
-      </ArrowUpDiv> */}
         </Container>
     );
 }
