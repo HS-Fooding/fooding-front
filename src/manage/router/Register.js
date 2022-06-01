@@ -255,6 +255,7 @@ const InputBox = styled.div`
     .SelectCategoryContainer {
         margin-left: 22px;
         width: 100px;
+        
     }
     .CategoryTags {
         display: flex;
@@ -849,7 +850,7 @@ const Register = () => {
     };
 
     const handleSelect = (e) => {
-    if(categorySelected.length <6){
+    if(categorySelected.length <5){
             if (!categoryValueSelected.includes(e.target.value)) {
             setCategoryValueSelected((currentArray) => [...currentArray, e.target.value]);
         }
