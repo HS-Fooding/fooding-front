@@ -178,11 +178,6 @@ const Location = () => {
       lat = window.android.getGeocode("lat");
       lng = window.android.getGeocode("lng");
 
-      while (lat == -1) {
-        lat = window.android.getGeocode("lat");
-        lng = window.android.getGeocode("lng");
-      }
-
       v = [lat, lng];
 
       //   myLocation.push(lat);
