@@ -9,7 +9,7 @@ import Footer from "../component/Footer";
 
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -25,7 +25,7 @@ const Container = styled.div`
 const Reservations = styled.div`
   display: flex;
   flex-direction: column;
-  height: 670px;
+  height: 85vh;
 
   padding: 37px 10px;
   overflow: auto;

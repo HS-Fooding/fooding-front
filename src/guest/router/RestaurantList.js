@@ -25,11 +25,17 @@ const Container = styled.div`
 const ListContainer = styled.div`
   width: 390px;
   /* 410,770 */
-  height: 670px;
+  height:85vh;
   /* background-color:red; */
   margin-top: 65px;
   /* display:flex; */
 
+  
+`;
+const Listlistcontainer = styled.div`
+  /* 85vh */
+  width: 390px;
+  height:85vh;
   overflow: auto;
   /* display: grid;
   gap: 10px;
@@ -49,7 +55,6 @@ const ListContainer = styled.div`
     text-align: center;
   }
 `;
-
 const getToken = localStorage.getItem("guestToken");
 
 const RestaurantList = () => {
@@ -175,6 +180,7 @@ const RestaurantList = () => {
 
       <ListContainer>
         {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
+        <Listlistcontainer>
         {restaurantArr?.map((content, index) => {
           return (
             <Link
@@ -196,7 +202,9 @@ const RestaurantList = () => {
         <div ref={setTarget} className="Target-Element">
           {isLoaded && !last && <Loader />}
         </div>
+      </Listlistcontainer>
       </ListContainer>
+      
       <Footer></Footer>
     </Container>
   );
