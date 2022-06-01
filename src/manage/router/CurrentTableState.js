@@ -1,7 +1,7 @@
 import Header from "../component/Header";
 import React, { useEffect, useState, useRef } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
+import { Stage, Layer, Rect, Circle, Transformer, Group, Text } from "react-konva";
 import { url } from "../../Api";
 import axios from "axios";
 
@@ -279,42 +279,40 @@ const CurrentTables = () => {
                 }}
                 width={900}
                 height={600}
-                //   fill={"yellow"}
-                //   onMouseDown={checkDeselect}
-                //   onTouchStart={checkDeselect}
             >
                 <Layer>
                     {tables[currentIndex]?.map((table, i) => {
                         return (
-                            <Rect
-                                id={table?.id}
-                                x={table.x}
-                                y={table.y}
-                                width={table.width}
-                                height={table.height}
-                                rotation={table.rotation}
-                                //   fill={
-                                //     selectedTable?.id === table.id
-                                //       ? "#764225"
-                                //       : availableTableNumArr.includes(table.tableNum)
-                                //       ? "brown"
-                                //       : "black"
-                                //   }
-                                // fill={table.available ? "#FF7B54" : "rgba(0,0,0,0.2)"}
-                                fill={
-                                    availableTable[table.tableNum - 1]
-                                        ? "#FF7B54"
-                                        : "rgba(0,0,0,0.2)"
-                                }
-                                // fill={
-                                //   availableTableNumArr.includes(table.tableNum)
-                                //     ? "#FF7B54"
-                                //     : "rgba(0,0,0,0.2)"
-                                // }
+                            <Group
                                 onClick={() => {
                                     clickTable(table.tableNum);
                                 }}
-                            />
+                            >
+                                <Rect
+                                    id={table?.id}
+                                    x={table.x}
+                                    y={table.y}
+                                    width={table.width}
+                                    height={table.height}
+                                    rotation={table.rotation}
+                                    fill={
+                                        availableTable[table.tableNum - 1]
+                                            ? "#FF7B54"
+                                            : "rgba(0,0,0,0.2)"
+                                    }
+                                />
+                                <Text
+                                    text={table.tableNum}
+                                    rotation={table.rotation}
+                                    x={table.x}
+                                    y={table.y}
+                                    width={table.width}
+                                    height={table.height}
+                                    align="center"
+                                    verticalAlign="middle"
+                                    fontSize="15"
+                                />
+                            </Group>
                         );
                     })}
                     {walls[currentIndex]?.map((wall, i) => {
