@@ -4,6 +4,8 @@ import Header from "../component/Header";
 import { useNavigate, Link } from "react-router-dom";
 import { BiMapAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
+import { url } from "../../Api";
+import axios from "axios";
 
 // border: 1px solid black;
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,10 +45,73 @@ const MapSearchContainer = styled.div`
   justify-content: space-between;
 `;
 const RestaurantHeader = () => {
+  const [currentLocation, setCurrentLocation] = useState();
+
+  const getToken = localStorage.getItem("guestToken");
+
+  useEffect(() => {
+    var lat, lng, v, data;
+    var isAndroid = /android/i.test(navigator.userAgent); //현재기기가 안드인지 체크
+
+    if (isAndroid) {
+      //안드가 맞다면
+      //여기가 위쪽에서 작성된 안드로이드 코드를 사용하는 부분
+      //window."안드야".함수;
+      //하며 호출함
+      lat = window.android.getGeocode("lat");
+      lng = window.android.getGeocode("lng");
+
+      v = [lng, lat];
+
+      //   myLocation.push(lat);
+      //   myLocation.push(lng);
+
+      localStorage.setItem("lat", lat);
+      localStorage.setItem("lng", lng);
+
+      data = JSON.stringify([
+        localStorage.getItem("lng"),
+        localStorage.getItem("lat"),
+      ]);
+
+      //setCenter([lat, lng]);
+    } else {
+      //안드가 아니라면
+
+      v = [127.01017798663574, 37.58265617070882];
+      console.log(v); //콘솔에 찍자
+
+      localStorage.setItem("lat", 37.58265617070882);
+      localStorage.setItem("lng", 127.01017798663574);
+
+      data = JSON.stringify(v);
+    }
+
+    var config = {
+      method: "post",
+      url: url + `/fooding/geocode/address`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        setCurrentLocation(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <Container>
       <AreaContainer>
-        <p>지금 보고 있는 지역은</p> <div className="Area">성북구</div>
+        <p>지금 보고 있는 지역은</p>{" "}
+        <div className="Area">{currentLocation}</div>
       </AreaContainer>
       <MapSearchContainer>
         {" "}

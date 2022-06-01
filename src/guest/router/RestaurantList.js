@@ -63,21 +63,46 @@ const RestaurantList = () => {
   const [numOfElements, setNumOfElements] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
   const [presentPage, setPresentPage] = useState(0);
-  //const [last,setLast] = useState(false);
+  //const [currentLocation, setCurrentLocation] = useState();
+  //const [currentLocationBool, setCurrentLocationBool] = useState(false);
 
-  // const preventGoBack = () => {
-  //   history.pushState(null, "", location.href);
-  // };
-  // useEffect(() => {
-  //   history.pushState(null, "", location.href);
-  //   window.addEventListener("popstate", preventGoBack);
-  //   return () => {
-  //     window.removeEventListener("popstate", preventGoBack);
-  //     handleCloseDrawer();
-  //   };
-  // }, []);
+  let currentLocationBool = false;
 
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("guestToken");
+
+    var lat, lng, v, data;
+    var isAndroid = /android/i.test(navigator.userAgent); //현재기기가 안드인지 체크
+
+    if (isAndroid) {
+      //안드가 맞다면
+      //여기가 위쪽에서 작성된 안드로이드 코드를 사용하는 부분
+      //window."안드야".함수;
+      //하며 호출함
+      lat = window.android.getGeocode("lat");
+      lng = window.android.getGeocode("lng");
+
+      v = [lng, lat];
+
+      //   myLocation.push(lat);
+      //   myLocation.push(lng);
+
+      localStorage.setItem("lat", lat);
+      localStorage.setItem("lng", lng);
+
+      //setCenter([lat, lng]);
+    } else {
+      //안드가 아니라면
+
+      v = [127.01017798663574, 37.58265617070882];
+      console.log(v); //콘솔에 찍자
+
+      localStorage.setItem("lat", 37.58265617070882);
+      localStorage.setItem("lng", 127.01017798663574);
+    }
+  }, []);
 
   let last = false;
   let currentPage = 0;
@@ -86,18 +111,26 @@ const RestaurantList = () => {
   };
   const bringMarketInfo = async () => {
     const getToken = localStorage.getItem("guestToken");
+    const latLS = localStorage.getItem("lat");
+    const lngLS = localStorage.getItem("lng");
 
     if (last == false) {
       setIsLoaded(true);
       //마지막이 아니어야 get을 할 수 있음 마지막이라면 last가 true일것 false여야 할 수 있음
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await axios
-        .get(url + "/fooding/restaurant?page=" + currentPage + "&size=10", {
-          headers: {
-            //"Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + getToken,
-          },
-        })
+        .get(
+          url +
+            `/fooding/restaurant/coord?x=${lngLS}&y=${latLS}&page=` +
+            currentPage +
+            "&size=10",
+          {
+            headers: {
+              //"Content-Type": "multipart/form-data",
+              Authorization: "Bearer " + getToken,
+            },
+          }
+        )
         .then((res) => {
           setPresentPage(presentPage + 1);
           console.log("last true / false ::", res.data.last);
@@ -142,7 +175,9 @@ const RestaurantList = () => {
   return (
     <Container>
       {/* 헤더 따로 만들기 */}
+
       <RestaurantHeader></RestaurantHeader>
+
       <ListContainer>
         {/* 여기서 get해와서 배열 꺼내서  component에 prop보냄*/}
         <Listlistcontainer>
