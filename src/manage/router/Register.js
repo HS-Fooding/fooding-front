@@ -647,23 +647,8 @@ const ArrowUp = styled.div`
     cursor: pointer;
 `;
 
-function Register(floorCallback) {
-    const [modal, setModal] = useState(false);
-
-    const infoRef = useRef();
-    const menuRef = useRef();
-    const structRef = useRef();
-
-    const initValue = {
-        availableMinute: 0,
-        availableHour: 1,
-    };
-    const { register, watch, getValues, control } = useForm({
-        defaultValues: initValue,
-    });
-
+const Register = () => {
     const [marketImgs, setMarketImgs] = useState([]);
-
     const [streetAddress, setStreetAddress] = useState({});
     const [categorySelected, setCategorySelected] = useState([]);
     const [categoryValueSelected, setCategoryValueSelected] = useState([]);
@@ -691,12 +676,28 @@ function Register(floorCallback) {
     const [alertStructure, setAlertStructure] = useState(false);
     const [alertInfo, setAlertInfo] = useState(false);
 
-    const [arrowUp, setArrowUp] = useState(false);
-
     const [ScrollY, setScrollY] = useState(0); // 스크롤값을 저장하기 위한 상태
     const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
 
+    const [nav, setNav] = useState(1);
+
+    const infoRef = useRef();
+    const menuRef = useRef();
+    const structRef = useRef();
+
+    const initValue = {
+        availableMinute: 0,
+        availableHour: 1,
+    };
+    const { register, getValues } = useForm({
+        defaultValues: initValue,
+    });
+
     let floors = [];
+
+    const getToken = localStorage.getItem("managerToken");
+    const id = localStorage.getItem("marketId");
+
     const FloorButton = styled.div`
         width: 60px;
         height: 40px;
@@ -714,8 +715,33 @@ function Register(floorCallback) {
         }
     `;
 
-    const getToken = localStorage.getItem("managerToken");
-    const id = localStorage.getItem("marketId");
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+    };
+
+    const bringCategoryValue = (value) => {
+        if (value === "KOREAN") return "한식";
+        else if (value === "JAPANESE") return "일식";
+        else if (value === "CHINESE") return "중식";
+        else if (value === "WESTERN") return "양식";
+        else if (value === "VIETNAM") return "베트남";
+        else if (value === "TAIWAN") return "태국";
+        else if (value === "SNACK") return "분식";
+        else if (value === "NOODLE") return "면요리";
+        else if (value === "BBQ") return "바베큐";
+        else if (value === "PORK") return "돼지고기";
+        else if (value === "BEEF") return "소고기";
+        else if (value === "CHICKEN") return "닭고기";
+        else if (value === "LAMB") return "양고기";
+        else if (value === "CAFE") return "카페";
+        else if (value === "DESSERT") return "디저트";
+        else if (value === "BAR") return "바";
+        else if (value === "PUB") return "술집";
+    };
     const handleFollow = () => {
         setScrollY(window.pageYOffset);
 
@@ -747,30 +773,13 @@ function Register(floorCallback) {
             window.removeEventListener("scroll", handleFollow); // addEventListener 함수를 삭제
         };
     });
+    useEffect(() => {
+        getMarketInfo();
+    }, []);
+    useEffect(() => {}, [floors]);
 
-    const bringCategoryValue = (value) => {
-        if (value === "KOREAN") return "한식";
-        else if (value === "JAPANESE") return "일식";
-        else if (value === "CHINESE") return "중식";
-        else if (value === "WESTERN") return "양식";
-        else if (value === "VIETNAM") return "베트남";
-        else if (value === "TAIWAN") return "태국";
-        else if (value === "SNACK") return "분식";
-        else if (value === "NOODLE") return "면요리";
-        else if (value === "BBQ") return "바베큐";
-        else if (value === "PORK") return "돼지고기";
-        else if (value === "BEEF") return "소고기";
-        else if (value === "CHICKEN") return "닭고기";
-        else if (value === "LAMB") return "양고기";
-        else if (value === "CAFE") return "카페";
-        else if (value === "DESSERT") return "디저트";
-        else if (value === "BAR") return "바";
-        else if (value === "PUB") return "술집";
-    };
-    let categoryList = [];
-
-    const getMarketInfo = () => {
-        axios
+    const getMarketInfo = async () => {
+        await axios
             .get(url + `/fooding/restaurant/${id}`, {
                 headers: {
                     "Content-Type": "application/json",
@@ -782,9 +791,9 @@ function Register(floorCallback) {
                 setMarketImages(res.data.images);
                 setMarketInfo(res.data);
             })
-            .then(() => {
+            .then(async () => {
                 setGetSuccess(true);
-                axios
+                await axios
                     .get(url + `/fooding/restaurant/${id}/structure`, {
                         headers: {
                             "Content-Type": "application/json",
@@ -809,11 +818,6 @@ function Register(floorCallback) {
                 setMarketInfo(null);
             });
     };
-
-    useEffect(() => {
-        getMarketInfo();
-    }, []);
-    useEffect(() => {}, [floors]);
 
     const weekdayTimeEndHandleForm = (e) => {
         const val = e.target.value;
@@ -844,13 +848,6 @@ function Register(floorCallback) {
         e.target.value = "";
     };
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
     const handleSelect = (e) => {
         if (!categoryValueSelected.includes(e.target.value)) {
             setCategoryValueSelected((currentArray) => [...currentArray, e.target.value]);
@@ -963,7 +960,7 @@ function Register(floorCallback) {
         floors[index] = structureInfo;
     };
 
-    const postData = () => {
+    const postData = async () => {
         const data = JSON.stringify({
             floors: floors,
         });
@@ -978,7 +975,7 @@ function Register(floorCallback) {
             data: data,
         };
 
-        axios(config)
+        await axios(config)
             .then(function (response) {
                 setAlertModal(true);
                 setAlertStructure(true);
@@ -991,10 +988,11 @@ function Register(floorCallback) {
                 console.log(error);
             });
     };
+
     const bringCanvas = (index) => {
         setSelectedFloor(index);
         let temp = floor;
-        let temptemp = temp.map((bool) => false);
+        let temptemp = temp.map(() => false);
         temptemp[index] = true;
         setFloor(temptemp);
     };
@@ -1012,27 +1010,6 @@ function Register(floorCallback) {
         console.log("삭제 버튼 눌렀을때 floors", floors);
         postData();
     };
-    const drawButtonagain = () => {
-        floor.map((bool, index) => {
-            console.log("button번호", index);
-            //if(floor.length===(index+1)){
-            //(<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
-
-            //}else{
-            return (
-                <FloorButton
-                    num={index}
-                    onClick={(e) => {
-                        bringCanvas(index);
-                    }}
-                >
-                    <p>{index + 1}층</p>
-                </FloorButton>
-            );
-            //}
-        });
-    };
-    const [nav, setNav] = useState(1);
 
     return (
         <Container>
@@ -1589,6 +1566,6 @@ function Register(floorCallback) {
             </ArrowUp>
         </Container>
     );
-}
+};
 
 export default Register;
