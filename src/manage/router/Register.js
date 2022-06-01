@@ -12,7 +12,8 @@ import axios from "axios";
 import MyCanvas from "../component/MyCanvas";
 import NumericInput from "react-numeric-input";
 import ShowHow from "../component/ShowHow";
-import { BsQuestionCircleFill } from "react-icons/bs";
+import { BsQuestionCircleFill,BsPlusSquare } from "react-icons/bs";
+import { MdOutlineCancel } from "react-icons/md";
 import { style } from "motion";
 import { motion, AnimatePresence } from "framer-motion";
 import "@fortawesome/fontawesome-free/js/all.js";
@@ -431,6 +432,28 @@ const FloorContainer = styled.div`
     width: 800px;
     height: 40px;
     display: flex;
+    .floorPlusBtn{
+        font-size:40px;
+        background-color: ${(props) => props.theme.veryLightMainColor};
+        color: ${(props) => props.theme.mainColor};
+
+    }
+    .floorPlusBtn:hover{
+        cursor:pointer;
+    }
+    .floorCancelCss{
+        color:#ffe2bc;
+        width:30px;
+        height:30px;
+        display:flex; 
+        justify-content:center;
+        align-items:center;
+        font-size:25px;
+        margin-left:5px;
+    }
+    .floorCancelCss:hover{
+        cursor:pointer;
+    }
 `;
 const StructureDesc = styled.div`
     width: 50px;
@@ -998,14 +1021,14 @@ function Register(floorCallback) {
         setFloor(temptemp);
     };
     const FloorButton = styled.div`
-        width: 80px;
+        width: 60px;
         height: 40px;
         border-radius: 10px;
         margin-left: 10px;
-        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "white")}; 
+        background-color: ${(props) => (props.num == selectedFloor ? "#FF7B54" : "#ffe2bc")}; 
         /* #f4f4f5 */
-        color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
-        border: solid  2px #FF7B54 ;
+        color: ${(props) => (props.num == selectedFloor ? "white" : "#FF7B54")};
+        /* border: solid  2px #FF7B54 ; */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -1562,9 +1585,9 @@ function Register(floorCallback) {
             <CanvasContainer ref={structRef}>
                 <CanvasOptionContainer className="canvasOptionContainer">
                     <FloorContainer>
-                        <AppendFloor onClick={appendFloor}>
-                            <div>층 추가</div>
-                        </AppendFloor>
+                        {/* <AppendFloor onClick={appendFloor}> */}
+                        <div className="floorPlusBtn" onClick={appendFloor}><BsPlusSquare></BsPlusSquare></div>
+                        {/* </AppendFloor> */}
 
                         {floor.map((bool, index) => {
                             return (
@@ -1580,9 +1603,9 @@ function Register(floorCallback) {
                         })}
 
                         {floor.length !== 1 ? (
-                            <DelButton onClick={eraseFloor}>
-                                X
-                            </DelButton>
+                            <div className="floorCancelCss" onClick={eraseFloor}>
+                                <MdOutlineCancel></MdOutlineCancel>
+                            </div>
                         ) : null}
                     </FloorContainer>
                     <StructureDesc>
