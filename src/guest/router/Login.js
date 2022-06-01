@@ -206,13 +206,14 @@ const Login = () => {
     };
     axios(config)
       .then(function (response) {
-        navigate("/guest/restaurantList");
         console.log("response ", response);
 
         console.log("token", response.data.token.accessToken);
 
         localStorage.setItem("guestToken", response.data.token.accessToken);
-        console.log(response.status);
+      })
+      .then(function (response) {
+        navigate("/guest/restaurantList");
       })
       .catch(function (error) {
         //console.log(error);

@@ -47,8 +47,6 @@ const MapSearchContainer = styled.div`
 const RestaurantHeader = () => {
   const [currentLocation, setCurrentLocation] = useState();
 
-  const getToken = localStorage.getItem("guestToken");
-
   useEffect(() => {
     var lat, lng, v, data;
     var isAndroid = /android/i.test(navigator.userAgent); //현재기기가 안드인지 체크
@@ -86,6 +84,10 @@ const RestaurantHeader = () => {
 
       data = JSON.stringify(v);
     }
+
+    const getToken = localStorage.getItem("guestToken");
+
+    console.log("getToken:", getToken);
 
     var config = {
       method: "post",
