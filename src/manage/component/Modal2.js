@@ -8,6 +8,39 @@ import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import "@fortawesome/fontawesome-free/js/all.js";
 import { url } from "../../Api";
+import { AnimatePresence } from "framer-motion";
+
+const appearDisappear = keyframes`
+    0%{
+      opacity:0;
+    }
+    50%{
+      opacity:1.0;
+    }
+    100%{
+      opacity:0;
+      
+    }
+`;
+const AlertModal = styled.div`
+    z-index: 1;
+    position: absolute;
+    width: 300px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50px;
+    background-color: gray;
+    color: white;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    opacity: 0;
+    animation: ${appearDisappear} 3s ease-in-out;
+`;
+
 const fadeIn = keyframes`
   0% {
     opacity: 0;
@@ -212,6 +245,7 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
   );
   const [tableWidthPixel, setTableWidthPixel] = useState(figureHeight * 50);
   const [tableHeightPixel, setTableHeightPixel] = useState(figureHeight * 50);
+  const [cantChange,setCantChange] = useState(false);
   const onChange = (event) => {
     const {
       target: { value, className },
@@ -272,8 +306,9 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
               }).then((tableNumss)=>{
                   if (isPassedValid) {//빈칸 있는지 확인 
                     console.log("isPassedValid");
-                    if (editModal && (originalTableNum==tableNum)||((originalTableNum!==tableNum)&&!tableNumss.includes(tableNum))) {
+                    if (editModal) {
                       // 수정
+                      if((originalTableNum==tableNum)||((originalTableNum!==tableNum)&&!tableNumss.includes(tableNum))){
                       setModalTrigger(false);
                       const modal = false;
                       const submit = false;
@@ -288,7 +323,11 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
                         modal,
                         submit,
                         edit
-                      );
+                      );}
+                      else{
+                        //여기에 수정 안된다는 모달창
+                        setCantChange(true);
+                      }
                     } else {
                       // 기본 등록ff
                       if(!tableNumss.includes(tableNum)){
@@ -308,7 +347,10 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
                         submit,
                         edit
                       );
+                    }else{
+                      setCantChange(true);
                     }
+                    
                   }
                   }
                 
@@ -514,6 +556,9 @@ const Modal2 = ({ parentCallback, editModal, editTableObj }) => {
             등록
           </button>
         </Footer>
+        <AnimatePresence>
+               {cantChange ? <AlertModal>이미 존재하는 테이블 번호입니다</AlertModal> : null} 
+            </AnimatePresence>
       </Container>
     </>
   );
