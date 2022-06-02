@@ -81,6 +81,7 @@ const CurrentTables = () => {
   }, []);
 
   const getAvailableTable = () => {
+    const getToken = localStorage.getItem("managerToken");
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/table`,
@@ -106,6 +107,7 @@ const CurrentTables = () => {
   };
 
   const getShape = () => {
+    const getToken = localStorage.getItem("managerToken");
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/structure`,
@@ -117,7 +119,7 @@ const CurrentTables = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
+        console.log("structure테이블 길이 있는지 ",response.data.floors.length);
         const floors = response.data.floors;
 
         if (floors.length === 0) {
@@ -300,6 +302,7 @@ const CurrentTables = () => {
         })}
       </FloorButtonContainer>
       {noResult ? <Notice>등록된 테이블이 없습니다.</Notice> : null}
+
       <Stage
         style={{
           marginTop: "10px",
