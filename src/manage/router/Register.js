@@ -1,7 +1,8 @@
 import Header from "../component/Header";
 import React, { useEffect, useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useForm } from "react-hook-form";
+import { Navigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slick";
@@ -11,9 +12,9 @@ import axios from "axios";
 import MyCanvas from "../component/MyCanvas";
 import NumericInput from "react-numeric-input";
 import ShowHow from "../component/ShowHow";
-import { BsQuestionCircleFill, BsPlusSquare } from "react-icons/bs";
-import { MdOutlineCancel } from "react-icons/md";
-import { AnimatePresence } from "framer-motion";
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { style } from "motion";
+import { motion, AnimatePresence } from "framer-motion";
 import "@fortawesome/fontawesome-free/js/all.js";
 
 const Container = styled.div`
@@ -430,27 +431,6 @@ const FloorContainer = styled.div`
   width: 800px;
   height: 40px;
   display: flex;
-  .floorPlusBtn {
-    font-size: 40px;
-    background-color: ${(props) => props.theme.veryLightMainColor};
-    color: ${(props) => props.theme.mainColor};
-  }
-  .floorPlusBtn:hover {
-    cursor: pointer;
-  }
-  .floorCancelCss {
-    color: #ffe2bc;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 25px;
-    margin-left: 5px;
-  }
-  .floorCancelCss:hover {
-    cursor: pointer;
-  }
 `;
 const StructureDesc = styled.div`
   width: 50px;
@@ -648,8 +628,23 @@ const ArrowUp = styled.div`
   cursor: pointer;
 `;
 
-const Register = () => {
+function Register(floorCallback) {
+  const [modal, setModal] = useState(false);
+
+  const infoRef = useRef();
+  const menuRef = useRef();
+  const structRef = useRef();
+
+  const initValue = {
+    availableMinute: 0,
+    availableHour: 1,
+  };
+  const { register, watch, getValues, control } = useForm({
+    defaultValues: initValue,
+  });
+
   const [marketImgs, setMarketImgs] = useState([]);
+
   const [streetAddress, setStreetAddress] = useState({});
   const [categorySelected, setCategorySelected] = useState([]);
   const [categoryValueSelected, setCategoryValueSelected] = useState([]);
@@ -658,10 +653,12 @@ const Register = () => {
   const [availableHour, setAvailableHour] = useState(0);
   const [availableMinute, setAvailableMinute] = useState(30);
 
-  const [weekdayTimeStartState, setWeekdayTimeStartState] = useState("11:00");
-  const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00");
-  const [weekendTimeStartState, setWeekendTimeStartState] = useState("11:00");
-  const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00");
+  const [weekdayTimeStartState, setWeekdayTimeStartState] =
+    useState("11:00:00");
+  const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00:00");
+  const [weekendTimeStartState, setWeekendTimeStartState] =
+    useState("11:00:00");
+  const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
   const [getSuccess, setGetSuccess] = useState(false);
   const [marketInfo, setMarketInfo] = useState();
   const [floor, setFloor] = useState([true]);
@@ -677,53 +674,53 @@ const Register = () => {
   const [alertStructure, setAlertStructure] = useState(false);
   const [alertInfo, setAlertInfo] = useState(false);
 
+  const [arrowUp, setArrowUp] = useState(false);
+
   const [ScrollY, setScrollY] = useState(0); // 스크롤값을 저장하기 위한 상태
   const [BtnStatus, setBtnStatus] = useState(false); // 버튼 상태
 
-  const [nav, setNav] = useState(1);
-
-  const infoRef = useRef();
-  const menuRef = useRef();
-  const structRef = useRef();
-
-  const initValue = {
-    availableMinute: 0,
-    availableHour: 1,
-  };
-  const { register, getValues } = useForm({
-    defaultValues: initValue,
-  });
+  const [btnClick, setBtnClick] = useState(false);
 
   let floors = [];
+  const handleFollow = () => {
+    setScrollY(window.pageYOffset);
 
-  const getToken = localStorage.getItem("managerToken");
-  const id = localStorage.getItem("marketId");
-
-  const FloorButton = styled.div`
-    width: 60px;
-    height: 40px;
-    border-radius: 10px;
-    margin-left: 10px;
-    background-color: ${(props) =>
-      props.num == selectedFloor ? "#FF7B54" : "#ffe2bc"};
-    /* #f4f4f5 */
-    color: ${(props) => (props.num == selectedFloor ? "white" : "#FF7B54")};
-    /* border: solid  2px #FF7B54 ; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    :hover {
-      cursor: pointer;
+    if (ScrollY > 300) {
+      // 100 이상이면 버튼이 보이게
+      setBtnStatus(true);
+    } else {
+      setBtnStatus(false);
+      setNav(1);
     }
-  `;
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
   };
+
+  const handleTop = () => {
+    // 클릭하면 스크롤이 위로 올라가는 함수
+    // setScrollY(0); // ScrollY 의 값을 초기화
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    // setScrollY(0);
+    //setBtnStatus(false); // BtnStatus의 값을 false로 바꿈 => 버튼 숨김
+    setNav(1);
+  };
+
+  // useEffect(() => {
+  //   console.log("ScrollY is ", ScrollY); // ScrollY가 변화할때마다 값을 콘솔에 출력
+  // }, [ScrollY]);
+
+  useEffect(() => {
+    const watch = () => {
+      window.addEventListener("scroll", handleFollow);
+    };
+    watch(); // addEventListener 함수를 실행
+    return () => {
+      window.removeEventListener("scroll", handleFollow); // addEventListener 함수를 삭제
+    };
+  });
 
   const bringCategoryValue = (value) => {
     if (value === "KOREAN") return "한식";
@@ -744,46 +741,18 @@ const Register = () => {
     else if (value === "BAR") return "바";
     else if (value === "PUB") return "술집";
   };
-  const handleFollow = () => {
-    setScrollY(window.pageYOffset);
+  let categoryList = [];
+  // useEffect(()=>{
+  //   let temp = categorySelected;
+  //   categoryList.push(temp);
+  //   console.log(categoryList);
+  // },[categorySelected]);
 
-    if (ScrollY > 300) {
-      // 100 이상이면 버튼이 보이게
-      setBtnStatus(true);
-    } else {
-      setBtnStatus(false);
-      setNav(1);
-    }
-  };
-
-  const handleTop = () => {
-    // 클릭하면 스크롤이 위로 올라가는 함수
-    // setScrollY(0); // ScrollY 의 값을 초기화
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    setNav(1);
-  };
-
-  useEffect(() => {
-    const watch = () => {
-      window.addEventListener("scroll", handleFollow);
-    };
-    watch(); // addEventListener 함수를 실행
-    return () => {
-      window.removeEventListener("scroll", handleFollow); // addEventListener 함수를 삭제
-    };
-  });
-  useEffect(() => {
-    getMarketInfo();
-  }, []);
-  useEffect(() => {}, [floors]);
-
-  const getMarketInfo = async () => {
+  const getMarketInfo = () => {
+    const getToken = localStorage.getItem("managerToken");
     const id = localStorage.getItem("marketId");
-
-    await axios
+    //.get(url + `/fooding/restaurant/${id}`, {
+    axios
       .get(url + `/fooding/restaurant/${id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -795,9 +764,9 @@ const Register = () => {
         setMarketImages(res.data.images);
         setMarketInfo(res.data);
       })
-      .then(async () => {
+      .then(() => {
         setGetSuccess(true);
-        await axios
+        axios
           .get(url + `/fooding/restaurant/${id}/structure`, {
             headers: {
               "Content-Type": "application/json",
@@ -811,6 +780,7 @@ const Register = () => {
             const savefloorNum = Array(res.data.floors.length);
             savefloorNum.fill(false);
             savefloorNum[0] = true;
+            console.log("saveFloorNum", savefloorNum);
             setFloor(savefloorNum);
           })
           .catch((err) => {
@@ -823,44 +793,21 @@ const Register = () => {
       });
   };
 
+  useEffect(() => {
+    getMarketInfo();
+  }, []);
+
   const weekdayTimeEndHandleForm = (e) => {
-    let val = e.target.value;
-    console.log("Val:", val);
-    console.log(val.substring(0, 2));
-
-    let hour = val.substring(0, 2);
-
-    if (hour == "00") {
-      hour = "24";
-      const TotalVal = hour + ":" + val.substring(3, 5);
-
-      console.log("totalVal:", TotalVal);
-
-      setWeekdayTimeEndState(TotalVal);
-    } else {
-      setWeekdayTimeEndState(val);
-    }
+    const val = e.target.value;
+    setWeekdayTimeEndState(val);
   };
   const weekdayTimeStartHandleForm = (e) => {
     const val = e.target.value;
     setWeekdayTimeStartState(val);
   };
   const weekendTimeEndHandleForm = (e) => {
-    let val = e.target.value;
-    console.log("Val:", val);
-    console.log(val.substring(0, 2));
-
-    let hour = val.substring(0, 2);
-
-    if (hour == "00") {
-      hour = "24";
-      const TotalVal = hour + ":" + val.substring(3, 5);
-
-      console.log("totalVal:", TotalVal);
-      setWeekendTimeEndState(TotalVal);
-    } else {
-      setWeekendTimeEndState(val);
-    }
+    const val = e.target.value;
+    setWeekendTimeEndState(val);
   };
   const weekendTimeStartHandleForm = (e) => {
     const val = e.target.value;
@@ -874,29 +821,35 @@ const Register = () => {
 
     const tempArr = [...marketImgs, img];
     setMarketImgs(tempArr);
+    console.log("마켓이미지", tempArr);
     const prevFile = URL.createObjectURL(e.target.files[0]);
     setFile([...file, prevFile]);
+    console.log("imgs: ", file);
+    console.log("prevFile:", prevFile);
     e.target.value = "";
   };
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   const handleSelect = (e) => {
-    if (categorySelected.length < 5) {
-      if (!categoryValueSelected.includes(e.target.value)) {
-        setCategoryValueSelected((currentArray) => [
-          ...currentArray,
-          e.target.value,
-        ]);
-      }
-      if (
-        !categorySelected.includes(
-          e.target.options[e.target.selectedIndex].text
-        )
-      ) {
-        setCategorySelected((currentArray) => [
-          ...currentArray,
-          e.target.options[e.target.selectedIndex].text,
-        ]);
-      }
+    if (!categoryValueSelected.includes(e.target.value)) {
+      setCategoryValueSelected((currentArray) => [
+        ...currentArray,
+        e.target.value,
+      ]);
+    }
+    if (
+      !categorySelected.includes(e.target.options[e.target.selectedIndex].text)
+    ) {
+      setCategorySelected((currentArray) => [
+        ...currentArray,
+        e.target.options[e.target.selectedIndex].text,
+      ]);
     }
   };
   const categoryButtonClick = (index) => {
@@ -913,16 +866,18 @@ const Register = () => {
     //원래 있는 층에서 추가. 버튼 생성되고 그 버튼 누르면 canvas창 나옴
     setFloor([...floor, false]);
   };
-  const submitInfo = async (e) => {
+  const submitInfo = (e) => {
+    var axios = require("axios");
     e.preventDefault();
     const values = getValues();
     let changeToMinutes =
       parseInt(availableHour * 60) + parseInt(availableMinute);
-    let street;
-    let data = new FormData();
 
+    const getToken = localStorage.getItem("managerToken");
+    let data = new FormData();
     const address = values.address;
-    await axios
+    let street;
+    axios
       .post(url + "/fooding/geocode", address, {
         headers: {
           "Content-Type": "application/json",
@@ -934,6 +889,7 @@ const Register = () => {
         setStreetAddress(res.data);
         street = res.data;
       })
+      .then((res) => {})
       .then(() => {
         const content = {
           name: values.businessName,
@@ -965,6 +921,7 @@ const Register = () => {
           .post(url + "/fooding/admin/restaurant", data, {
             headers: {
               "Content-Type": "multipart/form-data",
+              //  "Content-Type": "application/json",
               Authorization: "Bearer " + getToken,
             },
           })
@@ -976,6 +933,7 @@ const Register = () => {
             setMarketId(res.data);
             localStorage.setItem("marketId", res.data);
             getMarketInfo();
+            // structRef.current?.scrollIntoView({ behavior: "smooth" });
           })
           .catch((err) => {
             setFailModal(true);
@@ -1001,13 +959,22 @@ const Register = () => {
 
   const handleFloorCallback = (index, structureInfo) => {
     floors[index] = structureInfo;
+    console.log("층", index + 1);
+    console.log("구조도", structureInfo);
+    console.log("층들", floors);
   };
-
-  const postData = async () => {
+  useEffect(() => {
+    console.log("gg");
+  }, [floors]);
+  const postData = () => {
+    const marketId = localStorage.getItem("marketId");
+    console.log("매장 구조 보내기 전 floor : ", floors);
     const data = JSON.stringify({
       floors: floors,
     });
 
+    console.log("datadatadatadata", data);
+    const getToken = localStorage.getItem("managerToken");
     const config = {
       method: "post",
       url: url + `/fooding/admin/restaurant/${marketId}/structure`,
@@ -1018,11 +985,13 @@ const Register = () => {
       data: data,
     };
 
-    await axios(config)
+    axios(config)
       .then(function (response) {
         setAlertModal(true);
         setAlertStructure(true);
+
         modalSet();
+        console.log(response);
       })
       .catch(function (error) {
         setFailModal(true);
@@ -1031,15 +1000,56 @@ const Register = () => {
         console.log(error);
       });
   };
-
+  const [current, setCurrent] = useState(0);
   const bringCanvas = (index) => {
     setSelectedFloor(index);
     let temp = floor;
-    let temptemp = temp.map(() => false);
+    let temptemp = temp.map((bool) => false);
     temptemp[index] = true;
     setFloor(temptemp);
   };
+  const FloorButton = styled.div`
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    margin-left: 10px;
+    background-color: ${(props) =>
+      props.num == selectedFloor ? "#FF7B54" : "white"};
+    /* #f4f4f5 */
+    color: ${(props) => (props.num == selectedFloor ? "white" : "black")};
+    border: solid 2px #ff7b54;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+    }
+  `;
+  const DelButton = styled.div`
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin-left: 10px;
+    background-color: ${(props) => props.theme.veryLightMainColor};
+    color: #ff7b54;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+    }
+  `;
+  const timeContainerDiv = styled.div`
+    width: 500px;
+    height: 20px;
+    margin-left: 10px;
+    background-color: red;
+  `;
+  const onChange1 = (current) => {
+    console.log("onChange:", current);
+    setCurrent({ current });
+  };
   const onChangeAvailableHour = (e) => setAvailableHour(e);
   const onChangeAvailableMinute = (e) => setAvailableMinute(e);
 
@@ -1053,6 +1063,27 @@ const Register = () => {
     console.log("삭제 버튼 눌렀을때 floors", floors);
     postData();
   };
+  const drawButtonagain = () => {
+    floor.map((bool, index) => {
+      console.log("button번호", index);
+      //if(floor.length===(index+1)){
+      //(<FloorButton onClick={(e)=>{bringCanvas(index)}}><div>X</div><p>{index+1}층</p></FloorButton>)
+
+      //}else{
+      return (
+        <FloorButton
+          num={index}
+          onClick={(e) => {
+            bringCanvas(index);
+          }}
+        >
+          <p>{index + 1}층</p>
+        </FloorButton>
+      );
+      //}
+    });
+  };
+  const [nav, setNav] = useState(1);
 
   return (
     <Container>
@@ -1260,6 +1291,20 @@ const Register = () => {
               <InputBox style={{ width: "80%", paddingLeft: "15px" }}>
                 {marketInfo === null ? (
                   <>
+                    {/* <label>
+                
+                    <input
+                      type="number"
+                      min="0"
+                      max="10"
+                      name="availableHour"
+                      className="TimeInputStyle"
+                      // {...register("availableHour")}
+                      style={{ marginTop: "1px" }}
+                    />
+                    
+                    
+                  </div></label> */}
                     <div className="TimeDiv">
                       <NumericInput
                         style={{
@@ -1276,6 +1321,16 @@ const Register = () => {
                       <p>시간</p>
                     </div>
                     <div className="TimeDiv">
+                      {/* <input
+                      type="number"
+                      step="10"
+                      min="10"
+                      max="50"
+                      className="TimeInputStyle"
+                      {...register("availableMinute")}
+                      style={{ marginTop: "1px" }}
+                    /> */}
+
                       <NumericInput
                         style={{
                           input: {
@@ -1294,9 +1349,7 @@ const Register = () => {
                   </>
                 ) : (
                   <span>
-                    {Math.floor(marketInfo?.maximumUsageTime / 60) == "00"
-                      ? null
-                      : `${Math.floor(marketInfo?.maximumUsageTime / 60)}시간`}
+                    {Math.floor(marketInfo?.maximumUsageTime / 60)}시간{" "}
                     {marketInfo?.maximumUsageTime % 60}분
                   </span>
                 )}
@@ -1384,7 +1437,9 @@ const Register = () => {
               </InputBox>
             </InputContainer>
             <InputContainer className="NumberContainer BorderTop BorderBottom">
-              <NameBox>
+              <NameBox
+              // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
+              >
                 <p>번호</p>
               </NameBox>
               <NumContainer>
@@ -1421,8 +1476,12 @@ const Register = () => {
                 </div>
               </NumContainer>
             </InputContainer>
+            {/* </div> */}
+            {/* <div style={{ width: "100%", height: "400px", marginTop:"10px" }}> */}
             <InputContainer className="Time BorderTop BorderBottom">
-              <NameBox>
+              <NameBox
+              // style={{ borderRight: "1px solid rgba(222, 222, 222, 0.93)" }}
+              >
                 <p>시간</p>
               </NameBox>
               <NumContainer>
@@ -1436,6 +1495,7 @@ const Register = () => {
                         value={weekdayTimeStartState}
                         className="TimeInput"
                         onChange={weekdayTimeStartHandleForm}
+                        //  {...register("weekdayTimeStart")}
                       />
                       <p>부터</p>
                       <input
@@ -1508,9 +1568,9 @@ const Register = () => {
       <CanvasContainer ref={structRef}>
         <CanvasOptionContainer className="canvasOptionContainer">
           <FloorContainer>
-            <div className="floorPlusBtn" onClick={appendFloor}>
-              <BsPlusSquare></BsPlusSquare>
-            </div>
+            <AppendFloor onClick={appendFloor}>
+              <div>층 추가</div>
+            </AppendFloor>
 
             {floor.map((bool, index) => {
               return (
@@ -1526,9 +1586,7 @@ const Register = () => {
             })}
 
             {floor.length !== 1 ? (
-              <div className="floorCancelCss" onClick={eraseFloor}>
-                <MdOutlineCancel></MdOutlineCancel>
-              </div>
+              <DelButton onClick={eraseFloor}>X</DelButton>
             ) : null}
           </FloorContainer>
           <StructureDesc>
@@ -1551,6 +1609,7 @@ const Register = () => {
           console.log("층수", floorNum);
           console.log("플로어", floor);
 
+          //   if(bool==true){
           return (
             <MyCanvas
               floorCallback={handleFloorCallback}
@@ -1558,6 +1617,7 @@ const Register = () => {
               index={index}
             ></MyCanvas>
           );
+          // }
         })}
 
         <ButtonContainer>
@@ -1593,8 +1653,18 @@ const Register = () => {
       >
         <i class="fas fa-angle-up"></i>
       </ArrowUp>
+
+      {/* <ArrowUpDiv>
+        <ArrowUp
+          // 버튼 노출 여부
+          onClick={handleTop}
+          className={BtnStatus ? "active" : "none"}
+        >
+          <i class="fas fa-angle-up"></i>
+        </ArrowUp>
+      </ArrowUpDiv> */}
     </Container>
   );
-};
+}
 
 export default Register;

@@ -151,14 +151,17 @@ const Location = () => {
 
     let container = document.getElementById("map");
 
-    container.innerHTML = null;
-
     let options = {
       center: new kakao.maps.LatLng(latLS, lngLS),
       level: 4,
     };
 
+    //const tmp = container.innerHTML;
+    container.innerHTML = null;
+
     map = new kakao.maps.Map(container, options);
+
+    //tmp = null;
 
     kakao.maps.event.addListener(map, "dragend", function () {
       // 지도의  레벨을 얻어옵니다
