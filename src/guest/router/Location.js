@@ -14,7 +14,7 @@ import { FaSearchLocation } from "react-icons/fa";
 
 const Container = styled.div`
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
   margin-bottom: 30px;
@@ -152,7 +152,7 @@ const Location = () => {
     let container = document.getElementById("map");
     let options = {
       center: new kakao.maps.LatLng(latLS, lngLS),
-      level: 5,
+      level: 4,
     };
 
     map = new kakao.maps.Map(container, options);
@@ -461,7 +461,7 @@ const Location = () => {
         ></HeaderSearch>
       </form>
       <div>
-        <div id="map" style={{ width: "410px", height: "770px" }}></div>
+        <div id="map" style={{ width: "410px", height: "100vh" }}></div>
         {/* <div id="map" style={{ width: "120px", height: "120px" }}></div> */}
       </div>
       {click ? (
