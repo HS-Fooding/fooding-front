@@ -108,7 +108,7 @@ const MyLocationBtn = styled.button`
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 80px;
+  top: 85px;
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 10;
@@ -123,6 +123,7 @@ const SearchBtn = styled.button`
   span {
     margin-left: 4px;
   }
+  cursor: pointer;
 `;
 
 const Location = () => {
@@ -156,7 +157,7 @@ const Location = () => {
 
     map = new kakao.maps.Map(container, options);
 
-    kakao.maps.event.addListener(map, "center_changed", function () {
+    kakao.maps.event.addListener(map, "dragend", function () {
       // 지도의  레벨을 얻어옵니다
       var level = map.getLevel();
 
@@ -253,6 +254,12 @@ const Location = () => {
     await localStorage.setItem("lng", 127.0101779866357);
 
     await myLocate(); // 혜화로 세팅 테스트
+
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+
+    // var moveLatLon = new kakao.maps.LatLng(latLS, lngLS);
+    // map.panTo(moveLatLon);
 
     if (searchWord !== "none") {
       setSearchedWord(searchWord);
@@ -491,7 +498,7 @@ const Location = () => {
       </MyLocationBtn>
       <SearchBtn onClick={getNewPosition}>
         <FaSearchLocation></FaSearchLocation>
-        <span>현위치로 검색</span>
+        <span>현지역으로 검색</span>
       </SearchBtn>
     </Container>
   );
