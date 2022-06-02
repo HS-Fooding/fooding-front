@@ -1349,8 +1349,8 @@ function Register(floorCallback) {
                   </>
                 ) : (
                   <span>
-                    {Math.floor(marketInfo?.maximumUsageTime / 60)}시간{" "}
-                    {marketInfo?.maximumUsageTime % 60}분
+                    {Math.floor(marketInfo?.maximumUsageTime/60) == "00" ? null : `${Math.floor(marketInfo?.maximumUsageTime/60)}시간`}
+                                        {marketInfo?.maximumUsageTime % 60}분
                   </span>
                 )}
               </InputBox>
