@@ -179,15 +179,33 @@ const ReservList = () => {
 
         axios(config)
             .then(function (response) {
+                console.log(response.data);
                 const list = response.data;
                 const currentTime = new Date();
                 list.forEach((m) => {
-                    const date = new Date(m.reserveDate);
+                    var date = new Date(m.reserveDate);
+                    const time = m.reserveTime.split(":");
+                    date.setHours(time[0]);
+                    date.setMinutes(time[1]);
                     date.getTime() < currentTime.getTime() ? oldTmp.push(m) : commingTmp.push(m);
+                    console.log(date);
                 });
 
-                setOldReservations([...oldTmp]);
+                oldTmp.sort(function (a, b) {
+                    const time1 = a.reserveTime.split(":");
+                    const time2 = b.reserveTime.split(":");
+
+                    var a = new Date(a.reserveDate);
+                    a.setHours(time1[0]);
+                    a.setMinutes(time1[1]);
+                    var b = new Date(b.reserveDate);
+                    b.setHours(time2[0]);
+                    b.setMinutes(time2[1]);
+
+                    return b - a;
+                });
                 setCommingReservations([...commingTmp]);
+                setOldReservations([...oldTmp]);
             })
             .catch(function (error) {
                 console.log(error);
@@ -228,8 +246,10 @@ const ReservList = () => {
         <Container>
             <Header back="/guest/restaurantList" title={"예약내역"} />
             <Reservations>
-                {reservations?.length == 0 ? <Notice>예약이 존재하지 않습니다.</Notice> : null}
-                {reservations?.map((r, index) => (
+                {oldReservations?.length == 0 && commingReservations?.length == 0 ? (
+                    <Notice>예약이 존재하지 않습니다.</Notice>
+                ) : null}
+                {commingReservations?.map((r, index) => (
                     <Reservation key={index}>
                         <Info
                             onClick={() => {
@@ -254,6 +274,24 @@ const ReservList = () => {
                                 <i className="fa-regular fa-trash-can"></i>
                             </button>
                         </CancelBtnBox>
+                    </Reservation>
+                ))}
+                {oldReservations?.map((r, index) => (
+                    <Reservation key={index}>
+                        <Info
+                            onClick={() => {
+                                navigate(`/guest/${r.restId}`);
+                            }}
+                        >
+                            <div className="resName">{r.restName}</div>
+                            <div>
+                                <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
+                            </div>
+                            <div>
+                                <span>{r.reserveCount}명</span> <span>/</span>{" "}
+                                {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
+                            </div>
+                        </Info>
                     </Reservation>
                 ))}
             </Reservations>
