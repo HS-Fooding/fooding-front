@@ -657,10 +657,10 @@ const Register = () => {
     const [availableHour, setAvailableHour] = useState(0);
     const [availableMinute, setAvailableMinute] = useState(30);
 
-    const [weekdayTimeStartState, setWeekdayTimeStartState] = useState("11:00:00");
-    const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00:00");
-    const [weekendTimeStartState, setWeekendTimeStartState] = useState("11:00:00");
-    const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00:00");
+    const [weekdayTimeStartState, setWeekdayTimeStartState] = useState("11:00");
+    const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00");
+    const [weekendTimeStartState, setWeekendTimeStartState] = useState("11:00");
+    const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00");
     const [getSuccess, setGetSuccess] = useState(false);
     const [marketInfo, setMarketInfo] = useState();
     const [floor, setFloor] = useState([true]);
@@ -1259,7 +1259,11 @@ const Register = () => {
                                     </>
                                 ) : (
                                     <span>
-                                        {Math.floor(marketInfo?.maximumUsageTime/60) == "00" ? null : `${Math.floor(marketInfo?.maximumUsageTime/60)}시간`}
+                                        {Math.floor(marketInfo?.maximumUsageTime / 60) == "00"
+                                            ? null
+                                            : `${Math.floor(
+                                                  marketInfo?.maximumUsageTime / 60
+                                              )}시간`}
                                         {marketInfo?.maximumUsageTime % 60}분
                                     </span>
                                 )}
