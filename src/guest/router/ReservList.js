@@ -27,7 +27,7 @@ const Reservations = styled.div`
     flex-direction: column;
     height: 85vh;
 
-    padding: 37px 10px;
+    padding: 10px 10px;
     overflow: auto;
     ::-webkit-scrollbar {
         display: none; /* Chrome, Safari, Opera*/
@@ -153,9 +153,17 @@ const Notice = styled.div`
     color: ${(props) => props.theme.fontGrayColor};
     margin: 50px 0px;
 `;
+const SubTitle = styled.div`
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    padding: 0;
+    color: tomato;
+`;
+const ReserveContainer = styled.div`
+    margin-bottom: 2rem;
+`;
 
 const ReservList = () => {
-    const [reservations, setReservations] = useState();
     const [oldReservations, setOldReservations] = useState([]);
     const [commingReservations, setCommingReservations] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -179,7 +187,6 @@ const ReservList = () => {
 
         axios(config)
             .then(function (response) {
-                console.log(response.data);
                 const list = response.data;
                 const currentTime = new Date();
                 list.forEach((m) => {
@@ -188,7 +195,6 @@ const ReservList = () => {
                     date.setHours(time[0]);
                     date.setMinutes(time[1]);
                     date.getTime() < currentTime.getTime() ? oldTmp.push(m) : commingTmp.push(m);
-                    console.log(date);
                 });
 
                 oldTmp.sort(function (a, b) {
@@ -249,51 +255,58 @@ const ReservList = () => {
                 {oldReservations?.length == 0 && commingReservations?.length == 0 ? (
                     <Notice>예약이 존재하지 않습니다.</Notice>
                 ) : null}
-                {commingReservations?.map((r, index) => (
-                    <Reservation key={index}>
-                        <Info
-                            onClick={() => {
-                                navigate(`/guest/${r.restId}`);
-                            }}
-                        >
-                            <div className="resName">{r.restName}</div>
-                            <div>
-                                <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
-                            </div>
-                            <div>
-                                <span>{r.reserveCount}명</span> <span>/</span>{" "}
-                                {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
-                            </div>
-                        </Info>
-                        <CancelBtnBox>
-                            <button
+                <ReserveContainer>
+                    <SubTitle>다가오는 예약</SubTitle>
+                    {commingReservations?.map((r, index) => (
+                        <Reservation key={index}>
+                            <Info
                                 onClick={() => {
-                                    deleteReservation(r.reserveId);
+                                    navigate(`/guest/${r.restId}`);
                                 }}
                             >
-                                <i className="fa-regular fa-trash-can"></i>
-                            </button>
-                        </CancelBtnBox>
-                    </Reservation>
-                ))}
-                {oldReservations?.map((r, index) => (
-                    <Reservation key={index}>
-                        <Info
-                            onClick={() => {
-                                navigate(`/guest/${r.restId}`);
-                            }}
-                        >
-                            <div className="resName">{r.restName}</div>
-                            <div>
-                                <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
-                            </div>
-                            <div>
-                                <span>{r.reserveCount}명</span> <span>/</span>{" "}
-                                {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
-                            </div>
-                        </Info>
-                    </Reservation>
-                ))}
+                                <div className="resName">{r.restName}</div>
+                                <div>
+                                    <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
+                                </div>
+                                <div>
+                                    <span>{r.reserveCount}명</span> <span>/</span>{" "}
+                                    {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
+                                </div>
+                            </Info>
+                            <CancelBtnBox>
+                                <button
+                                    onClick={() => {
+                                        deleteReservation(r.reserveId);
+                                    }}
+                                >
+                                    <i className="fa-regular fa-trash-can"></i>
+                                </button>
+                            </CancelBtnBox>
+                        </Reservation>
+                    ))}
+                </ReserveContainer>
+
+                <ReserveContainer>
+                    <SubTitle>이전 예약</SubTitle>
+                    {oldReservations?.map((r, index) => (
+                        <Reservation key={index}>
+                            <Info
+                                onClick={() => {
+                                    navigate(`/guest/${r.restId}`);
+                                }}
+                            >
+                                <div className="resName">{r.restName}</div>
+                                <div>
+                                    <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
+                                </div>
+                                <div>
+                                    <span>{r.reserveCount}명</span> <span>/</span>{" "}
+                                    {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
+                                </div>
+                            </Info>
+                        </Reservation>
+                    ))}
+                </ReserveContainer>
             </Reservations>
             {showModal ? (
                 <ModalContainer>
