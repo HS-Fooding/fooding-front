@@ -10,6 +10,7 @@ import { faEye, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { BiCurrentLocation } from "react-icons/bi";
+import { FaSearchLocation } from "react-icons/fa";
 
 const Container = styled.div`
   width: 410px;
@@ -102,32 +103,48 @@ const MyLocationBtn = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  color: ${(props) => props.theme.mainColor};
+`;
+
+const SearchBtn = styled.button`
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  z-index: 10;
+  border: none;
+  background-color: white;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 18px;
+  color: ${(props) => props.theme.mainColor};
+  span {
+    margin-left: 4px;
+  }
 `;
 
 const Location = () => {
   const [searchedWord, setSearchedWord] = useState();
   const [clickedMarket, setClickedMarket] = useState();
   const [click, setClick] = useState(false);
-  const [center, setCenter] = useState([]);
+  // const [center, setCenter] = useState([]);
 
   const [isSearch, setIsSearch] = useState(false);
   const [markerData, setMarkerData] = useState([]);
   const getToken = localStorage.getItem("guestToken");
+  const [latLng, setLatLng] = useState([
+    [37.58265617070882, 127.01017798663574],
+  ]);
 
   let markerdata = [];
   //   let myLocation = [37.58265617070882, 127.0101779866357]; // 한성대
 
   let searching = false;
+  let map, latlng;
 
   const makeMarker = (markderdata) => {
-    // var markerPosition = new kakao.maps.LatLng(
-    //   37.365264512305174,
-    //   127.10676860117488
-    // );
-    // var marker = new kakao.maps.Marker({
-    //   position: markerPosition,
-    // });
-
     const latLS = localStorage.getItem("lat");
     const lngLS = localStorage.getItem("lng");
 
@@ -137,7 +154,27 @@ const Location = () => {
       level: 5,
     };
 
-    var map = new kakao.maps.Map(container, options);
+    map = new kakao.maps.Map(container, options);
+
+    kakao.maps.event.addListener(map, "center_changed", function () {
+      // 지도의  레벨을 얻어옵니다
+      var level = map.getLevel();
+
+      // 지도의 중심좌표를 얻어옵니다
+      latlng = map.getCenter();
+
+      var message = "지도 레벨은 " + level + " 이고";
+      message +=
+        "중심 좌표는 위도 " +
+        latlng.getLat() +
+        ", 경도 " +
+        latlng.getLng() +
+        "입니다";
+
+      setLatLng([latlng.getLat(), latlng.getLng()]);
+
+      console.log(message);
+    });
 
     markerdata.forEach((el) => {
       // 마커를 생성합니다
@@ -204,6 +241,12 @@ const Location = () => {
       // localStorage.setItem("lng", 127.00378236901); // 혜화
     }
   }
+
+  // useEffect(() => {
+  //   if (latLng !== undefined) {
+  //     console.log("latlng", latlng.getLat(), latlng.getLng());
+  //   }
+  // }, [latLng]);
 
   const getMyLocateRes = async () => {
     await localStorage.setItem("lat", 37.58265617070882); // 한성대
@@ -358,6 +401,48 @@ const Location = () => {
     console.log("submit!");
   };
 
+  const getNewPosition = async () => {
+    console.log("latlng:", latLng[0], latLng[1]);
+
+    markerdata = [];
+
+    await localStorage.setItem("lat", latLng[0]);
+    await localStorage.setItem("lng", latLng[1]);
+
+    var config = {
+      method: "get",
+      url: url + `/fooding/restaurant/coord?x=${latLng[1]}&y=${latLng[0]}`,
+      headers: {
+        Authorization: "Bearer " + getToken,
+      },
+    };
+
+    await axios(config)
+      .then(function (response) {
+        //console.log(response.data.content);
+
+        response.data.content.map((market) => {
+          const obj = {
+            id: market.id,
+            lat: market.location.coordinate.y, // 위도
+            lng: market.location.coordinate.x, // 경도
+          };
+          markerdata.push(obj);
+        });
+
+        console.log("markderdata:", markerdata);
+
+        setMarkerData(markerdata);
+        return markerData;
+      })
+      .then((markerData) => {
+        makeMarker(markerData);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <Container>
       <Header back="/guest/restaurantList" title={""} />
@@ -404,6 +489,10 @@ const Location = () => {
       <MyLocationBtn onClick={getMyLocateRes}>
         <BiCurrentLocation></BiCurrentLocation>
       </MyLocationBtn>
+      <SearchBtn onClick={getNewPosition}>
+        <FaSearchLocation></FaSearchLocation>
+        <span>현위치로 검색</span>
+      </SearchBtn>
     </Container>
   );
 };
