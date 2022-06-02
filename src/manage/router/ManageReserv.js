@@ -329,8 +329,8 @@ const ManageReserv = () => {
 
         const openHour = tableInfo.open.substring(0, 2);
         const openMinute = tableInfo.open.substring(3, 5);
-        let closeHour; 
-        if(closeHour==tableInfo.close.substring(0, 2)){
+        let closeHour=tableInfo.close.substring(0, 2); 
+        if(closeHour=="00"){
           closeHour=24;
         }
         const closeMinute = tableInfo.close.substring(3, 5);
