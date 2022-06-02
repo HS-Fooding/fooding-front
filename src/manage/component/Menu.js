@@ -259,7 +259,7 @@ const Menu = ({ marketId }) => {
       name: postData.menuName,
       description: postData.menuDesc,
       price: postData.menuPrice,
-      isRepresentative: postData.menuMain,
+      isRepresentative: false,
     };
     console.log();
 

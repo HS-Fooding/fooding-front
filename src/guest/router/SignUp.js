@@ -10,9 +10,10 @@ const Container = styled.div`
   /* width: 350px;
   height: 600px; */
   width: 410px;
-  height: 770px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
+  overflow: hidden;
 `;
 
 const Form = styled.form`
