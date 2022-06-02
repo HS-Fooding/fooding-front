@@ -150,6 +150,9 @@ const Location = () => {
     const lngLS = localStorage.getItem("lng");
 
     let container = document.getElementById("map");
+
+    container.innerHTML = null;
+
     let options = {
       center: new kakao.maps.LatLng(latLS, lngLS),
       level: 4,
