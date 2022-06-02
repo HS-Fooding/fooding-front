@@ -97,11 +97,12 @@ const CategoryContainer = styled.div`
     display: flex;
     justify-content: inline-block;
 `;
-const Restaurant = ({ content, bookmark }) => {
+const Restaurant = ({ content, bookmark, listBookmarked }) => {
     // console.log("restaurant",content);
     // console.log("restaurant.image.path",content.image?.path);
     // console.log("restaurant.category",content.category);
     const [selectedDelete, setSelectedDelete] = useState(false);
+    const [listSelected,setListSelected] = useState(listBookmarked);
     const bringCategoryValue = (value) => {
         if (value === "KOREAN") return "한식";
         else if (value === "JAPANESE") return "일식";
@@ -153,6 +154,62 @@ const Restaurant = ({ content, bookmark }) => {
                 console.log(error);
             });
     };
+    const toggleBookmark = (e) =>{
+        e.preventDefault();
+        setListSelected(listSelected=>!listSelected);
+        console.log("북마크",listSelected);
+//클릭을 하면 지금 상태를 변경함 만약에 true->false로 변경하면
+//delete를 보내고 false에서 true가 되면 put을 보냄.
+        if(!listSelected==true){//put
+            const getToken = localStorage.getItem("guestToken");
+            const data = JSON.stringify({
+                restId: content.id,
+            });
+            var config = {
+                method: "post",
+                url: url + `/fooding/mypage/bookmark/${content.id}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + getToken,
+                },
+                data: data,
+            };
+    
+            axios(config)
+                .then(function (response) {
+                    console.log(response.data);
+                })
+                .then(function () {})
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        else{//del
+        const getToken = localStorage.getItem("guestToken");
+         
+        const data = JSON.stringify({
+            restId: content.id,
+        });
+        var config = {
+            method: "delete",
+            url: url + `/fooding/mypage/bookmark/${content.id}`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + getToken,
+            },
+            data: data,
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .then(function () {})
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
     return (
         <Container>
             <BestMenuContainer>
@@ -197,7 +254,18 @@ const Restaurant = ({ content, bookmark }) => {
                             />
                         </p>
                     </div>
-                ) : null}
+                ) : 
+               ( <div className="bookmarkCancelBtn" onClick={toggleBookmark}>
+                {" "}
+                <p> 
+                    <FontAwesomeIcon
+                        icon={listSelected ? faStar : faStarRegular}
+                        style={{ color: "#FF7B54" }}
+                     
+                    />
+                </p>
+            </div>)
+                }
             </NumOfViewsNReviews>
         </Container>
     );
