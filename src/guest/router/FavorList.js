@@ -102,12 +102,25 @@ const FavorList = () => {
         console.log(error);
       });
   }, []);
-
+  
+  const Notice = styled.div`
+  display: flex;
+  width:100%;
+  height:60px;
+  justify-content: center;
+  align-items: center;
+  color: ${(props) => props.theme.fontGrayColor};
+  margin: 50px 0px;
+`;
   return (
     <Container>
       <Header back="/guest/restaurantList" title={"즐겨찾기"} />
       <Bookmarks>
+        
         <ListContainer>
+        {bookmarks?.length == 0 ? (
+          <Notice><p>즐겨찾기가 존재하지 않습니다.</p></Notice>         
+        ) : null}
           {bookmarks?.map((content, index) => {
             return (
               <Link
