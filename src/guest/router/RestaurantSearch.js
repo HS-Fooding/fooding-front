@@ -329,7 +329,7 @@ const RestaurantSearch = () => {
                                 }}
                                 style={{ textDecoration: "none", color: "inherit" }}
                             >
-                                <Restaurant content={content} />
+                                <Restaurant content={content} bookmark={false} listBookmarked={content.bookmarked} />
                             </Link>
                         );
                     })}
