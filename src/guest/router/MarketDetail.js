@@ -9,8 +9,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MultipleSlider from "../component/MultipleSlider";
 import "@fortawesome/fontawesome-free/js/all.js";
-
-import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Stage, Layer, Rect, Circle, Transformer } from "react-konva";
 // import CurrentTable from "../component/CurrentTables";
 import { HiOutlinePencil } from "react-icons/hi";
@@ -1002,14 +1001,47 @@ const MarketDetail = () => {
 
   let navigate = useNavigate();
 
+  const Header = styled.div`
+    /* position: absolute; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 410px;
+    height: 60px;
+    background-color: white;
+    color: black;
+    padding: 5px 15px;
+    font-size: 15px;
+    border: 1px solid ${(props) => props.theme.borderGrayColor};
+    /* /* position: absolute; */
+    position: fixed;
+    top: 0;
+    font-weight: bold;
+    z-index: 3;
+    .icon {
+      cursor: pointer;
+      &:hover {
+        color: ${(props) => props.theme.mainColor};
+      }
+      color: ${(props) => props.theme.mainColor};
+    }
+  `;
+
   return (
     <Container>
-      <Header
-        title={""}
-        onClick={() => {
-          navigate(-1);
-        }}
-      />
+      <Header>
+        <FontAwesomeIcon
+          onClick={() => {
+            navigate(-1);
+          }}
+          icon={faAngleLeft}
+          className="icon"
+          size="lg"
+        />
+
+        <span></span>
+        <div></div>
+      </Header>
 
       <MarketImgsBox>
         <MultipleSlider images={market?.images} />

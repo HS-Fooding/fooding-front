@@ -139,6 +139,7 @@ const Modal = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 60px;
   background-color: white;
@@ -206,13 +207,10 @@ const Login = () => {
     };
     axios(config)
       .then(function (response) {
-        navigate("/guest/restaurantList");
-        console.log("response ", response);
-
-        console.log("token", response.data.token.accessToken);
-
         localStorage.setItem("guestToken", response.data.token.accessToken);
-        console.log(response.status);
+      })
+      .then(function (response) {
+        navigate("/guest/restaurantList");
       })
       .catch(function (error) {
         //console.log(error);
@@ -239,11 +237,11 @@ const Login = () => {
     <Container>
       <Header>
         <div
-          onClick={() => {
-            navigate(-1);
-          }}
+        // onClick={() => {
+        //   navigate(-1);
+        // }}
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+          {/* <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" /> */}
         </div>
         <p>로그인</p>
       </Header>

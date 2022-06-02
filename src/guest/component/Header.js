@@ -37,14 +37,17 @@ const Header = ({ title, back, marketId }) => {
     <>
       <GlobalStyle />
       <Container>
-        <FontAwesomeIcon
+        {/* <FontAwesomeIcon
           onClick={() => {
             navigate(-1);
           }}
           icon={faAngleLeft}
           className="icon"
           size="lg"
-        />
+        /> */}
+        <Link to={back}>
+          <FontAwesomeIcon icon={faAngleLeft} className="icon" size="lg" />
+        </Link>
 
         <span>{title}</span>
         <div></div>
