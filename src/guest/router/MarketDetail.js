@@ -1030,15 +1030,16 @@ const MarketDetail = () => {
   return (
     <Container>
       <Header>
-        <FontAwesomeIcon
-          onClick={() => {
-            navigate(-1);
-          }}
+      <Link
+          to={`/guest/restaurantList`}
+          style={{ textDecoration: "none", color: "inherit" }}
+         >
+        <FontAwesomeIcon         
           icon={faAngleLeft}
           className="icon"
           size="lg"
         />
-
+      </Link>
         <span></span>
         <div></div>
       </Header>
