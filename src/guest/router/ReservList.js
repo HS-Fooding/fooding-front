@@ -6,7 +6,6 @@ import "@fortawesome/fontawesome-free/js/all.js";
 import { url } from "../../Api";
 import axios from "axios";
 import Footer from "../component/Footer";
-import { style } from "motion";
 
 const Container = styled.div`
     width: 410px;
@@ -288,7 +287,7 @@ const ReservList = () => {
                 </ReserveContainer>
 
                 <ReserveContainer>
-                    <SubTitle>이전 예약정보</SubTitle>
+                    <SubTitle>이전 예약</SubTitle>
                     {oldReservations?.map((r, index) => (
                         <Reservation key={index}>
                             <Info
