@@ -5,5 +5,9 @@
 @import url("./css/ShowHow.css");
 
 .App {
-    font-family: "Nanum Gothic", sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
