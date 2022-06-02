@@ -658,7 +658,6 @@ const Register = () => {
   const [availableHour, setAvailableHour] = useState(0);
   const [availableMinute, setAvailableMinute] = useState(30);
 
-<<<<<<< HEAD
   const [weekdayTimeStartState, setWeekdayTimeStartState] = useState("11:00");
   const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00");
   const [weekendTimeStartState, setWeekendTimeStartState] = useState("11:00");
@@ -670,19 +669,6 @@ const Register = () => {
   const [currentMaxFloor, setCurrentMaxFloor] = useState();
   const [selectedFloor, setSelectedFloor] = useState(0);
   const [clickShowHow, setClickShowHow] = useState(false);
-=======
-    const [weekdayTimeStartState, setWeekdayTimeStartState] = useState("11:00");
-    const [weekdayTimeEndState, setWeekdayTimeEndState] = useState("21:00");
-    const [weekendTimeStartState, setWeekendTimeStartState] = useState("11:00");
-    const [weekendTimeEndState, setWeekendTimeEndState] = useState("21:00");
-    const [getSuccess, setGetSuccess] = useState(false);
-    const [marketInfo, setMarketInfo] = useState();
-    const [floor, setFloor] = useState([true]);
-    const [floorNum, setFloorNum] = useState(null);
-    const [currentMaxFloor, setCurrentMaxFloor] = useState();
-    const [selectedFloor, setSelectedFloor] = useState(0);
-    const [clickShowHow, setClickShowHow] = useState(false);
->>>>>>> 2ca10ffbb639d73e824ac77596729ddae5bc8b67
 
   const [marketImages, setMarketImages] = useState([]);
 
