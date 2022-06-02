@@ -82,6 +82,7 @@ const CurrentTables = () => {
 
   const getAvailableTable = () => {
     const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/table`,
@@ -108,6 +109,7 @@ const CurrentTables = () => {
 
   const getShape = () => {
     const getToken = localStorage.getItem("managerToken");
+    const marketId = localStorage.getItem("marketId");
     var config = {
       method: "get",
       url: url + `/fooding/restaurant/${marketId}/structure`,

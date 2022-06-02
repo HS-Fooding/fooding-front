@@ -961,7 +961,6 @@ function Register(floorCallback) {
     floors[index] = structureInfo;
     console.log("층", index + 1);
     console.log("구조도", structureInfo);
-    console.log("층들", floors);
   };
   useEffect(() => {
     console.log("gg");
