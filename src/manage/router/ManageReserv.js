@@ -298,25 +298,27 @@ const ManageReserv = () => {
         setTableNumsCount(tableCount);
         console.log(response.data.tableInfo.tableNums.length);
 
-        ManageReserv.defaultProps = {
-          className: "layout",
-          // cols: transformed.tableNums,
-          //  cols: data.tablenums, // TODO : Need to check
-          //tableNumsCount + 30
-          cols: {
-            lg: tableCount,
-            md: tableCount,
-            sm: tableCount,
-            xs: tableCount,
-            xxs: tableCount,
-          },
-          rowHeight: 30,
-          onLayoutChange: function () {},
-          // This turns off compaction so you can place items wherever.
-          compactType: null,
-          // This turns off rearrangement so items will not be pushed arround.
-          preventCollision: true,
-        };
+        if (tableCount > 0) {
+          ManageReserv.defaultProps = {
+            className: "layout",
+            // cols: transformed.tableNums,
+            //  cols: data.tablenums, // TODO : Need to check
+            //tableNumsCount + 30
+            cols: {
+              lg: tableCount,
+              md: tableCount,
+              sm: tableCount,
+              xs: tableCount,
+              xxs: tableCount,
+            },
+            rowHeight: 30,
+            onLayoutChange: function () {},
+            // This turns off compaction so you can place items wherever.
+            compactType: null,
+            // This turns off rearrangement so items will not be pushed arround.
+            preventCollision: true,
+          };
+        }
 
         return response;
       })
