@@ -175,7 +175,7 @@ const ReservList = () => {
     axios(config)
       .then(function (response) {
         console.log(response.data);
-        setReservations(response.data);
+        setReservations(response.data.reverse());
       })
       .catch(function (error) {
         console.log(error);

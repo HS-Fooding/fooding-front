@@ -172,6 +172,8 @@ const RestaurantSearch = () => {
 
     const bringSearchWord = async (e) => {
         e.preventDefault();
+        const getToken = localStorage.getItem("guestToken");
+
         currentPage = 0;
         setFocus(true);
         keyword = e.target.value;

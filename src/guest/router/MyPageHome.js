@@ -20,19 +20,23 @@ const Container = styled.div`
 
 const Buttons = styled.div`
   display: flex;
+  height:85vh;
   flex-direction: column;
-  height: 100%;
-  justify-items: center;
-  margin-top: 140px;
+  justify-content: space-between;
   border-top: 1px solid ${(props) => props.theme.borderGrayColor};
   margin-left: 10px;
   margin-right: 10px;
 `;
-
+const Profile = styled.div`
+width: 100%;
+height:100px;
+background-color:red;
+`;
 const Button = styled.div`
   width: 100%;
   padding: 50px 20px;
   border-bottom: 1px solid ${(props) => props.theme.borderGrayColor};
+  border-top: 1px solid ${(props) => props.theme.borderGrayColor};
   font-size: 16px;
   display: flex;
   justify-content: space-between;
@@ -59,36 +63,14 @@ const MyPageHome = () => {
     <Container>
       <Header back="/guest/restaurantList" title={"마이 페이지"} />
       <Buttons>
-        <Link
-          style={{ textDecoration: "none", color: "inherit" }}
-          to={"/guest/myPage/reservList"}
-        >
-          <Button>
-            <div>
-              <i className="fa-solid fa-list leftIcon"></i>
-              예약 리스트
-            </div>
-            <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
-          </Button>
-        </Link>
-        <Link
-          style={{ textDecoration: "none", color: "inherit" }}
-          to={"/guest/myPage/favorList"}
-        >
-          <Button>
-            <div>
-              <i className="fa-regular fa-star leftIcon"></i>
-              즐겨찾기
-            </div>
-            <FontAwesomeIcon icon={faAngleRight} className="icon" size="lg" />
-          </Button>
-        </Link>
-        <Link
+      <Profile>프로필</Profile>
+      <Link
           style={{ textDecoration: "none", color: "inherit" }}
           to={"/guest/login"}
         >
           <Button onClick={logoutFun}>로그아웃</Button>
         </Link>
+       
       </Buttons>
       <Footer></Footer>
     </Container>
