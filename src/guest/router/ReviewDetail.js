@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const MainBox = styled.div`
   /* height: 658px; */
-  height: 85vh;
+  height: 100vh;
   overflow: auto;
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
