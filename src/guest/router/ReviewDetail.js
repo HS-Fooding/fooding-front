@@ -390,12 +390,7 @@ const ReviewDetail = () => {
             </CommentsLi>
           ))}
         </CommentContainer>
-        <CommentInputBox>
-          <CommentInput ref={commentRef} />
-          <div onClick={commentSubmit}>
-            <i className="far fa-paper-plane fa-lg"></i>
-          </div>
-        </CommentInputBox>
+
         <BigImageBox bigImg={bigImg}>
           <button
             class="closeBtn"
@@ -434,6 +429,12 @@ const ReviewDetail = () => {
           </button>
         </BigImageBox>
       </MainBox>
+      <CommentInputBox>
+        <CommentInput ref={commentRef} />
+        <div onClick={commentSubmit}>
+          <i className="far fa-paper-plane fa-lg"></i>
+        </div>
+      </CommentInputBox>
     </Container>
   );
 };
