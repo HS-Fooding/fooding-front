@@ -197,6 +197,20 @@ const ReservList = () => {
                     date.getTime() < currentTime.getTime() ? oldTmp.push(m) : commingTmp.push(m);
                 });
 
+                commingTmp.sort(function (a, b) {
+                    const time1 = a.reserveTime.split(":");
+                    const time2 = b.reserveTime.split(":");
+
+                    var a = new Date(a.reserveDate);
+                    a.setHours(time1[0]);
+                    a.setMinutes(time1[1]);
+                    var b = new Date(b.reserveDate);
+                    b.setHours(time2[0]);
+                    b.setMinutes(time2[1]);
+
+                    return b - a;
+                });
+
                 oldTmp.sort(function (a, b) {
                     const time1 = a.reserveTime.split(":");
                     const time2 = b.reserveTime.split(":");
@@ -269,7 +283,7 @@ const ReservList = () => {
                                     <span>{r.reserveDate}</span> <span>{r.reserveTime}</span>
                                 </div>
                                 <div>
-                                    <span>{r.reserveCount}명</span> <span>/</span>{" "}
+                                    <span>{r.reserveCount}명</span> <span>/</span>
                                     {r.isCar ? <span>차량 있음</span> : <span>차량 없음</span>}
                                 </div>
                             </Info>
