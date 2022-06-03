@@ -205,6 +205,10 @@ const Menu = ({ marketId }) => {
 
   const [menus, setMenus] = useState([]);
 
+  const [checked, setChecked] = useState();
+
+  let checkbox;
+
   const marketIdLS = localStorage.getItem("marketId");
   const getToken = localStorage.getItem("managerToken");
 
@@ -222,6 +226,7 @@ const Menu = ({ marketId }) => {
       .then(function (response) {
         console.log(response.data);
         setMenus(response.data);
+        setChecked(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -259,7 +264,7 @@ const Menu = ({ marketId }) => {
       name: postData.menuName,
       description: postData.menuDesc,
       price: postData.menuPrice,
-      isRepresentative: false,
+      isRepresentative: checked,
     };
     console.log();
 
@@ -340,6 +345,12 @@ const Menu = ({ marketId }) => {
       });
   };
 
+  const onChangeCheck = (e) => {
+    console.log("Checked!!!!", e.target.checked);
+    checkbox = e.target.checked;
+    setChecked(e.target.checked);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
@@ -417,6 +428,9 @@ const Menu = ({ marketId }) => {
                   {...register("menuMain", {})}
                   type="checkbox"
                   id="check1"
+                  onClick={(e) => {
+                    onChangeCheck(e);
+                  }}
                 />
                 <label htmlFor="check1"></label>
                 <span>대표</span>
