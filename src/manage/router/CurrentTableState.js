@@ -121,7 +121,10 @@ const CurrentTables = () => {
 
     axios(config)
       .then(function (response) {
-        console.log("structure테이블 길이 있는지 ",response.data.floors.length);
+        console.log(
+          "structure테이블 길이 있는지 ",
+          response.data.floors.length
+        );
         const floors = response.data.floors;
 
         if (floors.length === 0) {
@@ -340,6 +343,7 @@ const CurrentTables = () => {
                   rotation={table.rotation}
                   x={table.x}
                   y={table.y}
+                  fill={"white"}
                   width={table.width}
                   height={table.height}
                   align="center"
