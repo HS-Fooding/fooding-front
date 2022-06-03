@@ -9,13 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const Container = styled.div`
   width: 410px;
-  height: 775px;
+  height: 100vh;
   position: relative;
   box-sizing: border-box;
 `;
 
 const MainBox = styled.div`
-  height: 658px;
+  height: 85vh;
   overflow: auto;
   ::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
@@ -389,12 +389,7 @@ const ReviewDetail = () => {
             </CommentsLi>
           ))}
         </CommentContainer>
-        <CommentInputBox>
-          <CommentInput ref={commentRef} />
-          <div onClick={commentSubmit}>
-            <i className="far fa-paper-plane fa-lg"></i>
-          </div>
-        </CommentInputBox>
+       
         <BigImageBox bigImg={bigImg}>
           <button
             class="closeBtn"
@@ -433,6 +428,12 @@ const ReviewDetail = () => {
           </button>
         </BigImageBox>
       </MainBox>
+      <CommentInputBox>
+          <CommentInput ref={commentRef} />
+          <div onClick={commentSubmit}>
+            <i className="far fa-paper-plane fa-lg"></i>
+          </div>
+        </CommentInputBox>
     </Container>
   );
 };
