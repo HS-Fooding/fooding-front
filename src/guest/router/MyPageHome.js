@@ -54,7 +54,7 @@ const Profile = styled.div`
                 color:#FF7B54;
             }
         div{
-            margin-right:10px;
+            margin-right:3px;
             height:30px;
             
         }
@@ -64,10 +64,8 @@ const Profile = styled.div`
             font-size:11px;
             display:flex;
             .info{
-                width:33px;
-                height:10px;
-               
-                
+              display:inline;
+              margin-right:5px;                                             
             }
             
         }
